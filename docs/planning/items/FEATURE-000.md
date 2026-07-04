@@ -2,7 +2,7 @@
 id: FEATURE-000
 tipo: feature
 titulo: Inicialización y andamiaje del proyecto
-estado: listo
+estado: desarrollo
 prioridad: alta
 hito: "0.1"
 duplicado_de: null
