@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run:*)",
+      "Bash(npm test:*)",
+      "Bash(npx tsc:*)",
+      "Bash(npx vitest:*)",
+      "Bash(npx playwright:*)",
+      "Bash(npx prettier:*)",
+      "Bash(python scripts/render_planning.py)",
+      "Bash(mkdocs build:*)",
+      "Bash(supabase db:*)",
+      "Bash(supabase migration:*)",
+      "Bash(git status)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(git add:*)",
+      "Bash(git branch:*)",
+      "Bash(git checkout:*)"
+    ],
+    "deny": []
+  }
+}

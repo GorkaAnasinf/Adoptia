@@ -1,0 +1,77 @@
+name: CI
+
+on:
+  push:
+    branches: [develop, main]
+  pull_request:
+    branches: [develop, main]
+
+jobs:
+  app:
+    name: Lint + Typecheck + Test + Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Detectar app Next.js
+        id: app
+        run: |
+          if [ -f package.json ]; then echo "exists=true" >> "$GITHUB_OUTPUT"; else echo "exists=false" >> "$GITHUB_OUTPUT"; fi
+
+      - uses: actions/setup-node@v4
+        if: steps.app.outputs.exists == 'true'
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Instalar dependencias
+        if: steps.app.outputs.exists == 'true'
+        run: npm ci
+
+      - name: Lint
+        if: steps.app.outputs.exists == 'true'
+        run: npm run lint
+
+      - name: Typecheck
+        if: steps.app.outputs.exists == 'true'
+        run: npx tsc --noEmit
+
+      - name: Tests con cobertura (mínimo 70%)
+        if: steps.app.outputs.exists == 'true'
+        run: npm run test -- --coverage
+
+      - name: Build
+        if: steps.app.outputs.exists == 'true'
+        run: npm run build
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+
+      - name: Auditoría de dependencias
+        if: steps.app.outputs.exists == 'true'
+        run: npm audit --audit-level=high
+
+  planning:
+    name: Render de planificación coherente
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Verificar que las vistas están al día con los items
+        run: |
+          python scripts/render_planning.py
+          git diff --exit-code docs/ || {
+            echo "::error::BACKLOG/ROADMAP/PRODUCT_CONTEXT desactualizados. Ejecuta 'python scripts/render_planning.py' y commitea."; exit 1; }
+
+  docs:
+    name: Sitio de documentación
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements-docs.txt
+      - run: mkdocs build

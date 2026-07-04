@@ -1,0 +1,45 @@
+# --- Secretos y entorno ---
+.env
+.env.local
+.env.*.local
+*.pem
+.secrets.baseline.tmp
+
+# --- Node / Next.js ---
+node_modules/
+.next/
+out/
+build/
+dist/
+*.tsbuildinfo
+next-env.d.ts
+.vercel/
+coverage/
+.eslintcache
+
+# --- Supabase local ---
+supabase/.temp/
+supabase/.branches/
+
+# --- MkDocs ---
+site/
+
+# --- Python (scripts) ---
+__pycache__/
+*.pyc
+.venv/
+
+# --- IDE / SO ---
+.idea/
+.vscode/*
+!.vscode/extensions.json
+.DS_Store
+Thumbs.db
+
+# --- Binarios pesados / extracciones temporales ---
+*.pdf
+*.docx
+*.xlsx
+*.mp4
+*.mov
+*.zip

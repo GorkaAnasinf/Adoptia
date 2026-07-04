@@ -1,0 +1,59 @@
+site_name: Adoptia — Documentación
+site_description: Plataforma que conecta protectoras de animales con adoptantes
+docs_dir: docs
+site_dir: site
+
+theme:
+  name: material
+  language: es
+  palette:
+    scheme: default
+    primary: deep orange
+    accent: teal
+  font:
+    text: Open Sans
+    code: JetBrains Mono
+  features:
+    - navigation.sections
+    - navigation.top
+    - search.suggest
+    - content.code.copy
+
+markdown_extensions:
+  - admonition
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.superfences
+  - pymdownx.details
+
+nav:
+  - Inicio: index.md
+  - Producto:
+      - Contexto de producto: product/PRODUCT_CONTEXT.md
+      - Plan: product/PLAN.md
+      - Glosario: product/GLOSSARY.md
+      - Análisis funcional: product/analisis-funcional.md
+  - Técnico:
+      - Arquitectura: technical/ARCHITECTURE.md
+      - Modelo de datos: technical/DATA_MODEL.md
+      - Contratos de API: technical/API_CONTRACTS.md
+      - Diseño: technical/DESIGN.md
+      - Decisiones: technical/DECISIONS.md
+      - Análisis técnico (biblia): technical/analisis-tecnico.md
+      - Prompts Stitch: technical/prompts-stitch.md
+  - Planificación:
+      - Backlog: planning/BACKLOG.md
+      - Roadmap: planning/ROADMAP.md
+      - Changelog: planning/CHANGELOG.md
+      - Pasarela ChatGPT: planning/CHATGPT_GATEWAY.md
+  - Operación:
+      - Setup: operations/SETUP.md
+      - Entornos: operations/ENVIRONMENT.md
+      - Operaciones: operations/OPERATIONS.md
+      - Runbooks: operations/RUNBOOKS.md
+      - Seguridad: operations/SECURITY.md
+  - Meta:
+      - Testing: meta/TESTING.md
+      - Privacidad (RGPD): meta/PRIVACY.md
+      - Documentación: meta/DOCUMENTATION.md

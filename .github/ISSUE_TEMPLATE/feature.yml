@@ -1,0 +1,32 @@
+name: ✨ Feature
+description: Nueva funcionalidad o mejora
+title: "[FEATURE] "
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problema
+    attributes:
+      label: Problema que resuelve
+      description: Qué necesidad de usuario o negocio cubre
+    validations:
+      required: true
+  - type: textarea
+    id: propuesta
+    attributes:
+      label: Propuesta
+    validations:
+      required: true
+  - type: dropdown
+    id: usuario
+    attributes:
+      label: A quién beneficia
+      options: [Adoptantes, Protectoras, Admin, Todos]
+    validations:
+      required: true
+  - type: dropdown
+    id: prioridad
+    attributes:
+      label: Prioridad percibida
+      options: [Alta, Media, Baja]
+    validations:
+      required: true

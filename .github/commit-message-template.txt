@@ -1,0 +1,12 @@
+# <tipo>(<ámbito opcional>): <resumen en imperativo, ≤50 caracteres>
+#
+# Cuerpo opcional: el PORQUÉ del cambio, no el qué (eso lo dice el diff).
+#
+# Tipos: feat | fix | docs | style | refactor | test | chore | perf
+# Ámbitos sugeridos: public, panel, admin, mapa, solicitudes, citas,
+#                    auth, db, emails, seo, docs, ci
+#
+# Ejemplos:
+#   feat(mapa): búsqueda por proximidad con PostGIS
+#   fix(solicitudes): evitar solicitud duplicada por animal y usuario
+#   docs(planning): cerrar FEATURE-003 y renderizar backlog
