@@ -18,6 +18,11 @@ vi.mock("next/navigation", () => ({
   useRouter: () => ({ push: pushMock, refresh: vi.fn() }),
 }));
 
+vi.mock("./Captcha", () => ({
+  Captcha: () => null,
+  captchaHabilitado: false,
+}));
+
 function renderForm() {
   return render(
     <NextIntlClientProvider locale="es" messages={messages}>

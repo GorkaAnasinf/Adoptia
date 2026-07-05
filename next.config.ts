@@ -12,10 +12,11 @@ const securityHeaders = [
     key: "Content-Security-Policy",
     value: [
       "default-src 'self'",
-      "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
+      "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://challenges.cloudflare.com",
       "style-src 'self' 'unsafe-inline'",
       "img-src 'self' data: blob: https://*.supabase.co",
       "font-src 'self'",
+      "frame-src 'self' https://challenges.cloudflare.com",
       // En desarrollo, permitir el stack local de Supabase (npx supabase start)
       `connect-src 'self' https://*.supabase.co wss://*.supabase.co${
         process.env.NODE_ENV !== "production"
