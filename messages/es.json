@@ -1,0 +1,49 @@
+{
+  "common": {
+    "appName": "Adoptia",
+    "tagline": "Conectamos protectoras y adoptantes"
+  },
+  "nav": {
+    "home": "Inicio",
+    "animals": "Animales",
+    "shelters": "Protectoras",
+    "login": "Iniciar sesión",
+    "register": "Crear cuenta"
+  },
+  "footer": {
+    "rights": "Hecho con cariño por y para las protectoras.",
+    "privacy": "Privacidad",
+    "terms": "Términos"
+  },
+  "home": {
+    "title": "Encuentra a tu nuevo mejor amigo",
+    "subtitle": "Miles de animales de protectoras de toda España esperan un hogar. Adopta, no compres.",
+    "cta": "Ver animales en adopción",
+    "animalsCount": "{count} animales buscan hogar ahora mismo",
+    "ctaShelters": "Soy una protectora"
+  },
+  "auth": {
+    "loginTitle": "Inicia sesión",
+    "registerTitle": "Crea tu cuenta",
+    "email": "Correo electrónico",
+    "password": "Contraseña",
+    "fullName": "Nombre completo",
+    "submitLogin": "Entrar",
+    "submitRegister": "Registrarme",
+    "genericError": "No hemos podido completar la operación. Revisa tus datos e inténtalo de nuevo.",
+    "checkEmail": "Revisa tu correo para confirmar la cuenta.",
+    "noAccount": "¿No tienes cuenta?",
+    "hasAccount": "¿Ya tienes cuenta?"
+  },
+  "panel": {
+    "title": "Panel de la protectora",
+    "placeholder": "Aquí gestionarás tus animales y solicitudes."
+  },
+  "account": {
+    "title": "Mi cuenta",
+    "placeholder": "Aquí verás tus solicitudes y favoritos."
+  },
+  "errors": {
+    "missingEnv": "Faltan variables de entorno de Supabase. Copia .env.example a .env.local y rellena NEXT_PUBLIC_SUPABASE_URL y NEXT_PUBLIC_SUPABASE_ANON_KEY."
+  }
+}

@@ -15,11 +15,12 @@
 ## Items por hito
 
 <!-- RENDER:START -->
-### Hito 0.1 — 0% completado (0/1)
+### Hito 0.1 — 50% completado (1/2)
 
 | Item | Título | Estado | Prioridad |
 |------|--------|--------|-----------|
-| [FEATURE-000](items/FEATURE-000.md) | Inicialización y andamiaje del proyecto | listo | alta |
+| [FEATURE-000](items/FEATURE-000.md) | Inicialización y andamiaje del proyecto | hecho | alta |
+| [FEATURE-017](items/FEATURE-017.md) | Despliegue inicial — Supabase cloud y Vercel enlazados | recibido | alta |
 
 ### Hito 0.2 — 0% completado (0/8)
 

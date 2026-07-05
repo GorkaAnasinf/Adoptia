@@ -2,12 +2,12 @@
 id: FEATURE-000
 tipo: feature
 titulo: Inicialización y andamiaje del proyecto
-estado: listo
+estado: hecho
 prioridad: alta
 hito: "0.1"
 duplicado_de: null
 creado: 2026-07-04
-actualizado: 2026-07-04
+actualizado: 2026-07-05
 ---
 
 # FEATURE-000 — Inicialización y andamiaje del proyecto
@@ -53,13 +53,13 @@ Sin andamiaje no hay proyecto. Define además los patrones (estructura de carpet
 
 ### Tareas TDD
 
-1. Scaffold Next.js + Tailwind + shadcn/ui + tokens; test de humo de render de la home.
-2. Clientes Supabase (browser + server con `@supabase/ssr`); test unitario de creación.
-3. Migración baseline + RLS; test de políticas con supabase CLI local o test de integración (anon no lee borradores).
-4. Auth: registro/login mínimo; test de middleware (ruta de panel redirige a login sin sesión).
-5. next-intl; test de que la home no contiene textos hardcodeados fuera de messages.
-6. Vitest + Testing Library + Playwright configurados; cobertura en CI.
-7. Deploy: proyecto Vercel enlazado, variables de entorno, preview desde `develop`.
+1. ✅ Scaffold Next.js + Tailwind + shadcn/ui + tokens; test de humo de render de la home.
+2. ✅ Clientes Supabase (browser + server con `@supabase/ssr`); test unitario de creación.
+3. ✅ Migración baseline + RLS; test de políticas con supabase CLI local o test de integración (anon no lee borradores).
+4. ✅ Auth: registro/login mínimo; test de middleware (ruta de panel redirige a login sin sesión).
+5. ✅ next-intl; test de que la home no contiene textos hardcodeados fuera de messages.
+6. ✅ Vitest + Testing Library + Playwright configurados; cobertura en CI.
+7. ⏳ Deploy: proyecto Vercel enlazado, variables de entorno, preview desde `develop` — **manual: requiere cuentas Vercel/Supabase cloud del usuario**.
 
 ### Dependencias
 

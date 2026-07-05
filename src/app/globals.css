@@ -1,0 +1,92 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+/* ============================================================
+   Tokens de diseño Adoptia — fuente: docs/technical/DESIGN.md
+   Sin dark mode (decisión inicial).
+   ============================================================ */
+
+:root {
+  /* Marca */
+  --primary: #9f402d; /* terracota */
+  --primary-foreground: #ffffff;
+  --primary-container: #e2725b;
+  --secondary: #396662; /* teal — CTAs de alta prioridad */
+  --secondary-foreground: #ffffff;
+  --tertiary: #4e635a; /* salvia — éxito, etiquetas */
+  --tertiary-foreground: #ffffff;
+
+  /* Superficies y texto */
+  --background: #fef8f0; /* crema */
+  --foreground: #1d1b17;
+  --card: #ffffff;
+  --card-foreground: #1d1b17;
+  --popover: #ffffff;
+  --popover-foreground: #1d1b17;
+  --muted: #f3ede4;
+  --muted-foreground: #6b6459;
+  --accent: #f3ede4;
+  --accent-foreground: #1d1b17;
+
+  /* Estados */
+  --destructive: #ba1a1a;
+  --destructive-foreground: #ffffff;
+
+  /* Bordes y focos */
+  --border: #e5ddd0;
+  --input: #e5ddd0;
+  --ring: #9f402d;
+
+  /* Radios: inputs 8px, cards 16px, chips full */
+  --radius: 0.5rem;
+  --radius-card: 1rem;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary-container: var(--primary-container);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-tertiary: var(--tertiary);
+  --color-tertiary-foreground: var(--tertiary-foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --radius-sm: calc(var(--radius) - 2px);
+  --radius-md: var(--radius);
+  --radius-lg: calc(var(--radius) + 4px);
+  --radius-xl: var(--radius-card);
+
+  /* Tipografía: Montserrat (titulares) + Open Sans (cuerpo) vía next/font */
+  --font-sans: var(--font-open-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-montserrat), ui-sans-serif, system-ui, sans-serif;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-heading);
+}
