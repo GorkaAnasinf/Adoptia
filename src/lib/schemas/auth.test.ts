@@ -25,7 +25,7 @@ describe("registroSchema", () => {
   const base = {
     fullName: "Ana García",
     email: "ana@example.com",
-    password: "secreta-123",
+    password: "Secreta-123!",
     role: "adopter",
     acceptTerms: true,
   };

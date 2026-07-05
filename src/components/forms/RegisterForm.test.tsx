@@ -29,7 +29,7 @@ function renderForm() {
 async function rellenarCampos() {
   await userEvent.type(screen.getByLabelText(messages.auth.fullName), "Ana García");
   await userEvent.type(screen.getByLabelText(messages.auth.email), "ana@example.com");
-  await userEvent.type(screen.getByLabelText(messages.auth.password), "secreta-123");
+  await userEvent.type(screen.getByLabelText(messages.auth.password), "Secreta-123!");
 }
 
 async function aceptarTerminos() {
@@ -58,7 +58,7 @@ describe("RegisterForm", () => {
     await waitFor(() => {
       expect(signUpMock).toHaveBeenCalledWith({
         email: "ana@example.com",
-        password: "secreta-123",
+        password: "Secreta-123!",
         options: { data: { full_name: "Ana García", role: "adopter" } },
       });
       expect(pushMock).toHaveBeenCalledWith("/");
