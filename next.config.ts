@@ -16,7 +16,12 @@ const securityHeaders = [
       "style-src 'self' 'unsafe-inline'",
       "img-src 'self' data: blob: https://*.supabase.co",
       "font-src 'self'",
-      "connect-src 'self' https://*.supabase.co wss://*.supabase.co",
+      // En desarrollo, permitir el stack local de Supabase (npx supabase start)
+      `connect-src 'self' https://*.supabase.co wss://*.supabase.co${
+        process.env.NODE_ENV !== "production"
+          ? " http://127.0.0.1:54321 ws://127.0.0.1:54321 http://localhost:54321"
+          : ""
+      }`,
       "frame-ancestors 'none'",
     ].join("; "),
   },
