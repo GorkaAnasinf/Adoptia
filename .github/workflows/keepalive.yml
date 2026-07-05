@@ -1,4 +1,5 @@
 name: Keepalive Supabase
+# Registro forzado del workflow (GitHub no lo indexó en el primer push)
 
 # Supabase Free pausa el proyecto tras 7 días sin actividad.
 # Este ping semanal lo evita. Requiere secrets del proyecto.
