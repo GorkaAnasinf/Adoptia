@@ -5,23 +5,22 @@
 
 ## 📍 ESTADO ACTUAL
 
-- **Hito activo:** 0.1 — Andamiaje ✅ COMPLETADO (FEATURE-000 + FEATURE-017 hechos)
-- **Progreso:** 2/2 items del hito
-- **Siguiente:** FEATURE-001 — Registro y login de adoptantes y protectoras (hito 0.2)
+- **Hito activo:** 0.2 — MVP área pública
+- **Progreso:** 1 item del hito hecho (FEATURE-001)
+- **Siguiente:** FEATURE-002 — Onboarding de protectoras (o el siguiente del hito 0.2 por prioridad)
 - **En curso:** nada
-- **Bloqueos:** ninguno
-- **Última actualización:** 2026-07-05 (producción en https://adoptia-eight.vercel.app; Supabase cloud mkzhzizcraelphhvceua)
+- **Bloqueos:** ninguno. Config manual pendiente (no bloqueante): proveedor Google en Supabase + plantillas de email en español.
+- **Última actualización:** 2026-07-05 (cierre de FEATURE-001; producción en https://adoptia-eight.vercel.app)
 
 ## Items abiertos por estado
 
 Los items `hecho`/`descartado` no aparecen aquí — su histórico vive en [CHANGELOG](CHANGELOG.md) y git.
 
 <!-- RENDER:START -->
-### ✅ Listo para desarrollo (16)
+### ✅ Listo para desarrollo (15)
 
 | Item | Título | Prioridad | Hito |
 |------|--------|-----------|------|
-| [FEATURE-001](items/FEATURE-001.md) | Registro y login de adoptantes y protectoras | alta | 0.2 |
 | [FEATURE-002](items/FEATURE-002.md) | Onboarding de protectoras y verificación por admin | alta | 0.2 |
 | [FEATURE-003](items/FEATURE-003.md) | Gestión de animales con fotos y vídeo (panel protectora) | alta | 0.2 |
 | [FEATURE-005](items/FEATURE-005.md) | Área pública — home, búsqueda de animales y fichas | alta | 0.2 |

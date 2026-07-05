@@ -40,6 +40,7 @@ Estado de cada capacidad en lenguaje de usuario. Se regenera con `python scripts
 #### ✅ Disponible
 
 - Inicialización y andamiaje del proyecto ([FEATURE-000](../planning/items/FEATURE-000.md))
+- Registro y login de adoptantes y protectoras ([FEATURE-001](../planning/items/FEATURE-001.md))
 - Despliegue inicial — Supabase cloud y Vercel enlazados ([FEATURE-017](../planning/items/FEATURE-017.md))
 
 #### 🚧 En camino (en desarrollo ahora)
@@ -48,7 +49,6 @@ _Nada en desarrollo en este momento._
 
 #### 🗓️ Previsto
 
-- Registro y login de adoptantes y protectoras — hito 0.2 ([FEATURE-001](../planning/items/FEATURE-001.md))
 - Onboarding de protectoras y verificación por admin — hito 0.2 ([FEATURE-002](../planning/items/FEATURE-002.md))
 - Gestión de animales con fotos y vídeo (panel protectora) — hito 0.2 ([FEATURE-003](../planning/items/FEATURE-003.md))
 - Panel de protectora — dashboard y perfil público — hito 0.2 ([FEATURE-004](../planning/items/FEATURE-004.md))
