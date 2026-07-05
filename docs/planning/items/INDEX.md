@@ -22,4 +22,4 @@
 | [FEATURE-014](FEATURE-014.md) | Estadísticas para protectoras y difusión en redes | feature | listo | 0.4 |
 | [FEATURE-015](FEATURE-015.md) | Contenido educativo sobre adopción responsable | feature | listo | 0.4 |
 | [FEATURE-016](FEATURE-016.md) | Registro de casas de acogida | feature | listo | 0.4 |
-| [FEATURE-017](FEATURE-017.md) | Despliegue inicial — Supabase cloud y Vercel enlazados | feature | recibido | 0.1 |
+| [FEATURE-017](FEATURE-017.md) | Despliegue inicial — Supabase cloud y Vercel enlazados | feature | hecho | 0.1 |

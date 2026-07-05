@@ -5,12 +5,12 @@
 
 ## 📍 ESTADO ACTUAL
 
-- **Hito activo:** 0.1 — Andamiaje
-- **Progreso:** 1/2 items del hito (FEATURE-000 hecho; FEATURE-017 pendiente)
-- **Siguiente:** FEATURE-017 — Despliegue inicial (pasos manuales: Supabase cloud + Vercel) o FEATURE-001 — Registro y login
+- **Hito activo:** 0.1 — Andamiaje ✅ COMPLETADO (FEATURE-000 + FEATURE-017 hechos)
+- **Progreso:** 2/2 items del hito
+- **Siguiente:** FEATURE-001 — Registro y login de adoptantes y protectoras (hito 0.2)
 - **En curso:** nada
-- **Bloqueos:** FEATURE-017 requiere cuentas Supabase cloud y Vercel del propietario
-- **Última actualización:** 2026-07-05 (cierre de FEATURE-000 en rama feature/FEATURE-000-inicializacion)
+- **Bloqueos:** ninguno
+- **Última actualización:** 2026-07-05 (producción en https://adoptia-eight.vercel.app; Supabase cloud mkzhzizcraelphhvceua)
 
 ## Items abiertos por estado
 
@@ -37,10 +37,4 @@ Los items `hecho`/`descartado` no aparecen aquí — su histórico vive en [CHAN
 | [FEATURE-014](items/FEATURE-014.md) | Estadísticas para protectoras y difusión en redes | baja | 0.4 |
 | [FEATURE-015](items/FEATURE-015.md) | Contenido educativo sobre adopción responsable | baja | 0.4 |
 | [FEATURE-016](items/FEATURE-016.md) | Registro de casas de acogida | baja | 0.4 |
-
-### 📥 Recibido (1)
-
-| Item | Título | Prioridad | Hito |
-|------|--------|-----------|------|
-| [FEATURE-017](items/FEATURE-017.md) | Despliegue inicial — Supabase cloud y Vercel enlazados | alta | 0.1 |
 <!-- RENDER:END -->

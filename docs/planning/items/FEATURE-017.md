@@ -2,7 +2,7 @@
 id: FEATURE-017
 tipo: feature
 titulo: Despliegue inicial — Supabase cloud y Vercel enlazados
-estado: recibido
+estado: hecho
 prioridad: alta
 hito: "0.1"
 duplicado_de: null
@@ -59,7 +59,7 @@ Sin esto no hay entorno público ni previews; el desarrollo local funciona (stac
 
 ## Criterios de aceptación / Casuística a cubrir
 
-- [ ] `supabase db push` aplica limpia en el proyecto cloud nuevo; PostGIS activo.
-- [ ] Push a `develop` genera preview en Vercel automáticamente.
-- [ ] CI en GitHub Actions verde con los secrets configurados.
-- [ ] `GET /api/cron/keepalive` responde 200 con el `CRON_SECRET` de producción y 401 sin él.
+- [x] `supabase db push` aplica limpia en el proyecto cloud nuevo; PostGIS activo (RPC `shelters_nearby` verificada).
+- [x] Push a `develop` genera preview en Vercel automáticamente (confirmado en el dashboard).
+- [x] CI en GitHub Actions verde con los secrets configurados (run 28735403115; nota: el trigger por push tardó en activarse, dispatch manual disponible).
+- [x] `GET /api/cron/keepalive` responde 200 con el `CRON_SECRET` de producción y 401 sin él (verificado contra https://adoptia-eight.vercel.app).

@@ -4,7 +4,7 @@
 
 | Entorno | Rama | Hosting | Datos |
 |---------|------|---------|-------|
-| **Producción** | `main` | Vercel (dominio propio o adoptia.vercel.app) | Proyecto Supabase principal |
+| **Producción** | `main` | Vercel — <https://adoptia-eight.vercel.app> | Proyecto Supabase `mkzhzizcraelphhvceua` (eu-west-1) |
 | **Preview** | `develop` (y ramas feature) | Vercel Preview Deployments (URL por push) | Mismo proyecto Supabase* |
 | **Local** | — | `next dev` | Mismo proyecto Supabase o `supabase start` local |
 
