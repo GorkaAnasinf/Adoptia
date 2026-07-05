@@ -19,6 +19,7 @@
     "title": "Encuentra a tu nuevo mejor amigo",
     "subtitle": "Miles de animales de protectoras de toda España esperan un hogar. Adopta, no compres.",
     "cta": "Ver animales en adopción",
+    "animalsCount": "{count} animales buscan hogar ahora mismo",
     "ctaShelters": "Soy una protectora"
   },
   "auth": {
