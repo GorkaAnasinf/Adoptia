@@ -18,6 +18,8 @@ export default defineConfig({
         "src/**/*.test.{ts,tsx}",
         "src/**/*.d.ts",
         "src/components/ui/**", // generados por shadcn
+        "src/i18n/**", // glue de next-intl sin lógica propia
+        "src/app/layout.tsx", // root layout: fuentes y provider, sin lógica
       ],
       thresholds: {
         lines: 70,

@@ -18,6 +18,12 @@ const eslintConfig = [
       "out/**",
       "build/**",
       "next-env.d.ts",
+      "site/**", // build de MkDocs
+      "coverage/**",
+      "playwright-report/**",
+      "test-results/**",
+      "supabase/**",
+      "scripts/**",
     ],
   },
 ];
