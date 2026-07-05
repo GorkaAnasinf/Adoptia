@@ -2,7 +2,7 @@
 id: FEATURE-001
 tipo: feature
 titulo: Registro y login de adoptantes y protectoras
-estado: listo
+estado: desarrollo
 prioridad: alta
 hito: "0.2"
 duplicado_de: null
