@@ -6,13 +6,14 @@ import MiCuentaPage, {
   generateMetadata as metaCuenta,
 } from "./(adopter)/mi-cuenta/page";
 import PublicLayout from "./(public)/layout";
-import LoginPage, { generateMetadata as metaLogin } from "./(public)/login/page";
+import AuthLayout from "./(auth)/layout";
+import LoginPage, { generateMetadata as metaLogin } from "./(auth)/login/page";
 import RegistroPage, {
   generateMetadata as metaRegistro,
-} from "./(public)/registro/page";
+} from "./(auth)/registro/page";
 import PanelPage, { generateMetadata as metaPanel } from "./(shelter)/panel/page";
-import RecuperarPage from "./(public)/recuperar/page";
-import ActualizarPasswordPage from "./(public)/actualizar-password/page";
+import RecuperarPage from "./(auth)/recuperar/page";
+import ActualizarPasswordPage from "./(auth)/actualizar-password/page";
 import PrivacidadPage from "./(public)/privacidad/page";
 import TerminosPage from "./(public)/terminos/page";
 
@@ -51,12 +52,24 @@ function conIntl(ui: React.ReactElement) {
 }
 
 describe("páginas de auth y paneles", () => {
-  it("la página de login muestra título y formulario", () => {
+  it("la página de login da la bienvenida y muestra el formulario con Google", () => {
     conIntl(<LoginPage />);
     expect(
-      screen.getByRole("heading", { name: messages.auth.loginTitle }),
+      screen.getByRole("heading", { name: messages.auth.loginWelcome }),
     ).toBeInTheDocument();
+    expect(screen.getByText(messages.auth.loginSubtitle)).toBeInTheDocument();
     expect(screen.getByTestId("login-form")).toBeInTheDocument();
+    expect(screen.getByTestId("google-button")).toBeInTheDocument();
+  });
+
+  it("el layout de auth muestra la marca y el claim del panel visual", () => {
+    conIntl(
+      <AuthLayout>
+        <p>contenido-auth</p>
+      </AuthLayout>,
+    );
+    expect(screen.getByText(messages.auth.sideClaim)).toBeInTheDocument();
+    expect(screen.getByText("contenido-auth")).toBeInTheDocument();
   });
 
   it("la página de registro muestra título y formulario", () => {

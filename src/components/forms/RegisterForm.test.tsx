@@ -69,7 +69,7 @@ describe("RegisterForm", () => {
     signUpMock.mockResolvedValue({ data: { session: {} }, error: null });
     renderForm();
     await userEvent.click(
-      screen.getByRole("radio", { name: messages.auth.typeShelter }),
+      screen.getByRole("radio", { name: new RegExp(messages.auth.typeShelter) }),
     );
     await rellenarCampos();
     await aceptarTerminos();
