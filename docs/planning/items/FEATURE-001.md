@@ -59,10 +59,20 @@ Puerta de entrada de todo: sin cuenta no hay solicitudes ni panel. La fricción 
 
 ## Criterios de aceptación / Casuística a cubrir
 
-- [x] Registro con email+password y con Google, eligiendo tipo de cuenta. *(código y tests listos; activar proveedor Google en Supabase = config manual pendiente)*
-- [x] Email de confirmación en español; sin confirmar no se puede iniciar sesión. *(rama cubierta en código; plantillas en español = config manual del dashboard)*
+- [x] Registro con email+password y con Google, eligiendo tipo de cuenta. *(Google OAuth verificado en producción.)*
+- [x] Email de confirmación en español; sin confirmar no se puede iniciar sesión. *(SMTP Gmail + plantillas HTML propias con el design system en `assets/emails/templates/`.)*
 - [x] Recuperación de contraseña funciona extremo a extremo.
 - [x] Un adoptante no puede acceder a `/panel` (protectora) ni a `/admin`; redirecciones correctas.
-- [x] Un usuario no puede cambiarse el rol vía API directa a Supabase (RLS lo impide — test contra Postgres real).
-- [x] Emails duplicados: mensaje genérico, sin revelar existencia de cuenta.
+- [x] Un usuario no puede cambiarse el rol vía API directa a Supabase (RLS + trigger con whitelist adopter/shelter — test contra Postgres real).
+- [x] Emails duplicados: mensaje neutro que guía a login/recuperar, sin revelar existencia de cuenta (anti-enumeración).
 - [x] Consentimiento RGPD (checkbox política de privacidad) obligatorio en registro.
+
+## Notas de cierre (2026-07-05)
+
+Implementado y en producción (<https://adoptia-eight.vercel.app>):
+
+- Pantallas partidas (imagen + formulario) con imágenes propias, login/registro consistentes y sin scroll.
+- Seguridad OWASP: sin open redirect, roles a prueba de escalada (migración `20260705190000`), política de contraseña robusta (mayús/minús/dígito/símbolo) alineada cliente+servidor, CAPTCHA Cloudflare Turnstile en login/registro/recuperación.
+- Config de producción hecha: Site/Redirect URLs, Google OAuth, política de contraseñas, rate limits (30/h), Turnstile.
+
+**Mejora futura (no bloqueante):** el widget de Turnstile de Cloudflare aún no está localizado en español por defecto; revisar si se fuerza `language: es` (ya puesto) y monitorizar bloqueos legítimos.

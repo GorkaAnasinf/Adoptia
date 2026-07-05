@@ -23,6 +23,7 @@
 | `SENTRY_DSN` / `NEXT_PUBLIC_SENTRY_DSN` | ambos | Monitorización de errores |
 | `NEXT_PUBLIC_UMAMI_WEBSITE_ID` | cliente | Analítica sin cookies |
 | `CRON_SECRET` | servidor | Protege `/api/cron/*` |
+| `NEXT_PUBLIC_TURNSTILE_SITE_KEY` | cliente | Site key pública de Cloudflare Turnstile (CAPTCHA en auth). El secret se configura en Supabase, no aquí. En local/tests: `1x00000000000000000000AA` |
 | `SUPABASE_TEST_URL` | solo tests | URL del stack local (`npx supabase start`) para tests de RLS |
 | `SUPABASE_TEST_ANON_KEY` | solo tests | Clave anon del stack local |
 | `SUPABASE_TEST_SERVICE_ROLE_KEY` | solo tests | Clave service_role del stack local (fixtures) |

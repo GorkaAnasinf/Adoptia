@@ -6,10 +6,10 @@
 ## 📍 ESTADO ACTUAL
 
 - **Hito activo:** 0.2 — MVP área pública
-- **Progreso:** 1 item del hito hecho (FEATURE-001)
-- **Siguiente:** FEATURE-002 — Onboarding de protectoras (o el siguiente del hito 0.2 por prioridad)
+- **Progreso:** 1 item del hito hecho (FEATURE-001, registro/login completo con seguridad OWASP y CAPTCHA en producción)
+- **Siguiente:** FEATURE-002 — Onboarding de protectoras y verificación por admin
 - **En curso:** nada
-- **Bloqueos:** ninguno. Config manual pendiente (no bloqueante): proveedor Google en Supabase + plantillas de email en español.
+- **Bloqueos:** ninguno.
 - **Última actualización:** 2026-07-05 (cierre de FEATURE-001; producción en https://adoptia-eight.vercel.app)
 
 ## Items abiertos por estado
