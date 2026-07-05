@@ -1,5 +1,6 @@
 name: CI
 
+# Registro forzado del workflow (GitHub no lo indexó en el primer push)
 on:
   push:
     branches: [develop, main]
