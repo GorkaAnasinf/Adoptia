@@ -47,7 +47,7 @@ export function AuthSplit({ image, children }: Props) {
             {t("common.appName")}
           </Link>
         </div>
-        <main className="flex flex-1 items-center justify-center px-4 py-10 sm:px-8">
+        <main className="flex flex-1 items-center justify-center px-4 py-4 sm:px-8">
           {children}
         </main>
       </div>

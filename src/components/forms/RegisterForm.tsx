@@ -89,11 +89,11 @@ export function RegisterForm() {
   return (
     <form
       onSubmit={form.handleSubmit(onSubmit)}
-      className="flex w-full max-w-md flex-col gap-6"
+      className="flex w-full flex-col gap-3"
       noValidate
     >
-      {/* Selector de tipo de cuenta (wireframe: dos tarjetas) */}
-      <div role="radiogroup" aria-label={t("registerSubtitle")} className="grid grid-cols-2 gap-4">
+      {/* Selector de tipo de cuenta — tarjetas compactas */}
+      <div role="radiogroup" aria-label={t("registerSubtitle")} className="grid grid-cols-2 gap-3">
         {tipos.map(({ valor, etiqueta, ayuda, Icono }) => {
           const activo = role === valor;
           return (
@@ -104,129 +104,125 @@ export function RegisterForm() {
               aria-checked={activo}
               onClick={() => form.setValue("role", valor)}
               className={cn(
-                "flex flex-col items-center gap-2 rounded-xl border-2 p-5 text-center transition-colors",
+                "flex items-start gap-2.5 rounded-xl border-2 p-3 text-left transition-colors",
                 activo
                   ? "border-primary bg-primary/10"
-                  : "border-transparent bg-card shadow-sm hover:bg-accent",
+                  : "border-border hover:border-primary/40",
               )}
             >
-              <span
+              <Icono
                 className={cn(
-                  "flex size-12 items-center justify-center rounded-full",
-                  activo ? "bg-primary/20 text-primary" : "bg-muted text-muted-foreground",
+                  "mt-0.5 size-5 shrink-0",
+                  activo ? "text-primary" : "text-muted-foreground",
                 )}
-              >
-                <Icono className="size-6" />
+              />
+              <span className="flex flex-col">
+                <span className="text-sm font-semibold leading-tight">{etiqueta}</span>
+                <span className="text-[11px] leading-tight text-muted-foreground">{ayuda}</span>
               </span>
-              <span className="text-sm font-medium">{etiqueta}</span>
-              <span className="text-xs leading-snug text-muted-foreground">{ayuda}</span>
             </button>
           );
         })}
       </div>
 
-      <div className="flex flex-col gap-4 rounded-xl bg-card p-6 shadow-sm">
-        <div className="flex flex-col gap-2">
-          <Label htmlFor="fullName">{t("fullName")}</Label>
-          <Input
-            id="fullName"
-            autoComplete="name"
-            placeholder={t("fullNamePlaceholder")}
-            aria-invalid={Boolean(errors.fullName)}
-            aria-describedby={errors.fullName ? "fullName-error" : undefined}
-            {...form.register("fullName")}
-          />
-          {errors.fullName && (
-            <p id="fullName-error" className="text-sm text-destructive">
-              {t("errorNameRequired")}
-            </p>
-          )}
-        </div>
-
-        <div className="flex flex-col gap-2">
-          <Label htmlFor="email">{t("email")}</Label>
-          <Input
-            id="email"
-            type="email"
-            autoComplete="email"
-            placeholder={t("emailPlaceholder")}
-            aria-invalid={Boolean(errors.email)}
-            aria-describedby={errors.email ? "email-error" : undefined}
-            {...form.register("email")}
-          />
-          {errors.email ? (
-            <p id="email-error" className="text-sm text-destructive">
-              {t("errorEmailInvalid")}
-            </p>
-          ) : (
-            <p className="text-xs text-muted-foreground">{t("emailHelp")}</p>
-          )}
-        </div>
-
-        <PasswordField
-          value={password}
-          error={Boolean(errors.password)}
-          errorText={t("errorPasswordWeak")}
-          showStrength
-          autoComplete="new-password"
-          inputProps={form.register("password")}
+      <div className="flex flex-col gap-1.5">
+        <Label htmlFor="fullName">{t("fullName")}</Label>
+        <Input
+          id="fullName"
+          autoComplete="name"
+          placeholder={t("fullNamePlaceholder")}
+          aria-invalid={Boolean(errors.fullName)}
+          aria-describedby={errors.fullName ? "fullName-error" : undefined}
+          {...form.register("fullName")}
         />
-
-        <div className="flex flex-col gap-1">
-          <label className="flex items-start gap-2 text-sm">
-            <input
-              type="checkbox"
-              className="mt-0.5 size-4 rounded-sm accent-[var(--primary)]"
-              aria-invalid={Boolean(errors.acceptTerms)}
-              {...form.register("acceptTerms")}
-            />
-            <span>
-              {t("acceptTermsStart")}{" "}
-              <Link href="/terminos" className="font-medium text-primary hover:underline">
-                {t("termsLink")}
-              </Link>{" "}
-              {t("acceptTermsAnd")}{" "}
-              <Link href="/privacidad" className="font-medium text-primary hover:underline">
-                {t("privacyLink")}
-              </Link>
-              .
-            </span>
-          </label>
-          {errors.acceptTerms && (
-            <p className="text-sm text-destructive">{t("acceptTermsError")}</p>
-          )}
-        </div>
-
-        {serverError && (
-          <p role="alert" className="text-sm text-destructive">
-            {t("genericError")}
+        {errors.fullName && (
+          <p id="fullName-error" className="text-sm text-destructive">
+            {t("errorNameRequired")}
           </p>
         )}
-        {maybeRegistered && (
-          <p role="status" className="text-sm text-foreground">
-            {t("maybeRegistered")}{" "}
-            <Link href="/login" className="font-medium text-primary hover:underline">
-              {t("loginTitle")}
-            </Link>{" "}
-            ·{" "}
-            <Link href="/recuperar" className="font-medium text-primary hover:underline">
-              {t("forgotPassword")}
-            </Link>
-          </p>
-        )}
-
-        <Captcha onVerify={setCaptchaToken} resetSignal={captchaKey} />
-
-        <Button
-          type="submit"
-          size="lg"
-          disabled={
-            form.formState.isSubmitting || (captchaHabilitado && !captchaToken)
-          }
-        >
-          {t("submitRegister")}
-        </Button>
       </div>
+
+      <div className="flex flex-col gap-1.5">
+        <Label htmlFor="email">{t("email")}</Label>
+        <Input
+          id="email"
+          type="email"
+          autoComplete="email"
+          placeholder={t("emailPlaceholder")}
+          aria-invalid={Boolean(errors.email)}
+          aria-describedby={errors.email ? "email-error" : undefined}
+          {...form.register("email")}
+        />
+        {errors.email && (
+          <p id="email-error" className="text-sm text-destructive">
+            {t("errorEmailInvalid")}
+          </p>
+        )}
+      </div>
+
+      <PasswordField
+        value={password}
+        error={Boolean(errors.password)}
+        errorText={t("errorPasswordWeak")}
+        showStrength
+        autoComplete="new-password"
+        inputProps={form.register("password")}
+      />
+
+      <div className="flex flex-col gap-1">
+        <label className="flex items-start gap-2 text-sm">
+          <input
+            type="checkbox"
+            className="mt-0.5 size-4 rounded-sm accent-[var(--primary)]"
+            aria-invalid={Boolean(errors.acceptTerms)}
+            {...form.register("acceptTerms")}
+          />
+          <span>
+            {t("acceptTermsStart")}{" "}
+            <Link href="/terminos" className="font-medium text-primary hover:underline">
+              {t("termsLink")}
+            </Link>{" "}
+            {t("acceptTermsAnd")}{" "}
+            <Link href="/privacidad" className="font-medium text-primary hover:underline">
+              {t("privacyLink")}
+            </Link>
+            .
+          </span>
+        </label>
+        {errors.acceptTerms && (
+          <p className="text-sm text-destructive">{t("acceptTermsError")}</p>
+        )}
+      </div>
+
+      {serverError && (
+        <p role="alert" className="text-sm text-destructive">
+          {t("genericError")}
+        </p>
+      )}
+      {maybeRegistered && (
+        <p role="status" className="text-sm text-foreground">
+          {t("maybeRegistered")}{" "}
+          <Link href="/login" className="font-medium text-primary hover:underline">
+            {t("loginTitle")}
+          </Link>{" "}
+          ·{" "}
+          <Link href="/recuperar" className="font-medium text-primary hover:underline">
+            {t("forgotPassword")}
+          </Link>
+        </p>
+      )}
+
+      <Captcha onVerify={setCaptchaToken} resetSignal={captchaKey} />
+
+      <Button
+        type="submit"
+        size="lg"
+        disabled={
+          form.formState.isSubmitting || (captchaHabilitado && !captchaToken)
+        }
+      >
+        {t("submitRegister")}
+      </Button>
     </form>
   );
 }

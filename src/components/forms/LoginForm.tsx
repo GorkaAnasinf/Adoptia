@@ -56,7 +56,7 @@ export function LoginForm() {
       className="flex w-full flex-col gap-5"
       noValidate
     >
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-1.5">
         <Label htmlFor="email">{t("email")}</Label>
         <Input
           id="email"
