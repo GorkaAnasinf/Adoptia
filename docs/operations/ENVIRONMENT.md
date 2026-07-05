@@ -23,6 +23,9 @@
 | `SENTRY_DSN` / `NEXT_PUBLIC_SENTRY_DSN` | ambos | Monitorización de errores |
 | `NEXT_PUBLIC_UMAMI_WEBSITE_ID` | cliente | Analítica sin cookies |
 | `CRON_SECRET` | servidor | Protege `/api/cron/*` |
+| `SUPABASE_TEST_URL` | solo tests | URL del stack local (`npx supabase start`) para tests de RLS |
+| `SUPABASE_TEST_ANON_KEY` | solo tests | Clave anon del stack local |
+| `SUPABASE_TEST_SERVICE_ROLE_KEY` | solo tests | Clave service_role del stack local (fixtures) |
 
 Reglas:
 
