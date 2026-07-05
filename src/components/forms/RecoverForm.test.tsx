@@ -13,6 +13,11 @@ vi.mock("@/lib/supabase/client", () => ({
   })),
 }));
 
+vi.mock("./Captcha", () => ({
+  Captcha: () => null,
+  captchaHabilitado: false,
+}));
+
 function renderForm() {
   return render(
     <NextIntlClientProvider locale="es" messages={messages}>

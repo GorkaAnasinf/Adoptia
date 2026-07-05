@@ -21,6 +21,12 @@ vi.mock("next/navigation", () => ({
   useSearchParams: () => new URLSearchParams(`redirect=${redirectParam}`),
 }));
 
+// Captcha desactivado en tests unitarios (sin site key)
+vi.mock("./Captcha", () => ({
+  Captcha: () => null,
+  captchaHabilitado: false,
+}));
+
 function renderForm() {
   return render(
     <NextIntlClientProvider locale="es" messages={messages}>

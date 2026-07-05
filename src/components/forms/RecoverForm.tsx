@@ -7,12 +7,14 @@ import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Captcha, captchaHabilitado } from "./Captcha";
 import { recuperarSchema, type RecuperarInput } from "@/lib/schemas/auth";
 import { createClient } from "@/lib/supabase/client";
 
 export function RecoverForm() {
   const t = useTranslations("auth");
   const [enviado, setEnviado] = useState(false);
+  const [captchaToken, setCaptchaToken] = useState("");
 
   const form = useForm<RecuperarInput>({
     resolver: zodResolver(recuperarSchema),
@@ -23,6 +25,7 @@ export function RecoverForm() {
     const supabase = createClient();
     await supabase.auth.resetPasswordForEmail(values.email, {
       redirectTo: `${window.location.origin}/actualizar-password`,
+      ...(captchaToken ? { captchaToken } : {}),
     });
     // Mismo mensaje haya o no cuenta: no revelar existencia del email
     setEnviado(true);
@@ -51,13 +54,20 @@ export function RecoverForm() {
         )}
       </div>
 
+      <Captcha onVerify={setCaptchaToken} />
+
       {enviado && (
         <p role="status" className="text-sm text-tertiary">
           {t("recoverSent")}
         </p>
       )}
 
-      <Button type="submit" disabled={form.formState.isSubmitting}>
+      <Button
+        type="submit"
+        disabled={
+          form.formState.isSubmitting || (captchaHabilitado && !captchaToken)
+        }
+      >
         {t("recoverSubmit")}
       </Button>
     </form>

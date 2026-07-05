@@ -10,6 +10,7 @@ import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Captcha, captchaHabilitado } from "./Captcha";
 import { PasswordField } from "./PasswordField";
 import { registroSchema, type RegistroInput } from "@/lib/schemas/auth";
 import { createClient } from "@/lib/supabase/client";
@@ -20,6 +21,8 @@ export function RegisterForm() {
   const router = useRouter();
   const [serverError, setServerError] = useState(false);
   const [maybeRegistered, setMaybeRegistered] = useState(false);
+  const [captchaToken, setCaptchaToken] = useState("");
+  const [captchaKey, setCaptchaKey] = useState(0);
 
   const form = useForm<RegistroInput>({
     resolver: zodResolver(registroSchema),
@@ -44,11 +47,14 @@ export function RegisterForm() {
       password: values.password,
       options: {
         data: { full_name: values.fullName, role: values.role },
+        ...(captchaToken ? { captchaToken } : {}),
       },
     });
     if (error) {
       // Mensaje genérico: no revelar si el email ya existe
       setServerError(true);
+      setCaptchaKey((k) => k + 1);
+      setCaptchaToken("");
       return;
     }
     // Anti-enumeración de Supabase: email ya registrado => "usuario" sin identities.
@@ -209,7 +215,15 @@ export function RegisterForm() {
           </p>
         )}
 
-        <Button type="submit" size="lg" disabled={form.formState.isSubmitting}>
+        <Captcha onVerify={setCaptchaToken} resetSignal={captchaKey} />
+
+        <Button
+          type="submit"
+          size="lg"
+          disabled={
+            form.formState.isSubmitting || (captchaHabilitado && !captchaToken)
+          }
+        >
           {t("submitRegister")}
         </Button>
       </div>
