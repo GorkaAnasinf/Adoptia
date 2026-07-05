@@ -6,7 +6,7 @@
 | ID | Título | Tipo | Estado | Hito |
 |----|--------|------|--------|------|
 | [FEATURE-000](FEATURE-000.md) | Inicialización y andamiaje del proyecto | feature | hecho | 0.1 |
-| [FEATURE-001](FEATURE-001.md) | Registro y login de adoptantes y protectoras | feature | listo | 0.2 |
+| [FEATURE-001](FEATURE-001.md) | Registro y login de adoptantes y protectoras | feature | hecho | 0.2 |
 | [FEATURE-002](FEATURE-002.md) | Onboarding de protectoras y verificación por admin | feature | listo | 0.2 |
 | [FEATURE-003](FEATURE-003.md) | Gestión de animales con fotos y vídeo (panel protectora) | feature | listo | 0.2 |
 | [FEATURE-004](FEATURE-004.md) | Panel de protectora — dashboard y perfil público | feature | listo | 0.2 |

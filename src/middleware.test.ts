@@ -65,6 +65,20 @@ describe("middleware de protección de rutas", () => {
     expect(res.headers.get("location")).toBeNull();
   });
 
+  it("un adoptante tampoco puede entrar en /admin", async () => {
+    getUserMock.mockResolvedValue({
+      data: { user: { id: "user-adoptante" } },
+      error: null,
+    });
+    profileSingleMock.mockResolvedValue({
+      data: { role: "adopter" },
+      error: null,
+    });
+    const res = await middleware(makeRequest("/admin"));
+    expect(res.status).toBe(307);
+    expect(new URL(res.headers.get("location")!).pathname).toBe("/");
+  });
+
   it("deja pasar a cualquiera a rutas públicas", async () => {
     getUserMock.mockResolvedValue({ data: { user: null }, error: null });
     const res = await middleware(makeRequest("/"));

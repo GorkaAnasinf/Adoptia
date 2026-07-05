@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { getTranslations } from "next-intl/server";
 import { Suspense } from "react";
+import { GoogleButton } from "@/components/forms/GoogleButton";
 import { LoginForm } from "@/components/forms/LoginForm";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -19,6 +20,12 @@ export default function LoginPage() {
       <Suspense>
         <LoginForm />
       </Suspense>
+      <div className="flex w-full max-w-sm items-center gap-3 text-sm text-muted-foreground">
+        <span className="h-px flex-1 bg-border" />
+        {t("orSeparator")}
+        <span className="h-px flex-1 bg-border" />
+      </div>
+      <GoogleButton />
       <p className="text-sm text-muted-foreground">
         {t("noAccount")}{" "}
         <Link href="/registro" className="font-medium text-primary hover:underline">

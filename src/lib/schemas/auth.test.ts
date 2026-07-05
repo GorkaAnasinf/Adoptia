@@ -22,21 +22,31 @@ describe("loginSchema", () => {
 });
 
 describe("registroSchema", () => {
-  it("acepta un registro válido", () => {
-    const r = registroSchema.safeParse({
-      fullName: "Ana García",
-      email: "ana@example.com",
-      password: "secreta-123",
-    });
-    expect(r.success).toBe(true);
+  const base = {
+    fullName: "Ana García",
+    email: "ana@example.com",
+    password: "secreta-123",
+    role: "adopter",
+    acceptTerms: true,
+  };
+
+  it("acepta un registro válido de adoptante", () => {
+    expect(registroSchema.safeParse(base).success).toBe(true);
+  });
+
+  it("acepta un registro válido de protectora", () => {
+    expect(registroSchema.safeParse({ ...base, role: "shelter" }).success).toBe(true);
   });
 
   it("rechaza nombre vacío", () => {
-    const r = registroSchema.safeParse({
-      fullName: "",
-      email: "ana@example.com",
-      password: "secreta-123",
-    });
-    expect(r.success).toBe(false);
+    expect(registroSchema.safeParse({ ...base, fullName: "" }).success).toBe(false);
+  });
+
+  it("rechaza roles que no sean adopter o shelter (admin prohibido)", () => {
+    expect(registroSchema.safeParse({ ...base, role: "admin" }).success).toBe(false);
+  });
+
+  it("rechaza el registro sin aceptar la política de privacidad", () => {
+    expect(registroSchema.safeParse({ ...base, acceptTerms: false }).success).toBe(false);
   });
 });

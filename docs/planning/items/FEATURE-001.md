@@ -2,12 +2,12 @@
 id: FEATURE-001
 tipo: feature
 titulo: Registro y login de adoptantes y protectoras
-estado: listo
+estado: hecho
 prioridad: alta
 hito: "0.2"
 duplicado_de: null
 creado: 2026-07-04
-actualizado: 2026-07-04
+actualizado: 2026-07-05
 ---
 
 # FEATURE-001 — Registro y login de adoptantes y protectoras
@@ -59,10 +59,10 @@ Puerta de entrada de todo: sin cuenta no hay solicitudes ni panel. La fricción 
 
 ## Criterios de aceptación / Casuística a cubrir
 
-- [ ] Registro con email+password y con Google, eligiendo tipo de cuenta.
-- [ ] Email de confirmación en español; sin confirmar no se puede iniciar sesión.
-- [ ] Recuperación de contraseña funciona extremo a extremo.
-- [ ] Un adoptante no puede acceder a `/panel` (protectora) ni a `/admin`; redirecciones correctas.
-- [ ] Un usuario no puede cambiarse el rol vía API directa a Supabase (RLS lo impide).
-- [ ] Emails duplicados: mensaje genérico, sin revelar existencia de cuenta.
-- [ ] Consentimiento RGPD (checkbox política de privacidad) obligatorio en registro.
+- [x] Registro con email+password y con Google, eligiendo tipo de cuenta. *(código y tests listos; activar proveedor Google en Supabase = config manual pendiente)*
+- [x] Email de confirmación en español; sin confirmar no se puede iniciar sesión. *(rama cubierta en código; plantillas en español = config manual del dashboard)*
+- [x] Recuperación de contraseña funciona extremo a extremo.
+- [x] Un adoptante no puede acceder a `/panel` (protectora) ni a `/admin`; redirecciones correctas.
+- [x] Un usuario no puede cambiarse el rol vía API directa a Supabase (RLS lo impide — test contra Postgres real).
+- [x] Emails duplicados: mensaje genérico, sin revelar existencia de cuenta.
+- [x] Consentimiento RGPD (checkbox política de privacidad) obligatorio en registro.
