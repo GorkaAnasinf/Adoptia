@@ -60,6 +60,11 @@
     "newPasswordDone": "Contraseña actualizada. Ya puedes iniciar sesión.",
     "backToLogin": "Volver a iniciar sesión"
   },
+  "legal": {
+    "privacyTitle": "Política de privacidad",
+    "termsTitle": "Términos de servicio",
+    "placeholder": "Estamos redactando este documento. Estará disponible antes del lanzamiento."
+  },
   "panel": {
     "title": "Panel de la protectora",
     "placeholder": "Aquí gestionarás tus animales y solicitudes."

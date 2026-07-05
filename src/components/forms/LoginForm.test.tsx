@@ -64,6 +64,13 @@ describe("LoginForm", () => {
     expect(pushMock).not.toHaveBeenCalled();
   });
 
+  it("enlaza a la recuperación de contraseña", () => {
+    renderForm();
+    expect(
+      screen.getByRole("link", { name: messages.auth.forgotPassword }),
+    ).toHaveAttribute("href", "/recuperar");
+  });
+
   it("no llama a Supabase con datos inválidos", async () => {
     renderForm();
 

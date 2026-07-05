@@ -1,6 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -86,6 +87,13 @@ export function LoginForm() {
       <Button type="submit" disabled={form.formState.isSubmitting}>
         {t("submitLogin")}
       </Button>
+
+      <Link
+        href="/recuperar"
+        className="text-center text-sm font-medium text-primary hover:underline"
+      >
+        {t("forgotPassword")}
+      </Link>
     </form>
   );
 }

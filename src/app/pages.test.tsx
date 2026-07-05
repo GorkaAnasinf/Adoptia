@@ -11,6 +11,10 @@ import RegistroPage, {
   generateMetadata as metaRegistro,
 } from "./(public)/registro/page";
 import PanelPage, { generateMetadata as metaPanel } from "./(shelter)/panel/page";
+import RecuperarPage from "./(public)/recuperar/page";
+import ActualizarPasswordPage from "./(public)/actualizar-password/page";
+import PrivacidadPage from "./(public)/privacidad/page";
+import TerminosPage from "./(public)/terminos/page";
 
 vi.mock("next-intl/server", () => ({
   getTranslations: vi.fn(async (ns: string) => (key: string) => {
@@ -24,6 +28,18 @@ vi.mock("@/components/forms/LoginForm", () => ({
 }));
 vi.mock("@/components/forms/RegisterForm", () => ({
   RegisterForm: () => <div data-testid="register-form" />,
+}));
+vi.mock("@/components/forms/GoogleButton", () => ({
+  GoogleButton: () => <div data-testid="google-button" />,
+}));
+vi.mock("@/components/forms/RecoverForm", () => ({
+  RecoverForm: () => <div data-testid="recover-form" />,
+}));
+vi.mock("@/components/forms/NewPasswordForm", () => ({
+  NewPasswordForm: () => <div data-testid="new-password-form" />,
+}));
+vi.mock("@/components/layout/UserMenu", () => ({
+  UserMenu: () => <div data-testid="user-menu" />,
 }));
 
 function conIntl(ui: React.ReactElement) {
@@ -62,6 +78,39 @@ describe("páginas de auth y paneles", () => {
     conIntl(<MiCuentaPage />);
     expect(
       screen.getByRole("heading", { name: messages.account.title }),
+    ).toBeInTheDocument();
+  });
+
+  it("la página de registro incluye Google y el subtítulo del wireframe", () => {
+    conIntl(<RegistroPage />);
+    expect(screen.getByText(messages.auth.registerSubtitle)).toBeInTheDocument();
+    expect(screen.getByTestId("google-button")).toBeInTheDocument();
+  });
+
+  it("la página de recuperación muestra título y formulario", () => {
+    conIntl(<RecuperarPage />);
+    expect(
+      screen.getByRole("heading", { name: messages.auth.recoverTitle }),
+    ).toBeInTheDocument();
+    expect(screen.getByTestId("recover-form")).toBeInTheDocument();
+  });
+
+  it("la página de nueva contraseña muestra título y formulario", () => {
+    conIntl(<ActualizarPasswordPage />);
+    expect(
+      screen.getByRole("heading", { name: messages.auth.newPasswordTitle }),
+    ).toBeInTheDocument();
+    expect(screen.getByTestId("new-password-form")).toBeInTheDocument();
+  });
+
+  it("las páginas legales existen con sus títulos", () => {
+    conIntl(<PrivacidadPage />);
+    expect(
+      screen.getByRole("heading", { name: messages.legal.privacyTitle }),
+    ).toBeInTheDocument();
+    conIntl(<TerminosPage />);
+    expect(
+      screen.getByRole("heading", { name: messages.legal.termsTitle }),
     ).toBeInTheDocument();
   });
 

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { useTranslations } from "next-intl";
+import { UserMenu } from "./UserMenu";
 
 export function Header() {
   const t = useTranslations();
@@ -20,12 +21,7 @@ export function Header() {
           <Link href="/protectoras" className="hidden text-foreground hover:text-primary sm:block">
             {t("nav.shelters")}
           </Link>
-          <Link
-            href="/login"
-            className="rounded-full bg-secondary px-4 py-2 font-medium text-secondary-foreground hover:opacity-90"
-          >
-            {t("nav.login")}
-          </Link>
+          <UserMenu />
         </nav>
       </div>
     </header>

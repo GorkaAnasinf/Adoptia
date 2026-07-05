@@ -1,6 +1,10 @@
 import { render, screen } from "@testing-library/react";
 import { NextIntlClientProvider } from "next-intl";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
+
+vi.mock("./UserMenu", () => ({
+  UserMenu: () => <div data-testid="user-menu" />,
+}));
 import messages from "../../../messages/es.json";
 import { Footer } from "./Footer";
 import { Header } from "./Header";
@@ -14,14 +18,12 @@ function conIntl(ui: React.ReactElement) {
 }
 
 describe("Header", () => {
-  it("muestra la marca y el enlace de login", () => {
+  it("muestra la marca y el menú de usuario", () => {
     conIntl(<Header />);
     expect(
       screen.getByRole("link", { name: messages.common.appName }),
     ).toHaveAttribute("href", "/");
-    expect(
-      screen.getByRole("link", { name: messages.nav.login }),
-    ).toHaveAttribute("href", "/login");
+    expect(screen.getByTestId("user-menu")).toBeInTheDocument();
   });
 });
 
