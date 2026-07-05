@@ -15,5 +15,8 @@ jobs:
     steps:
       - name: Ping a Supabase
         run: |
-          curl -sf "${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}/rest/v1/?apikey=${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}" > /dev/null
+          # La raíz /rest/v1/ devuelve 401 en proyectos nuevos: consulta real (RLS filtra, no falla)
+          curl -sf "${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}/rest/v1/shelters?select=id&limit=1" \
+            -H "apikey: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}" \
+            -H "Authorization: Bearer ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}" > /dev/null
           echo "Supabase activo."
