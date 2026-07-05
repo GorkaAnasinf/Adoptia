@@ -2,6 +2,22 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/es/) adaptado. Versionado 0.x hasta el MVP.
 
+## [0.0.4] — 2026-07-05
+
+### Seguridad
+
+- **Escalada de privilegios corregida**: el trigger de alta de usuarios aceptaba cualquier rol de la metadata del signup — un atacante podía crearse como admin llamando a la API directamente. Ahora solo admite adopter/shelter (migración `20260705190000`, aplicada en local y producción, con test de regresión).
+- **Open redirect corregido** en el login (`?redirect=` solo acepta rutas internas).
+- Política de contraseña reforzada en registro y reset: mínimo 8 caracteres con letras y números.
+
+### Añadido / cambiado
+
+- Pantallas de auth con imágenes reales en el panel lateral (login y registro con imagen propia).
+- Email ya registrado: mensaje neutro que guía a iniciar sesión o recuperar contraseña sin revelar si la cuenta existe (anti-enumeración).
+- Mensajes de validación específicos por campo (correo inválido, contraseña débil, nombre vacío) — mejor accesibilidad.
+- Página dedicada `/confirma-correo` tras el registro con confirmación pendiente.
+- Botones con altura mínima táctil de 44 px.
+
 ## [0.0.3] — 2026-07-05
 
 ### Añadido
