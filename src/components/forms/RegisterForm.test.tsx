@@ -117,17 +117,51 @@ describe("RegisterForm", () => {
     expect(meter).toHaveAttribute("data-strength", "3");
   });
 
-  it("pide confirmar el email si no hay sesión inmediata", async () => {
-    signUpMock.mockResolvedValue({ data: { session: null }, error: null });
+  it("redirige a la página de confirmar correo si no hay sesión inmediata", async () => {
+    signUpMock.mockResolvedValue({
+      data: { session: null, user: { identities: [{ id: "i1" }] } },
+      error: null,
+    });
+    renderForm();
+    await rellenarCampos();
+    await aceptarTerminos();
+    await enviar();
+
+    await waitFor(() => {
+      expect(pushMock).toHaveBeenCalledWith("/confirma-correo");
+    });
+  });
+
+  it("con un email ya registrado muestra un mensaje neutro con enlaces a login y recuperar", async () => {
+    // Anti-enumeración de Supabase: éxito falso con identities vacío
+    signUpMock.mockResolvedValue({
+      data: { session: null, user: { identities: [] } },
+      error: null,
+    });
     renderForm();
     await rellenarCampos();
     await aceptarTerminos();
     await enviar();
 
     expect(await screen.findByRole("status")).toHaveTextContent(
-      messages.auth.checkEmail,
+      messages.auth.maybeRegistered,
     );
     expect(pushMock).not.toHaveBeenCalled();
+  });
+
+  it("con datos inválidos muestra mensajes específicos por campo", async () => {
+    renderForm();
+    await userEvent.type(screen.getByLabelText(messages.auth.email), "no-es-email");
+    await userEvent.type(
+      screen.getByLabelText(messages.auth.password, { exact: true }),
+      "solo-letras-aqui",
+    );
+    await enviar();
+
+    expect(await screen.findByText(messages.auth.errorNameRequired)).toBeInTheDocument();
+    expect(screen.getByText(messages.auth.errorEmailInvalid)).toBeInTheDocument();
+    expect(screen.getByText(messages.auth.errorPasswordWeak)).toBeInTheDocument();
+    expect(signUpMock).not.toHaveBeenCalled();
   });
 
   it("muestra error genérico si el registro falla (sin revelar si el email existe)", async () => {

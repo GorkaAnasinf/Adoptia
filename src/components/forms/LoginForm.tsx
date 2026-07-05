@@ -34,7 +34,9 @@ export function LoginForm() {
       setServerError(true);
       return;
     }
-    router.push(searchParams.get("redirect") ?? "/");
+    // Solo rutas internas: evitar open redirect (?redirect=https://evil.com)
+    const destino = searchParams.get("redirect") ?? "/";
+    router.push(destino.startsWith("/") && !destino.startsWith("//") ? destino : "/");
     router.refresh();
   }
 
@@ -59,7 +61,7 @@ export function LoginForm() {
         />
         {errors.email && (
           <p id="email-error" className="text-sm text-destructive">
-            {t("genericError")}
+            {t("errorEmailInvalid")}
           </p>
         )}
       </div>
@@ -67,6 +69,7 @@ export function LoginForm() {
       <PasswordField
         value={form.watch("password")}
         error={Boolean(errors.password)}
+        errorText={t("errorPasswordMin")}
         autoComplete="current-password"
         inputProps={form.register("password")}
         labelEnd={

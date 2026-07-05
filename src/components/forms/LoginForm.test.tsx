@@ -14,9 +14,11 @@ vi.mock("@/lib/supabase/client", () => ({
   })),
 }));
 
+let redirectParam = "/panel";
+
 vi.mock("next/navigation", () => ({
   useRouter: () => ({ push: pushMock, refresh: vi.fn() }),
-  useSearchParams: () => new URLSearchParams("redirect=/panel"),
+  useSearchParams: () => new URLSearchParams(`redirect=${redirectParam}`),
 }));
 
 function renderForm() {
@@ -31,6 +33,7 @@ describe("LoginForm", () => {
   beforeEach(() => {
     signInMock.mockReset();
     pushMock.mockReset();
+    redirectParam = "/panel";
   });
 
   it("inicia sesión y redirige al destino pedido", async () => {
@@ -62,6 +65,22 @@ describe("LoginForm", () => {
       messages.auth.genericError,
     );
     expect(pushMock).not.toHaveBeenCalled();
+  });
+
+  it("ignora redirects externos (open redirect) y va a la home", async () => {
+    redirectParam = "https://evil.com/phishing";
+    signInMock.mockResolvedValue({ error: null });
+    renderForm();
+    await userEvent.type(screen.getByLabelText(messages.auth.email), "ana@example.com");
+    await userEvent.type(
+      screen.getByLabelText(messages.auth.password, { exact: true }),
+      "secreta-123",
+    );
+    await userEvent.click(screen.getByRole("button", { name: messages.auth.submitLogin }));
+
+    await waitFor(() => {
+      expect(pushMock).toHaveBeenCalledWith("/");
+    });
   });
 
   it("enlaza a la recuperación de contraseña", () => {

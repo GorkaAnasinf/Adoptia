@@ -6,14 +6,15 @@ import MiCuentaPage, {
   generateMetadata as metaCuenta,
 } from "./(adopter)/mi-cuenta/page";
 import PublicLayout from "./(public)/layout";
-import AuthLayout from "./(auth)/layout";
-import LoginPage, { generateMetadata as metaLogin } from "./(auth)/login/page";
+import { AuthSplit } from "@/components/layout/AuthSplit";
+import LoginPage, { generateMetadata as metaLogin } from "./(auth)/(acceso)/login/page";
 import RegistroPage, {
   generateMetadata as metaRegistro,
-} from "./(auth)/registro/page";
+} from "./(auth)/(alta)/registro/page";
 import PanelPage, { generateMetadata as metaPanel } from "./(shelter)/panel/page";
-import RecuperarPage from "./(auth)/recuperar/page";
-import ActualizarPasswordPage from "./(auth)/actualizar-password/page";
+import RecuperarPage from "./(auth)/(acceso)/recuperar/page";
+import ActualizarPasswordPage from "./(auth)/(acceso)/actualizar-password/page";
+import ConfirmaCorreoPage from "./(auth)/(acceso)/confirma-correo/page";
 import PrivacidadPage from "./(public)/privacidad/page";
 import TerminosPage from "./(public)/terminos/page";
 
@@ -64,12 +65,20 @@ describe("páginas de auth y paneles", () => {
 
   it("el layout de auth muestra la marca y el claim del panel visual", () => {
     conIntl(
-      <AuthLayout>
+      <AuthSplit image="/images/auth-login.jpg">
         <p>contenido-auth</p>
-      </AuthLayout>,
+      </AuthSplit>,
     );
     expect(screen.getByText(messages.auth.sideClaim)).toBeInTheDocument();
     expect(screen.getByText("contenido-auth")).toBeInTheDocument();
+  });
+
+  it("la página de confirma tu correo guía al usuario", () => {
+    conIntl(<ConfirmaCorreoPage />);
+    expect(
+      screen.getByRole("heading", { name: messages.auth.confirmTitle }),
+    ).toBeInTheDocument();
+    expect(screen.getByText(messages.auth.confirmSpam)).toBeInTheDocument();
   });
 
   it("la página de registro muestra título y formulario", () => {

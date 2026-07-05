@@ -49,4 +49,12 @@ describe("registroSchema", () => {
   it("rechaza el registro sin aceptar la política de privacidad", () => {
     expect(registroSchema.safeParse({ ...base, acceptTerms: false }).success).toBe(false);
   });
+
+  it("rechaza contraseñas sin números (política de contraseña)", () => {
+    expect(registroSchema.safeParse({ ...base, password: "solo-letras-aqui" }).success).toBe(false);
+  });
+
+  it("rechaza contraseñas sin letras", () => {
+    expect(registroSchema.safeParse({ ...base, password: "12345678901" }).success).toBe(false);
+  });
 });
