@@ -104,7 +104,7 @@ export function RegisterForm() {
               aria-checked={activo}
               onClick={() => form.setValue("role", valor)}
               className={cn(
-                "flex items-start gap-2.5 rounded-xl border-2 p-3 text-left transition-colors",
+                "flex cursor-pointer items-start gap-2.5 rounded-xl border-2 p-3 text-left transition-colors",
                 activo
                   ? "border-primary bg-primary/10"
                   : "border-border hover:border-primary/40",
