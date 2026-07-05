@@ -5,12 +5,15 @@ export const loginSchema = z.object({
   password: z.string().min(8),
 });
 
-// Contraseña de alta: mínimo 8 con letras y números
+// Contraseña de alta: requisitos de Supabase — min 8 con minúscula,
+// mayúscula, dígito y símbolo.
 const passwordFuerte = z
   .string()
   .min(8)
-  .regex(/[a-záéíóúñü]/i)
-  .regex(/\d/);
+  .regex(/[a-zñáéíóúü]/)
+  .regex(/[A-ZÑÁÉÍÓÚÜ]/)
+  .regex(/\d/)
+  .regex(/[^a-zA-Z0-9ñáéíóúüÑÁÉÍÓÚÜ]/);
 
 // Solo adopter/shelter en registro — admin jamás autoservicio
 export const registroSchema = loginSchema.extend({

@@ -37,14 +37,14 @@ describe("NewPasswordForm", () => {
     renderForm();
     await userEvent.type(
       screen.getByLabelText(messages.auth.password),
-      "nueva-secreta-123",
+      "Nueva-Secreta-123!",
     );
     await userEvent.click(
       screen.getByRole("button", { name: messages.auth.newPasswordSubmit }),
     );
 
     await waitFor(() => {
-      expect(updateMock).toHaveBeenCalledWith({ password: "nueva-secreta-123" });
+      expect(updateMock).toHaveBeenCalledWith({ password: "Nueva-Secreta-123!" });
       expect(pushMock).toHaveBeenCalledWith("/login");
     });
   });
@@ -54,7 +54,7 @@ describe("NewPasswordForm", () => {
     renderForm();
     await userEvent.type(
       screen.getByLabelText(messages.auth.password),
-      "nueva-secreta-123",
+      "Nueva-Secreta-123!",
     );
     await userEvent.click(
       screen.getByRole("button", { name: messages.auth.newPasswordSubmit }),
