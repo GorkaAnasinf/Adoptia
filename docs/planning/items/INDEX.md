@@ -5,7 +5,7 @@
 
 | ID | Título | Tipo | Estado | Hito |
 |----|--------|------|--------|------|
-| [FEATURE-000](FEATURE-000.md) | Inicialización y andamiaje del proyecto | feature | listo | 0.1 |
+| [FEATURE-000](FEATURE-000.md) | Inicialización y andamiaje del proyecto | feature | hecho | 0.1 |
 | [FEATURE-001](FEATURE-001.md) | Registro y login de adoptantes y protectoras | feature | listo | 0.2 |
 | [FEATURE-002](FEATURE-002.md) | Onboarding de protectoras y verificación por admin | feature | listo | 0.2 |
 | [FEATURE-003](FEATURE-003.md) | Gestión de animales con fotos y vídeo (panel protectora) | feature | listo | 0.2 |
@@ -22,3 +22,4 @@
 | [FEATURE-014](FEATURE-014.md) | Estadísticas para protectoras y difusión en redes | feature | listo | 0.4 |
 | [FEATURE-015](FEATURE-015.md) | Contenido educativo sobre adopción responsable | feature | listo | 0.4 |
 | [FEATURE-016](FEATURE-016.md) | Registro de casas de acogida | feature | listo | 0.4 |
+| [FEATURE-017](FEATURE-017.md) | Despliegue inicial — Supabase cloud y Vercel enlazados | feature | recibido | 0.1 |

@@ -6,22 +6,21 @@
 ## 📍 ESTADO ACTUAL
 
 - **Hito activo:** 0.1 — Andamiaje
-- **Progreso:** 0/1 items del hito
-- **Siguiente:** FEATURE-000 — Inicialización y andamiaje del proyecto
+- **Progreso:** 1/2 items del hito (FEATURE-000 hecho; FEATURE-017 pendiente)
+- **Siguiente:** FEATURE-017 — Despliegue inicial (pasos manuales: Supabase cloud + Vercel) o FEATURE-001 — Registro y login
 - **En curso:** nada
-- **Bloqueos:** ninguno
-- **Última actualización:** 2026-07-04 (inicialización del proyecto)
+- **Bloqueos:** FEATURE-017 requiere cuentas Supabase cloud y Vercel del propietario
+- **Última actualización:** 2026-07-05 (cierre de FEATURE-000 en rama feature/FEATURE-000-inicializacion)
 
 ## Items abiertos por estado
 
 Los items `hecho`/`descartado` no aparecen aquí — su histórico vive en [CHANGELOG](CHANGELOG.md) y git.
 
 <!-- RENDER:START -->
-### ✅ Listo para desarrollo (17)
+### ✅ Listo para desarrollo (16)
 
 | Item | Título | Prioridad | Hito |
 |------|--------|-----------|------|
-| [FEATURE-000](items/FEATURE-000.md) | Inicialización y andamiaje del proyecto | alta | 0.1 |
 | [FEATURE-001](items/FEATURE-001.md) | Registro y login de adoptantes y protectoras | alta | 0.2 |
 | [FEATURE-002](items/FEATURE-002.md) | Onboarding de protectoras y verificación por admin | alta | 0.2 |
 | [FEATURE-003](items/FEATURE-003.md) | Gestión de animales con fotos y vídeo (panel protectora) | alta | 0.2 |
@@ -38,4 +37,10 @@ Los items `hecho`/`descartado` no aparecen aquí — su histórico vive en [CHAN
 | [FEATURE-014](items/FEATURE-014.md) | Estadísticas para protectoras y difusión en redes | baja | 0.4 |
 | [FEATURE-015](items/FEATURE-015.md) | Contenido educativo sobre adopción responsable | baja | 0.4 |
 | [FEATURE-016](items/FEATURE-016.md) | Registro de casas de acogida | baja | 0.4 |
+
+### 📥 Recibido (1)
+
+| Item | Título | Prioridad | Hito |
+|------|--------|-----------|------|
+| [FEATURE-017](items/FEATURE-017.md) | Despliegue inicial — Supabase cloud y Vercel enlazados | alta | 0.1 |
 <!-- RENDER:END -->

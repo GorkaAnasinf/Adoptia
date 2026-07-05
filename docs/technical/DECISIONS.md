@@ -22,6 +22,14 @@ Formato ligero tipo ADR. Toda decisión con impacto estructural se registra aqu�
 | 14 | **Umami / Vercel Analytics** | Sin cookies → banner de cookies mínimo, RGPD-friendly | GA4 (cookies, consentimiento complejo) |
 | 15 | **Compresión de imagen en cliente** (≤300 KB) + YouTube para vídeo | Proteger 1 GB de Storage free | Cloudinary (queda como escalado futuro) |
 | 16 | **Items como única fuente de verdad** + render determinista | Evita drift entre BACKLOG/ROADMAP; ChatGPT solo toca `items/` | Planificación editada a mano |
+
+## 2026-07-05 — FEATURE-000 (andamiaje)
+
+| # | Decisión | Motivo | Alternativa descartada |
+|---|----------|--------|------------------------|
+| 17 | **Tests de RLS contra stack local** (`supabase start` + CLI como devDependency, vars `SUPABASE_TEST_*`) | Verificar políticas reales en Postgres sin tocar el proyecto cloud; se saltan si no hay stack (suite unitaria rápida) | Mockear supabase-js (no prueba las políticas de verdad) |
+| 18 | **Grants explícitos a `anon/authenticated/service_role` en la migración** | Los default privileges del rol de migración no cubrían las tablas nuevas (`permission denied`); el control de acceso real lo gobierna RLS | Depender de default privileges implícitos |
+| 19 | **Rol verificado en middleware + RLS como red final** | Defensa en profundidad barata: middleware redirige por rol (`/panel`→shelter, `/admin`→admin) sin flash de contenido | Solo comprobación en página o solo RLS (UX pobre) |
 | 17 | **Manada SDD** (tema perros: Balto, Lassie, Snoopy, Bolt, Scooby, Hachiko) | Elección del propietario; coherente con el dominio | Panteón griego (default) |
 | 18 | **Gitflow sin PRs**: `develop` → `main`, ramas `feature/FEATURE-NNN-slug` | Equipo de 1; CI protege calidad | PRs obligatorias (fricción sin revisores) |
 | 19 | **Keepalive cron** (GitHub Actions 2×/semana) | Supabase free pausa tras 7 días de inactividad | Aceptar pausas (mala demo) |
