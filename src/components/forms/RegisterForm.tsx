@@ -19,7 +19,7 @@ export function RegisterForm() {
   const t = useTranslations("auth");
   const router = useRouter();
   const [serverError, setServerError] = useState(false);
-  const [checkEmail, setCheckEmail] = useState(false);
+  const [maybeRegistered, setMaybeRegistered] = useState(false);
 
   const form = useForm<RegistroInput>({
     resolver: zodResolver(registroSchema),
@@ -51,11 +51,17 @@ export function RegisterForm() {
       setServerError(true);
       return;
     }
+    // Anti-enumeración de Supabase: email ya registrado => "usuario" sin identities.
+    // Mensaje neutro que guía a login/recuperar sin confirmar que la cuenta existe.
+    if (data.user && data.user.identities?.length === 0) {
+      setMaybeRegistered(true);
+      return;
+    }
     if (data.session) {
       router.push(values.role === "shelter" ? "/panel" : "/");
       router.refresh();
     } else {
-      setCheckEmail(true);
+      router.push("/confirma-correo");
     }
   }
 
@@ -126,7 +132,7 @@ export function RegisterForm() {
           />
           {errors.fullName && (
             <p id="fullName-error" className="text-sm text-destructive">
-              {t("genericError")}
+              {t("errorNameRequired")}
             </p>
           )}
         </div>
@@ -144,7 +150,7 @@ export function RegisterForm() {
           />
           {errors.email ? (
             <p id="email-error" className="text-sm text-destructive">
-              {t("genericError")}
+              {t("errorEmailInvalid")}
             </p>
           ) : (
             <p className="text-xs text-muted-foreground">{t("emailHelp")}</p>
@@ -154,6 +160,7 @@ export function RegisterForm() {
         <PasswordField
           value={password}
           error={Boolean(errors.password)}
+          errorText={t("errorPasswordWeak")}
           showStrength
           autoComplete="new-password"
           inputProps={form.register("password")}
@@ -189,9 +196,16 @@ export function RegisterForm() {
             {t("genericError")}
           </p>
         )}
-        {checkEmail && (
-          <p role="status" className="text-sm text-tertiary">
-            {t("checkEmail")}
+        {maybeRegistered && (
+          <p role="status" className="text-sm text-foreground">
+            {t("maybeRegistered")}{" "}
+            <Link href="/login" className="font-medium text-primary hover:underline">
+              {t("loginTitle")}
+            </Link>{" "}
+            ·{" "}
+            <Link href="/recuperar" className="font-medium text-primary hover:underline">
+              {t("forgotPassword")}
+            </Link>
           </p>
         )}
 

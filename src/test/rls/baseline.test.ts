@@ -231,6 +231,25 @@ describe.skipIf(!rlsDisponible)("RLS baseline", () => {
     expect(ajenas).toHaveLength(0);
   });
 
+  it("un signup directo a la API con role admin NO crea un perfil admin", async () => {
+    const anon = anonClient();
+    const email = `atacante-${Date.now()}@test.com`;
+    const { data, error } = await anon.auth.signUp({
+      email,
+      password: "password-de-test-123",
+      options: { data: { full_name: "Atacante", role: "admin" } },
+    });
+    expect(error).toBeNull();
+
+    const admin = adminClient();
+    const { data: perfil } = await admin
+      .from("profiles")
+      .select("role")
+      .eq("id", data.user!.id)
+      .single();
+    expect(perfil?.role).toBe("adopter"); // el trigger degrada roles no permitidos
+  });
+
   it("PostGIS está activo (consulta de proximidad vía RPC)", async () => {
     const admin = adminClient();
     const { error } = await admin.rpc("shelters_nearby", {

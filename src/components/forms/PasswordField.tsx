@@ -15,6 +15,7 @@ type Props = {
   autoComplete: string;
   inputProps: React.InputHTMLAttributes<HTMLInputElement>;
   labelEnd?: React.ReactNode;
+  errorText?: string;
 };
 
 export function PasswordField({
@@ -24,6 +25,7 @@ export function PasswordField({
   autoComplete,
   inputProps,
   labelEnd,
+  errorText,
 }: Props) {
   const t = useTranslations("auth");
   const [visible, setVisible] = useState(false);
@@ -84,7 +86,7 @@ export function PasswordField({
       )}
       {error && (
         <p id="password-error" className="text-sm text-destructive">
-          {t("passwordHint")}
+          {errorText ?? t("passwordHint")}
         </p>
       )}
     </div>
