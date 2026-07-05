@@ -60,8 +60,18 @@ export function RegisterForm() {
   }
 
   const tipos = [
-    { valor: "adopter" as const, etiqueta: t("typeAdopter"), Icono: PawPrint },
-    { valor: "shelter" as const, etiqueta: t("typeShelter"), Icono: Home },
+    {
+      valor: "adopter" as const,
+      etiqueta: t("typeAdopter"),
+      ayuda: t("typeAdopterHelp"),
+      Icono: PawPrint,
+    },
+    {
+      valor: "shelter" as const,
+      etiqueta: t("typeShelter"),
+      ayuda: t("typeShelterHelp"),
+      Icono: Home,
+    },
   ];
 
   return (
@@ -72,7 +82,7 @@ export function RegisterForm() {
     >
       {/* Selector de tipo de cuenta (wireframe: dos tarjetas) */}
       <div role="radiogroup" aria-label={t("registerSubtitle")} className="grid grid-cols-2 gap-4">
-        {tipos.map(({ valor, etiqueta, Icono }) => {
+        {tipos.map(({ valor, etiqueta, ayuda, Icono }) => {
           const activo = role === valor;
           return (
             <button
@@ -82,27 +92,28 @@ export function RegisterForm() {
               aria-checked={activo}
               onClick={() => form.setValue("role", valor)}
               className={cn(
-                "flex flex-col items-center gap-3 rounded-xl border-2 p-6 transition-colors",
+                "flex flex-col items-center gap-2 rounded-xl border-2 p-5 text-center transition-colors",
                 activo
                   ? "border-primary bg-primary/10"
-                  : "border-transparent bg-muted hover:bg-accent",
+                  : "border-transparent bg-card shadow-sm hover:bg-accent",
               )}
             >
               <span
                 className={cn(
                   "flex size-12 items-center justify-center rounded-full",
-                  activo ? "bg-primary/20 text-primary" : "bg-background text-muted-foreground",
+                  activo ? "bg-primary/20 text-primary" : "bg-muted text-muted-foreground",
                 )}
               >
                 <Icono className="size-6" />
               </span>
               <span className="text-sm font-medium">{etiqueta}</span>
+              <span className="text-xs leading-snug text-muted-foreground">{ayuda}</span>
             </button>
           );
         })}
       </div>
 
-      <div className="flex flex-col gap-4 rounded-xl bg-muted/50 p-6">
+      <div className="flex flex-col gap-4 rounded-xl bg-card p-6 shadow-sm">
         <div className="flex flex-col gap-2">
           <Label htmlFor="fullName">{t("fullName")}</Label>
           <Input
@@ -131,10 +142,12 @@ export function RegisterForm() {
             aria-describedby={errors.email ? "email-error" : undefined}
             {...form.register("email")}
           />
-          {errors.email && (
+          {errors.email ? (
             <p id="email-error" className="text-sm text-destructive">
               {t("genericError")}
             </p>
+          ) : (
+            <p className="text-xs text-muted-foreground">{t("emailHelp")}</p>
           )}
         </div>
 

@@ -14,6 +14,7 @@ type Props = {
   showStrength?: boolean;
   autoComplete: string;
   inputProps: React.InputHTMLAttributes<HTMLInputElement>;
+  labelEnd?: React.ReactNode;
 };
 
 export function PasswordField({
@@ -22,6 +23,7 @@ export function PasswordField({
   showStrength = false,
   autoComplete,
   inputProps,
+  labelEnd,
 }: Props) {
   const t = useTranslations("auth");
   const [visible, setVisible] = useState(false);
@@ -29,7 +31,10 @@ export function PasswordField({
 
   return (
     <div className="flex flex-col gap-2">
-      <Label htmlFor="password">{t("password")}</Label>
+      <div className="flex items-center justify-between">
+        <Label htmlFor="password">{t("password")}</Label>
+        {labelEnd}
+      </div>
       <div className="relative">
         <Input
           id="password"
