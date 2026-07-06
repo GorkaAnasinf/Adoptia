@@ -73,7 +73,10 @@
     "newPasswordTitle": "Elige una contraseña nueva",
     "newPasswordSubmit": "Guardar contraseña",
     "newPasswordDone": "Contraseña actualizada. Ya puedes iniciar sesión.",
-    "backToLogin": "Volver a iniciar sesión"
+    "backToLogin": "Volver a iniciar sesión",
+    "verifiedTitle": "¡Correo verificado! 🎉",
+    "verifiedBody": "Tu cuenta ya está activa. Continúa para empezar en Adoptia.",
+    "verifiedContinue": "Continuar"
   },
   "legal": {
     "privacyTitle": "Política de privacidad",

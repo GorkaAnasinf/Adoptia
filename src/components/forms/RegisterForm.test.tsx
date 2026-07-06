@@ -61,11 +61,16 @@ describe("RegisterForm", () => {
     await enviar();
 
     await waitFor(() => {
-      expect(signUpMock).toHaveBeenCalledWith({
-        email: "ana@example.com",
-        password: "Secreta-123!",
-        options: { data: { full_name: "Ana García", role: "adopter" } },
-      });
+      expect(signUpMock).toHaveBeenCalledWith(
+        expect.objectContaining({
+          email: "ana@example.com",
+          password: "Secreta-123!",
+          options: expect.objectContaining({
+            data: { full_name: "Ana García", role: "adopter" },
+            emailRedirectTo: expect.stringContaining("/auth/callback?next=/correo-verificado"),
+          }),
+        }),
+      );
       expect(pushMock).toHaveBeenCalledWith("/");
     });
   });
@@ -83,10 +88,25 @@ describe("RegisterForm", () => {
     await waitFor(() => {
       expect(signUpMock).toHaveBeenCalledWith(
         expect.objectContaining({
-          options: { data: { full_name: "Ana García", role: "shelter" } },
+          options: expect.objectContaining({
+            data: { full_name: "Ana García", role: "shelter" },
+          }),
         }),
       );
       expect(pushMock).toHaveBeenCalledWith("/panel");
+    });
+  });
+
+  it("fija emailRedirectTo a la pantalla de correo verificado", async () => {
+    signUpMock.mockResolvedValue({ data: { session: null, user: { identities: [{ id: "i1" }] } }, error: null });
+    renderForm();
+    await rellenarCampos();
+    await aceptarTerminos();
+    await enviar();
+
+    await waitFor(() => {
+      const opciones = signUpMock.mock.calls[0][0].options;
+      expect(opciones.emailRedirectTo).toContain("/auth/callback?next=/correo-verificado");
     });
   });
 
