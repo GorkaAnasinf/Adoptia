@@ -43,9 +43,11 @@ Los items `hecho`/`descartado` no aparecen aquí — su histórico vive en [CHAN
 | [FEATURE-015](items/FEATURE-015.md) | Contenido educativo sobre adopción responsable | baja | 0.4 |
 | [FEATURE-016](items/FEATURE-016.md) | Registro de casas de acogida | baja | 0.4 |
 
-### 📥 Recibido (1)
+### 📥 Recibido (3)
 
 | Item | Título | Prioridad | Hito |
 |------|--------|-----------|------|
+| [FEATURE-018](items/FEATURE-018.md) | App shell autenticado — cabecera común, navegación por rol y breadcrumbs | alta | 0.2 |
+| [IMPROVEMENT-002](items/IMPROVEMENT-002.md) | Rediseño UX del wizard de alta de protectora (+ fix del mapa gris) | alta | 0.2 |
 | [IMPROVEMENT-001](items/IMPROVEMENT-001.md) | De-duplicar el slug de protectora (nombres repetidos) | media | — |
 <!-- RENDER:END -->

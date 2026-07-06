@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Adoptia - Dashboard de Refugio</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&amp;family=Open+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "secondary-fixed": "#bcece6",
+                    "on-tertiary-container": "#1b2f28",
+                    "error-container": "#ffdad6",
+                    "surface-container": "#f3ede5",
+                    "background": "#fef8f0",
+                    "on-secondary-fixed": "#00201e",
+                    "surface-variant": "#e7e2da",
+                    "surface-container-lowest": "#ffffff",
+                    "inverse-primary": "#ffb4a5",
+                    "tertiary-container": "#81978d",
+                    "secondary-fixed-dim": "#a1cfca",
+                    "inverse-on-surface": "#f6f0e8",
+                    "error": "#ba1a1a",
+                    "outline-variant": "#ddc0ba",
+                    "on-secondary-container": "#3f6c68",
+                    "inverse-surface": "#32302b",
+                    "secondary": "#396662",
+                    "on-surface": "#1d1b17",
+                    "surface-container-low": "#f9f3eb",
+                    "on-primary-fixed-variant": "#802918",
+                    "surface-tint": "#9f402d",
+                    "on-surface-variant": "#56423e",
+                    "on-tertiary": "#ffffff",
+                    "outline": "#89726d",
+                    "surface-dim": "#dfd9d2",
+                    "on-tertiary-fixed": "#0b1f18",
+                    "on-error-container": "#93000a",
+                    "primary-container": "#e2725b",
+                    "surface-bright": "#fef8f0",
+                    "surface": "#fef8f0",
+                    "primary-fixed-dim": "#ffb4a5",
+                    "tertiary-fixed-dim": "#b5ccc1",
+                    "primary-fixed": "#ffdad3",
+                    "on-secondary": "#ffffff",
+                    "on-primary-container": "#5a0d02",
+                    "on-secondary-fixed-variant": "#204e4a",
+                    "primary": "#9f402d",
+                    "tertiary-fixed": "#d1e8dd",
+                    "surface-container-high": "#ede7e0",
+                    "on-error": "#ffffff",
+                    "on-primary": "#ffffff",
+                    "on-background": "#1d1b17",
+                    "on-primary-fixed": "#3e0500",
+                    "secondary-container": "#bcece6",
+                    "on-tertiary-fixed-variant": "#374b43",
+                    "tertiary": "#4e635a",
+                    "surface-container-highest": "#e7e2da"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "12px",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "gutter": "20px",
+                    "xxl": "48px",
+                    "unit": "4px",
+                    "lg": "24px",
+                    "md": "16px",
+                    "container-max": "1200px",
+                    "xs": "4px",
+                    "margin-mobile": "16px",
+                    "sm": "8px",
+                    "xl": "32px"
+            },
+            "fontFamily": {
+                    "label-sm": ["Open Sans"],
+                    "headline-xl": ["Montserrat"],
+                    "headline-lg-mobile": ["Montserrat"],
+                    "label-md": ["Open Sans"],
+                    "headline-lg": ["Montserrat"],
+                    "body-md": ["Open Sans"],
+                    "body-lg": ["Open Sans"],
+                    "headline-md": ["Montserrat"]
+            },
+            "fontSize": {
+                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                    "headline-xl": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #fef8f0;
+            color: #1d1b17;
+            -webkit-font-smoothing: antialiased;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .soft-shadow {
+            box-shadow: 0 4px 12px rgba(226, 114, 91, 0.08);
+        }
+        .glass-nav {
+            backdrop-filter: blur(12px);
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f9f3eb;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #ddc0ba;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #89726d;
+        }
+    </style>
+</head>
+<body class="font-body-md text-body-md">
+<!-- TopNavBar Shell -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-gutter py-md bg-surface/80 backdrop-blur-md shadow-sm lg:pl-72 transition-all duration-300">
+<div class="flex items-center gap-md">
+<nav class="hidden sm:flex items-center gap-xs font-label-md text-label-md text-on-surface-variant">
+<span>Panel</span>
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+<span class="text-primary font-bold">Inicio</span>
+</nav>
+</div>
+<div class="flex items-center gap-lg">
+<div class="flex items-center gap-sm bg-secondary-container/30 px-3 py-1 rounded-full border border-secondary/10">
+<span class="w-2 h-2 rounded-full bg-[#4CAF50] animate-pulse"></span>
+<span class="font-label-sm text-label-sm text-on-secondary-container">Verificada</span>
+</div>
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-primary cursor-pointer active:scale-95 transition-transform" data-icon="help">help</span>
+<div class="relative">
+<span class="material-symbols-outlined text-primary cursor-pointer active:scale-95 transition-transform" data-icon="notifications">notifications</span>
+<span class="absolute -top-1 -right-1 w-2 h-2 bg-primary rounded-full"></span>
+</div>
+<div class="w-10 h-10 rounded-full border-2 border-primary overflow-hidden cursor-pointer active:scale-95 transition-transform">
+<img class="w-full h-full object-cover" data-alt="A professional and warm close-up portrait of a pet shelter manager, smiling gently. The lighting is soft and natural, emphasizing a bright and welcoming atmosphere. The background is a soft-focus pet adoption center with clean wooden textures and subtle earthy tones, reflecting the 'Adoptia' brand identity of nurturing connection." src="https://lh3.googleusercontent.com/aida-public/AB6AXuADu5ZiPaj7c90twgUelZUtyjY7lJBHmDLIdzHkaiulaadKB_AeWoqSnHd2biQvV4cdzaVYGiyfoYHu6pHANngPGOqgSO9gCUN8YuOMvyxXlSMJDqZfiSumVw0fq8AewBAd4j_fEjBJlFq2zV7H8xY61D1TbtUVKiYA79mY7oxF5j9h-T4pg1NKtmrB0Vl8Uv8halegusouuX8GgcaqzrQuqyfsvw-aoJ6CuLL1479pc2XcXD6_85hCEbRod5POsNNEDMbtitfVcR1h"/>
+</div>
+</div>
+</div>
+</header>
+<!-- SideNavBar Shell -->
+<aside class="fixed left-0 top-0 h-full w-64 hidden lg:flex flex-col bg-surface-container-low border-r border-outline-variant/30 z-[60]">
+<div class="p-lg">
+<div class="flex items-center gap-md mb-xl">
+<div class="w-12 h-12 bg-primary rounded-xl flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-[32px]" style="font-variation-settings: 'FILL' 1;">pets</span>
+</div>
+<div>
+<h2 class="font-headline-md text-[18px] text-primary leading-tight">Adoptia</h2>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Huellas de Esperanza</p>
+</div>
+</div>
+<nav class="flex flex-col gap-sm">
+<!-- Active Tab -->
+<a class="bg-secondary-container text-on-secondary-container rounded-xl flex items-center gap-3 px-4 py-3 transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="home" style="font-variation-settings: 'FILL' 1;">home</span>
+<span class="font-label-md text-label-md">Inicio</span>
+</a>
+<a class="text-on-surface-variant hover:bg-surface-variant/50 flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="pets">pets</span>
+<span class="font-label-md text-label-md">Mis animales</span>
+</a>
+<a class="text-on-surface-variant hover:bg-surface-variant/50 flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="description">description</span>
+<span class="font-label-md text-label-md">Solicitudes</span>
+<span class="ml-auto bg-primary text-white text-[10px] font-bold px-2 py-0.5 rounded-full">4</span>
+</a>
+<a class="text-on-surface-variant hover:bg-surface-variant/50 flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="event">event</span>
+<span class="font-label-md text-label-md">Citas</span>
+</a>
+<a class="text-on-surface-variant hover:bg-surface-variant/50 flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="calendar_today">calendar_today</span>
+<span class="font-label-md text-label-md">Agenda</span>
+</a>
+<a class="text-on-surface-variant hover:bg-surface-variant/50 flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="storefront">storefront</span>
+<span class="font-label-md text-label-md">Perfil público</span>
+</a>
+<a class="text-on-surface-variant hover:bg-surface-variant/50 flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="monitoring">monitoring</span>
+<span class="font-label-md text-label-md">Estadísticas</span>
+</a>
+</nav>
+</div>
+<div class="mt-auto p-lg border-t border-outline-variant/20">
+<button class="w-full bg-tertiary-container text-on-tertiary-container font-label-md text-label-md py-3 rounded-xl flex items-center justify-center gap-2 hover:opacity-90 active:scale-95 transition-all">
+<span class="material-symbols-outlined text-[18px]">support_agent</span>
+                Contactar soporte
+            </button>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="pt-24 lg:ml-64 p-gutter min-h-screen">
+<div class="max-w-container-max mx-auto">
+<!-- Welcome Header -->
+<header class="mb-xl flex flex-col md:flex-row md:items-end justify-between gap-md">
+<div>
+<h1 class="font-headline-lg text-headline-lg text-primary mb-xs">Bienvenido, Huellas de Esperanza</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant">Hoy es un buen día para encontrar nuevos hogares.</p>
+</div>
+<div class="flex gap-sm">
+<button class="bg-primary text-white font-label-md text-label-md px-lg py-3 rounded-xl flex items-center gap-2 soft-shadow hover:opacity-90 active:scale-95 transition-all">
+<span class="material-symbols-outlined">add_circle</span>
+                        Publicar mascota
+                    </button>
+</div>
+</header>
+<!-- Stats Grid (Bento Style) -->
+<section class="grid grid-cols-1 md:grid-cols-4 gap-md mb-xl">
+<!-- Main Stat -->
+<div class="md:col-span-2 bg-primary-container p-xl rounded-xl text-white flex flex-col justify-between h-48 soft-shadow relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-lg opacity-20 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-[120px]" style="font-variation-settings: 'FILL' 1;">favorite</span>
+</div>
+<p class="font-label-md text-label-md uppercase tracking-wider opacity-80">Solicitudes Pendientes</p>
+<div>
+<h3 class="font-headline-xl text-[48px] leading-none mb-2">24</h3>
+<p class="font-body-md text-body-md">+12% desde la última semana</p>
+</div>
+</div>
+<div class="bg-secondary p-xl rounded-xl text-white flex flex-col justify-between h-48 soft-shadow">
+<p class="font-label-md text-label-md uppercase tracking-wider opacity-80">Citas Hoy</p>
+<div>
+<h3 class="font-headline-xl text-[48px] leading-none mb-2">5</h3>
+<p class="font-body-md text-body-md">Próxima a las 14:30</p>
+</div>
+</div>
+<div class="bg-surface-container-high p-xl rounded-xl flex flex-col justify-between h-48 border border-outline-variant/30">
+<p class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Perfiles Activos</p>
+<div>
+<h3 class="font-headline-xl text-[48px] text-primary leading-none mb-2">42</h3>
+<div class="flex -space-x-2">
+<div class="w-8 h-8 rounded-full border-2 border-surface bg-gray-200 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A detailed, close-up photograph of a friendly golden retriever puppy with a soft, warm lighting filter. The dog has expressive eyes and is set against a clean, modern pet shelter background with natural textures and a soft color palette consistent with the Adoptia brand style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB1JnCxaoHQ-bNhVgpGKucu64OI6lcyyNbJopfenq8BQspc1dPSrJKYevochmxtK3sJnCpawc_TWh8aczpTK2xEiyx4LCr_hJIQ-IH5nBSG5okRhQoZyC27DoWUwN-_KAKso5CGLpC9fUUN5ExNaR5eCLbwz6OTp8FzM3CMhHQMUolG2pecOIMy9Bh0tJaJK3M3oZvbKPfdpmSYSJRb6FuqgsnQ_Te9uevHX32hzWLJNraDb3rrcvZ3N274DPEuPDK-_BzbY-jcVCmu"/>
+</div>
+<div class="w-8 h-8 rounded-full border-2 border-surface bg-gray-200 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A portrait of a beautiful black and white tuxedo cat sitting gracefully. The image has a calm, inviting atmosphere with bright, soft daylight. The background is a minimalist interior with subtle cream and terracotta accents, fitting the Adoptia brand visual guidelines." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB1Z-UeBJMiMYEfCqjLHD4G4_GRn4l1RkRKGBbIVlulDlbFHqRUhhyLQDYxCgP54zuYQLpDUeKL9QKqo-kkbjP9zLlrFZ1Z1rHedXVZ2cz2efuqWXmph8RO9fv5QmMztGr94jt3MATgRi_TdyG0fJn1GuX2K4xx_9wShw6dmz7i37F8NZKJheIavvMa-9BLsWWEDSr1-rqhJFbc5B0OwJjiqOhDutXFuQXqQGI-kl9onxM45DJphgQ7VXfGgdMeKk6SJVz0r4-ogB57"/>
+</div>
+<div class="w-8 h-8 rounded-full border-2 border-surface bg-gray-200 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A professional photo of a small, fluffy white poodle mix looking at the camera with curiosity. High-key lighting highlights the texture of its fur. The overall scene is clean and warm, evoking feelings of safety and care, aligned with the Adoptia shelter dashboard design." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDEttoKJKiemJ095zAKdPqsaO6MA8nEv4lQqJppxV7oeAx-Kr3PgJeQdm99-ToVAzY_BmZTvwM5CIbNw3jkeTIcYLW-tnAR3T3ptqwvDuxlqLzM2oF2mbSbKxXVOPLiAZ6mPGRdf33koYp2o4aSSCYj76glsKsAMhSAuDcbCchSIU0wp-yKFq9Ghb-HTJkZuN9oaFKIGCXg2HBT2ciX5g46PsCmNco9trj-FhzEz0SGhVNrPviyWhYC4gWG_vCnQlU2sOu2DqUBtRzl"/>
+</div>
+<div class="w-8 h-8 rounded-full border-2 border-surface bg-primary text-white flex items-center justify-center font-label-sm text-[10px]">
+                                +39
+                            </div>
+</div>
+</div>
+</div>
+</section>
+<!-- Secondary Content Area -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-xl">
+<!-- Upcoming Appointments -->
+<section class="lg:col-span-2">
+<div class="flex justify-between items-center mb-md">
+<h4 class="font-headline-md text-headline-md text-secondary">Próximas Citas</h4>
+<a class="font-label-md text-label-md text-primary hover:underline" href="#">Ver todo el calendario</a>
+</div>
+<div class="flex flex-col gap-md">
+<!-- Appointment Card 1 -->
+<div class="bg-white p-md rounded-xl flex items-center gap-lg soft-shadow transition-transform hover:translate-x-2 cursor-pointer border border-transparent hover:border-secondary/20">
+<div class="flex flex-col items-center justify-center min-w-[60px] h-[60px] bg-secondary-container text-on-secondary-container rounded-xl">
+<span class="font-label-sm text-[10px] uppercase">Oct</span>
+<span class="font-headline-md text-[20px] leading-none">22</span>
+</div>
+<div class="flex-grow">
+<p class="font-label-md text-label-md text-secondary">Entrevista de adopción</p>
+<h5 class="font-headline-md text-[18px] text-on-surface">Familia Martínez - Luna (Podenco)</h5>
+<p class="font-label-sm text-label-sm text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">schedule</span> 14:30 - 15:15
+                                </p>
+</div>
+<span class="material-symbols-outlined text-outline-variant">chevron_right</span>
+</div>
+<!-- Appointment Card 2 -->
+<div class="bg-white p-md rounded-xl flex items-center gap-lg soft-shadow transition-transform hover:translate-x-2 cursor-pointer border border-transparent hover:border-secondary/20">
+<div class="flex flex-col items-center justify-center min-w-[60px] h-[60px] bg-surface-container-high text-on-surface-variant rounded-xl">
+<span class="font-label-sm text-[10px] uppercase">Oct</span>
+<span class="font-headline-md text-[20px] leading-none">22</span>
+</div>
+<div class="flex-grow">
+<p class="font-label-md text-label-md text-secondary">Visita al refugio</p>
+<h5 class="font-headline-md text-[18px] text-on-surface">Carlos Ruiz - Toby (Beagle)</h5>
+<p class="font-label-sm text-label-sm text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">schedule</span> 16:00 - 17:00
+                                </p>
+</div>
+<span class="material-symbols-outlined text-outline-variant">chevron_right</span>
+</div>
+</div>
+</section>
+<!-- Urgent Tasks -->
+<section>
+<div class="flex justify-between items-center mb-md">
+<h4 class="font-headline-md text-headline-md text-secondary">Tareas Urgentes</h4>
+</div>
+<div class="bg-surface-container-low p-lg rounded-xl border border-outline-variant/30">
+<ul class="flex flex-col gap-md">
+<li class="flex gap-md items-start">
+<input class="mt-1 w-5 h-5 rounded border-outline text-primary focus:ring-primary" type="checkbox"/>
+<div>
+<p class="font-label-md text-label-md text-on-surface">Subir fotos de "Bimba"</p>
+<span class="text-[10px] bg-error-container text-on-error-container px-1.5 py-0.5 rounded font-bold uppercase">Alta prioridad</span>
+</div>
+</li>
+<li class="flex gap-md items-start">
+<input class="mt-1 w-5 h-5 rounded border-outline text-primary focus:ring-primary" type="checkbox"/>
+<div>
+<p class="font-label-md text-label-md text-on-surface">Revisar contrato de Max</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant italic">Pendiente firma</p>
+</div>
+</li>
+<li class="flex gap-md items-start">
+<input class="mt-1 w-5 h-5 rounded border-outline text-primary focus:ring-primary" type="checkbox"/>
+<div>
+<p class="font-label-md text-label-md text-on-surface">Pedir cita veterinaria canina</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Vacunas anuales</p>
+</div>
+</li>
+</ul>
+<button class="w-full mt-lg py-2 text-primary font-label-md text-label-md border-2 border-primary/20 rounded-xl hover:bg-primary/5 transition-colors">
+                            Ver todas las tareas
+                        </button>
+</div>
+</section>
+</div>
+</div>
+</main>
+<!-- Footer Shell -->
+<footer class="lg:ml-64 bg-surface-container-lowest border-t border-outline-variant/20 py-md px-gutter flex flex-col md:flex-row justify-between items-center gap-md">
+<div class="flex items-center gap-md">
+<p class="font-label-md text-label-md text-on-surface-variant">© 2024 Adoptia. Guardado automáticamente</p>
+</div>
+<div class="flex gap-lg">
+<a class="font-label-md text-label-md text-secondary hover:text-primary transition-colors" href="#">Ayuda</a>
+<a class="font-label-md text-label-md text-secondary hover:text-primary transition-colors" href="#">Términos</a>
+<a class="font-label-md text-label-md text-secondary hover:text-primary transition-colors" href="#">Privacidad</a>
+</div>
+</footer>
+<!-- Mobile Navigation (Bottom Bar) -->
+<nav class="fixed bottom-0 left-0 w-full bg-white/90 backdrop-blur-sm flex lg:hidden justify-around items-center py-sm border-t border-outline-variant/10 z-[60] safe-area-bottom">
+<a class="flex flex-col items-center gap-xs text-primary" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">home</span>
+<span class="text-[10px] font-bold">Inicio</span>
+</a>
+<a class="flex flex-col items-center gap-xs text-on-surface-variant" href="#">
+<span class="material-symbols-outlined">pets</span>
+<span class="text-[10px] font-medium">Animales</span>
+</a>
+<div class="bg-primary text-white p-3 rounded-full -mt-8 shadow-lg active:scale-90 transition-transform">
+<span class="material-symbols-outlined">add</span>
+</div>
+<a class="flex flex-col items-center gap-xs text-on-surface-variant" href="#">
+<span class="material-symbols-outlined">description</span>
+<span class="text-[10px] font-medium">Solicitudes</span>
+</a>
+<a class="flex flex-col items-center gap-xs text-on-surface-variant" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="text-[10px] font-medium">Perfil</span>
+</a>
+</nav>
+<script>
+        // Micro-interactions and subtle effects
+        document.querySelectorAll('.active\\:scale-95').forEach(button => {
+            button.addEventListener('mousedown', () => {
+                button.style.transform = 'scale(0.95)';
+            });
+            button.addEventListener('mouseup', () => {
+                button.style.transform = 'scale(1)';
+            });
+            button.addEventListener('mouseleave', () => {
+                button.style.transform = 'scale(1)';
+            });
+        });
+
+        // Simple Tab Switcher Simulation
+        const navLinks = document.querySelectorAll('aside nav a');
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                navLinks.forEach(l => {
+                    l.classList.remove('bg-secondary-container', 'text-on-secondary-container');
+                    l.classList.add('text-on-surface-variant', 'hover:bg-surface-variant/50');
+                    const icon = l.querySelector('.material-symbols-outlined');
+                    if(icon) icon.style.fontVariationSettings = "'FILL' 0";
+                });
+                link.classList.add('bg-secondary-container', 'text-on-secondary-container');
+                link.classList.remove('text-on-surface-variant', 'hover:bg-surface-variant/50');
+                const icon = link.querySelector('.material-symbols-outlined');
+                if(icon) icon.style.fontVariationSettings = "'FILL' 1";
+            });
+        });
+    </script>
+</body></html>
