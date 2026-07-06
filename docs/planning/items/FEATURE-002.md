@@ -88,7 +88,7 @@ Referencia: prompts Stitch **§2.1**. Textos en `messages/es.json` (namespace `o
 2. ✅ **Migración + tests de RLS** (contra stack local, Decisión #17): dueño **no** puede cambiar `status` (trigger lo bloquea); admin **sí**; segundo shelter con mismo CIF/email falla; `geocode_cache` no accesible a `anon`; bucket `logos` solo escribe el dueño.
 3. ✅ **Endpoint geocode** — test: dirección → `lat/lng` persistidos en `geocode_cache`; segunda llamada misma dirección responde `source:'cache'` sin tocar Nominatim (mock); dirección inexistente → `{lat:null,lng:null}` 200.
 4. ✅ **Gate de onboarding** — test del layout `(shelter)`: `submitted_at` null → redirige a `/panel/alta`; con valor → deja pasar. Shelter `pending`/borrador NO aparece en `shelters_nearby` / listados públicos.
-5. **Wizard + persistencia de borrador** — test: avanzar de paso hace upsert; recargar recupera datos; completar setea `submitted_at` y muestra "En revisión".
+5. ✅ **Wizard + persistencia de borrador** — test (incluye páginas `/panel/alta`, `/admin/protectoras`, banners de panel): avanzar de paso hace upsert; recargar recupera datos; completar setea `submitted_at` y muestra "En revisión".
 6. ✅ **`OpeningHoursEditor`** — test: añadir/eliminar franjas por día, validación open<close, serializa a `opening_hours` jsonb.
 7. ✅ **`LogoUploader` + compresión** — test util: imagen >300 KB se comprime a ≤300 KB; rechaza no-imagen; sube a `logos/{shelter_id}/`.
 8. ✅ **Infra email** (`src/lib/email/`) — test: `sendMail` usa transporte SMTP configurado por env (mock nodemailer); plantillas `verificada`/`rechazada` renderizan español con datos.

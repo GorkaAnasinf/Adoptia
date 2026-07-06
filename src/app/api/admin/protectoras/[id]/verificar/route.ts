@@ -50,13 +50,14 @@ export async function POST(
     return json({ error: { code: "not_found", message: "Protectora no encontrada" } }, 404);
   }
 
-  const esVerify = parsed.data.accion === "verify";
+  const accion = parsed.data;
+  const nuevoEstado = accion.accion === "verify" ? "verified" : "suspended";
   const { error } = await supabase
     .from("shelters")
     .update(
-      esVerify
+      accion.accion === "verify"
         ? { status: "verified", verification_note: null }
-        : { status: "suspended", verification_note: parsed.data.motivo },
+        : { status: "suspended", verification_note: accion.motivo },
     )
     .eq("id", id);
   if (error) {
@@ -64,11 +65,12 @@ export async function POST(
   }
 
   if (shelter.email) {
-    const plantilla = esVerify
-      ? plantillaVerificada({ shelterName: shelter.name })
-      : plantillaRechazada({ shelterName: shelter.name, motivo: parsed.data.motivo });
+    const plantilla =
+      accion.accion === "verify"
+        ? plantillaVerificada({ shelterName: shelter.name })
+        : plantillaRechazada({ shelterName: shelter.name, motivo: accion.motivo });
     await enviarEmail({ to: shelter.email, ...plantilla });
   }
 
-  return json({ data: { status: esVerify ? "verified" : "suspended" } });
+  return json({ data: { status: nuevoEstado } });
 }

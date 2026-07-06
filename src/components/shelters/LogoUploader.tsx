@@ -3,7 +3,6 @@
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { useRef, useState } from "react";
-import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { comprimirLogo, esImagen, rutaLogo } from "@/lib/image";
 import { createClient } from "@/lib/supabase/client";
