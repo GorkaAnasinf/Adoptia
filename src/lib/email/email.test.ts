@@ -4,7 +4,7 @@ const { sendMailMock, createTransportMock } = vi.hoisted(() => {
   const sendMailMock = vi.fn();
   return {
     sendMailMock,
-    createTransportMock: vi.fn((_opts?: unknown) => ({ sendMail: sendMailMock })),
+    createTransportMock: vi.fn(() => ({ sendMail: sendMailMock })),
   };
 });
 
@@ -40,7 +40,9 @@ describe("enviarEmail", () => {
     vi.stubEnv("MAIL_FROM", "");
     vi.stubEnv("SMTP_PORT", "");
     await enviarEmail({ to: "x@y.z", subject: "S", html: "H" });
-    const opciones = createTransportMock.mock.calls[0][0] as { secure: boolean };
+    const opciones = (createTransportMock.mock.calls[0] as unknown[])[0] as {
+      secure: boolean;
+    };
     expect(opciones.secure).toBe(true);
     expect(sendMailMock.mock.calls[0][0].from).toContain("Adoptia");
   });

@@ -1,5 +1,7 @@
 import { beforeAll, describe, expect, it } from "vitest";
 import {
+  ANON_KEY,
+  TEST_URL,
   adminClient,
   anonClient,
   ensureUser,
@@ -129,5 +131,51 @@ describe.skipIf(!rlsDisponible)("RLS onboarding de protectoras", () => {
     const admin = adminClient();
     const { data } = await admin.storage.getBucket("logos");
     expect(data?.public).toBe(true);
+  });
+
+  it("anon NO ve una protectora suspended (pierde visibilidad pública)", async () => {
+    const admin = adminClient();
+    await admin.from("shelters").update({ status: "suspended" }).eq("id", shelterId);
+    const anon = anonClient();
+    const { data } = await anon.from("shelters").select().eq("id", shelterId);
+    expect(data ?? []).toHaveLength(0);
+    // Restaura el estado para no contaminar otros tests
+    await admin.from("shelters").update({ status: "pending" }).eq("id", shelterId);
+  });
+
+  // El helper .upload() de supabase-js cuelga en Node; usamos fetch directo
+  // con el token del usuario (igual que el navegador) para ejercer la política.
+  async function subirLogoComo(email: string, ruta: string): Promise<number> {
+    const client = await signInAs(email, PASS);
+    const {
+      data: { session },
+    } = await client.auth.getSession();
+    const res = await fetch(`${TEST_URL}/storage/v1/object/logos/${ruta}`, {
+      method: "POST",
+      headers: {
+        apikey: ANON_KEY,
+        Authorization: `Bearer ${session!.access_token}`,
+        "Content-Type": "image/png",
+        "x-upsert": "true",
+      },
+      body: new Uint8Array([1, 2, 3]),
+    });
+    return res.status;
+  }
+
+  it("la protectora SÍ puede subir su logo a su propia carpeta {shelter_id}/", async () => {
+    const status = await subirLogoComo("onboarding-owner@test.com", `${shelterId}/logo.png`);
+    expect(status).toBe(200);
+  });
+
+  it("una protectora NO puede subir a la carpeta de otra protectora", async () => {
+    await ensureUser("onboarding-nonowner@test.com", PASS);
+    const status = await subirLogoComo("onboarding-nonowner@test.com", `${shelterId}/hack.png`);
+    expect(status).toBeGreaterThanOrEqual(400); // la política deniega
+  });
+
+  it("el dueño NO puede subir fuera de la carpeta de su shelter", async () => {
+    const status = await subirLogoComo("onboarding-owner@test.com", "carpeta-ajena/logo.png");
+    expect(status).toBeGreaterThanOrEqual(400);
   });
 });
