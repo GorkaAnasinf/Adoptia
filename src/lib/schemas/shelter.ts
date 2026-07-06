@@ -69,6 +69,24 @@ export const ubicacionSchema = z.object({
   lng: z.number().min(-180).max(180),
 });
 
+// ---------- Geocoding (cuerpo del endpoint) ----------
+export const geocodeSchema = z.object({
+  address: z.string().trim().min(1),
+  city: z.string().trim().min(1),
+  province: z.string().trim().min(1),
+  postalCode: z.string().regex(/^\d{5}$/, { message: "cp_invalido" }),
+});
+export type GeocodeInput = z.infer<typeof geocodeSchema>;
+
+/** Normaliza una dirección para usarla como clave estable de caché. */
+export function normalizeGeoQuery(p: GeocodeInput): string {
+  return [p.address, p.postalCode, p.city, p.province, "España"]
+    .join(", ")
+    .toLowerCase()
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
 // ---------- Horarios de apertura ----------
 const HHMM_RE = /^([01]\d|2[0-3]):[0-5]\d$/;
 const hhmm = z.string().regex(HHMM_RE, { message: "hora_invalida" });
