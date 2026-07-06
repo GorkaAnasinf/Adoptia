@@ -5,13 +5,15 @@ import "leaflet/dist/leaflet.css";
 import { MapContainer, Marker, TileLayer, useMap } from "react-leaflet";
 import { useEffect, useRef } from "react";
 
-// Iconos de Leaflet vía CDN de unpkg (los assets por defecto no resuelven con bundler).
+// Iconos servidos desde el propio dominio (public/leaflet) — sin CDN, compatibles
+// con la CSP (los assets por defecto de Leaflet no resuelven con el bundler).
 const icon = L.icon({
-  iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
-  iconRetinaUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png",
-  shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
+  iconUrl: "/leaflet/marker-icon.png",
+  iconRetinaUrl: "/leaflet/marker-icon-2x.png",
+  shadowUrl: "/leaflet/marker-shadow.png",
   iconSize: [25, 41],
   iconAnchor: [12, 41],
+  shadowSize: [41, 41],
 });
 
 type Coords = { lat: number; lng: number };
@@ -21,6 +23,17 @@ function Recentrar({ center }: { center: Coords }) {
   useEffect(() => {
     map.setView([center.lat, center.lng]);
   }, [center, map]);
+  return null;
+}
+
+// Recalcula el tamaño cuando el contenedor pudo montar con dimensión 0
+// (dynamic import / paso recién visible), evitando tiles grises.
+function AjustarTamano() {
+  const map = useMap();
+  useEffect(() => {
+    const t = setTimeout(() => map.invalidateSize(), 0);
+    return () => clearTimeout(t);
+  }, [map]);
   return null;
 }
 
@@ -45,6 +58,7 @@ export default function MapPinPickerInner({
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
       <Recentrar center={value} />
+      <AjustarTamano />
       <Marker
         draggable
         icon={icon}
