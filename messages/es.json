@@ -124,6 +124,7 @@
     "errorPostalCode": "El código postal debe tener 5 dígitos.",
     "errorNoPin": "Coloca el pin en el mapa para fijar la ubicación.",
     "errorGeneric": "No hemos podido guardar. Inténtalo de nuevo.",
+    "errorDuplicado": "Ese CIF o email de entidad ya está registrado en Adoptia.",
     "reviewTitle": "¡Alta enviada! 🎉",
     "reviewBody": "El equipo de Adoptia revisará tus datos. Te avisaremos por email cuando tu protectora esté verificada y sea pública.",
     "hoursTitle": "Horario de apertura",

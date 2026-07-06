@@ -89,7 +89,8 @@ export function WizardAlta({
         .select("id")
         .single();
       if (error) {
-        setErrores({ _: t("errorGeneric") });
+        // 23505 = unique_violation: CIF o email de entidad ya registrados
+        setErrores({ _: t(error.code === "23505" ? "errorDuplicado" : "errorGeneric") });
         return false;
       }
       if (data?.id) setCurrentId(data.id);
@@ -216,7 +217,7 @@ export function WizardAlta({
       {paso === 2 && (
         <div className="flex flex-col gap-4">
           <LogoUploader
-            shelterId={currentId ?? ownerId}
+            shelterId={currentId}
             initialUrl={form.logoUrl}
             onUploaded={(url) => set("logoUrl", url)}
           />

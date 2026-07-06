@@ -28,10 +28,10 @@ function archivo(nombre: string, tipo: string): File {
   return new File([new Uint8Array(1024)], nombre, { type: tipo });
 }
 
-function renderUploader(onUploaded = vi.fn()) {
+function renderUploader(onUploaded = vi.fn(), shelterId: string | null = "shelter-123") {
   render(
     <NextIntlClientProvider locale="es" messages={messages}>
-      <LogoUploader shelterId="shelter-123" onUploaded={onUploaded} />
+      <LogoUploader shelterId={shelterId} onUploaded={onUploaded} />
     </NextIntlClientProvider>,
   );
   return onUploaded;
@@ -67,5 +67,15 @@ describe("LogoUploader", () => {
     // ruta dentro de la carpeta del shelter
     expect(uploadMock.mock.calls[0][0]).toBe("shelter-123/logo.png");
     expect(onUploaded).toHaveBeenCalledWith("https://cdn/logos/shelter-123/logo.png");
+  });
+
+  it("sin shelterId (borrador sin guardar) deshabilita la subida", async () => {
+    const user = userEvent.setup();
+    const onUploaded = renderUploader(vi.fn(), null);
+    const input = screen.getByLabelText(/logo/i) as HTMLInputElement;
+    expect(input).toBeDisabled();
+    await user.upload(input, archivo("logo.png", "image/png"));
+    expect(uploadMock).not.toHaveBeenCalled();
+    expect(onUploaded).not.toHaveBeenCalled();
   });
 });

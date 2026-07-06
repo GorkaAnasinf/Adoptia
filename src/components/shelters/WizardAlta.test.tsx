@@ -98,4 +98,15 @@ describe("WizardAlta", () => {
     const enviados = upsertMock.mock.results.length;
     expect(enviados).toBeGreaterThan(0);
   });
+
+  it("muestra aviso claro si el CIF/email ya está registrado (23505)", async () => {
+    const user = userEvent.setup();
+    upsertMock.mockResolvedValue({ data: null, error: { code: "23505" } });
+    renderWizard();
+    await rellenarPaso1(user);
+    await user.click(screen.getByRole("button", { name: /siguiente/i }));
+    expect(await screen.findByText(/ya está registrado/i)).toBeInTheDocument();
+    // no avanza de paso
+    expect(screen.queryByLabelText(/dirección/i)).not.toBeInTheDocument();
+  });
 });

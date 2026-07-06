@@ -8,7 +8,9 @@ import { comprimirLogo, esImagen, rutaLogo } from "@/lib/image";
 import { createClient } from "@/lib/supabase/client";
 
 type Props = {
-  shelterId: string;
+  // null = la fila del shelter aún no existe (borrador sin guardar): no se
+  // puede subir porque la política de Storage exige la carpeta {shelter_id}/.
+  shelterId: string | null;
   onUploaded: (url: string) => void;
   initialUrl?: string;
 };
@@ -22,7 +24,7 @@ export function LogoUploader({ shelterId, onUploaded, initialUrl }: Props) {
 
   async function onSelect(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
-    if (!file) return;
+    if (!file || !shelterId) return;
     setError(undefined);
 
     if (!esImagen(file)) {
@@ -71,7 +73,8 @@ export function LogoUploader({ shelterId, onUploaded, initialUrl }: Props) {
           type="file"
           accept="image/*"
           onChange={onSelect}
-          className="text-sm file:mr-3 file:rounded-full file:border-0 file:bg-primary/10 file:px-3 file:py-1.5 file:text-primary"
+          disabled={!shelterId}
+          className="text-sm file:mr-3 file:rounded-full file:border-0 file:bg-primary/10 file:px-3 file:py-1.5 file:text-primary disabled:opacity-50"
         />
         {subiendo && <span className="text-sm text-muted-foreground">{t("saving")}</span>}
       </div>
