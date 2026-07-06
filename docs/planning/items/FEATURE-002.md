@@ -2,7 +2,7 @@
 id: FEATURE-002
 tipo: feature
 titulo: Onboarding de protectoras y verificación por admin
-estado: desarrollo
+estado: hecho
 prioridad: alta
 hito: "0.2"
 duplicado_de: null
@@ -103,16 +103,16 @@ Referencia: prompts Stitch **§2.1**. Textos en `messages/es.json` (namespace `o
 
 ## Criterios de aceptación / Casuística a cubrir
 
-- [ ] Wizard de 3 pasos con validación por paso y **estado guardado si se abandona a medias** (borrador recuperable).
-- [ ] Entrada automática al wizard tras registrarse como protectora; panel bloqueado hasta completar el alta.
-- [ ] Dirección geocodificada con **pin ajustable** manualmente (Nominatim puede fallar ±100 m).
-- [ ] Geocoding fallido (dirección no encontrada): mensaje claro + introducción manual del pin; nunca error 500.
-- [ ] Segunda alta con la misma dirección reutiliza la **caché** (no vuelve a llamar a Nominatim).
-- [ ] CIF y email de entidad **únicos** — segundo alta con mismo CIF/email se bloquea con aviso claro.
-- [ ] Logo comprimido en cliente ≤300 KB; se rechaza archivo que no sea imagen; solo el dueño escribe en su carpeta de Storage.
-- [ ] Editor de horarios por día (L-D) con múltiples franjas, validando `apertura < cierre`.
-- [ ] Protectora `pending`/borrador **NO** visible en mapa/listados; ve banner "en revisión" en su panel.
-- [ ] **Seguridad:** la protectora NO puede cambiar su propio `status` (trigger lo impide aunque toque la API directa).
-- [ ] Verificar/rechazar **solo desde admin** (rol comprobado en handler y RLS); ambos envían email en español al gestor.
-- [ ] Rechazo exige motivo; se guarda en `verification_note` y se muestra en el banner rojo de la protectora.
-- [ ] Protectora `suspended` pierde visibilidad pública inmediatamente pero conserva acceso a sus datos.
+- [x] Wizard de 3 pasos con validación por paso y **estado guardado si se abandona a medias** (borrador recuperable).
+- [x] Entrada automática al wizard tras registrarse como protectora; panel bloqueado hasta completar el alta.
+- [x] Dirección geocodificada con **pin ajustable** manualmente (Nominatim puede fallar ±100 m).
+- [x] Geocoding fallido (dirección no encontrada): mensaje claro + introducción manual del pin; nunca error 500.
+- [x] Segunda alta con la misma dirección reutiliza la **caché** (no vuelve a llamar a Nominatim).
+- [x] CIF y email de entidad **únicos** — segundo alta con mismo CIF/email se bloquea con aviso claro.
+- [x] Logo comprimido en cliente ≤300 KB; se rechaza archivo que no sea imagen; solo el dueño escribe en su carpeta de Storage.
+- [x] Editor de horarios por día (L-D) con múltiples franjas, validando `apertura < cierre`.
+- [x] Protectora `pending`/borrador **NO** visible en mapa/listados; ve banner "en revisión" en su panel.
+- [x] **Seguridad:** la protectora NO puede cambiar su propio `status` (trigger lo impide aunque toque la API directa).
+- [x] Verificar/rechazar **solo desde admin** (rol comprobado en handler y RLS); ambos envían email en español al gestor.
+- [x] Rechazo exige motivo; se guarda en `verification_note` y se muestra en el banner rojo de la protectora.
+- [x] Protectora `suspended` pierde visibilidad pública inmediatamente pero conserva acceso a sus datos.

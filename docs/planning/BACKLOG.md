@@ -6,23 +6,18 @@
 ## 📍 ESTADO ACTUAL
 
 - **Hito activo:** 0.2 — MVP área pública
-- **Progreso:** 1 item del hito hecho (FEATURE-001, registro/login completo con seguridad OWASP y CAPTCHA en producción)
-- **Siguiente:** FEATURE-002 — Onboarding de protectoras y verificación por admin
+- **Progreso:** 2 items del hito hechos (FEATURE-001 registro/login; FEATURE-002 onboarding de protectoras y verificación por admin)
+- **Siguiente:** FEATURE-003 — Gestión de animales con fotos y vídeo (panel protectora)
 - **En curso:** nada
-- **Bloqueos:** ninguno.
-- **Última actualización:** 2026-07-05 (cierre de FEATURE-001; producción en https://adoptia-eight.vercel.app)
+- **Bloqueos:** ninguno. FEATURE-002 fusionada a `develop`; **deploy a producción pendiente** de aplicar la migración `20260706100000` a la Supabase cloud + merge a `main`.
+- **Follow-up abierto:** IMPROVEMENT-001 (de-duplicar slug de protectora), sin planificar.
+- **Última actualización:** 2026-07-06 (cierre de FEATURE-002; en `develop`, aún no en producción)
 
 ## Items abiertos por estado
 
 Los items `hecho`/`descartado` no aparecen aquí — su histórico vive en [CHANGELOG](CHANGELOG.md) y git.
 
 <!-- RENDER:START -->
-### 🔨 En desarrollo (1)
-
-| Item | Título | Prioridad | Hito |
-|------|--------|-----------|------|
-| [FEATURE-002](items/FEATURE-002.md) | Onboarding de protectoras y verificación por admin | alta | 0.2 |
-
 ### ✅ Listo para desarrollo (14)
 
 | Item | Título | Prioridad | Hito |

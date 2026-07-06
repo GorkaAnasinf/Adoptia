@@ -41,11 +41,12 @@ Estado de cada capacidad en lenguaje de usuario. Se regenera con `python scripts
 
 - Inicialización y andamiaje del proyecto ([FEATURE-000](../planning/items/FEATURE-000.md))
 - Registro y login de adoptantes y protectoras ([FEATURE-001](../planning/items/FEATURE-001.md))
+- Onboarding de protectoras y verificación por admin ([FEATURE-002](../planning/items/FEATURE-002.md))
 - Despliegue inicial — Supabase cloud y Vercel enlazados ([FEATURE-017](../planning/items/FEATURE-017.md))
 
 #### 🚧 En camino (en desarrollo ahora)
 
-- Onboarding de protectoras y verificación por admin ([FEATURE-002](../planning/items/FEATURE-002.md))
+_Nada en desarrollo en este momento._
 
 #### 🗓️ Previsto
 
