@@ -39,16 +39,26 @@ Es la primera experiencia real de una protectora en la plataforma; una UX cuidad
 - Mantener la lógica ya existente: validación por paso (Zod), persistencia de borrador (upsert), geocode, subida de logo, editor de horarios. Solo cambia la presentación.
 - **Responsive**: mobile-first; una columna, panel lateral debajo, footer sticky abajo.
 
-### Fix del mapa (se ve en gris)
+### Fix del mapa (se ve en gris) — CAUSA CONFIRMADA
 
-Diagnosticar y corregir `MapPinPicker`/`MapPinPickerInner`. Causas probables (verificar en este orden):
-1. **`invalidateSize()`**: el contenedor puede tener tamaño 0 al inicializar Leaflet (dynamic import / step recién montado) → tiles grises. Llamar `map.invalidateSize()` tras montar (o con un `ResizeObserver`).
-2. **Altura del contenedor**: asegurar que `.leaflet-container` tiene altura efectiva (no depender solo de la clase si el padre colapsa).
-3. **Iconos por CDN (unpkg)**: si hay CSP que bloquea `unpkg.com`, el pin no carga (aunque no explica el gris de tiles) → servir los assets de marcador localmente desde `leaflet` en `public/` o vía import.
-4. **Tiles de OSM bloqueadas por CSP/red**: revisar cabeceras `Content-Security-Policy` (`img-src`/`connect-src` deben permitir `*.tile.openstreetmap.org`). Ajustar si el proyecto tiene CSP.
-5. Confirmar que la CSS de Leaflet se carga (`leaflet/dist/leaflet.css`).
+**La CSP de `next.config.ts` bloquea las tiles de OpenStreetMap.** El `img-src` actual es
+`'self' data: blob: https://*.supabase.co` — las tiles se cargan como `<img>` desde
+`https://{a,b,c}.tile.openstreetmap.org` y quedan bloqueadas → mapa gris. Los iconos de
+marcador (hoy desde `unpkg.com`) también se bloquean.
 
-Añadir verificación manual (skill `verify`) del mapa renderizando con tiles reales y pin arrastrable.
+Fix:
+1. **CSP (principal):** añadir `https://*.tile.openstreetmap.org` a `img-src` en
+   `next.config.ts`. (Es el arreglo que quita el gris.)
+2. **Iconos de marcador:** en vez de depender de `unpkg.com` (otra excepción CSP), **servir
+   los assets de Leaflet localmente** (copiar `marker-icon.png`, `marker-icon-2x.png`,
+   `marker-shadow.png` a `public/leaflet/` e importarlos), coherente con el "coste 0 / sin CDNs".
+3. **`invalidateSize()`:** por si el contenedor tiene tamaño 0 al montar (dynamic import /
+   step recién montado), llamar `map.invalidateSize()` tras montar. Verificar altura efectiva
+   de `.leaflet-container`.
+4. Confirmar que la CSS de Leaflet se carga (`leaflet/dist/leaflet.css`).
+
+Verificación manual (skill `verify`) del mapa con tiles reales y pin arrastrable, y repaso
+de que la CSP no rompe nada más.
 
 ### Tareas TDD
 
