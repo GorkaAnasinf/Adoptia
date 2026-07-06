@@ -27,7 +27,7 @@
 | Item | Título | Estado | Prioridad |
 |------|--------|--------|-----------|
 | [FEATURE-001](items/FEATURE-001.md) | Registro y login de adoptantes y protectoras | hecho | alta |
-| [FEATURE-002](items/FEATURE-002.md) | Onboarding de protectoras y verificación por admin | listo | alta |
+| [FEATURE-002](items/FEATURE-002.md) | Onboarding de protectoras y verificación por admin | desarrollo | alta |
 | [FEATURE-003](items/FEATURE-003.md) | Gestión de animales con fotos y vídeo (panel protectora) | listo | alta |
 | [FEATURE-005](items/FEATURE-005.md) | Área pública — home, búsqueda de animales y fichas | listo | alta |
 | [FEATURE-006](items/FEATURE-006.md) | Mapa de protectoras con búsqueda por proximidad | listo | alta |
@@ -52,4 +52,10 @@
 | [FEATURE-014](items/FEATURE-014.md) | Estadísticas para protectoras y difusión en redes | listo | baja |
 | [FEATURE-015](items/FEATURE-015.md) | Contenido educativo sobre adopción responsable | listo | baja |
 | [FEATURE-016](items/FEATURE-016.md) | Registro de casas de acogida | listo | baja |
+
+### Sin hito asignado (1)
+
+_Capturas pendientes de promover — no forman parte del roadmap todavía._
+
+- [IMPROVEMENT-001](items/IMPROVEMENT-001.md) — De-duplicar el slug de protectora (nombres repetidos) (recibido)
 <!-- RENDER:END -->
