@@ -41,6 +41,7 @@ Estado de cada capacidad en lenguaje de usuario. Se regenera con `python scripts
 
 - Inicialización y andamiaje del proyecto ([FEATURE-000](../planning/items/FEATURE-000.md))
 - Registro y login de adoptantes y protectoras ([FEATURE-001](../planning/items/FEATURE-001.md))
+- Onboarding de protectoras y verificación por admin ([FEATURE-002](../planning/items/FEATURE-002.md))
 - Despliegue inicial — Supabase cloud y Vercel enlazados ([FEATURE-017](../planning/items/FEATURE-017.md))
 
 #### 🚧 En camino (en desarrollo ahora)
@@ -49,7 +50,6 @@ _Nada en desarrollo en este momento._
 
 #### 🗓️ Previsto
 
-- Onboarding de protectoras y verificación por admin — hito 0.2 ([FEATURE-002](../planning/items/FEATURE-002.md))
 - Gestión de animales con fotos y vídeo (panel protectora) — hito 0.2 ([FEATURE-003](../planning/items/FEATURE-003.md))
 - Panel de protectora — dashboard y perfil público — hito 0.2 ([FEATURE-004](../planning/items/FEATURE-004.md))
 - Área pública — home, búsqueda de animales y fichas — hito 0.2 ([FEATURE-005](../planning/items/FEATURE-005.md))
@@ -64,4 +64,5 @@ _Nada en desarrollo en este momento._
 - Estadísticas para protectoras y difusión en redes — hito 0.4 ([FEATURE-014](../planning/items/FEATURE-014.md))
 - Contenido educativo sobre adopción responsable — hito 0.4 ([FEATURE-015](../planning/items/FEATURE-015.md))
 - Registro de casas de acogida — hito 0.4 ([FEATURE-016](../planning/items/FEATURE-016.md))
+- De-duplicar el slug de protectora (nombres repetidos) — hito sin asignar ([IMPROVEMENT-001](../planning/items/IMPROVEMENT-001.md))
 <!-- RENDER:END -->

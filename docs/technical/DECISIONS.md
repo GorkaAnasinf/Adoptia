@@ -34,6 +34,15 @@ Formato ligero tipo ADR. Toda decisión con impacto estructural se registra aqu�
 | 18 | **Gitflow sin PRs**: `develop` → `main`, ramas `feature/FEATURE-NNN-slug` | Equipo de 1; CI protege calidad | PRs obligatorias (fricción sin revisores) |
 | 19 | **Keepalive cron** (GitHub Actions 2×/semana) | Supabase free pausa tras 7 días de inactividad | Aceptar pausas (mala demo) |
 
+## 2026-07-05 — FEATURE-001 (registro y login)
+
+| # | Decisión | Motivo | Alternativa descartada |
+|---|----------|--------|------------------------|
+| 20 | **Trigger de alta con whitelist de rol** (solo adopter/shelter; el resto cae a adopter) | El signup deja pasar metadata arbitraria; sin whitelist, un signup directo a la API con `role:admin` escala privilegios | Confiar en que el formulario solo envía roles válidos |
+| 21 | **CAPTCHA Cloudflare Turnstile** en auth | Free, ligero y con integración nativa en Supabase; complementa los rate limits contra bots | hCaptcha (peor DX), solo rate limits (no frena bots que rotan IP) |
+| 22 | **SMTP de Gmail + plantillas HTML propias** para el MVP | Coste 0 y control total del diseño de los correos; suficiente para el volumen inicial (~500/día) | SMTP por defecto de Supabase (2/h, remitente genérico), Resend (requiere dominio verificado) |
+| 23 | **Política de contraseña fuerte** (mayús+minús+dígito+símbolo) alineada cliente y servidor | El servidor (Supabase) la exige; el cliente debe reflejarla para no rebotar al usuario | Solo validación en servidor (mala UX) |
+
 ## Cómo añadir una decisión
 
 Nueva fila con fecha en sección nueva si cambia el mes. Si revierte una anterior, enlázala ("revierte #9") en vez de borrarla.

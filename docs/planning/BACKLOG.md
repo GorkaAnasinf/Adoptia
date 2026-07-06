@@ -6,22 +6,22 @@
 ## 📍 ESTADO ACTUAL
 
 - **Hito activo:** 0.2 — MVP área pública
-- **Progreso:** 1 item del hito hecho (FEATURE-001)
-- **Siguiente:** FEATURE-002 — Onboarding de protectoras (o el siguiente del hito 0.2 por prioridad)
+- **Progreso:** 2 items del hito hechos (FEATURE-001 registro/login; FEATURE-002 onboarding de protectoras y verificación por admin)
+- **Siguiente:** FEATURE-003 — Gestión de animales con fotos y vídeo (panel protectora)
 - **En curso:** nada
-- **Bloqueos:** ninguno. Config manual pendiente (no bloqueante): proveedor Google en Supabase + plantillas de email en español.
-- **Última actualización:** 2026-07-05 (cierre de FEATURE-001; producción en https://adoptia-eight.vercel.app)
+- **Bloqueos:** ninguno. FEATURE-002 fusionada a `develop`; **deploy a producción pendiente** de aplicar la migración `20260706100000` a la Supabase cloud + merge a `main`.
+- **Follow-up abierto:** IMPROVEMENT-001 (de-duplicar slug de protectora), sin planificar.
+- **Última actualización:** 2026-07-06 (cierre de FEATURE-002; en `develop`, aún no en producción)
 
 ## Items abiertos por estado
 
 Los items `hecho`/`descartado` no aparecen aquí — su histórico vive en [CHANGELOG](CHANGELOG.md) y git.
 
 <!-- RENDER:START -->
-### ✅ Listo para desarrollo (15)
+### ✅ Listo para desarrollo (14)
 
 | Item | Título | Prioridad | Hito |
 |------|--------|-----------|------|
-| [FEATURE-002](items/FEATURE-002.md) | Onboarding de protectoras y verificación por admin | alta | 0.2 |
 | [FEATURE-003](items/FEATURE-003.md) | Gestión de animales con fotos y vídeo (panel protectora) | alta | 0.2 |
 | [FEATURE-005](items/FEATURE-005.md) | Área pública — home, búsqueda de animales y fichas | alta | 0.2 |
 | [FEATURE-006](items/FEATURE-006.md) | Mapa de protectoras con búsqueda por proximidad | alta | 0.2 |
@@ -36,4 +36,10 @@ Los items `hecho`/`descartado` no aparecen aquí — su histórico vive en [CHAN
 | [FEATURE-014](items/FEATURE-014.md) | Estadísticas para protectoras y difusión en redes | baja | 0.4 |
 | [FEATURE-015](items/FEATURE-015.md) | Contenido educativo sobre adopción responsable | baja | 0.4 |
 | [FEATURE-016](items/FEATURE-016.md) | Registro de casas de acogida | baja | 0.4 |
+
+### 📥 Recibido (1)
+
+| Item | Título | Prioridad | Hito |
+|------|--------|-----------|------|
+| [IMPROVEMENT-001](items/IMPROVEMENT-001.md) | De-duplicar el slug de protectora (nombres repetidos) | media | — |
 <!-- RENDER:END -->

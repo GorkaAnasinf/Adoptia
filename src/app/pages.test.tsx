@@ -20,9 +20,20 @@ import TerminosPage from "./(public)/terminos/page";
 
 vi.mock("next-intl/server", () => ({
   getTranslations: vi.fn(async (ns: string) => (key: string) => {
-    const obj = (messages as Record<string, Record<string, string>>)[ns];
+    const obj = (messages as unknown as Record<string, Record<string, string>>)[ns];
     return obj?.[key] ?? `${ns}.${key}`;
   }),
+}));
+
+vi.mock("@/lib/supabase/server", () => ({
+  createClient: vi.fn(async () => ({
+    auth: { getUser: vi.fn(async () => ({ data: { user: null } })) },
+    from: vi.fn(() => ({
+      select: vi.fn(() => ({
+        eq: vi.fn(() => ({ maybeSingle: vi.fn(async () => ({ data: null })) })),
+      })),
+    })),
+  })),
 }));
 
 vi.mock("@/components/forms/LoginForm", () => ({
@@ -89,8 +100,8 @@ describe("páginas de auth y paneles", () => {
     expect(screen.getByTestId("register-form")).toBeInTheDocument();
   });
 
-  it("el panel de protectora muestra su título", () => {
-    conIntl(<PanelPage />);
+  it("el panel de protectora muestra su título", async () => {
+    conIntl(await PanelPage());
     expect(
       screen.getByRole("heading", { name: messages.panel.title }),
     ).toBeInTheDocument();
