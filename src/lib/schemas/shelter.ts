@@ -125,6 +125,13 @@ export const perfilSchema = z.object({
   acceptsFostering: z.boolean(),
 });
 
+// ---------- Verificación por admin ----------
+export const verificarSchema = z.discriminatedUnion("accion", [
+  z.object({ accion: z.literal("verify") }),
+  z.object({ accion: z.literal("reject"), motivo: z.string().trim().min(1) }),
+]);
+export type VerificarInput = z.infer<typeof verificarSchema>;
+
 // ---------- Wizard completo ----------
 export const shelterOnboardingSchema = entidadSchema
   .and(ubicacionSchema)
