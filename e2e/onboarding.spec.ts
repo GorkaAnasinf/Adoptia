@@ -55,7 +55,7 @@ test("una protectora se registra, completa el wizard y queda en revisión", asyn
   await expect(page.getByRole("heading", { name: t.title })).toBeVisible();
 
   // --- Paso 1: entidad ---
-  await page.getByLabel(t.name).fill("Refugio E2E");
+  await page.getByLabel(t.name).fill(`Refugio E2E ${sello}`);
   await page.getByLabel(t.cif, { exact: true }).fill(cifValido());
   await page.getByLabel(t.entityEmail).fill(`entidad-${sello}@test.com`);
   await page.getByLabel(t.phone).fill("600123456");
