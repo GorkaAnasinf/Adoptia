@@ -13,7 +13,7 @@ export type EmailPayload = {
 
 function getTransport() {
   const host = process.env.SMTP_HOST;
-  const port = Number(process.env.SMTP_PORT ?? 465);
+  const port = Number(process.env.SMTP_PORT) || 465;
   const user = process.env.SMTP_USER;
   const pass = process.env.SMTP_PASS;
   if (!host || !user || !pass) {
@@ -28,7 +28,7 @@ function getTransport() {
 }
 
 export async function enviarEmail({ to, subject, html }: EmailPayload) {
-  const from = process.env.MAIL_FROM ?? "Adoptia <no-reply@adoptia.example>";
+  const from = process.env.MAIL_FROM || "Adoptia <no-reply@adoptia.example>";
   const transport = getTransport();
   await transport.sendMail({ from, to, subject, html });
 }

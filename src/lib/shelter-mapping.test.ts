@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { formToShelterRow, slugify } from "./shelter-mapping";
+import { formToShelterRow, shelterRowToForm, slugify } from "./shelter-mapping";
 
 describe("slugify", () => {
   it("normaliza acentos, mayúsculas y espacios", () => {
@@ -50,5 +50,40 @@ describe("formToShelterRow", () => {
     expect(borrador.submitted_at).toBeUndefined();
     const enviado = formToShelterRow(form, "owner-1", { submit: true });
     expect(enviado.submitted_at).not.toBeUndefined();
+  });
+
+  it("web vacía → null y sin coordenadas → sin location", () => {
+    const row = formToShelterRow({ name: "X", website: "" }, "owner-1");
+    expect(row.website).toBeNull();
+    expect(row.location).toBeUndefined();
+  });
+});
+
+describe("shelterRowToForm", () => {
+  it("devuelve objeto vacío si no hay fila", () => {
+    expect(shelterRowToForm(null)).toEqual({});
+  });
+
+  it("mapea columnas snake_case de vuelta al formulario", () => {
+    const form = shelterRowToForm({
+      name: "Refugio",
+      postal_code: "48001",
+      logo_url: "https://cdn/logo.png",
+      opening_hours: { lun: [] },
+      social_links: { instagram: "https://x" },
+      accepts_volunteers: true,
+      accepts_fostering: false,
+    });
+    expect(form.postalCode).toBe("48001");
+    expect(form.logoUrl).toBe("https://cdn/logo.png");
+    expect(form.acceptsVolunteers).toBe(true);
+    expect(form.openingHours).toEqual({ lun: [] });
+  });
+
+  it("usa valores por defecto para horarios/redes ausentes", () => {
+    const form = shelterRowToForm({ name: "Refugio" });
+    expect(form.openingHours).toEqual({});
+    expect(form.socialLinks).toEqual({});
+    expect(form.acceptsFostering).toBe(false);
   });
 });

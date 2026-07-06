@@ -18,6 +18,8 @@ export async function comprimirLogo(file: File): Promise<File> {
 
 /** Ruta de Storage del logo dentro de la carpeta del shelter (bucket `logos`). */
 export function rutaLogo(shelterId: string, file: File): string {
-  const ext = file.name.split(".").pop()?.toLowerCase() || "jpg";
+  const ext = file.name.includes(".")
+    ? (file.name.split(".").pop() as string).toLowerCase()
+    : "jpg";
   return `${shelterId}/logo.${ext}`;
 }

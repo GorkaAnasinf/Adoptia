@@ -38,4 +38,8 @@ describe("rutaLogo", () => {
     const ruta = rutaLogo("shelter-123", archivo("mi Logo.PNG", "image/png", 1));
     expect(ruta).toBe("shelter-123/logo.png");
   });
+
+  it("usa jpg si el archivo no tiene extensión", () => {
+    expect(rutaLogo("s1", archivo("sinextension", "image/jpeg", 1))).toBe("s1/logo.jpg");
+  });
 });

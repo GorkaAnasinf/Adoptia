@@ -4,7 +4,7 @@ const { sendMailMock, createTransportMock } = vi.hoisted(() => {
   const sendMailMock = vi.fn();
   return {
     sendMailMock,
-    createTransportMock: vi.fn(() => ({ sendMail: sendMailMock })),
+    createTransportMock: vi.fn((_opts?: unknown) => ({ sendMail: sendMailMock })),
   };
 });
 
@@ -34,6 +34,20 @@ describe("enviarEmail", () => {
     expect(arg.to).toBe("gestor@refugio.org");
     expect(arg.subject).toBe("Hola");
     expect(arg.html).toContain("Hola");
+  });
+
+  it("usa remitente por defecto y puerto 465 si faltan opcionales", async () => {
+    vi.stubEnv("MAIL_FROM", "");
+    vi.stubEnv("SMTP_PORT", "");
+    await enviarEmail({ to: "x@y.z", subject: "S", html: "H" });
+    const opciones = createTransportMock.mock.calls[0][0] as { secure: boolean };
+    expect(opciones.secure).toBe(true);
+    expect(sendMailMock.mock.calls[0][0].from).toContain("Adoptia");
+  });
+
+  it("lanza si faltan credenciales SMTP", async () => {
+    vi.stubEnv("SMTP_HOST", "");
+    await expect(enviarEmail({ to: "x@y.z", subject: "S", html: "H" })).rejects.toThrow(/SMTP/);
   });
 });
 
