@@ -47,6 +47,9 @@ export function RegisterForm() {
       password: values.password,
       options: {
         data: { full_name: values.fullName, role: values.role },
+        // Tras confirmar el correo, el enlace vuelve por el callback a la
+        // pantalla de "correo verificado" (el callback respeta este `next`).
+        emailRedirectTo: `${window.location.origin}/auth/callback?next=/correo-verificado`,
         ...(captchaToken ? { captchaToken } : {}),
       },
     });
