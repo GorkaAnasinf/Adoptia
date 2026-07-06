@@ -1,0 +1,300 @@
+"use client";
+
+import { useTranslations } from "next-intl";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import type { ZodType } from "zod";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  entidadSchema,
+  perfilSchema,
+  ubicacionSchema,
+} from "@/lib/schemas/shelter";
+import { formToShelterRow, type ShelterForm } from "@/lib/shelter-mapping";
+import { createClient } from "@/lib/supabase/client";
+import { LogoUploader } from "./LogoUploader";
+import { MapPinPicker } from "./MapPinPicker";
+import { OpeningHoursEditor } from "./OpeningHoursEditor";
+import { Stepper } from "./Stepper";
+
+type Form = Partial<ShelterForm>;
+type Errores = Record<string, string>;
+
+const CLAVE_ERROR: Record<string, string> = {
+  name: "errorName",
+  cif: "errorCif",
+  email: "errorEmail",
+  phone: "errorPhone",
+  website: "errorWebsite",
+  postalCode: "errorPostalCode",
+  lat: "errorNoPin",
+  lng: "errorNoPin",
+};
+
+export function WizardAlta({
+  ownerId,
+  shelterId,
+  initial,
+}: {
+  ownerId: string;
+  shelterId: string | null;
+  initial: Form;
+}) {
+  const t = useTranslations("onboarding");
+  const router = useRouter();
+  const [paso, setPaso] = useState(0);
+  const [form, setForm] = useState<Form>({
+    openingHours: {},
+    socialLinks: {},
+    acceptsVolunteers: false,
+    acceptsFostering: false,
+    ...initial,
+  });
+  const [errores, setErrores] = useState<Errores>({});
+  const [currentId, setCurrentId] = useState<string | null>(shelterId);
+  const [enviado, setEnviado] = useState(false);
+  const [guardando, setGuardando] = useState(false);
+  const [geoMsg, setGeoMsg] = useState<string>();
+
+  function set<K extends keyof Form>(campo: K, valor: Form[K]) {
+    setForm((f) => ({ ...f, [campo]: valor }));
+  }
+
+  function validar(schema: ZodType): boolean {
+    const res = schema.safeParse(form);
+    if (res.success) {
+      setErrores({});
+      return true;
+    }
+    const errs: Errores = {};
+    for (const issue of res.error.issues) {
+      const campo = String(issue.path[0]);
+      errs[campo] = t(CLAVE_ERROR[campo] ?? "errorGeneric");
+    }
+    setErrores(errs);
+    return false;
+  }
+
+  async function guardarBorrador(submit: boolean) {
+    setGuardando(true);
+    try {
+      const row = formToShelterRow(form, ownerId, { submit });
+      if (currentId) row.id = currentId;
+      const supabase = createClient();
+      const { data, error } = await supabase
+        .from("shelters")
+        .upsert(row)
+        .select("id")
+        .single();
+      if (error) {
+        // 23505 = unique_violation: CIF o email de entidad ya registrados
+        setErrores({ _: t(error.code === "23505" ? "errorDuplicado" : "errorGeneric") });
+        return false;
+      }
+      if (data?.id) setCurrentId(data.id);
+      return true;
+    } finally {
+      setGuardando(false);
+    }
+  }
+
+  const SCHEMAS = [entidadSchema, ubicacionSchema, perfilSchema];
+
+  async function siguiente() {
+    if (!validar(SCHEMAS[paso])) return;
+    const ok = await guardarBorrador(false);
+    if (ok) setPaso((p) => p + 1);
+  }
+
+  async function finalizar() {
+    if (!validar(perfilSchema)) return;
+    if (await guardarBorrador(true)) {
+      setEnviado(true);
+      router.refresh();
+    }
+  }
+
+  async function localizar() {
+    setGeoMsg(undefined);
+    const res = await fetch("/api/protectoras/geocode", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({
+        address: form.address,
+        city: form.city,
+        province: form.province,
+        postalCode: form.postalCode,
+      }),
+    });
+    const { data } = await res.json();
+    if (data?.lat != null) {
+      set("lat", data.lat);
+      set("lng", data.lng);
+    } else {
+      setGeoMsg(t("geocodeFailed"));
+      // pin por defecto (centro de España) para ajuste manual
+      set("lat", 40.4168);
+      set("lng", -3.7038);
+    }
+  }
+
+  if (enviado) {
+    return (
+      <div className="flex flex-col gap-3 text-center">
+        <h1 className="font-heading text-2xl font-bold text-foreground">{t("reviewTitle")}</h1>
+        <p className="text-muted-foreground">{t("reviewBody")}</p>
+        <Button onClick={() => router.push("/panel")}>{t("stepEntity")}</Button>
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex w-full flex-col gap-5">
+      <div>
+        <h1 className="font-heading text-2xl font-bold text-foreground">{t("title")}</h1>
+        <p className="mt-1 text-muted-foreground">{t("subtitle")}</p>
+      </div>
+
+      <Stepper pasos={[t("stepEntity"), t("stepLocation"), t("stepProfile")]} actual={paso} />
+
+      {/* -------- Paso 1: entidad -------- */}
+      {paso === 0 && (
+        <div className="flex flex-col gap-3">
+          <Campo id="name" label={t("name")} error={errores.name}>
+            <Input id="name" value={form.name ?? ""} onChange={(e) => set("name", e.target.value)} />
+          </Campo>
+          <Campo id="cif" label={t("cif")} error={errores.cif}>
+            <Input id="cif" value={form.cif ?? ""} onChange={(e) => set("cif", e.target.value)} />
+          </Campo>
+          <Campo id="email" label={t("entityEmail")} error={errores.email}>
+            <Input id="email" type="email" value={form.email ?? ""} onChange={(e) => set("email", e.target.value)} />
+          </Campo>
+          <Campo id="phone" label={t("phone")} error={errores.phone}>
+            <Input id="phone" value={form.phone ?? ""} onChange={(e) => set("phone", e.target.value)} />
+          </Campo>
+          <Campo id="website" label={t("website")} error={errores.website}>
+            <Input id="website" value={form.website ?? ""} onChange={(e) => set("website", e.target.value)} />
+          </Campo>
+        </div>
+      )}
+
+      {/* -------- Paso 2: ubicación -------- */}
+      {paso === 1 && (
+        <div className="flex flex-col gap-3">
+          <Campo id="address" label={t("address")} error={errores.address}>
+            <Input id="address" value={form.address ?? ""} onChange={(e) => set("address", e.target.value)} />
+          </Campo>
+          <div className="grid grid-cols-2 gap-3">
+            <Campo id="city" label={t("city")} error={errores.city}>
+              <Input id="city" value={form.city ?? ""} onChange={(e) => set("city", e.target.value)} />
+            </Campo>
+            <Campo id="province" label={t("province")} error={errores.province}>
+              <Input id="province" value={form.province ?? ""} onChange={(e) => set("province", e.target.value)} />
+            </Campo>
+          </div>
+          <Campo id="postalCode" label={t("postalCode")} error={errores.postalCode}>
+            <Input id="postalCode" value={form.postalCode ?? ""} onChange={(e) => set("postalCode", e.target.value)} />
+          </Campo>
+          <Button type="button" variant="outline" onClick={localizar}>
+            {t("locate")}
+          </Button>
+          {geoMsg && <p className="text-sm text-destructive">{geoMsg}</p>}
+          <p className="text-sm text-muted-foreground">{t("pinHelp")}</p>
+          <MapPinPicker
+            value={{ lat: form.lat ?? 40.4168, lng: form.lng ?? -3.7038 }}
+            onChange={({ lat, lng }) => {
+              set("lat", lat);
+              set("lng", lng);
+            }}
+          />
+          {errores.lat && <p className="text-sm text-destructive">{errores.lat}</p>}
+        </div>
+      )}
+
+      {/* -------- Paso 3: perfil público -------- */}
+      {paso === 2 && (
+        <div className="flex flex-col gap-4">
+          <LogoUploader
+            shelterId={currentId}
+            initialUrl={form.logoUrl}
+            onUploaded={(url) => set("logoUrl", url)}
+          />
+          <Campo id="description" label={t("description")}>
+            <textarea
+              id="description"
+              rows={4}
+              value={form.description ?? ""}
+              onChange={(e) => set("description", e.target.value)}
+              className="rounded-md border border-border bg-background px-3 py-2 text-sm"
+            />
+          </Campo>
+          <OpeningHoursEditor
+            value={form.openingHours ?? {}}
+            onChange={(v) => set("openingHours", v)}
+          />
+          <label className="flex items-center gap-2 text-sm">
+            <input
+              type="checkbox"
+              checked={form.acceptsVolunteers ?? false}
+              onChange={(e) => set("acceptsVolunteers", e.target.checked)}
+              className="size-4 accent-[var(--primary)]"
+            />
+            {t("acceptsVolunteers")}
+          </label>
+          <label className="flex items-center gap-2 text-sm">
+            <input
+              type="checkbox"
+              checked={form.acceptsFostering ?? false}
+              onChange={(e) => set("acceptsFostering", e.target.checked)}
+              className="size-4 accent-[var(--primary)]"
+            />
+            {t("acceptsFostering")}
+          </label>
+        </div>
+      )}
+
+      {errores._ && <p className="text-sm text-destructive">{errores._}</p>}
+
+      <div className="flex justify-between gap-3">
+        {paso > 0 ? (
+          <Button type="button" variant="ghost" onClick={() => setPaso((p) => p - 1)}>
+            {t("back")}
+          </Button>
+        ) : (
+          <span />
+        )}
+        {paso < 2 ? (
+          <Button type="button" size="lg" onClick={siguiente} disabled={guardando}>
+            {guardando ? t("saving") : t("next")}
+          </Button>
+        ) : (
+          <Button type="button" size="lg" onClick={finalizar} disabled={guardando}>
+            {guardando ? t("saving") : t("finish")}
+          </Button>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function Campo({
+  id,
+  label,
+  error,
+  children,
+}: {
+  id: string;
+  label: string;
+  error?: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="flex flex-col gap-1.5">
+      <Label htmlFor={id}>{label}</Label>
+      {children}
+      {error && <p className="text-sm text-destructive">{error}</p>}
+    </div>
+  );
+}
