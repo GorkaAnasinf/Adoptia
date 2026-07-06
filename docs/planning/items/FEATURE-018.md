@@ -2,7 +2,7 @@
 id: FEATURE-018
 tipo: feature
 titulo: App shell autenticado — cabecera común, navegación por rol y breadcrumbs
-estado: recibido
+estado: desarrollo
 prioridad: alta
 hito: "0.2"
 duplicado_de: null
