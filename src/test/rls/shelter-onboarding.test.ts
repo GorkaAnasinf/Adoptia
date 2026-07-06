@@ -113,6 +113,12 @@ describe.skipIf(!rlsDisponible)("RLS onboarding de protectoras", () => {
     expect(error!.code).toBe("23505");
   });
 
+  it("anon NO ve una protectora pending (no aparece en listados públicos)", async () => {
+    const anon = anonClient();
+    const { data } = await anon.from("shelters").select().eq("id", shelterId);
+    expect(data ?? []).toHaveLength(0);
+  });
+
   it("anon NO puede leer la caché de geocoding", async () => {
     const anon = anonClient();
     const { data } = await anon.from("geocode_cache").select();

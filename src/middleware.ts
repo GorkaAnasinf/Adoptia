@@ -12,6 +12,9 @@ const PROTECTED: { prefix: string; role?: "adopter" | "shelter" | "admin" }[] = 
 export async function middleware(request: NextRequest) {
   const { url, anonKey } = getSupabaseEnv();
 
+  // Expone la ruta a los Server Components (p. ej. el gate de onboarding).
+  request.headers.set("x-pathname", request.nextUrl.pathname);
+
   let response = NextResponse.next({ request });
 
   const supabase = createServerClient(url, anonKey, {
