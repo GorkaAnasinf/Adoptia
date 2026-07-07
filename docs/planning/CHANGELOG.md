@@ -2,6 +2,12 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/es/) adaptado. Versionado 0.x hasta el MVP.
 
+## [0.0.9] — 2026-07-07
+
+### Cambiado
+
+- **IMPROVEMENT-003 — Pulido del chrome del panel**: el sidebar y la cabecera se acercan al mockup — ítems de navegación con badge de conteo, el ítem activo se resalta con un pill salvia, "Contactar soporte" pasa a un botón teal que abre el correo de soporte, el panel lateral gana contraste, los iconos de ayuda/notificaciones dejan de verse apagados (la campana muestra un punto cuando hay novedades) y el avatar carga la foto de perfil real (con iniciales de reserva). Sin cambios de datos: los conteos y notificaciones son el mecanismo listo para las siguientes features.
+
 ## [0.0.8] — 2026-07-07
 
 ### Añadido

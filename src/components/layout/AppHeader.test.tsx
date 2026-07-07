@@ -7,7 +7,10 @@ import { AppHeader } from "./AppHeader";
 
 vi.mock("./UserMenu", () => ({ UserMenu: () => <div data-testid="user-menu" /> }));
 
-function renderHeader(onMenuClick = vi.fn()) {
+function renderHeader(
+  onMenuClick = vi.fn(),
+  extra?: { hasNotifications?: boolean },
+) {
   render(
     <NextIntlClientProvider locale="es" messages={messages}>
       <AppHeader
@@ -15,6 +18,7 @@ function renderHeader(onMenuClick = vi.fn()) {
         status="pending"
         crumbs={[{ label: "Panel", href: "/panel" }, { label: "Ubicación" }]}
         onMenuClick={onMenuClick}
+        hasNotifications={extra?.hasNotifications}
       />
     </NextIntlClientProvider>,
   );
@@ -35,5 +39,15 @@ describe("AppHeader", () => {
     const onMenuClick = renderHeader();
     await userEvent.click(screen.getByRole("button", { name: messages.shell.openMenu }));
     expect(onMenuClick).toHaveBeenCalledOnce();
+  });
+
+  it("no muestra el punto de notificación por defecto", () => {
+    renderHeader(vi.fn(), { hasNotifications: false });
+    expect(screen.queryByLabelText(messages.shell.notificationsNew)).not.toBeInTheDocument();
+  });
+
+  it("con hasNotifications muestra el indicador de nuevas notificaciones", () => {
+    renderHeader(vi.fn(), { hasNotifications: true });
+    expect(screen.getByLabelText(messages.shell.notificationsNew)).toBeInTheDocument();
   });
 });

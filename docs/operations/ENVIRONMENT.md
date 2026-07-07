@@ -23,6 +23,7 @@
 | `SMTP_PASS` | **solo servidor** | Contraseña de aplicación de Google (no la del usuario) |
 | `MAIL_FROM` | servidor | Remitente mostrado (`Adoptia <cuenta@gmail.com>`) |
 | `NEXT_PUBLIC_SITE_URL` | cliente+servidor | URLs absolutas (emails, og, sitemap) |
+| `NEXT_PUBLIC_SUPPORT_EMAIL` | cliente | Correo del botón "Contactar soporte" del panel. Fallback: `hola@adoptia.app` |
 | `SENTRY_DSN` / `NEXT_PUBLIC_SENTRY_DSN` | ambos | Monitorización de errores |
 | `NEXT_PUBLIC_UMAMI_WEBSITE_ID` | cliente | Analítica sin cookies |
 | `CRON_SECRET` | servidor | Protege `/api/cron/*` |

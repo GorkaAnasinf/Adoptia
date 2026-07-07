@@ -34,8 +34,31 @@ describe("AppSidebar", () => {
     expect(protectoras).toHaveAttribute("href", "/admin/protectoras");
   });
 
-  it("muestra el botón de contactar soporte", () => {
+  it("contactar soporte es un enlace mailto (no un botón deshabilitado)", () => {
     renderSidebar({ role: "shelter", onboarding: false, pathname: "/panel" });
-    expect(screen.getByText(messages.shell.support)).toBeInTheDocument();
+    const soporte = screen.getByRole("link", { name: messages.shell.support });
+    expect(soporte.getAttribute("href")).toMatch(/^mailto:/);
+  });
+
+  it("muestra un badge con el conteo cuando badges[clave] > 0", () => {
+    renderSidebar({
+      role: "shelter",
+      onboarding: false,
+      pathname: "/panel",
+      badges: { navHome: 4 },
+    });
+    expect(screen.getByRole("link", { name: /Inicio/ })).toHaveTextContent("4");
+  });
+
+  it("no muestra badge cuando el conteo es 0 o falta", () => {
+    renderSidebar({
+      role: "shelter",
+      onboarding: false,
+      pathname: "/panel",
+      badges: { navHome: 0 },
+    });
+    expect(screen.getByRole("link", { name: messages.shell.navHome })).not.toHaveTextContent(
+      /\d/,
+    );
   });
 });
