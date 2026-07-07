@@ -30,3 +30,4 @@
 | [IMPROVEMENT-002](IMPROVEMENT-002.md) | Rediseño UX del wizard de alta de protectora (+ fix del mapa gris) | improvement | hecho | 0.2 |
 | [IMPROVEMENT-003](IMPROVEMENT-003.md) | Pulido del shell chrome (sidebar + cabecera) hacia el mockup de Stitch | improvement | hecho | 0.2 |
 | [IMPROVEMENT-004](IMPROVEMENT-004.md) | Pulido del chrome (sidebar arena, cabecera) y estado vacío de Mi cuenta | improvement | hecho | 0.2 |
+| [IMPROVEMENT-005](IMPROVEMENT-005.md) | Editar los datos de la protectora mientras el alta está en revisión | improvement | listo | 0.2 |
