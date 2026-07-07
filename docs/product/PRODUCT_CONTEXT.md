@@ -48,6 +48,7 @@ Estado de cada capacidad en lenguaje de usuario. Se regenera con `python scripts
 - Rediseño UX del wizard de alta de protectora (+ fix del mapa gris) ([IMPROVEMENT-002](../planning/items/IMPROVEMENT-002.md))
 - Pulido del shell chrome (sidebar + cabecera) hacia el mockup de Stitch ([IMPROVEMENT-003](../planning/items/IMPROVEMENT-003.md))
 - Pulido del chrome (sidebar arena, cabecera) y estado vacío de Mi cuenta ([IMPROVEMENT-004](../planning/items/IMPROVEMENT-004.md))
+- Editar los datos de la protectora mientras el alta está en revisión ([IMPROVEMENT-005](../planning/items/IMPROVEMENT-005.md))
 
 #### 🚧 En camino (en desarrollo ahora)
 
@@ -61,7 +62,6 @@ Estado de cada capacidad en lenguaje de usuario. Se regenera con `python scripts
 - Mapa de protectoras con búsqueda por proximidad — hito 0.2 ([FEATURE-006](../planning/items/FEATURE-006.md))
 - Solicitud "Me interesa" con cuestionario y bandeja de la protectora — hito 0.2 ([FEATURE-007](../planning/items/FEATURE-007.md))
 - SEO, datos de demo y pulido del MVP — hito 0.2 ([FEATURE-008](../planning/items/FEATURE-008.md))
-- Editar los datos de la protectora mientras el alta está en revisión — hito 0.2 ([IMPROVEMENT-005](../planning/items/IMPROVEMENT-005.md))
 - Citas con calendario y agenda de disponibilidad — hito 0.3 ([FEATURE-009](../planning/items/FEATURE-009.md))
 - Área personal del adoptante — solicitudes, favoritos y alertas — hito 0.3 ([FEATURE-010](../planning/items/FEATURE-010.md))
 - Moderación de contenido y cuentas (admin) — hito 0.3 ([FEATURE-011](../planning/items/FEATURE-011.md))

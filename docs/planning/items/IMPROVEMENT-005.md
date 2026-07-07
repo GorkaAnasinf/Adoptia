@@ -2,7 +2,7 @@
 id: IMPROVEMENT-005
 tipo: improvement
 titulo: Editar los datos de la protectora mientras el alta está en revisión
-estado: listo
+estado: hecho
 prioridad: media
 hito: "0.2"
 duplicado_de: null
@@ -97,10 +97,10 @@ protectora) con el mínimo imprescindible.
 
 ## Criterios de aceptación / Casuística a cubrir
 
-- [ ] Una protectora en `pending` puede reabrir el wizard desde el banner y editar sus datos.
-- [ ] Al guardar en modo edición, los cambios persisten y el estado sigue `pending` (no se
+- [x] Una protectora en `pending` puede reabrir el wizard desde el banner y editar sus datos.
+- [x] Al guardar en modo edición, los cambios persisten y el estado sigue `pending` (no se
       auto-verifica ni cambia `status`).
-- [ ] Una protectora `verified` NO puede reabrir el wizard (sigue redirigiendo al panel).
-- [ ] RLS: el dueño no puede alterar `status`/`verification_note` ni en modo edición.
-- [ ] Copy del wizard adaptado al modo edición (título, pantalla final, botón).
-- [ ] Sin textos hardcodeados; responsive; sin regresión del flujo de alta inicial.
+- [x] Una protectora `verified` NO puede reabrir el wizard (sigue redirigiendo al panel).
+- [x] RLS: el dueño no puede alterar `status`/`verification_note` ni en modo edición.
+- [x] Copy del wizard adaptado al modo edición (título, pantalla final, botón).
+- [x] Sin textos hardcodeados; responsive; sin regresión del flujo de alta inicial.

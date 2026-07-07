@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import { createClient } from "@/lib/supabase/server";
 
@@ -26,12 +27,18 @@ export default async function PanelPage() {
   return (
     <section className="mx-auto max-w-6xl px-4 py-16">
       {shelter?.status === "pending" && (
-        <p
+        <div
           role="status"
-          className="mb-6 rounded-xl border-2 border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-900"
+          className="mb-6 flex flex-col gap-2 rounded-xl border-2 border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-900 sm:flex-row sm:items-center sm:justify-between"
         >
-          {to("bannerPending")}
-        </p>
+          <span>{to("bannerPending")}</span>
+          <Link
+            href="/panel/alta"
+            className="shrink-0 font-semibold text-amber-900 underline underline-offset-2 hover:text-amber-950"
+          >
+            {to("bannerPendingEdit")}
+          </Link>
+        </div>
       )}
       {shelter?.status === "suspended" && (
         <p

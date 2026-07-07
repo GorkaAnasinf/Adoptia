@@ -40,10 +40,10 @@ vi.mock("./LogoUploader", () => ({
   ),
 }));
 
-function renderWizard() {
+function renderWizard(props?: Partial<Parameters<typeof WizardAlta>[0]>) {
   render(
     <NextIntlClientProvider locale="es" messages={messages}>
-      <WizardAlta ownerId="owner-1" shelterId="s1" initial={{}} />
+      <WizardAlta ownerId="owner-1" shelterId="s1" initial={{}} {...props} />
     </NextIntlClientProvider>,
   );
 }
@@ -108,6 +108,29 @@ describe("WizardAlta", () => {
     expect(screen.getByText(/resumen/i)).toBeInTheDocument();
     expect(screen.getByText("Refugio Esperanza")).toBeInTheDocument();
     expect(screen.getByText("B98000003")).toBeInTheDocument();
+  });
+
+  it("en modo edición usa el copy de editar (título y botón/final de guardar cambios)", async () => {
+    const user = userEvent.setup();
+    renderWizard({ mode: "edicion" });
+    expect(
+      screen.getByRole("heading", { name: messages.onboarding.editTitle }),
+    ).toBeInTheDocument();
+    // Recorre los pasos hasta guardar
+    await rellenarPaso1(user);
+    await user.click(screen.getByRole("button", { name: /siguiente/i }));
+    await user.type(await screen.findByLabelText(/dirección/i), "Calle Mayor 1");
+    await user.type(screen.getByLabelText(/ciudad/i), "Bilbao");
+    await user.type(screen.getByLabelText(/provincia/i), "Bizkaia");
+    await user.type(screen.getByLabelText(/código postal/i), "48001");
+    await user.click(screen.getByRole("button", { name: /colocar-pin/i }));
+    await user.click(screen.getByRole("button", { name: /siguiente/i }));
+    await user.click(
+      await screen.findByRole("button", { name: messages.onboarding.saveChanges }),
+    );
+    await waitFor(() =>
+      expect(screen.getByText(messages.onboarding.editSavedTitle)).toBeInTheDocument(),
+    );
   });
 
   it("muestra aviso claro si el CIF/email ya está registrado (23505)", async () => {
