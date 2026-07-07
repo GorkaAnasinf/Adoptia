@@ -12,6 +12,18 @@
 | **0.3** | Fase 2 | Ciclo de adopción completo | Citas con agenda funcionando; adoptante gestiona solicitudes/favoritos/alertas; moderación activa |
 | **0.4** | Fase 3 | Ecosistema completo | Perdidos/encontrados, apadrinamiento, estadísticas, contenido educativo y acogidas según feedback del MVP |
 
+## Orden de trabajo del hito 0.2 (por bloques)
+
+Para centrar el desarrollo en un lado de la app cada vez, el 0.2 se aborda en dos bloques:
+
+- **🐕 Bloque A — Ciclo protectora (primero):** FEATURE-003 (gestión de animales) →
+  FEATURE-004 (dashboard + perfil público). Al cerrarlo, una protectora verificada publica,
+  gestiona y se presenta de forma completa.
+- **🧑 Bloque B — Ciclo persona (después):** FEATURE-005 (home/búsqueda/fichas) →
+  FEATURE-006 (mapa) → FEATURE-007 ("Me interesa" + bandeja) → FEATURE-008 (SEO/demo/pulido).
+  FEATURE-007 (y FEATURE-009 en 0.3) son **bisagra**: su mitad "protectora" solo cobra sentido
+  cuando el adoptante puede enviar solicitudes, por eso viven aquí.
+
 ## Items por hito
 
 <!-- RENDER:START -->
@@ -22,7 +34,7 @@
 | [FEATURE-000](items/FEATURE-000.md) | Inicialización y andamiaje del proyecto | hecho | alta |
 | [FEATURE-017](items/FEATURE-017.md) | Despliegue inicial — Supabase cloud y Vercel enlazados | hecho | alta |
 
-### Hito 0.2 — 53% completado (8/15)
+### Hito 0.2 — 56% completado (9/16)
 
 | Item | Título | Estado | Prioridad |
 |------|--------|--------|-----------|
@@ -31,16 +43,17 @@
 | [FEATURE-001](items/FEATURE-001.md) | Registro y login de adoptantes y protectoras | hecho | alta |
 | [FEATURE-002](items/FEATURE-002.md) | Onboarding de protectoras y verificación por admin | hecho | alta |
 | [FEATURE-003](items/FEATURE-003.md) | Gestión de animales con fotos y vídeo (panel protectora) | listo | alta |
+| [FEATURE-004](items/FEATURE-004.md) | Panel de protectora — dashboard y perfil público | listo | alta |
 | [FEATURE-005](items/FEATURE-005.md) | Área pública — home, búsqueda de animales y fichas | listo | alta |
 | [FEATURE-006](items/FEATURE-006.md) | Mapa de protectoras con búsqueda por proximidad | listo | alta |
 | [FEATURE-007](items/FEATURE-007.md) | Solicitud "Me interesa" con cuestionario y bandeja de la protectora | listo | alta |
 | [FEATURE-018](items/FEATURE-018.md) | App shell autenticado — cabecera común, navegación por rol y breadcrumbs | hecho | alta |
 | [IMPROVEMENT-002](items/IMPROVEMENT-002.md) | Rediseño UX del wizard de alta de protectora (+ fix del mapa gris) | hecho | alta |
-| [FEATURE-004](items/FEATURE-004.md) | Panel de protectora — dashboard y perfil público | listo | media |
 | [FEATURE-008](items/FEATURE-008.md) | SEO, datos de demo y pulido del MVP | listo | media |
 | [IMPROVEMENT-003](items/IMPROVEMENT-003.md) | Pulido del shell chrome (sidebar + cabecera) hacia el mockup de Stitch | hecho | media |
 | [IMPROVEMENT-004](items/IMPROVEMENT-004.md) | Pulido del chrome (sidebar arena, cabecera) y estado vacío de Mi cuenta | hecho | media |
 | [IMPROVEMENT-005](items/IMPROVEMENT-005.md) | Editar los datos de la protectora mientras el alta está en revisión | hecho | media |
+| [IMPROVEMENT-006](items/IMPROVEMENT-006.md) | Completar el sidebar del adoptante con sus secciones (deshabilitadas) | hecho | baja |
 
 ### Hito 0.3 — 0% completado (0/3)
 
