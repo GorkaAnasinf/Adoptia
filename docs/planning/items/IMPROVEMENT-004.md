@@ -2,7 +2,7 @@
 id: IMPROVEMENT-004
 tipo: improvement
 titulo: Pulido del chrome (sidebar arena, cabecera) y estado vacío de Mi cuenta
-estado: desarrollo
+estado: hecho
 prioridad: media
 hito: "0.2"
 duplicado_de: null
@@ -69,11 +69,11 @@ y `/mi-cuenta` es un placeholder pobre. Todo transversal al panel → mejora per
 
 ## Criterios de aceptación / Casuística a cubrir
 
-- [ ] Sidebar (desktop y drawer) con fondo arena `bg-muted`, diferenciado del fondo por el borde.
-- [ ] Cabecera sin botones muertos: ayuda y campana retiradas hasta tener feature; prop
+- [x] Sidebar (desktop y drawer) con fondo arena `bg-muted`, diferenciado del fondo por el borde.
+- [x] Cabecera sin botones muertos: ayuda y campana retiradas hasta tener feature; prop
       `hasNotifications` conservado para reactivación futura.
-- [ ] Menú de usuario muestra nombre real (fallback a email).
-- [ ] Enlace "saltar al contenido" accesible (visible al foco) que lleva al `<main>`.
-- [ ] `/mi-cuenta` muestra un estado vacío cuidado con CTA (no un `<p>` suelto).
-- [ ] Sin textos hardcodeados; coherente con tokens de `DESIGN.md`.
-- [ ] Responsive sin regresiones en el drawer.
+- [x] Menú de usuario muestra nombre real (fallback a email).
+- [x] Enlace "saltar al contenido" accesible (visible al foco) que lleva al `<main>`.
+- [x] `/mi-cuenta` muestra un estado vacío cuidado con CTA (no un `<p>` suelto).
+- [x] Sin textos hardcodeados; coherente con tokens de `DESIGN.md`.
+- [x] Responsive sin regresiones en el drawer.

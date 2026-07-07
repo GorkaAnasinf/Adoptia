@@ -6,12 +6,12 @@
 ## 📍 ESTADO ACTUAL
 
 - **Hito activo:** 0.2 — MVP área pública
-- **Progreso:** FEATURE-001 y FEATURE-002 hechos; app shell autenticado (FEATURE-018), rediseño del wizard (IMPROVEMENT-002) y pulido del chrome del panel (IMPROVEMENT-003) en producción; correcciones de confirmación de email y mapa (BUG-001/002/003).
+- **Progreso:** FEATURE-001 y FEATURE-002 hechos; app shell autenticado (FEATURE-018), rediseño del wizard (IMPROVEMENT-002) y pulido del chrome del panel (IMPROVEMENT-003/004) en producción; correcciones de confirmación de email y mapa (BUG-001/002/003).
 - **Siguiente:** FEATURE-003 — Gestión de animales con fotos y vídeo (panel protectora)
-- **En curso:** nada
+- **En curso:** IMPROVEMENT-005 (editar el alta en revisión) — pendiente de planificar/aprobar.
 - **Bloqueos:** ninguno.
 - **Follow-ups abiertos:** IMPROVEMENT-001 (de-duplicar slug de protectora), sin planificar.
-- **Última actualización:** 2026-07-07 (cierre de IMPROVEMENT-003; desplegando a producción)
+- **Última actualización:** 2026-07-07 (cierre de IMPROVEMENT-004; desplegando a producción)
 
 ## Items abiertos por estado
 
