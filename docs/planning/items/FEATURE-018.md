@@ -67,10 +67,10 @@ Unifica el sistema de diseño dentro de la app, mejora orientación (breadcrumbs
 
 ## Criterios de aceptación / Casuística a cubrir
 
-- [ ] Toda pantalla autenticada muestra la cabecera común (marca, breadcrumbs, badge de estado, menú de usuario) y, según rol, el sidebar.
-- [ ] Breadcrumbs correctos por ruta; el segmento actual no es enlace.
-- [ ] Badge de estado de la protectora correcto (verificada/en revisión/suspendida) con color e i18n.
-- [ ] Sidebar por rol; en onboarding los ítems del panel están deshabilitados salvo el alta.
-- [ ] Responsive: en móvil el sidebar es un drawer accesible (abrir/cerrar, focus, ≥44px).
-- [ ] Menú de usuario con Salir funcional; sin textos hardcodeados (todo en `messages/es.json`).
-- [ ] Las páginas existentes (`/panel`, `/admin/protectoras`, `/mi-cuenta`) siguen funcionando dentro del shell.
+- [x] Toda pantalla autenticada muestra la cabecera común (marca, breadcrumbs, badge de estado, menú de usuario) y, según rol, el sidebar.
+- [x] Breadcrumbs correctos por ruta; el segmento actual no es enlace.
+- [x] Badge de estado de la protectora correcto (verificada/en revisión/suspendida) con color e i18n.
+- [x] Sidebar por rol; en onboarding los ítems del panel están deshabilitados salvo el alta.
+- [x] Responsive: en móvil el sidebar es un drawer accesible (abrir/cerrar, focus, ≥44px).
+- [x] Menú de usuario con Salir funcional; sin textos hardcodeados (todo en `messages/es.json`).
+- [x] Las páginas existentes (`/panel`, `/admin/protectoras`, `/mi-cuenta`) siguen funcionando dentro del shell.
