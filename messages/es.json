@@ -96,6 +96,7 @@
     "userMenu": "Abrir menú de usuario",
     "navMain": "Navegación principal",
     "breadcrumb": "Ruta de navegación",
+    "skipToContent": "Saltar al contenido",
     "comingSoon": "Próximamente",
     "help": "Ayuda",
     "notifications": "Notificaciones",
@@ -224,7 +225,10 @@
   },
   "account": {
     "title": "Mi cuenta",
-    "placeholder": "Aquí verás tus solicitudes y favoritos."
+    "placeholder": "Aquí verás tus solicitudes y favoritos.",
+    "emptyTitle": "Aún no tienes actividad",
+    "emptyText": "Cuando guardes favoritos o envíes una solicitud de adopción, aparecerán aquí para que les sigas la pista.",
+    "emptyCta": "Explorar animales"
   },
   "errors": {
     "missingEnv": "Faltan variables de entorno de Supabase. Copia .env.example a .env.local y rellena NEXT_PUBLIC_SUPABASE_URL y NEXT_PUBLIC_SUPABASE_ANON_KEY."

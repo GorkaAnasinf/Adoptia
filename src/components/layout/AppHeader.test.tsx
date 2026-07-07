@@ -41,13 +41,13 @@ describe("AppHeader", () => {
     expect(onMenuClick).toHaveBeenCalledOnce();
   });
 
-  it("no muestra el punto de notificación por defecto", () => {
-    renderHeader(vi.fn(), { hasNotifications: false });
-    expect(screen.queryByLabelText(messages.shell.notificationsNew)).not.toBeInTheDocument();
-  });
-
-  it("con hasNotifications muestra el indicador de nuevas notificaciones", () => {
-    renderHeader(vi.fn(), { hasNotifications: true });
-    expect(screen.getByLabelText(messages.shell.notificationsNew)).toBeInTheDocument();
+  it("no muestra botones muertos de ayuda ni de notificaciones (pendientes de feature)", () => {
+    renderHeader();
+    expect(
+      screen.queryByRole("button", { name: new RegExp(messages.shell.help) }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", { name: new RegExp(messages.shell.notifications) }),
+    ).not.toBeInTheDocument();
   });
 });

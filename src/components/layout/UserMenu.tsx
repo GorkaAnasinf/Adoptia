@@ -79,6 +79,7 @@ export function UserMenu() {
   }
 
   const avatarUrl = user.user_metadata?.avatar_url as string | undefined;
+  const nombreCompleto = user.user_metadata?.full_name as string | undefined;
   const mostrarFoto = Boolean(avatarUrl) && !fotoFallida;
 
   return (
@@ -111,7 +112,10 @@ export function UserMenu() {
           className="absolute right-0 top-11 z-50 w-56 overflow-hidden rounded-xl border border-border bg-popover shadow-lg"
         >
           <div className="border-b border-border px-4 py-3">
-            <p className="truncate text-sm font-medium text-foreground">{user.email}</p>
+            {nombreCompleto && (
+              <p className="truncate text-sm font-semibold text-foreground">{nombreCompleto}</p>
+            )}
+            <p className="truncate text-xs text-muted-foreground">{user.email}</p>
           </div>
           <Link
             href="/mi-cuenta"

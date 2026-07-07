@@ -1,6 +1,6 @@
 "use client";
 
-import { Bell, HelpCircle, Menu, PawPrint } from "lucide-react";
+import { Menu, PawPrint } from "lucide-react";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { Breadcrumbs, type Crumb } from "./Breadcrumbs";
@@ -13,19 +13,13 @@ type Props = {
   crumbs: Crumb[];
   onMenuClick: () => void;
   /**
-   * Enciende el punto de la campana. Presentacional: se alimentará desde la
-   * feature de notificaciones/solicitudes. Por defecto apagado (sin datos falsos).
+   * Latente: encenderá el punto de la campana cuando exista la feature de
+   * notificaciones. Hoy la campana está retirada, así que no se consume.
    */
   hasNotifications?: boolean;
 };
 
-export function AppHeader({
-  shelterName,
-  status,
-  crumbs,
-  onMenuClick,
-  hasNotifications = false,
-}: Props) {
+export function AppHeader({ shelterName, status, crumbs, onMenuClick }: Props) {
   const t = useTranslations("shell");
   const tc = useTranslations("common");
 
@@ -63,30 +57,8 @@ export function AppHeader({
           </span>
         )}
         <StatusBadge status={status} />
-        <button
-          type="button"
-          disabled
-          aria-label={`${t("help")} · ${t("comingSoon")}`}
-          title={t("comingSoon")}
-          className="hidden size-9 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-accent hover:text-primary sm:flex"
-        >
-          <HelpCircle className="size-5" aria-hidden="true" />
-        </button>
-        <button
-          type="button"
-          disabled
-          aria-label={`${t("notifications")} · ${t("comingSoon")}`}
-          title={t("comingSoon")}
-          className="relative hidden size-9 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-accent hover:text-primary sm:flex"
-        >
-          <Bell className="size-5" aria-hidden="true" />
-          {hasNotifications && (
-            <span
-              aria-label={t("notificationsNew")}
-              className="absolute right-1.5 top-1.5 size-2 rounded-full bg-primary ring-2 ring-background"
-            />
-          )}
-        </button>
+        {/* Ayuda y notificaciones se retiran hasta tener feature; el prop
+            `hasNotifications` queda latente para reactivar la campana. */}
         <UserMenu />
       </div>
     </header>
