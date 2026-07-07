@@ -2,7 +2,7 @@
 id: IMPROVEMENT-005
 tipo: improvement
 titulo: Editar los datos de la protectora mientras el alta está en revisión
-estado: listo
+estado: desarrollo
 prioridad: media
 hito: "0.2"
 duplicado_de: null

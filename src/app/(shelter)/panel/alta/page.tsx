@@ -23,11 +23,15 @@ export default async function AltaPage() {
     .eq("owner_id", user.id)
     .maybeSingle();
 
+  // Alta ya enviada (en revisión) → el wizard entra en modo edición.
+  const mode = shelter?.submitted_at ? "edicion" : "alta";
+
   return (
     <WizardAlta
       ownerId={user.id}
       shelterId={shelter?.id ?? null}
       initial={shelterRowToForm(shelter)}
+      mode={mode}
     />
   );
 }
