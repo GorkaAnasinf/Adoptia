@@ -2,12 +2,12 @@
 id: FEATURE-003
 tipo: feature
 titulo: Gestión de animales con fotos y vídeo (panel protectora)
-estado: listo
+estado: desarrollo
 prioridad: alta
 hito: "0.2"
 duplicado_de: null
 creado: 2026-07-04
-actualizado: 2026-07-04
+actualizado: 2026-07-07
 ---
 
 # FEATURE-003 — Gestión de animales con fotos y vídeo
