@@ -6,12 +6,12 @@
 ## 📍 ESTADO ACTUAL
 
 - **Hito activo:** 0.2 — MVP área pública
-- **Progreso:** FEATURE-001 y FEATURE-002 hechos; app shell autenticado (FEATURE-018) y rediseño del wizard (IMPROVEMENT-002) en producción; correcciones de confirmación de email y mapa (BUG-001/002/003).
+- **Progreso:** FEATURE-001 y FEATURE-002 hechos; app shell autenticado (FEATURE-018), rediseño del wizard (IMPROVEMENT-002) y pulido del chrome del panel (IMPROVEMENT-003) en producción; correcciones de confirmación de email y mapa (BUG-001/002/003).
 - **Siguiente:** FEATURE-003 — Gestión de animales con fotos y vídeo (panel protectora)
 - **En curso:** nada
 - **Bloqueos:** ninguno.
 - **Follow-ups abiertos:** IMPROVEMENT-001 (de-duplicar slug de protectora), sin planificar.
-- **Última actualización:** 2026-07-07 (cierre de FEATURE-018 + IMPROVEMENT-002; desplegando a producción)
+- **Última actualización:** 2026-07-07 (cierre de IMPROVEMENT-003; desplegando a producción)
 
 ## Items abiertos por estado
 
@@ -24,7 +24,7 @@ Los items `hecho`/`descartado` no aparecen aquí — su histórico vive en [CHAN
 |------|--------|-----------|------|
 | [BUG-001](items/BUG-001.md) | Tras confirmar el correo, la protectora no entra al onboarding; falta pantalla de "correo verificado | alta | 0.2 |
 
-### ✅ Listo para desarrollo (15)
+### ✅ Listo para desarrollo (14)
 
 | Item | Título | Prioridad | Hito |
 |------|--------|-----------|------|
@@ -38,7 +38,6 @@ Los items `hecho`/`descartado` no aparecen aquí — su histórico vive en [CHAN
 | [FEATURE-010](items/FEATURE-010.md) | Área personal del adoptante — solicitudes, favoritos y alertas | media | 0.3 |
 | [FEATURE-011](items/FEATURE-011.md) | Moderación de contenido y cuentas (admin) | media | 0.3 |
 | [FEATURE-012](items/FEATURE-012.md) | Animales perdidos y encontrados | media | 0.4 |
-| [IMPROVEMENT-003](items/IMPROVEMENT-003.md) | Pulido del shell chrome (sidebar + cabecera) hacia el mockup de Stitch | media | 0.2 |
 | [FEATURE-013](items/FEATURE-013.md) | Apadrinamiento y donaciones | baja | 0.4 |
 | [FEATURE-014](items/FEATURE-014.md) | Estadísticas para protectoras y difusión en redes | baja | 0.4 |
 | [FEATURE-015](items/FEATURE-015.md) | Contenido educativo sobre adopción responsable | baja | 0.4 |

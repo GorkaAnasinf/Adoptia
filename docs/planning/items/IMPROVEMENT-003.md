@@ -2,7 +2,7 @@
 id: IMPROVEMENT-003
 tipo: improvement
 titulo: Pulido del shell chrome (sidebar + cabecera) hacia el mockup de Stitch
-estado: desarrollo
+estado: hecho
 prioridad: media
 hito: "0.2"
 duplicado_de: null
@@ -141,15 +141,15 @@ Responsive: sin regresiones — drawer móvil sigue igual; badges/pill/avatar ca
 
 ## Criterios de aceptación / Casuística a cubrir
 
-- [ ] Ítem de nav muestra badge (pill) cuando recibe `badge>0`; sin badge si `undefined`/`0`.
-- [ ] "Contactar soporte" es un enlace `mailto:` con estilo teal sólido; foco/hover
+- [x] Ítem de nav muestra badge (pill) cuando recibe `badge>0`; sin badge si `undefined`/`0`.
+- [x] "Contactar soporte" es un enlace `mailto:` con estilo teal sólido; foco/hover
       accesibles (AA), target ≥44px.
-- [ ] Ítem activo se distingue con pill salvia/menta; hover de no-activos correcto.
-- [ ] Panel sidebar lee como superficie diferenciada del fondo crema (contraste + borde/sombra).
-- [ ] Campana muestra punto de notificación **solo** con `hasNotifications`; oculto por
+- [x] Ítem activo se distingue con pill salvia/menta; hover de no-activos correcto.
+- [x] Panel sidebar lee como superficie diferenciada del fondo crema (contraste + borde/sombra).
+- [x] Campana muestra punto de notificación **solo** con `hasNotifications`; oculto por
       defecto (sin datos falsos). Iconos de cabecera legibles (no "apagados").
-- [ ] Avatar: foto redonda con `avatar_url`; iniciales como fallback (incl. si la imagen falla).
-- [ ] Sin textos hardcodeados (next-intl); coherente con tokens de `DESIGN.md`.
-- [ ] Responsive: sin regresiones en drawer móvil ni en la cabecera a <640px.
-- [ ] No se cablean datos reales de conteo/dashboard (fuera de alcance); el mecanismo queda
+- [x] Avatar: foto redonda con `avatar_url`; iniciales como fallback (incl. si la imagen falla).
+- [x] Sin textos hardcodeados (next-intl); coherente con tokens de `DESIGN.md`.
+- [x] Responsive: sin regresiones en drawer móvil ni en la cabecera a <640px.
+- [x] No se cablean datos reales de conteo/dashboard (fuera de alcance); el mecanismo queda
       listo para [[FEATURE-007]]/[[FEATURE-004]].

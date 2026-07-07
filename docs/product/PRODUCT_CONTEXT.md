@@ -46,6 +46,7 @@ Estado de cada capacidad en lenguaje de usuario. Se regenera con `python scripts
 - Despliegue inicial — Supabase cloud y Vercel enlazados ([FEATURE-017](../planning/items/FEATURE-017.md))
 - App shell autenticado — cabecera común, navegación por rol y breadcrumbs ([FEATURE-018](../planning/items/FEATURE-018.md))
 - Rediseño UX del wizard de alta de protectora (+ fix del mapa gris) ([IMPROVEMENT-002](../planning/items/IMPROVEMENT-002.md))
+- Pulido del shell chrome (sidebar + cabecera) hacia el mockup de Stitch ([IMPROVEMENT-003](../planning/items/IMPROVEMENT-003.md))
 
 #### 🚧 En camino (en desarrollo ahora)
 
@@ -59,7 +60,6 @@ Estado de cada capacidad en lenguaje de usuario. Se regenera con `python scripts
 - Mapa de protectoras con búsqueda por proximidad — hito 0.2 ([FEATURE-006](../planning/items/FEATURE-006.md))
 - Solicitud "Me interesa" con cuestionario y bandeja de la protectora — hito 0.2 ([FEATURE-007](../planning/items/FEATURE-007.md))
 - SEO, datos de demo y pulido del MVP — hito 0.2 ([FEATURE-008](../planning/items/FEATURE-008.md))
-- Pulido del shell chrome (sidebar + cabecera) hacia el mockup de Stitch — hito 0.2 ([IMPROVEMENT-003](../planning/items/IMPROVEMENT-003.md))
 - Citas con calendario y agenda de disponibilidad — hito 0.3 ([FEATURE-009](../planning/items/FEATURE-009.md))
 - Área personal del adoptante — solicitudes, favoritos y alertas — hito 0.3 ([FEATURE-010](../planning/items/FEATURE-010.md))
 - Moderación de contenido y cuentas (admin) — hito 0.3 ([FEATURE-011](../planning/items/FEATURE-011.md))
