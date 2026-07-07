@@ -12,9 +12,20 @@ type Props = {
   status: ShelterStatus | null;
   crumbs: Crumb[];
   onMenuClick: () => void;
+  /**
+   * Enciende el punto de la campana. Presentacional: se alimentará desde la
+   * feature de notificaciones/solicitudes. Por defecto apagado (sin datos falsos).
+   */
+  hasNotifications?: boolean;
 };
 
-export function AppHeader({ shelterName, status, crumbs, onMenuClick }: Props) {
+export function AppHeader({
+  shelterName,
+  status,
+  crumbs,
+  onMenuClick,
+  hasNotifications = false,
+}: Props) {
   const t = useTranslations("shell");
   const tc = useTranslations("common");
 
@@ -57,7 +68,7 @@ export function AppHeader({ shelterName, status, crumbs, onMenuClick }: Props) {
           disabled
           aria-label={`${t("help")} · ${t("comingSoon")}`}
           title={t("comingSoon")}
-          className="hidden size-9 items-center justify-center rounded-full text-primary opacity-50 sm:flex"
+          className="hidden size-9 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-accent hover:text-primary sm:flex"
         >
           <HelpCircle className="size-5" aria-hidden="true" />
         </button>
@@ -66,9 +77,15 @@ export function AppHeader({ shelterName, status, crumbs, onMenuClick }: Props) {
           disabled
           aria-label={`${t("notifications")} · ${t("comingSoon")}`}
           title={t("comingSoon")}
-          className="hidden size-9 items-center justify-center rounded-full text-primary opacity-50 sm:flex"
+          className="relative hidden size-9 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-accent hover:text-primary sm:flex"
         >
           <Bell className="size-5" aria-hidden="true" />
+          {hasNotifications && (
+            <span
+              aria-label={t("notificationsNew")}
+              className="absolute right-1.5 top-1.5 size-2 rounded-full bg-primary ring-2 ring-background"
+            />
+          )}
         </button>
         <UserMenu />
       </div>

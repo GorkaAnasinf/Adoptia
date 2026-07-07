@@ -22,7 +22,7 @@
 | [FEATURE-000](items/FEATURE-000.md) | Inicialización y andamiaje del proyecto | hecho | alta |
 | [FEATURE-017](items/FEATURE-017.md) | Despliegue inicial — Supabase cloud y Vercel enlazados | hecho | alta |
 
-### Hito 0.2 — 42% completado (5/12)
+### Hito 0.2 — 38% completado (5/13)
 
 | Item | Título | Estado | Prioridad |
 |------|--------|--------|-----------|
@@ -38,6 +38,7 @@
 | [IMPROVEMENT-002](items/IMPROVEMENT-002.md) | Rediseño UX del wizard de alta de protectora (+ fix del mapa gris) | hecho | alta |
 | [FEATURE-004](items/FEATURE-004.md) | Panel de protectora — dashboard y perfil público | listo | media |
 | [FEATURE-008](items/FEATURE-008.md) | SEO, datos de demo y pulido del MVP | listo | media |
+| [IMPROVEMENT-003](items/IMPROVEMENT-003.md) | Pulido del shell chrome (sidebar + cabecera) hacia el mockup de Stitch | listo | media |
 
 ### Hito 0.3 — 0% completado (0/3)
 

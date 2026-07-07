@@ -15,6 +15,10 @@ type Props = {
   onboarding: boolean;
   status: ShelterStatus | null;
   shelterName?: string | null;
+  /** Conteos por clave de nav (mecanismo listo; alimentación en FEATURE-007/004). */
+  badges?: Partial<Record<string, number>>;
+  /** Enciende el punto de la campana (feature de notificaciones futura). */
+  hasNotifications?: boolean;
   children: React.ReactNode;
 };
 
@@ -37,7 +41,15 @@ function Marca({ shelterName }: { shelterName?: string | null }) {
   );
 }
 
-export function AppShell({ role, onboarding, status, shelterName, children }: Props) {
+export function AppShell({
+  role,
+  onboarding,
+  status,
+  shelterName,
+  badges,
+  hasNotifications,
+  children,
+}: Props) {
   const t = useTranslations("shell");
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
@@ -79,10 +91,10 @@ export function AppShell({ role, onboarding, status, shelterName, children }: Pr
   return (
     <div className="min-h-screen bg-background">
       {/* Sidebar fijo (desktop) */}
-      <aside className="fixed inset-y-0 left-0 hidden w-64 flex-col border-r border-border bg-card lg:flex">
+      <aside className="fixed inset-y-0 left-0 hidden w-64 flex-col border-r border-border bg-card shadow-sm lg:flex">
         <Marca shelterName={shelterName} />
         <div className="flex-1 overflow-y-auto">
-          <AppSidebar role={role} onboarding={onboarding} pathname={pathname} />
+          <AppSidebar role={role} onboarding={onboarding} pathname={pathname} badges={badges} />
         </div>
       </aside>
 
@@ -113,7 +125,7 @@ export function AppShell({ role, onboarding, status, shelterName, children }: Pr
               </button>
             </div>
             <div className="flex-1 overflow-y-auto">
-              <AppSidebar role={role} onboarding={onboarding} pathname={pathname} />
+              <AppSidebar role={role} onboarding={onboarding} pathname={pathname} badges={badges} />
             </div>
           </div>
         </div>
@@ -126,6 +138,7 @@ export function AppShell({ role, onboarding, status, shelterName, children }: Pr
           status={status}
           crumbs={crumbs}
           onMenuClick={abrir}
+          hasNotifications={hasNotifications}
         />
         <main className="flex-1">{children}</main>
         <footer className="flex flex-col items-center justify-between gap-2 border-t border-border px-6 py-4 text-sm text-muted-foreground sm:flex-row">
