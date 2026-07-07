@@ -1,8 +1,11 @@
 import {
   BarChart3,
+  Bell,
   CalendarDays,
+  CalendarHeart,
   Clock,
   FileText,
+  Heart,
   Home,
   type LucideIcon,
   LifeBuoy,
@@ -34,7 +37,13 @@ const NAV: Record<Role, Item[]> = {
     { key: "navStats", href: "/panel/estadisticas", icon: BarChart3 },
   ],
   admin: [{ key: "navAdminShelters", href: "/admin/protectoras", icon: Store, exists: true }],
-  adopter: [{ key: "navAccount", href: "/mi-cuenta", icon: Home, exists: true }],
+  adopter: [
+    { key: "navAccount", href: "/mi-cuenta", icon: Home, exists: true },
+    { key: "navMyRequests", href: "/mi-cuenta/solicitudes", icon: FileText },
+    { key: "navFavorites", href: "/mi-cuenta/favoritos", icon: Heart },
+    { key: "navMyAppointments", href: "/mi-cuenta/citas", icon: CalendarHeart },
+    { key: "navMyAlerts", href: "/mi-cuenta/alertas", icon: Bell },
+  ],
 };
 
 type Props = {
