@@ -22,7 +22,7 @@
 | [FEATURE-000](items/FEATURE-000.md) | Inicialización y andamiaje del proyecto | hecho | alta |
 | [FEATURE-017](items/FEATURE-017.md) | Despliegue inicial — Supabase cloud y Vercel enlazados | hecho | alta |
 
-### Hito 0.2 — 50% completado (7/14)
+### Hito 0.2 — 53% completado (8/15)
 
 | Item | Título | Estado | Prioridad |
 |------|--------|--------|-----------|
@@ -40,6 +40,7 @@
 | [FEATURE-008](items/FEATURE-008.md) | SEO, datos de demo y pulido del MVP | listo | media |
 | [IMPROVEMENT-003](items/IMPROVEMENT-003.md) | Pulido del shell chrome (sidebar + cabecera) hacia el mockup de Stitch | hecho | media |
 | [IMPROVEMENT-004](items/IMPROVEMENT-004.md) | Pulido del chrome (sidebar arena, cabecera) y estado vacío de Mi cuenta | hecho | media |
+| [IMPROVEMENT-005](items/IMPROVEMENT-005.md) | Editar los datos de la protectora mientras el alta está en revisión | hecho | media |
 
 ### Hito 0.3 — 0% completado (0/3)
 

@@ -30,11 +30,45 @@ describe("decideOnboardingGate", () => {
     ).toBeNull();
   });
 
-  it("protectora ya enviada que abre el wizard → al panel (alta de un solo uso)", () => {
+  it("protectora verificada que abre el wizard → al panel (alta de un solo uso)", () => {
     expect(
       decideOnboardingGate({
         submittedAt: "2026-07-06T10:00:00Z",
         hasShelter: true,
+        status: "verified",
+        pathname: "/panel/alta",
+      }),
+    ).toBe("/panel");
+  });
+
+  it("protectora en revisión (pending) puede reabrir el wizard para editar", () => {
+    expect(
+      decideOnboardingGate({
+        submittedAt: "2026-07-06T10:00:00Z",
+        hasShelter: true,
+        status: "pending",
+        pathname: "/panel/alta",
+      }),
+    ).toBeNull();
+  });
+
+  it("protectora en revisión también puede estar en el panel", () => {
+    expect(
+      decideOnboardingGate({
+        submittedAt: "2026-07-06T10:00:00Z",
+        hasShelter: true,
+        status: "pending",
+        pathname: "/panel",
+      }),
+    ).toBeNull();
+  });
+
+  it("suspendida: el alta sigue siendo de un solo uso (fuera de alcance de edición)", () => {
+    expect(
+      decideOnboardingGate({
+        submittedAt: "2026-07-06T10:00:00Z",
+        hasShelter: true,
+        status: "suspended",
         pathname: "/panel/alta",
       }),
     ).toBe("/panel");

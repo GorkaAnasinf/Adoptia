@@ -48,6 +48,7 @@ Estado de cada capacidad en lenguaje de usuario. Se regenera con `python scripts
 - Rediseño UX del wizard de alta de protectora (+ fix del mapa gris) ([IMPROVEMENT-002](../planning/items/IMPROVEMENT-002.md))
 - Pulido del shell chrome (sidebar + cabecera) hacia el mockup de Stitch ([IMPROVEMENT-003](../planning/items/IMPROVEMENT-003.md))
 - Pulido del chrome (sidebar arena, cabecera) y estado vacío de Mi cuenta ([IMPROVEMENT-004](../planning/items/IMPROVEMENT-004.md))
+- Editar los datos de la protectora mientras el alta está en revisión ([IMPROVEMENT-005](../planning/items/IMPROVEMENT-005.md))
 
 #### 🚧 En camino (en desarrollo ahora)
 

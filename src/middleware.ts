@@ -63,13 +63,14 @@ export async function middleware(request: NextRequest) {
     if (rule.role === "shelter") {
       const { data: shelter } = await supabase
         .from("shelters")
-        .select("submitted_at")
+        .select("submitted_at, status")
         .eq("owner_id", user.id)
         .maybeSingle();
 
       const destino = decideOnboardingGate({
         submittedAt: shelter?.submitted_at ?? null,
         hasShelter: Boolean(shelter),
+        status: shelter?.status ?? null,
         pathname: request.nextUrl.pathname,
       });
       if (destino && destino !== request.nextUrl.pathname) {
