@@ -48,7 +48,7 @@ describe("UserMenu", () => {
     ).toHaveAttribute("href", "/login");
   });
 
-  it("con sesión muestra Salir y cierra sesión al pulsarlo", async () => {
+  it("con sesión muestra un avatar que abre el menú y permite salir", async () => {
     getUserMock.mockResolvedValue({
       data: { user: { id: "u1", email: "ana@example.com" } },
       error: null,
@@ -56,12 +56,26 @@ describe("UserMenu", () => {
     signOutMock.mockResolvedValue({ error: null });
     renderMenu();
 
-    const salir = await screen.findByRole("button", { name: messages.auth.logout });
-    await userEvent.click(salir);
+    const avatar = await screen.findByRole("button", { name: messages.shell.userMenu });
+    await userEvent.click(avatar);
+
+    // El menú muestra el email y la opción de salir
+    expect(screen.getByText("ana@example.com")).toBeInTheDocument();
+    await userEvent.click(screen.getByRole("menuitem", { name: messages.auth.logout }));
 
     await waitFor(() => {
       expect(signOutMock).toHaveBeenCalled();
       expect(refreshMock).toHaveBeenCalled();
     });
+  });
+
+  it("el menú está cerrado hasta que se pulsa el avatar", async () => {
+    getUserMock.mockResolvedValue({
+      data: { user: { id: "u1", email: "ana@example.com" } },
+      error: null,
+    });
+    renderMenu();
+    await screen.findByRole("button", { name: messages.shell.userMenu });
+    expect(screen.queryByText("ana@example.com")).not.toBeInTheDocument();
   });
 });

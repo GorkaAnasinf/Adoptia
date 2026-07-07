@@ -99,6 +99,17 @@ describe("WizardAlta", () => {
     expect(enviados).toBeGreaterThan(0);
   });
 
+  it("el panel de Resumen refleja los datos de la entidad", async () => {
+    const user = userEvent.setup();
+    renderWizard();
+    await rellenarPaso1(user);
+    await user.click(screen.getByRole("button", { name: /siguiente/i }));
+    await waitFor(() => expect(upsertMock).toHaveBeenCalled());
+    expect(screen.getByText(/resumen/i)).toBeInTheDocument();
+    expect(screen.getByText("Refugio Esperanza")).toBeInTheDocument();
+    expect(screen.getByText("B98000003")).toBeInTheDocument();
+  });
+
   it("muestra aviso claro si el CIF/email ya está registrado (23505)", async () => {
     const user = userEvent.setup();
     upsertMock.mockResolvedValue({ data: null, error: { code: "23505" } });
