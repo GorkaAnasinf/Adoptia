@@ -2,6 +2,9 @@ import { describe, expect, it } from "vitest";
 import {
   animalDraftSchema,
   animalPublishSchema,
+  animalToRow,
+  datosDuplicados,
+  esTransicionValida,
   generarSlug,
   validarPublicacion,
 } from "./animal";
@@ -67,6 +70,56 @@ describe("validarPublicacion (incluye fotos)", () => {
 
   it("es publicable con mínimos + 1 foto", () => {
     expect(validarPublicacion(completo, 1).ok).toBe(true);
+  });
+});
+
+describe("esTransicionValida", () => {
+  it("permite en adopción → reservado → adoptado", () => {
+    expect(esTransicionValida("available", "reserved")).toBe(true);
+    expect(esTransicionValida("reserved", "adopted")).toBe(true);
+  });
+
+  it("rechaza saltar de adoptado a reservado", () => {
+    expect(esTransicionValida("adopted", "reserved")).toBe(false);
+  });
+
+  it("mantener el mismo estado siempre es válido", () => {
+    expect(esTransicionValida("reserved", "reserved")).toBe(true);
+  });
+});
+
+describe("animalToRow", () => {
+  it("mapea camelCase a columnas snake_case y normaliza vacíos", () => {
+    const row = animalToRow(
+      { name: "Luna", species: "dog", goodWithDogs: true, breed: "  " },
+      "s1",
+    );
+    expect(row.shelter_id).toBe("s1");
+    expect(row.good_with_dogs).toBe(true);
+    expect(row.breed).toBeNull();
+    expect(row.sex).toBe("unknown");
+  });
+});
+
+describe("datosDuplicados", () => {
+  it("copia todo menos slug, fotos y estado; queda como borrador (copia)", () => {
+    const original = {
+      id: "a1",
+      slug: "luna-abc123",
+      name: "Luna",
+      species: "dog",
+      status: "adopted",
+      published_at: "2026-01-01",
+      description: "cariñosa",
+    };
+    const copia = datosDuplicados(original, "s1");
+    expect(copia.name).toBe("Luna (copia)");
+    expect(copia.status).toBe("available");
+    expect(copia.published_at).toBeNull();
+    expect(copia.slug).not.toBe(original.slug);
+    expect(copia.slug).toMatch(/^luna-[0-9a-f]{6}$/);
+    expect(copia).not.toHaveProperty("id");
+    expect(copia.description).toBe("cariñosa");
   });
 });
 

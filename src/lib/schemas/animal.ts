@@ -60,6 +60,73 @@ export function validarPublicacion(
   return { ok: errores.length === 0, errores };
 }
 
+// ---------- Transiciones de estado válidas ----------
+export const TRANSICIONES: Record<AnimalStatus, AnimalStatus[]> = {
+  available: ["reserved", "adopted", "fostered", "not_listed"],
+  reserved: ["available", "adopted", "not_listed"],
+  fostered: ["available", "reserved", "adopted", "not_listed"],
+  adopted: ["available", "not_listed"],
+  not_listed: ["available"],
+};
+
+/** Cambiar a "adoptado" es irreversible de cara al público: pide confirmación. */
+export const ESTADOS_CONFIRMACION: AnimalStatus[] = ["adopted"];
+
+export function esTransicionValida(desde: AnimalStatus, hasta: AnimalStatus): boolean {
+  return desde === hasta || (TRANSICIONES[desde]?.includes(hasta) ?? false);
+}
+
+// ---------- Mapeo formulario (camelCase) → fila de BD (snake_case) ----------
+export function animalToRow(
+  data: AnimalDraft,
+  shelterId: string,
+): Record<string, unknown> {
+  return {
+    shelter_id: shelterId,
+    name: data.name,
+    species: data.species ?? null,
+    breed: data.breed?.trim() || null,
+    sex: data.sex ?? "unknown",
+    size: data.size ?? null,
+    birth_date_approx: data.birthDateApprox || null,
+    weight_kg: data.weightKg ?? null,
+    description: data.description?.trim() || null,
+    good_with_kids: data.goodWithKids ?? null,
+    good_with_dogs: data.goodWithDogs ?? null,
+    good_with_cats: data.goodWithCats ?? null,
+    apartment_suitable: data.apartmentSuitable ?? null,
+    energy_level: data.energyLevel ?? null,
+    special_needs: data.specialNeeds?.trim() || null,
+    vaccinated: data.vaccinated ?? false,
+    sterilized: data.sterilized ?? false,
+    microchipped: data.microchipped ?? false,
+    health_notes: data.healthNotes?.trim() || null,
+    adoption_fee: data.adoptionFee ?? null,
+  };
+}
+
+/**
+ * Datos para duplicar una ficha: copia todo menos slug, fotos y estado.
+ * El resultado es un borrador nuevo (available, sin publicar) con "(copia)".
+ */
+export function datosDuplicados(
+  fila: Record<string, unknown>,
+  shelterId: string,
+): Record<string, unknown> {
+  const resto = { ...fila };
+  for (const k of ["id", "slug", "created_at", "updated_at", "published_at", "status"]) {
+    delete resto[k];
+  }
+  return {
+    ...resto,
+    shelter_id: shelterId,
+    name: `${String(fila.name ?? "Animal")} (copia)`,
+    slug: generarSlug(String(fila.name ?? "animal")),
+    status: "available",
+    published_at: null,
+  };
+}
+
 /** Slug estable y único: `nombre-hash6` (6 hex aleatorios). */
 export function generarSlug(nombre: string): string {
   const base =
