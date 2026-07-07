@@ -15,10 +15,17 @@ export default async function NuevaFichaPage() {
     data: { user },
   } = await supabase.auth.getUser();
   const { data: shelter } = user
-    ? await supabase.from("shelters").select("id").eq("owner_id", user.id).maybeSingle()
+    ? await supabase.from("shelters").select("id, status").eq("owner_id", user.id).maybeSingle()
     : { data: null };
 
   if (!shelter) notFound();
 
-  return <AnimalForm shelterId={shelter.id} animalId={null} initial={{}} />;
+  return (
+    <AnimalForm
+      shelterId={shelter.id}
+      animalId={null}
+      initial={{}}
+      shelterVerified={shelter.status === "verified"}
+    />
+  );
 }

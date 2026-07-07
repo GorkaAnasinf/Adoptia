@@ -171,6 +171,7 @@
     "confirmAdopted": "¿Marcar como adoptado? Dejará de aparecer en las búsquedas.",
     "publishErrors": "Para publicar faltan datos: especie, sexo, tamaño, descripción y al menos una foto.",
     "nameRequired": "El nombre es obligatorio.",
+    "notVerifiedPublish": "Solo las protectoras verificadas pueden publicar. Puedes guardar el borrador.",
     "errorGeneric": "Algo ha fallado. Inténtalo de nuevo."
   },
   "shell": {

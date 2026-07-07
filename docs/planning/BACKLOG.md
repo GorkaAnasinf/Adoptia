@@ -6,13 +6,13 @@
 ## 📍 ESTADO ACTUAL
 
 - **Hito activo:** 0.2 — MVP (en dos bloques: 🐕 protectora → 🧑 persona; ver "Orden de trabajo" en ROADMAP)
-- **Progreso:** FEATURE-001 y FEATURE-002 hechos; app shell autenticado (FEATURE-018), rediseño del wizard (IMPROVEMENT-002), pulido del chrome (IMPROVEMENT-003/004), edición del alta en revisión (IMPROVEMENT-005) y sidebar del adoptante (IMPROVEMENT-006) en producción; correcciones de confirmación de email y mapa (BUG-001/002/003).
-- **Siguiente (Bloque A — protectora):** FEATURE-003 (gestión de animales) → FEATURE-004 (dashboard + perfil, subida a alta).
+- **Progreso:** FEATURE-001, FEATURE-002 y FEATURE-003 (gestión de animales) hechos; app shell autenticado (FEATURE-018), rediseño del wizard (IMPROVEMENT-002), pulido del chrome (IMPROVEMENT-003/004), edición del alta en revisión (IMPROVEMENT-005) y sidebar del adoptante (IMPROVEMENT-006) en producción; correcciones de confirmación de email y mapa (BUG-001/002/003).
+- **Siguiente (Bloque A — protectora):** FEATURE-004 (dashboard + perfil público de la protectora).
 - **Luego (Bloque B — persona):** FEATURE-005 → 006 → 007 → 008.
-- **En curso:** nada.
+- **En curso:** nada (FEATURE-003 en rama `feature/FEATURE-003-gestion-animales`, pendiente de merge a `develop`).
 - **Bloqueos:** ninguno.
 - **Follow-ups abiertos:** IMPROVEMENT-001 (de-duplicar slug de protectora), sin planificar.
-- **Última actualización:** 2026-07-07 (cierre de IMPROVEMENT-006 + reordenación del 0.2 en bloques).
+- **Última actualización:** 2026-07-07 (cierre de FEATURE-003 — gestión de animales, 3 ciclos).
 
 ## Items abiertos por estado
 
@@ -25,11 +25,10 @@ Los items `hecho`/`descartado` no aparecen aquí — su histórico vive en [CHAN
 |------|--------|-----------|------|
 | [BUG-001](items/BUG-001.md) | Tras confirmar el correo, la protectora no entra al onboarding; falta pantalla de "correo verificado | alta | 0.2 |
 
-### ✅ Listo para desarrollo (14)
+### ✅ Listo para desarrollo (13)
 
 | Item | Título | Prioridad | Hito |
 |------|--------|-----------|------|
-| [FEATURE-003](items/FEATURE-003.md) | Gestión de animales con fotos y vídeo (panel protectora) | alta | 0.2 |
 | [FEATURE-004](items/FEATURE-004.md) | Panel de protectora — dashboard y perfil público | alta | 0.2 |
 | [FEATURE-005](items/FEATURE-005.md) | Área pública — home, búsqueda de animales y fichas | alta | 0.2 |
 | [FEATURE-006](items/FEATURE-006.md) | Mapa de protectoras con búsqueda por proximidad | alta | 0.2 |

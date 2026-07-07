@@ -31,7 +31,7 @@ function cifValido(): string {
   return `B${cuerpo}${control}`;
 }
 
-test("una protectora da de alta un animal con 3 fotos + portada y lo publica", async ({
+test("una protectora da de alta un animal con 3 fotos + portada (borrador)", async ({
   page,
 }) => {
   const sello = Date.now();
@@ -96,9 +96,14 @@ test("una protectora da de alta un animal con 3 fotos + portada y lo publica", a
   // Marcar la segunda como portada.
   await page.getByRole("button", { name: ta.makeCover }).first().click();
 
-  // --- Publicar ---
-  await page.getByRole("button", { name: ta.publish }).click();
-  await expect(page).toHaveURL(/\/panel\/animales$/);
+  // Publicar está bloqueado: la protectora aún no está verificada (FEATURE-002).
+  await expect(page.getByRole("button", { name: ta.publish })).toBeDisabled();
+
+  // Guardar de nuevo el borrador con las fotos ya asociadas.
+  await page.getByRole("button", { name: ta.saveDraft }).click();
+
+  // La ficha aparece en el listado como borrador.
+  await page.goto("/panel/animales");
   await expect(page.getByText("Luna E2E")).toBeVisible();
-  await expect(page.getByText(ta.published)).toBeVisible();
+  await expect(page.getByText(ta.draft).first()).toBeVisible();
 });

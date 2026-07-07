@@ -36,12 +36,15 @@ export function AnimalForm({
   initial,
   initialMedia = [],
   initialYoutube = "",
+  shelterVerified = true,
 }: {
   shelterId: string;
   animalId: string | null;
   initial: Form;
   initialMedia?: Media[];
   initialYoutube?: string;
+  /** Solo las protectoras verificadas pueden publicar (FEATURE-002). */
+  shelterVerified?: boolean;
 }) {
   const t = useTranslations("animales");
   const router = useRouter();
@@ -73,6 +76,10 @@ export function AnimalForm({
 
     if (youtube.trim() && !esYoutubeValido(youtube)) {
       setYtError(t("youtubeInvalid"));
+      return;
+    }
+    if (publicar && !shelterVerified) {
+      setError(t("notVerifiedPublish"));
       return;
     }
     if (publicar) {
@@ -264,10 +271,17 @@ export function AnimalForm({
       {/* -------- Footer sticky -------- */}
       <div className="fixed inset-x-0 bottom-0 z-30 border-t border-border bg-background/95 backdrop-blur lg:pl-64">
         <div className="mx-auto flex max-w-3xl items-center justify-end gap-3 px-4 py-3">
+          {!shelterVerified && (
+            <span className="mr-auto text-xs text-muted-foreground">{t("notVerifiedPublish")}</span>
+          )}
           <Button type="button" variant="outline" onClick={() => guardar(false)} disabled={guardando}>
             {guardando ? t("saving") : t("saveDraft")}
           </Button>
-          <Button type="button" onClick={() => guardar(true)} disabled={guardando}>
+          <Button
+            type="button"
+            onClick={() => guardar(true)}
+            disabled={guardando || !shelterVerified}
+          >
             {guardando ? t("saving") : t("publish")}
           </Button>
         </div>

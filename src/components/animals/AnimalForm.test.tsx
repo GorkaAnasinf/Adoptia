@@ -59,6 +59,18 @@ describe("AnimalForm", () => {
     expect(upsertMock.mock.calls[0][0]).toMatchObject({ shelter_id: "s1", name: "Luna" });
   });
 
+  it("una protectora no verificada no puede publicar", async () => {
+    conIntl(
+      <AnimalForm
+        shelterId="s1"
+        animalId={null}
+        initial={{ name: "Luna", species: "dog", sex: "female", size: "medium", description: "ok" }}
+        shelterVerified={false}
+      />,
+    );
+    expect(screen.getByRole("button", { name: messages.animales.publish })).toBeDisabled();
+  });
+
   it("rechaza un enlace de YouTube inválido al guardar", async () => {
     conIntl(
       <AnimalForm shelterId="s1" animalId={null} initial={{ name: "Luna" }} initialYoutube="basura" />,

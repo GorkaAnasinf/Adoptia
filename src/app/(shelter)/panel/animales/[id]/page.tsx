@@ -49,7 +49,7 @@ export default async function EditarFichaPage({
     data: { user },
   } = await supabase.auth.getUser();
   const { data: shelter } = user
-    ? await supabase.from("shelters").select("id").eq("owner_id", user.id).maybeSingle()
+    ? await supabase.from("shelters").select("id, status").eq("owner_id", user.id).maybeSingle()
     : { data: null };
   if (!shelter) notFound();
 
@@ -80,6 +80,7 @@ export default async function EditarFichaPage({
       animalId={a.id}
       initialMedia={fotos}
       initialYoutube={youtube}
+      shelterVerified={shelter.status === "verified"}
       initial={{
         name: a.name,
         species: (a.species as "dog" | "cat" | "other" | null) ?? undefined,
