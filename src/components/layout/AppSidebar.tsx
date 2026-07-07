@@ -42,9 +42,16 @@ type Props = {
   /** Protectora sin alta enviada: panel bloqueado → ítems deshabilitados. */
   onboarding: boolean;
   pathname: string;
+  /**
+   * Conteos por clave de ítem (p. ej. `{ navRequests: 4 }`). Presentacional:
+   * la alimentación real llega desde FEATURE-007/FEATURE-004. Sin valor → sin badge.
+   */
+  badges?: Partial<Record<string, number>>;
 };
 
-export function AppSidebar({ role, onboarding, pathname }: Props) {
+const SUPPORT_EMAIL = process.env.NEXT_PUBLIC_SUPPORT_EMAIL ?? "hola@adoptia.app";
+
+export function AppSidebar({ role, onboarding, pathname, badges }: Props) {
   const t = useTranslations("shell");
   const items = NAV[role];
 
@@ -54,10 +61,16 @@ export function AppSidebar({ role, onboarding, pathname }: Props) {
         {items.map(({ key, href, icon: Icon, exists }) => {
           const activo = pathname === href;
           const deshabilitado = onboarding || !exists;
+          const conteo = badges?.[key] ?? 0;
           const contenido = (
             <>
               <Icon className="size-5 shrink-0" aria-hidden="true" />
-              <span>{t(key)}</span>
+              <span className="flex-1">{t(key)}</span>
+              {conteo > 0 && (
+                <span className="ml-auto inline-flex min-w-5 items-center justify-center rounded-full bg-primary/15 px-1.5 text-xs font-semibold tabular-nums text-primary">
+                  {conteo}
+                </span>
+              )}
             </>
           );
 
@@ -81,7 +94,7 @@ export function AppSidebar({ role, onboarding, pathname }: Props) {
               className={cn(
                 "flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors",
                 activo
-                  ? "bg-secondary/15 text-secondary"
+                  ? "bg-tertiary/12 font-semibold text-tertiary"
                   : "text-foreground hover:bg-accent",
               )}
             >
@@ -91,15 +104,13 @@ export function AppSidebar({ role, onboarding, pathname }: Props) {
         })}
       </nav>
 
-      <button
-        type="button"
-        disabled
-        title={t("comingSoon")}
-        className="mt-2 flex items-center justify-center gap-2 rounded-xl border-2 border-border px-3 py-2.5 text-sm font-medium text-tertiary opacity-60"
+      <a
+        href={`mailto:${SUPPORT_EMAIL}`}
+        className="mt-2 flex min-h-11 items-center justify-center gap-2 rounded-xl bg-secondary px-3 py-2.5 text-sm font-semibold text-secondary-foreground transition-colors hover:bg-secondary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
       >
         <LifeBuoy className="size-4" aria-hidden="true" />
         {t("support")}
-      </button>
+      </a>
     </div>
   );
 }

@@ -2,6 +2,7 @@
 
 import type { User } from "@supabase/supabase-js";
 import { LogOut, UserRound } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
@@ -22,6 +23,7 @@ export function UserMenu() {
   const [user, setUser] = useState<User | null>(null);
   const [cargado, setCargado] = useState(false);
   const [abierto, setAbierto] = useState(false);
+  const [fotoFallida, setFotoFallida] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -76,6 +78,9 @@ export function UserMenu() {
     );
   }
 
+  const avatarUrl = user.user_metadata?.avatar_url as string | undefined;
+  const mostrarFoto = Boolean(avatarUrl) && !fotoFallida;
+
   return (
     <div className="relative" ref={ref}>
       <button
@@ -84,9 +89,20 @@ export function UserMenu() {
         aria-label={t("shell.userMenu")}
         aria-haspopup="menu"
         aria-expanded={abierto}
-        className="flex size-9 items-center justify-center rounded-full bg-primary text-sm font-semibold text-primary-foreground hover:opacity-90"
+        className="flex size-9 items-center justify-center overflow-hidden rounded-full bg-primary text-sm font-semibold text-primary-foreground hover:opacity-90"
       >
-        {iniciales(user)}
+        {mostrarFoto ? (
+          <Image
+            src={avatarUrl as string}
+            alt={t("shell.userAvatar")}
+            width={36}
+            height={36}
+            className="size-full object-cover"
+            onError={() => setFotoFallida(true)}
+          />
+        ) : (
+          iniciales(user)
+        )}
       </button>
 
       {abierto && (
