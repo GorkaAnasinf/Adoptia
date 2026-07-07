@@ -22,7 +22,7 @@
 | [FEATURE-000](items/FEATURE-000.md) | Inicialización y andamiaje del proyecto | hecho | alta |
 | [FEATURE-017](items/FEATURE-017.md) | Despliegue inicial — Supabase cloud y Vercel enlazados | hecho | alta |
 
-### Hito 0.2 — 25% completado (3/12)
+### Hito 0.2 — 42% completado (5/12)
 
 | Item | Título | Estado | Prioridad |
 |------|--------|--------|-----------|
@@ -34,8 +34,8 @@
 | [FEATURE-005](items/FEATURE-005.md) | Área pública — home, búsqueda de animales y fichas | listo | alta |
 | [FEATURE-006](items/FEATURE-006.md) | Mapa de protectoras con búsqueda por proximidad | listo | alta |
 | [FEATURE-007](items/FEATURE-007.md) | Solicitud "Me interesa" con cuestionario y bandeja de la protectora | listo | alta |
-| [FEATURE-018](items/FEATURE-018.md) | App shell autenticado — cabecera común, navegación por rol y breadcrumbs | recibido | alta |
-| [IMPROVEMENT-002](items/IMPROVEMENT-002.md) | Rediseño UX del wizard de alta de protectora (+ fix del mapa gris) | recibido | alta |
+| [FEATURE-018](items/FEATURE-018.md) | App shell autenticado — cabecera común, navegación por rol y breadcrumbs | hecho | alta |
+| [IMPROVEMENT-002](items/IMPROVEMENT-002.md) | Rediseño UX del wizard de alta de protectora (+ fix del mapa gris) | hecho | alta |
 | [FEATURE-004](items/FEATURE-004.md) | Panel de protectora — dashboard y perfil público | listo | media |
 | [FEATURE-008](items/FEATURE-008.md) | SEO, datos de demo y pulido del MVP | listo | media |
 

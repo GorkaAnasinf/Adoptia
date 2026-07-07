@@ -2,7 +2,7 @@
 id: IMPROVEMENT-002
 tipo: improvement
 titulo: Rediseño UX del wizard de alta de protectora (+ fix del mapa gris)
-estado: desarrollo
+estado: hecho
 prioridad: alta
 hito: "0.2"
 duplicado_de: null

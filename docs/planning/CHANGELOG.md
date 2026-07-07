@@ -2,6 +2,13 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/es/) adaptado. Versionado 0.x hasta el MVP.
 
+## [0.0.8] — 2026-07-07
+
+### Añadido
+
+- **FEATURE-018 — App shell autenticado**: toda la zona logueada (protectora, admin, adoptante) comparte ahora una cabecera común con migas de pan, badge de estado (Verificada / En revisión / Suspendida), menú de usuario con avatar, y una navegación lateral por rol que colapsa a un cajón accesible en móvil. Durante el onboarding, los accesos del panel aparecen deshabilitados hasta completar el alta.
+- **IMPROVEMENT-002 — Rediseño del wizard de alta**: el asistente de alta de protectora estrena diseño dentro del shell — stepper con estados, tarjeta por paso, columna de "Consejo" y "Resumen" (entidad, CIF, datos fiscales) y barra de acciones fija con guardado automático. La lógica (validación, borrador, geocoding, logo, horarios) se mantiene intacta.
+
 ## [0.0.7] — 2026-07-06
 
 ### Corregido
