@@ -2,6 +2,12 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/es/) adaptado. Versionado 0.x hasta el MVP.
 
+## [0.0.11] — 2026-07-07
+
+### Añadido
+
+- **IMPROVEMENT-005 — Editar el alta en revisión**: una protectora cuyo alta está "En revisión" ya puede corregir sus datos. Desde el banner del panel, el enlace "Editar datos" reabre el asistente con todo relleno para modificar y guardar los cambios, sin salir del estado en revisión ni poder auto-verificarse. Las protectoras ya verificadas mantienen el alta como un trámite de un solo uso.
+
 ## [0.0.10] — 2026-07-07
 
 ### Cambiado
