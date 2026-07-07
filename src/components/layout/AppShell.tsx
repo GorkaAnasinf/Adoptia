@@ -90,8 +90,14 @@ export function AppShell({
 
   return (
     <div className="min-h-screen bg-background">
+      <a
+        href="#contenido"
+        className="sr-only rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-60"
+      >
+        {t("skipToContent")}
+      </a>
       {/* Sidebar fijo (desktop) */}
-      <aside className="fixed inset-y-0 left-0 hidden w-64 flex-col border-r border-border bg-card shadow-sm lg:flex">
+      <aside className="fixed inset-y-0 left-0 hidden w-64 flex-col border-r border-border bg-muted lg:flex">
         <Marca shelterName={shelterName} />
         <div className="flex-1 overflow-y-auto">
           <AppSidebar role={role} onboarding={onboarding} pathname={pathname} badges={badges} />
@@ -110,7 +116,7 @@ export function AppShell({
             role="dialog"
             aria-modal="true"
             aria-label={t("openMenu")}
-            className="absolute inset-y-0 left-0 flex w-72 flex-col bg-card shadow-xl"
+            className="absolute inset-y-0 left-0 flex w-72 flex-col bg-muted shadow-xl"
           >
             <div className="flex items-center justify-between pr-2">
               <Marca shelterName={shelterName} />
@@ -140,7 +146,9 @@ export function AppShell({
           onMenuClick={abrir}
           hasNotifications={hasNotifications}
         />
-        <main className="flex-1">{children}</main>
+        <main id="contenido" className="flex-1">
+          {children}
+        </main>
         <footer className="flex flex-col items-center justify-between gap-2 border-t border-border px-6 py-4 text-sm text-muted-foreground sm:flex-row">
           <span>{t("footerRights", { year })}</span>
           <nav className="flex gap-4">

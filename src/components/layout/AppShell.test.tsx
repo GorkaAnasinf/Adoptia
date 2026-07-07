@@ -34,6 +34,13 @@ describe("AppShell", () => {
     expect(screen.getByText(messages.shell.statusVerified)).toBeInTheDocument();
   });
 
+  it("ofrece un enlace de saltar al contenido que apunta al main", () => {
+    renderShell();
+    const salto = screen.getByRole("link", { name: messages.shell.skipToContent });
+    expect(salto).toHaveAttribute("href", "#contenido");
+    expect(document.querySelector("main#contenido")).not.toBeNull();
+  });
+
   it("el botón de menú abre el drawer en móvil", async () => {
     renderShell();
     // Antes de abrir no hay diálogo/drawer visible

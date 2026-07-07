@@ -113,6 +113,24 @@ describe("UserMenu", () => {
     expect(screen.queryByAltText(messages.shell.userAvatar)).not.toBeInTheDocument();
   });
 
+  it("muestra el nombre completo en el menú cuando existe full_name", async () => {
+    getUserMock.mockResolvedValue({
+      data: {
+        user: {
+          id: "u1",
+          email: "ana@example.com",
+          user_metadata: { full_name: "Ana Pérez" },
+        },
+      },
+      error: null,
+    });
+    renderMenu();
+    const avatar = await screen.findByRole("button", { name: messages.shell.userMenu });
+    await userEvent.click(avatar);
+    expect(screen.getByText("Ana Pérez")).toBeInTheDocument();
+    expect(screen.getByText("ana@example.com")).toBeInTheDocument();
+  });
+
   it("el menú está cerrado hasta que se pulsa el avatar", async () => {
     getUserMock.mockResolvedValue({
       data: { user: { id: "u1", email: "ana@example.com" } },

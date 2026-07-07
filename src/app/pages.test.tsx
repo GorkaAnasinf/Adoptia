@@ -114,6 +114,14 @@ describe("páginas de auth y paneles", () => {
     ).toBeInTheDocument();
   });
 
+  it("mi cuenta muestra un estado vacío con CTA para explorar animales", () => {
+    conIntl(<MiCuentaPage />);
+    expect(screen.getByText(messages.account.emptyText)).toBeInTheDocument();
+    expect(
+      screen.getByRole("link", { name: messages.account.emptyCta }),
+    ).toBeInTheDocument();
+  });
+
   it("la página de registro incluye Google y el subtítulo del wireframe", () => {
     conIntl(<RegistroPage />);
     expect(screen.getByText(messages.auth.registerSubtitle)).toBeInTheDocument();

@@ -2,6 +2,12 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/es/) adaptado. Versionado 0.x hasta el MVP.
 
+## [0.0.10] — 2026-07-07
+
+### Cambiado
+
+- **IMPROVEMENT-004 — Pulido del chrome (2ª iteración) + Mi cuenta**: el sidebar deja el blanco y adopta un tono arena que combina con el fondo; la cabecera retira los botones de ayuda y notificaciones (que no tenían función) hasta que existan; el menú de usuario muestra el nombre real sobre el email; se añade un enlace "saltar al contenido" para accesibilidad; y `/mi-cuenta` estrena un estado vacío cuidado con llamada a "Explorar animales" en vez del texto suelto.
+
 ## [0.0.9] — 2026-07-07
 
 ### Cambiado
