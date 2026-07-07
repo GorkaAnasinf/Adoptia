@@ -1,5 +1,6 @@
 "use client";
 
+import { Building2, Check, Lightbulb, MapPin, Store } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -142,22 +143,46 @@ export function WizardAlta({
 
   if (enviado) {
     return (
-      <div className="flex flex-col gap-3 text-center">
-        <h1 className="font-heading text-2xl font-bold text-foreground">{t("reviewTitle")}</h1>
+      <div className="mx-auto flex max-w-md flex-col items-center gap-4 px-4 py-16 text-center">
+        <h1 className="font-heading text-3xl font-bold text-foreground">{t("reviewTitle")}</h1>
         <p className="text-muted-foreground">{t("reviewBody")}</p>
-        <Button onClick={() => router.push("/panel")}>{t("stepEntity")}</Button>
+        <Button size="lg" onClick={() => router.push("/panel")}>
+          {t("goToPanel")}
+        </Button>
       </div>
     );
   }
 
+  const subtitulos = [t("subtitleEntity"), t("subtitleLocation"), t("subtitleProfile")];
+  const tarjetas = [t("cardEntity"), t("cardLocation"), t("cardProfile")];
+  const tips = [t("tipEntity"), t("tipLocation"), t("tipProfile")];
+  const Iconos = [Building2, MapPin, Store];
+  const IconoPaso = Iconos[paso];
+
   return (
-    <div className="flex w-full flex-col gap-5">
-      <div>
-        <h1 className="font-heading text-2xl font-bold text-foreground">{t("title")}</h1>
-        <p className="mt-1 text-muted-foreground">{t("subtitle")}</p>
+    <div className="mx-auto w-full max-w-5xl px-4 py-8 pb-28">
+      <header>
+        <h1 className="font-heading text-2xl font-bold text-foreground sm:text-3xl">
+          {t("title")}
+        </h1>
+        <p className="mt-1 text-muted-foreground">{subtitulos[paso]}</p>
+      </header>
+
+      <div className="mt-6">
+        <Stepper pasos={[t("stepEntity"), t("stepLocation"), t("stepProfile")]} actual={paso} />
       </div>
 
-      <Stepper pasos={[t("stepEntity"), t("stepLocation"), t("stepProfile")]} actual={paso} />
+      <div className="mt-6 grid gap-6 lg:grid-cols-[1fr_18rem]">
+        {/* -------- Tarjeta del paso -------- */}
+        <div className="rounded-xl border border-border bg-card p-5 shadow-sm sm:p-6">
+          <div className="mb-5 flex items-center gap-3">
+            <span className="flex size-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
+              <IconoPaso className="size-5" aria-hidden="true" />
+            </span>
+            <h2 className="font-heading text-lg font-semibold text-foreground">
+              {tarjetas[paso]}
+            </h2>
+          </div>
 
       {/* -------- Paso 1: entidad -------- */}
       {paso === 0 && (
@@ -255,25 +280,69 @@ export function WizardAlta({
         </div>
       )}
 
-      {errores._ && <p className="text-sm text-destructive">{errores._}</p>}
+          {errores._ && <p className="mt-3 text-sm text-destructive">{errores._}</p>}
+        </div>
 
-      <div className="flex justify-between gap-3">
-        {paso > 0 ? (
-          <Button type="button" variant="ghost" onClick={() => setPaso((p) => p - 1)}>
-            {t("back")}
-          </Button>
-        ) : (
-          <span />
-        )}
-        {paso < 2 ? (
-          <Button type="button" size="lg" onClick={siguiente} disabled={guardando}>
-            {guardando ? t("saving") : t("next")}
-          </Button>
-        ) : (
-          <Button type="button" size="lg" onClick={finalizar} disabled={guardando}>
-            {guardando ? t("saving") : t("finish")}
-          </Button>
-        )}
+        {/* -------- Columna lateral: Consejo + Resumen -------- */}
+        <aside className="flex flex-col gap-4">
+          <div className="rounded-xl border border-tertiary/30 bg-tertiary/10 p-4">
+            <div className="mb-1.5 flex items-center gap-2 text-tertiary">
+              <Lightbulb className="size-4" aria-hidden="true" />
+              <span className="text-xs font-semibold uppercase tracking-wide">{t("tipTitle")}</span>
+            </div>
+            <p className="text-sm text-foreground/80">{tips[paso]}</p>
+          </div>
+
+          {form.name && (
+            <div className="rounded-xl border border-border bg-muted/40 p-4">
+              <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                {t("summaryTitle")}
+              </p>
+              <dl className="flex flex-col gap-1.5 text-sm">
+                <div className="flex justify-between gap-3">
+                  <dt className="text-muted-foreground">{t("summaryEntity")}</dt>
+                  <dd className="font-medium text-foreground">{form.name}</dd>
+                </div>
+                {form.cif && (
+                  <div className="flex justify-between gap-3">
+                    <dt className="text-muted-foreground">{t("summaryCif")}</dt>
+                    <dd className="font-medium text-foreground">{form.cif}</dd>
+                  </div>
+                )}
+              </dl>
+              <p className="mt-3 flex items-center gap-1.5 text-xs text-tertiary">
+                <Check className="size-3.5" aria-hidden="true" />
+                {t("summaryFiscal")}
+              </p>
+            </div>
+          )}
+        </aside>
+      </div>
+
+      {/* -------- Footer sticky de acciones -------- */}
+      <div className="fixed inset-x-0 bottom-0 z-30 border-t border-border bg-background/95 backdrop-blur lg:pl-64">
+        <div className="mx-auto flex max-w-5xl items-center justify-between gap-3 px-4 py-3">
+          <span className="flex items-center gap-1.5 text-sm text-muted-foreground">
+            <Check className="size-4 text-tertiary" aria-hidden="true" />
+            <span className="hidden sm:inline">{t("autosaved")}</span>
+          </span>
+          <div className="flex items-center gap-3">
+            {paso > 0 && (
+              <Button type="button" variant="ghost" onClick={() => setPaso((p) => p - 1)}>
+                {t("back")}
+              </Button>
+            )}
+            {paso < 2 ? (
+              <Button type="button" size="lg" onClick={siguiente} disabled={guardando}>
+                {guardando ? t("saving") : t("next")}
+              </Button>
+            ) : (
+              <Button type="button" size="lg" onClick={finalizar} disabled={guardando}>
+                {guardando ? t("saving") : t("finish")}
+              </Button>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );
