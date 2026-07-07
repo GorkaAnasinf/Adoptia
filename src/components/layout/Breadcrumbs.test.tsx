@@ -10,21 +10,21 @@ describe("Breadcrumbs", () => {
   ];
 
   it("renderiza todas las migas", () => {
-    render(<Breadcrumbs items={items} />);
+    render(<Breadcrumbs items={items} label="Ruta" />);
     expect(screen.getByText("Panel")).toBeInTheDocument();
     expect(screen.getByText("Alta de protectora")).toBeInTheDocument();
     expect(screen.getByText("Ubicación")).toBeInTheDocument();
   });
 
   it("las intermedias son enlaces y la última no (aria-current)", () => {
-    render(<Breadcrumbs items={items} />);
+    render(<Breadcrumbs items={items} label="Ruta" />);
     expect(screen.getByRole("link", { name: "Panel" })).toHaveAttribute("href", "/panel");
     expect(screen.queryByRole("link", { name: "Ubicación" })).not.toBeInTheDocument();
     expect(screen.getByText("Ubicación")).toHaveAttribute("aria-current", "page");
   });
 
   it("expone una navegación accesible", () => {
-    render(<Breadcrumbs items={items} />);
+    render(<Breadcrumbs items={items} label="Ruta" />);
     expect(screen.getByRole("navigation")).toBeInTheDocument();
   });
 });

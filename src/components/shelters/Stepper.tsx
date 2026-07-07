@@ -4,11 +4,12 @@ import { cn } from "@/lib/utils";
 type Props = {
   pasos: string[];
   actual: number; // índice 0-based del paso activo
+  label: string;
 };
 
-export function Stepper({ pasos, actual }: Props) {
+export function Stepper({ pasos, actual, label }: Props) {
   return (
-    <ol className="flex items-center" aria-label="Progreso del alta">
+    <ol className="flex items-center" aria-label={label}>
       {pasos.map((etiqueta, i) => {
         const completado = i < actual;
         const activo = i === actual;

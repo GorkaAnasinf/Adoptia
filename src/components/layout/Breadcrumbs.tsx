@@ -4,9 +4,9 @@ import { Fragment } from "react";
 
 export type Crumb = { label: string; href?: string };
 
-export function Breadcrumbs({ items }: { items: Crumb[] }) {
+export function Breadcrumbs({ items, label }: { items: Crumb[]; label: string }) {
   return (
-    <nav aria-label="Ruta de navegación">
+    <nav aria-label={label}>
       <ol className="flex items-center gap-1.5 text-sm">
         {items.map((item, i) => {
           const ultimo = i === items.length - 1;

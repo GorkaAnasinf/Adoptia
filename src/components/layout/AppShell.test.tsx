@@ -41,4 +41,11 @@ describe("AppShell", () => {
     await userEvent.click(screen.getByRole("button", { name: messages.shell.openMenu }));
     expect(screen.getByRole("dialog")).toBeInTheDocument();
   });
+
+  it("al abrir el drawer el foco entra en él", async () => {
+    renderShell();
+    await userEvent.click(screen.getByRole("button", { name: messages.shell.openMenu }));
+    const dialog = screen.getByRole("dialog");
+    expect(dialog.contains(document.activeElement)).toBe(true);
+  });
 });

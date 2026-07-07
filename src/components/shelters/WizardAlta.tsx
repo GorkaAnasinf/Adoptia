@@ -169,7 +169,11 @@ export function WizardAlta({
       </header>
 
       <div className="mt-6">
-        <Stepper pasos={[t("stepEntity"), t("stepLocation"), t("stepProfile")]} actual={paso} />
+        <Stepper
+          pasos={[t("stepEntity"), t("stepLocation"), t("stepProfile")]}
+          actual={paso}
+          label={t("stepperLabel")}
+        />
       </div>
 
       <div className="mt-6 grid gap-6 lg:grid-cols-[1fr_18rem]">

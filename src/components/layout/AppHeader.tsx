@@ -41,7 +41,7 @@ export function AppHeader({ shelterName, status, crumbs, onMenuClick }: Props) {
         </Link>
 
         <div className="hidden min-w-0 lg:block">
-          <Breadcrumbs items={crumbs} />
+          <Breadcrumbs items={crumbs} label={t("breadcrumb")} />
         </div>
       </div>
 
@@ -54,15 +54,19 @@ export function AppHeader({ shelterName, status, crumbs, onMenuClick }: Props) {
         <StatusBadge status={status} />
         <button
           type="button"
-          aria-label={t("help")}
-          className="hidden size-9 items-center justify-center rounded-full text-primary hover:bg-accent sm:flex"
+          disabled
+          aria-label={`${t("help")} · ${t("comingSoon")}`}
+          title={t("comingSoon")}
+          className="hidden size-9 items-center justify-center rounded-full text-primary opacity-50 sm:flex"
         >
           <HelpCircle className="size-5" aria-hidden="true" />
         </button>
         <button
           type="button"
-          aria-label={t("notifications")}
-          className="hidden size-9 items-center justify-center rounded-full text-primary hover:bg-accent sm:flex"
+          disabled
+          aria-label={`${t("notifications")} · ${t("comingSoon")}`}
+          title={t("comingSoon")}
+          className="hidden size-9 items-center justify-center rounded-full text-primary opacity-50 sm:flex"
         >
           <Bell className="size-5" aria-hidden="true" />
         </button>

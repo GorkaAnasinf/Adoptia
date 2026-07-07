@@ -3,7 +3,7 @@
 import { PawPrint, X } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { crumbsFromPathname } from "@/lib/breadcrumbs";
 import { AppHeader } from "./AppHeader";
@@ -41,11 +41,37 @@ export function AppShell({ role, onboarding, status, shelterName, children }: Pr
   const t = useTranslations("shell");
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const previoFoco = useRef<HTMLElement | null>(null);
+  const cerrarRef = useRef<HTMLButtonElement>(null);
+
+  function abrir() {
+    previoFoco.current = document.activeElement as HTMLElement;
+    setOpen(true);
+  }
+  function cerrar() {
+    setOpen(false);
+    previoFoco.current?.focus();
+  }
+
+  // Al abrir, lleva el foco al drawer (botón cerrar)
+  useEffect(() => {
+    if (open) cerrarRef.current?.focus();
+  }, [open]);
 
   // Cierra el drawer al cambiar de ruta
   useEffect(() => {
     setOpen(false);
   }, [pathname]);
+
+  // Cerrar con Escape
+  useEffect(() => {
+    if (!open) return;
+    function onKey(e: KeyboardEvent) {
+      if (e.key === "Escape") cerrar();
+    }
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [open]);
 
   const crumbs = crumbsFromPathname(pathname, t);
   const year = new Date().getFullYear();
@@ -65,7 +91,7 @@ export function AppShell({ role, onboarding, status, shelterName, children }: Pr
         <div className="fixed inset-0 z-50 lg:hidden">
           <div
             className="absolute inset-0 bg-black/40"
-            onClick={() => setOpen(false)}
+            onClick={cerrar}
             aria-hidden="true"
           />
           <div
@@ -77,10 +103,11 @@ export function AppShell({ role, onboarding, status, shelterName, children }: Pr
             <div className="flex items-center justify-between pr-2">
               <Marca shelterName={shelterName} />
               <button
+                ref={cerrarRef}
                 type="button"
-                onClick={() => setOpen(false)}
+                onClick={cerrar}
                 aria-label={t("closeMenu")}
-                className="flex size-10 items-center justify-center rounded-xl hover:bg-accent"
+                className="flex size-11 items-center justify-center rounded-xl hover:bg-accent"
               >
                 <X className="size-5" aria-hidden="true" />
               </button>
@@ -98,15 +125,12 @@ export function AppShell({ role, onboarding, status, shelterName, children }: Pr
           shelterName={shelterName}
           status={status}
           crumbs={crumbs}
-          onMenuClick={() => setOpen(true)}
+          onMenuClick={abrir}
         />
         <main className="flex-1">{children}</main>
         <footer className="flex flex-col items-center justify-between gap-2 border-t border-border px-6 py-4 text-sm text-muted-foreground sm:flex-row">
           <span>{t("footerRights", { year })}</span>
           <nav className="flex gap-4">
-            <Link href="/ayuda" className="hover:text-primary">
-              {t("footerHelp")}
-            </Link>
             <Link href="/terminos" className="hover:text-primary">
               {t("footerTerms")}
             </Link>

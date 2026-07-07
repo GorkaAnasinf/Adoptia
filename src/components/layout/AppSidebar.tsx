@@ -50,7 +50,7 @@ export function AppSidebar({ role, onboarding, pathname }: Props) {
 
   return (
     <div className="flex h-full flex-col gap-1 p-3">
-      <nav className="flex flex-1 flex-col gap-1" aria-label="Navegación principal">
+      <nav className="flex flex-1 flex-col gap-1" aria-label={t("navMain")}>
         {items.map(({ key, href, icon: Icon, exists }) => {
           const activo = pathname === href;
           const deshabilitado = onboarding || !exists;
@@ -93,7 +93,9 @@ export function AppSidebar({ role, onboarding, pathname }: Props) {
 
       <button
         type="button"
-        className="mt-2 flex items-center justify-center gap-2 rounded-xl border-2 border-border px-3 py-2.5 text-sm font-medium text-tertiary hover:bg-accent"
+        disabled
+        title={t("comingSoon")}
+        className="mt-2 flex items-center justify-center gap-2 rounded-xl border-2 border-border px-3 py-2.5 text-sm font-medium text-tertiary opacity-60"
       >
         <LifeBuoy className="size-4" aria-hidden="true" />
         {t("support")}
