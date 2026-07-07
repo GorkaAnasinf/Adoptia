@@ -2,7 +2,7 @@
 id: IMPROVEMENT-002
 tipo: improvement
 titulo: Rediseño UX del wizard de alta de protectora (+ fix del mapa gris)
-estado: recibido
+estado: hecho
 prioridad: alta
 hito: "0.2"
 duplicado_de: null
@@ -74,9 +74,9 @@ de que la CSP no rompe nada más.
 
 ## Criterios de aceptación / Casuística a cubrir
 
-- [ ] El wizard se muestra dentro del app shell (cabecera + sidebar en modo onboarding + breadcrumbs).
-- [ ] Layout según wireframe: stepper con estados, tarjeta de datos, panel lateral Consejo/Resumen, footer sticky con autoguardado.
-- [ ] La lógica previa sigue intacta: validación por paso, borrador recuperable, geocode, logo, horarios, envío a revisión.
-- [ ] **El mapa se ve correctamente** (tiles cargadas, no gris) con el pin arrastrable; funciona tras cambiar de paso y en móvil.
-- [ ] Responsive: en móvil, una columna, panel lateral debajo, footer accesible.
-- [ ] Sin textos hardcodeados; consistente con los tokens de `DESIGN.md`.
+- [x] El wizard se muestra dentro del app shell (cabecera + sidebar en modo onboarding + breadcrumbs).
+- [x] Layout según wireframe: stepper con estados, tarjeta de datos, panel lateral Consejo/Resumen, footer sticky con autoguardado.
+- [x] La lógica previa sigue intacta: validación por paso, borrador recuperable, geocode, logo, horarios, envío a revisión.
+- [x] **El mapa se ve correctamente** (tiles cargadas, no gris) con el pin arrastrable; funciona tras cambiar de paso y en móvil.
+- [x] Responsive: en móvil, una columna, panel lateral debajo, footer accesible.
+- [x] Sin textos hardcodeados; consistente con los tokens de `DESIGN.md`.

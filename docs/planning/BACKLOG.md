@@ -6,12 +6,12 @@
 ## 📍 ESTADO ACTUAL
 
 - **Hito activo:** 0.2 — MVP área pública
-- **Progreso:** 2 items del hito hechos (FEATURE-001 registro/login; FEATURE-002 onboarding de protectoras y verificación por admin)
+- **Progreso:** FEATURE-001 y FEATURE-002 hechos; app shell autenticado (FEATURE-018) y rediseño del wizard (IMPROVEMENT-002) en producción; correcciones de confirmación de email y mapa (BUG-001/002/003).
 - **Siguiente:** FEATURE-003 — Gestión de animales con fotos y vídeo (panel protectora)
 - **En curso:** nada
-- **Bloqueos:** ninguno. FEATURE-002 fusionada a `develop`; **deploy a producción pendiente** de aplicar la migración `20260706100000` a la Supabase cloud + merge a `main`.
-- **Follow-up abierto:** IMPROVEMENT-001 (de-duplicar slug de protectora), sin planificar.
-- **Última actualización:** 2026-07-06 (cierre de FEATURE-002; en `develop`, aún no en producción)
+- **Bloqueos:** ninguno.
+- **Follow-ups abiertos:** IMPROVEMENT-001 (de-duplicar slug de protectora), sin planificar.
+- **Última actualización:** 2026-07-07 (cierre de FEATURE-018 + IMPROVEMENT-002; desplegando a producción)
 
 ## Items abiertos por estado
 
@@ -43,11 +43,9 @@ Los items `hecho`/`descartado` no aparecen aquí — su histórico vive en [CHAN
 | [FEATURE-015](items/FEATURE-015.md) | Contenido educativo sobre adopción responsable | baja | 0.4 |
 | [FEATURE-016](items/FEATURE-016.md) | Registro de casas de acogida | baja | 0.4 |
 
-### 📥 Recibido (3)
+### 📥 Recibido (1)
 
 | Item | Título | Prioridad | Hito |
 |------|--------|-----------|------|
-| [FEATURE-018](items/FEATURE-018.md) | App shell autenticado — cabecera común, navegación por rol y breadcrumbs | alta | 0.2 |
-| [IMPROVEMENT-002](items/IMPROVEMENT-002.md) | Rediseño UX del wizard de alta de protectora (+ fix del mapa gris) | alta | 0.2 |
 | [IMPROVEMENT-001](items/IMPROVEMENT-001.md) | De-duplicar el slug de protectora (nombres repetidos) | media | — |
 <!-- RENDER:END -->
