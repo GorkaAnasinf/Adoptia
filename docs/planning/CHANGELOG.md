@@ -2,6 +2,16 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/es/) adaptado. Versionado 0.x hasta el MVP.
 
+## [0.0.14] — 2026-07-08
+
+### Corregido
+
+- **IMPROVEMENT-008 — Paso de ubicación del wizard**: el pin del mapa vuelve a mostrarse al reabrir el alta (Supabase devuelve la geografía como EWKB y ahora se decodifica bien; antes el mapa saltaba al centro de España). El mapa deja de pintarse por encima de su tarjeta y de la barra Atrás/Siguiente. Los números del stepper navegan (en edición, a cualquier paso).
+
+### Cambiado
+
+- **IMPROVEMENT-008 — Ubicación de más a menos**: el paso reordena los campos a Provincia → Ciudad → Código postal → Dirección. La provincia es un combo escribible con las 52 provincias y la ciudad autocompleta municipios (OpenStreetMap) filtrados por la provincia elegida; la dirección se sugiere con el contexto de ciudad y provincia para acertar más. Vuelve el botón "Localizar en el mapa" para geocodificar los campos y colocar el pin.
+
 ## [0.0.13] — 2026-07-08
 
 ### Cambiado

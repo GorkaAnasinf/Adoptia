@@ -45,4 +45,14 @@ describe("normalizePhoton", () => {
     ]);
     expect(s.address).toBe("Parque de Doña Casilda");
   });
+
+  it("en modo place trata el name como ciudad (sin dirección)", () => {
+    const [s] = normalizePhoton(
+      [feature({ countrycode: "ES", name: "Sarriguren", county: "Navarra", osm_key: "place" })],
+      "place",
+    );
+    expect(s.city).toBe("Sarriguren");
+    expect(s.address).toBe("");
+    expect(s.province).toBe("Navarra");
+  });
 });

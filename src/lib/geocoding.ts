@@ -23,8 +23,14 @@ function str(v: unknown): string {
   return typeof v === "string" ? v : "";
 }
 
-/** Convierte la respuesta GeoJSON de Photon en sugerencias de dirección (solo ES). */
-export function normalizePhoton(features: PhotonFeature[]): Sugerencia[] {
+/**
+ * Convierte la respuesta GeoJSON de Photon en sugerencias (solo ES).
+ * `tipo="place"` normaliza municipios (el `name` es la ciudad, sin dirección).
+ */
+export function normalizePhoton(
+  features: PhotonFeature[],
+  tipo: "address" | "place" = "address",
+): Sugerencia[] {
   const out: Sugerencia[] = [];
   for (const f of features) {
     const p = f.properties ?? {};
@@ -33,14 +39,23 @@ export function normalizePhoton(features: PhotonFeature[]): Sugerencia[] {
     if (str(p.countrycode).toUpperCase() !== "ES") continue;
 
     const [lng, lat] = coords;
+    // La provincia suele mapear a county; state es la comunidad autónoma.
+    const province = str(p.county) || str(p.state);
+    const postalCode = str(p.postcode);
+
+    if (tipo === "place" || str(p.osm_key) === "place") {
+      const city = str(p.name) || str(p.city) || str(p.locality);
+      if (!city) continue;
+      const label = [city, province].filter(Boolean).join(", ");
+      out.push({ label, address: "", city, province, postalCode, lat, lng });
+      continue;
+    }
+
     const calle = str(p.street) || str(p.name);
     const numero = str(p.housenumber);
     const address = [calle, numero].filter(Boolean).join(" ").trim();
     // En España el municipio puede venir en city/district/locality/county.
     const city = str(p.city) || str(p.district) || str(p.locality) || str(p.county);
-    // La provincia suele mapear a county; state es la comunidad autónoma.
-    const province = str(p.county) || str(p.state);
-    const postalCode = str(p.postcode);
 
     if (!address && !city) continue;
 
