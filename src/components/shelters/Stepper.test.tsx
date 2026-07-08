@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import userEvent from "@testing-library/user-event";
+import { describe, expect, it, vi } from "vitest";
 import { Stepper } from "./Stepper";
 
 describe("Stepper", () => {
@@ -24,5 +25,26 @@ describe("Stepper", () => {
       li.querySelector('[data-completado="true"]'),
     );
     expect(completados.length).toBe(2);
+  });
+
+  it("permite pulsar un paso ya visitado y no uno futuro", async () => {
+    const onStepClick = vi.fn();
+    render(
+      <Stepper
+        pasos={pasos}
+        actual={2}
+        maxAlcanzable={2}
+        onStepClick={onStepClick}
+        label="Progreso"
+      />,
+    );
+    // El paso 1 (Entidad, índice 0) es alcanzable → botón clicable
+    await userEvent.click(screen.getByRole("button", { name: /Entidad — paso 1/i }));
+    expect(onStepClick).toHaveBeenCalledWith(0);
+  });
+
+  it("sin onStepClick no hay botones de navegación", () => {
+    render(<Stepper pasos={pasos} actual={2} label="Progreso" />);
+    expect(screen.queryByRole("button")).toBeNull();
   });
 });

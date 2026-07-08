@@ -2,6 +2,12 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/es/) adaptado. Versionado 0.x hasta el MVP.
 
+## [0.0.13] — 2026-07-08
+
+### Cambiado
+
+- **IMPROVEMENT-007 — Pulido del wizard de alta**: el paso de ubicación estrena **autocompletado de direcciones** (Photon/OpenStreetMap) — al escribir una calle real aparecen sugerencias y, al elegir una, se rellenan dirección, ciudad, provincia y código postal y se coloca el pin (que sigue siendo arrastrable para el ajuste fino). Desaparece el botón "Localizar en el mapa" que ocupaba mucho y no acertaba con calles concretas. La barra de acciones (Atrás/Siguiente + "Guardado automático") pasa a ser fija dentro del flujo, así que ya no tapa el mapa ni el pie de la aplicación (términos y privacidad). Los números del stepper son clicables para volver a un paso ya visitado.
+
 ## [0.0.12] — 2026-07-07
 
 ### Añadido
