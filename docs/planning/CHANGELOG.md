@@ -2,6 +2,12 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/es/) adaptado. Versionado 0.x hasta el MVP.
 
+## [0.0.12] — 2026-07-07
+
+### Añadido
+
+- **FEATURE-003 — Gestión de animales con fotos y vídeo**: la protectora ya da de alta y mantiene fichas de sus animales desde el panel. Listado de gestión (tabla en escritorio, tarjetas en móvil) con filtros por estado, portada y marca de borrador/publicado. Formulario por secciones (datos, carácter con toggles Sí/No/No sabemos, salud, historia, fotos y vídeo) que permite guardar borrador con solo el nombre y publicar exigiendo los mínimos (especie, sexo, tamaño, descripción y ≥1 foto). Subida de varias fotos con compresión en cliente (≤300 KB), portada marcable, reordenación y borrado (que elimina también el fichero de Storage); enlace de YouTube validado y renderizado como embed sin cookies. Cambios de estado con transiciones válidas y confirmación al marcar "adoptado", y opción de duplicar una ficha. Solo las protectoras verificadas pueden publicar; el resto prepara borradores. A nivel de datos: bucket de Storage `animal-media` con políticas por carpeta de protectora, portada única por animal y `species` opcional para permitir borradores.
+
 ## [0.0.11] — 2026-07-07
 
 ### Añadido

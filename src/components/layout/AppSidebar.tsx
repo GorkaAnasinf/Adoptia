@@ -1,8 +1,11 @@
 import {
   BarChart3,
+  Bell,
   CalendarDays,
+  CalendarHeart,
   Clock,
   FileText,
+  Heart,
   Home,
   type LucideIcon,
   LifeBuoy,
@@ -26,7 +29,7 @@ type Item = {
 const NAV: Record<Role, Item[]> = {
   shelter: [
     { key: "navHome", href: "/panel", icon: Home, exists: true },
-    { key: "navAnimals", href: "/panel/animales", icon: PawPrint },
+    { key: "navAnimals", href: "/panel/animales", icon: PawPrint, exists: true },
     { key: "navRequests", href: "/panel/solicitudes", icon: FileText },
     { key: "navAppointments", href: "/panel/citas", icon: CalendarDays },
     { key: "navAgenda", href: "/panel/agenda", icon: Clock },
@@ -34,7 +37,13 @@ const NAV: Record<Role, Item[]> = {
     { key: "navStats", href: "/panel/estadisticas", icon: BarChart3 },
   ],
   admin: [{ key: "navAdminShelters", href: "/admin/protectoras", icon: Store, exists: true }],
-  adopter: [{ key: "navAccount", href: "/mi-cuenta", icon: Home, exists: true }],
+  adopter: [
+    { key: "navAccount", href: "/mi-cuenta", icon: Home, exists: true },
+    { key: "navMyRequests", href: "/mi-cuenta/solicitudes", icon: FileText },
+    { key: "navFavorites", href: "/mi-cuenta/favoritos", icon: Heart },
+    { key: "navMyAppointments", href: "/mi-cuenta/citas", icon: CalendarHeart },
+    { key: "navMyAlerts", href: "/mi-cuenta/alertas", icon: Bell },
+  ],
 };
 
 type Props = {

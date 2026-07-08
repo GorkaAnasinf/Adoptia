@@ -10,7 +10,7 @@
 | [FEATURE-000](FEATURE-000.md) | Inicialización y andamiaje del proyecto | feature | hecho | 0.1 |
 | [FEATURE-001](FEATURE-001.md) | Registro y login de adoptantes y protectoras | feature | hecho | 0.2 |
 | [FEATURE-002](FEATURE-002.md) | Onboarding de protectoras y verificación por admin | feature | hecho | 0.2 |
-| [FEATURE-003](FEATURE-003.md) | Gestión de animales con fotos y vídeo (panel protectora) | feature | listo | 0.2 |
+| [FEATURE-003](FEATURE-003.md) | Gestión de animales con fotos y vídeo (panel protectora) | feature | hecho | 0.2 |
 | [FEATURE-004](FEATURE-004.md) | Panel de protectora — dashboard y perfil público | feature | listo | 0.2 |
 | [FEATURE-005](FEATURE-005.md) | Área pública — home, búsqueda de animales y fichas | feature | listo | 0.2 |
 | [FEATURE-006](FEATURE-006.md) | Mapa de protectoras con búsqueda por proximidad | feature | listo | 0.2 |
@@ -31,3 +31,4 @@
 | [IMPROVEMENT-003](IMPROVEMENT-003.md) | Pulido del shell chrome (sidebar + cabecera) hacia el mockup de Stitch | improvement | hecho | 0.2 |
 | [IMPROVEMENT-004](IMPROVEMENT-004.md) | Pulido del chrome (sidebar arena, cabecera) y estado vacío de Mi cuenta | improvement | hecho | 0.2 |
 | [IMPROVEMENT-005](IMPROVEMENT-005.md) | Editar los datos de la protectora mientras el alta está en revisión | improvement | hecho | 0.2 |
+| [IMPROVEMENT-006](IMPROVEMENT-006.md) | Completar el sidebar del adoptante con sus secciones (deshabilitadas) | improvement | hecho | 0.2 |

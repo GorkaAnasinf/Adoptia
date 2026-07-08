@@ -28,6 +28,19 @@ describe("AppSidebar", () => {
     ).not.toBeNull();
   });
 
+  it("adoptante: 'Mi cuenta' es enlace y las secciones futuras están deshabilitadas", () => {
+    renderSidebar({ role: "adopter", onboarding: false, pathname: "/mi-cuenta" });
+    // Mi cuenta activa y enlazada
+    const cuenta = screen.getByRole("link", { name: messages.shell.navAccount });
+    expect(cuenta).toHaveAttribute("href", "/mi-cuenta");
+    // Secciones aún sin desarrollar: presentes pero deshabilitadas (sin enlace)
+    for (const clave of ["navMyRequests", "navFavorites", "navMyAppointments", "navMyAlerts"] as const) {
+      const etiqueta = messages.shell[clave];
+      expect(screen.queryByRole("link", { name: etiqueta })).not.toBeInTheDocument();
+      expect(screen.getByText(etiqueta).closest('[aria-disabled="true"]')).not.toBeNull();
+    }
+  });
+
   it("admin: muestra la navegación de administración", () => {
     renderSidebar({ role: "admin", onboarding: false, pathname: "/admin/protectoras" });
     const protectoras = screen.getByRole("link", { name: messages.shell.navAdminShelters });
