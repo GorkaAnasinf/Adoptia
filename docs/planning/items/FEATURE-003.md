@@ -2,12 +2,12 @@
 id: FEATURE-003
 tipo: feature
 titulo: Gestión de animales con fotos y vídeo (panel protectora)
-estado: listo
+estado: hecho
 prioridad: alta
 hito: "0.2"
 duplicado_de: null
 creado: 2026-07-04
-actualizado: 2026-07-04
+actualizado: 2026-07-07
 ---
 
 # FEATURE-003 — Gestión de animales con fotos y vídeo
@@ -61,11 +61,11 @@ Es el contenido de la plataforma. La calidad de las fichas determina las adopcio
 
 ## Criterios de aceptación / Casuística a cubrir
 
-- [ ] Alta completa desde móvil con fotos de cámara; compresión automática en cliente.
-- [ ] Guardar borrador con solo el nombre; publicar exige: especie, sexo, tamaño, ≥1 foto, descripción.
-- [ ] Portada marcable y orden de fotos persistente; borrar foto de Storage al quitarla.
-- [ ] Enlace YouTube inválido rechazado con mensaje claro.
-- [ ] Protectora A no puede editar animales de protectora B (RLS, probado por test).
-- [ ] Cambio a "adoptado" pide confirmación; el animal deja de aparecer en búsquedas.
-- [ ] Protectora no verificada puede preparar borradores pero NO publicar.
-- [ ] Subida que falla a mitad no deja media huérfana referenciada.
+- [x] Alta completa desde móvil con fotos de cámara; compresión automática en cliente.
+- [x] Guardar borrador con solo el nombre; publicar exige: especie, sexo, tamaño, ≥1 foto, descripción.
+- [x] Portada marcable y orden de fotos persistente; borrar foto de Storage al quitarla.
+- [x] Enlace YouTube inválido rechazado con mensaje claro.
+- [x] Protectora A no puede editar animales de protectora B (RLS, probado por test).
+- [x] Cambio a "adoptado" pide confirmación; el animal deja de aparecer en búsquedas (el filtro de búsqueda ya exige `status='available'`; la búsqueda pública llega en FEATURE-005).
+- [x] Protectora no verificada puede preparar borradores pero NO publicar.
+- [x] Subida que falla a mitad no deja media huérfana referenciada (Storage antes que la fila).

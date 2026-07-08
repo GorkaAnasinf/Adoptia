@@ -23,3 +23,26 @@ export function rutaLogo(shelterId: string, file: File): string {
     : "jpg";
   return `${shelterId}/logo.${ext}`;
 }
+
+/** Tamaño máximo de foto de animal tras compresión (Decisión #15). */
+export const FOTO_MAX_KB = 300;
+
+/** Comprime una foto de animal en el cliente hasta ≤300 KB antes de subirla. */
+export async function comprimirFoto(file: File): Promise<File> {
+  return imageCompression(file, {
+    maxSizeMB: FOTO_MAX_KB / 1024,
+    maxWidthOrHeight: 1600,
+    useWebWorker: true,
+  });
+}
+
+/**
+ * Ruta de Storage de una foto de animal: `{shelterId}/{animalId}/{uuid}.{ext}`.
+ * La primera carpeta es el shelter (la política RLS valida foldername[1]).
+ */
+export function rutaFoto(shelterId: string, animalId: string, file: File): string {
+  const ext = file.name.includes(".")
+    ? (file.name.split(".").pop() as string).toLowerCase()
+    : "jpg";
+  return `${shelterId}/${animalId}/${crypto.randomUUID()}.${ext}`;
+}
