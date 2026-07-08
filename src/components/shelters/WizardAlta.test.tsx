@@ -133,6 +133,14 @@ describe("WizardAlta", () => {
     );
   });
 
+  it("en modo edición el stepper permite saltar directamente a otro paso", async () => {
+    const user = userEvent.setup();
+    renderWizard({ mode: "edicion" });
+    // Sin pulsar Siguiente, salta al paso 3 desde el número del stepper
+    await user.click(screen.getByRole("button", { name: /Perfil público — paso 3/i }));
+    expect(await screen.findByRole("button", { name: /subir-logo/i })).toBeInTheDocument();
+  });
+
   it("muestra aviso claro si el CIF/email ya está registrado (23505)", async () => {
     const user = userEvent.setup();
     upsertMock.mockResolvedValue({ data: null, error: { code: "23505" } });

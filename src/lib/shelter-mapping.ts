@@ -20,10 +20,45 @@ export type ShelterForm = {
   acceptsFostering: boolean;
 };
 
+function leDouble(hex: string): number {
+  const bytes = new Uint8Array(8);
+  for (let i = 0; i < 8; i++) bytes[i] = parseInt(hex.slice(i * 2, i * 2 + 2), 16);
+  return new DataView(bytes.buffer).getFloat64(0, true);
+}
+
+/**
+ * Decodifica la geografía `location` de un Point. Supabase la devuelve como
+ * EWKB hexadecimal (little-endian, con SRID); también se acepta GeoJSON por si
+ * cambia el formato. Devuelve { lat, lng } o null.
+ */
+export function parsePoint(loc: unknown): { lat: number; lng: number } | null {
+  if (!loc) return null;
+  // GeoJSON { type: "Point", coordinates: [lng, lat] }
+  if (typeof loc === "object") {
+    const coords = (loc as { coordinates?: unknown }).coordinates;
+    if (Array.isArray(coords) && coords.length === 2) {
+      const [lng, lat] = coords as number[];
+      if (Number.isFinite(lat) && Number.isFinite(lng)) return { lat, lng };
+    }
+    return null;
+  }
+  if (typeof loc !== "string" || loc.length < 42) return null;
+  if (loc.slice(0, 2) !== "01") return null; // solo little-endian (lo que usa Supabase)
+  // El flag de SRID (0x20000000) vive en el byte alto del dword de tipo (chars 8-10).
+  const conSrid = (parseInt(loc.slice(8, 10), 16) & 0x20) !== 0;
+  const off = 10 + (conSrid ? 8 : 0);
+  const lng = leDouble(loc.slice(off, off + 16));
+  const lat = leDouble(loc.slice(off + 16, off + 32));
+  if (!Number.isFinite(lat) || !Number.isFinite(lng)) return null;
+  return { lat, lng };
+}
+
 /** Mapea una fila de `shelters` de vuelta al formulario del wizard (recupera borrador). */
 export function shelterRowToForm(row: Record<string, unknown> | null): Partial<ShelterForm> {
   if (!row) return {};
+  const punto = parsePoint(row.location);
   return {
+    ...(punto ? { lat: punto.lat, lng: punto.lng } : {}),
     name: (row.name as string) ?? undefined,
     cif: (row.cif as string) ?? undefined,
     email: (row.email as string) ?? undefined,

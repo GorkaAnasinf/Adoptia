@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import type { Sugerencia } from "@/lib/geocoding";
+import { PROVINCIAS } from "@/lib/provincias";
 import {
   entidadSchema,
   perfilSchema,
@@ -64,6 +65,7 @@ export function WizardAlta({
   const [currentId, setCurrentId] = useState<string | null>(shelterId);
   const [enviado, setEnviado] = useState(false);
   const [guardando, setGuardando] = useState(false);
+  const [geoMsg, setGeoMsg] = useState<string>();
 
   function set<K extends keyof Form>(campo: K, valor: Form[K]) {
     setForm((f) => ({ ...f, [campo]: valor }));
@@ -120,10 +122,15 @@ export function WizardAlta({
       });
   }
 
-  /** Navegación por el stepper: solo a pasos ya visitados; guarda el borrador. */
+  // En edición todos los pasos son alcanzables (los datos ya existen);
+  // en alta, solo hasta el paso más avanzado visitado.
+  const maxAlcanzable = esEdicion ? SCHEMAS.length - 1 : maxVisto;
+
+  /** Navegación por el stepper: guarda el borrador y salta al paso pedido. */
   async function irAPaso(i: number) {
-    if (i === paso || i > maxVisto) return;
-    if (i > paso && !validar(SCHEMAS[paso])) return;
+    if (i === paso || i > maxAlcanzable) return;
+    // Al avanzar en alta se valida el paso actual; hacia atrás o en edición, no.
+    if (i > paso && !esEdicion && !validar(SCHEMAS[paso])) return;
     await guardarBorrador(false);
     setPaso(i);
   }
@@ -136,7 +143,7 @@ export function WizardAlta({
     }
   }
 
-  /** Al elegir una sugerencia se rellenan los campos y se coloca el pin. */
+  /** Al elegir una dirección se rellenan los campos y se coloca el pin. */
   function elegirDireccion(s: Sugerencia) {
     setForm((f) => ({
       ...f,
@@ -148,6 +155,48 @@ export function WizardAlta({
       lng: s.lng,
     }));
     setErrores({});
+  }
+
+  /** Al elegir un municipio se rellena ciudad (y provincia si faltaba) + pin. */
+  function elegirCiudad(s: Sugerencia) {
+    setForm((f) => ({
+      ...f,
+      city: s.city || f.city,
+      province: f.province || s.province,
+      postalCode: s.postalCode || f.postalCode,
+      lat: s.lat,
+      lng: s.lng,
+    }));
+  }
+
+  /** Geocodifica los campos actuales y coloca el pin (botón "Localizar"). */
+  async function localizar() {
+    setGeoMsg(undefined);
+    try {
+      const res = await fetch("/api/protectoras/geocode", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          address: form.address,
+          city: form.city,
+          province: form.province,
+          postalCode: form.postalCode,
+        }),
+      });
+      const { data } = await res.json();
+      if (data?.lat != null) {
+        set("lat", data.lat);
+        set("lng", data.lng);
+      } else {
+        setGeoMsg(t("geocodeFailed"));
+        if (form.lat == null) {
+          set("lat", 40.4168);
+          set("lng", -3.7038);
+        }
+      }
+    } catch {
+      setGeoMsg(t("geocodeFailed"));
+    }
   }
 
   if (enviado) {
@@ -185,7 +234,7 @@ export function WizardAlta({
         <Stepper
           pasos={[t("stepEntity"), t("stepLocation"), t("stepProfile")]}
           actual={paso}
-          maxAlcanzable={maxVisto}
+          maxAlcanzable={maxAlcanzable}
           onStepClick={irAPaso}
           label={t("stepperLabel")}
         />
@@ -224,31 +273,68 @@ export function WizardAlta({
         </div>
       )}
 
-      {/* -------- Paso 2: ubicación -------- */}
+      {/* -------- Paso 2: ubicación (de más a menos: provincia → dirección) -------- */}
       {paso === 1 && (
         <div className="flex flex-col gap-3">
-          <AddressAutocomplete
-            id="address"
-            label={t("address")}
-            value={form.address ?? ""}
-            onChange={(v) => set("address", v)}
-            onSelect={elegirDireccion}
-            placeholder={t("addressPlaceholder")}
-            searchingLabel={t("addressSearching")}
-            noResultsLabel={t("addressNoResults")}
-          />
-          {errores.address && <p className="text-sm text-destructive">{errores.address}</p>}
-          <div className="grid grid-cols-2 gap-3">
-            <Campo id="city" label={t("city")} error={errores.city}>
-              <Input id="city" value={form.city ?? ""} onChange={(e) => set("city", e.target.value)} />
-            </Campo>
-            <Campo id="province" label={t("province")} error={errores.province}>
-              <Input id="province" value={form.province ?? ""} onChange={(e) => set("province", e.target.value)} />
-            </Campo>
+          {/* Provincia: combo escribible con la lista fija */}
+          <Campo id="province" label={t("province")} error={errores.province}>
+            <Input
+              id="province"
+              list="provincias-list"
+              value={form.province ?? ""}
+              onChange={(e) => set("province", e.target.value)}
+              placeholder={t("provincePlaceholder")}
+            />
+            <datalist id="provincias-list">
+              {PROVINCIAS.map((p) => (
+                <option key={p} value={p} />
+              ))}
+            </datalist>
+          </Campo>
+
+          {/* Ciudad: sugerencias de municipios (filtradas por provincia) */}
+          <div>
+            <AddressAutocomplete
+              id="city"
+              label={t("city")}
+              value={form.city ?? ""}
+              onChange={(v) => set("city", v)}
+              onSelect={elegirCiudad}
+              tipo="place"
+              contexto={form.province ?? ""}
+              placeholder={t("cityPlaceholder")}
+              searchingLabel={t("addressSearching")}
+              noResultsLabel={t("addressNoResults")}
+            />
+            {errores.city && <p className="mt-1.5 text-sm text-destructive">{errores.city}</p>}
           </div>
+
           <Campo id="postalCode" label={t("postalCode")} error={errores.postalCode}>
             <Input id="postalCode" value={form.postalCode ?? ""} onChange={(e) => set("postalCode", e.target.value)} />
           </Campo>
+
+          {/* Dirección: sugerencias sesgadas por ciudad + provincia */}
+          <div>
+            <AddressAutocomplete
+              id="address"
+              label={t("address")}
+              value={form.address ?? ""}
+              onChange={(v) => set("address", v)}
+              onSelect={elegirDireccion}
+              contexto={`${form.city ?? ""} ${form.province ?? ""}`.trim()}
+              placeholder={t("addressPlaceholder")}
+              searchingLabel={t("addressSearching")}
+              noResultsLabel={t("addressNoResults")}
+            />
+            {errores.address && <p className="mt-1.5 text-sm text-destructive">{errores.address}</p>}
+          </div>
+
+          <Button type="button" variant="outline" className="w-fit" onClick={localizar}>
+            <MapPin className="size-4" aria-hidden="true" />
+            {t("locate")}
+          </Button>
+          {geoMsg && <p className="text-sm text-destructive">{geoMsg}</p>}
+
           <p className="flex items-center gap-1.5 text-sm text-muted-foreground">
             <MapPin className="size-4 shrink-0" aria-hidden="true" />
             {t("pinHelp")}

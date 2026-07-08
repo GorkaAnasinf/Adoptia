@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { formToShelterRow, shelterRowToForm, slugify } from "./shelter-mapping";
+import { formToShelterRow, parsePoint, shelterRowToForm, slugify } from "./shelter-mapping";
 
 describe("slugify", () => {
   it("normaliza acentos, mayúsculas y espacios", () => {
@@ -85,5 +85,34 @@ describe("shelterRowToForm", () => {
     expect(form.openingHours).toEqual({});
     expect(form.socialLinks).toEqual({});
     expect(form.acceptsFostering).toBe(false);
+  });
+
+  it("recupera lat/lng desde el EWKB hex de la location (round-trip del pin)", () => {
+    // POINT(-2.935 43.263) tal como lo devuelve Supabase (EWKB LE con SRID 4326)
+    const hex = "0101000020E61000007B14AE47E17A07C08B6CE7FBA9A14540";
+    const form = shelterRowToForm({ name: "Refugio", location: hex });
+    expect(form.lng).toBeCloseTo(-2.935, 3);
+    expect(form.lat).toBeCloseTo(43.263, 3);
+  });
+});
+
+describe("parsePoint", () => {
+  it("decodifica EWKB hex little-endian con SRID", () => {
+    const p = parsePoint("0101000020E61000007B14AE47E17A07C08B6CE7FBA9A14540");
+    expect(p?.lng).toBeCloseTo(-2.935, 3);
+    expect(p?.lat).toBeCloseTo(43.263, 3);
+  });
+
+  it("acepta también GeoJSON Point", () => {
+    expect(parsePoint({ type: "Point", coordinates: [-2.935, 43.263] })).toEqual({
+      lng: -2.935,
+      lat: 43.263,
+    });
+  });
+
+  it("devuelve null para entradas vacías o inválidas", () => {
+    expect(parsePoint(null)).toBeNull();
+    expect(parsePoint("abc")).toBeNull();
+    expect(parsePoint({})).toBeNull();
   });
 });
