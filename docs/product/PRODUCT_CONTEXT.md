@@ -51,6 +51,7 @@ Estado de cada capacidad en lenguaje de usuario. Se regenera con `python scripts
 - Pulido del chrome (sidebar arena, cabecera) y estado vacío de Mi cuenta ([IMPROVEMENT-004](../planning/items/IMPROVEMENT-004.md))
 - Editar los datos de la protectora mientras el alta está en revisión ([IMPROVEMENT-005](../planning/items/IMPROVEMENT-005.md))
 - Completar el sidebar del adoptante con sus secciones (deshabilitadas) ([IMPROVEMENT-006](../planning/items/IMPROVEMENT-006.md))
+- Pulido del wizard de alta — autocompletado de direcciones y layout ([IMPROVEMENT-007](../planning/items/IMPROVEMENT-007.md))
 
 #### 🚧 En camino (en desarrollo ahora)
 
