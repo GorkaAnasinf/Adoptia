@@ -32,3 +32,4 @@
 | [IMPROVEMENT-004](IMPROVEMENT-004.md) | Pulido del chrome (sidebar arena, cabecera) y estado vacío de Mi cuenta | improvement | hecho | 0.2 |
 | [IMPROVEMENT-005](IMPROVEMENT-005.md) | Editar los datos de la protectora mientras el alta está en revisión | improvement | hecho | 0.2 |
 | [IMPROVEMENT-006](IMPROVEMENT-006.md) | Completar el sidebar del adoptante con sus secciones (deshabilitadas) | improvement | hecho | 0.2 |
+| [IMPROVEMENT-007](IMPROVEMENT-007.md) | Pulido del wizard de alta — autocompletado de direcciones y layout | improvement | hecho | 0.2 |

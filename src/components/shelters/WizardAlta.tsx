@@ -8,6 +8,7 @@ import type { ZodType } from "zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import type { Sugerencia } from "@/lib/geocoding";
 import {
   entidadSchema,
   perfilSchema,
@@ -15,6 +16,7 @@ import {
 } from "@/lib/schemas/shelter";
 import { formToShelterRow, type ShelterForm } from "@/lib/shelter-mapping";
 import { createClient } from "@/lib/supabase/client";
+import { AddressAutocomplete } from "./AddressAutocomplete";
 import { LogoUploader } from "./LogoUploader";
 import { MapPinPicker } from "./MapPinPicker";
 import { OpeningHoursEditor } from "./OpeningHoursEditor";
@@ -50,6 +52,7 @@ export function WizardAlta({
   const esEdicion = mode === "edicion";
   const router = useRouter();
   const [paso, setPaso] = useState(0);
+  const [maxVisto, setMaxVisto] = useState(0);
   const [form, setForm] = useState<Form>({
     openingHours: {},
     socialLinks: {},
@@ -61,7 +64,6 @@ export function WizardAlta({
   const [currentId, setCurrentId] = useState<string | null>(shelterId);
   const [enviado, setEnviado] = useState(false);
   const [guardando, setGuardando] = useState(false);
-  const [geoMsg, setGeoMsg] = useState<string>();
 
   function set<K extends keyof Form>(campo: K, valor: Form[K]) {
     setForm((f) => ({ ...f, [campo]: valor }));
@@ -110,7 +112,20 @@ export function WizardAlta({
   async function siguiente() {
     if (!validar(SCHEMAS[paso])) return;
     const ok = await guardarBorrador(false);
-    if (ok) setPaso((p) => p + 1);
+    if (ok)
+      setPaso((p) => {
+        const sig = p + 1;
+        setMaxVisto((m) => Math.max(m, sig));
+        return sig;
+      });
+  }
+
+  /** Navegación por el stepper: solo a pasos ya visitados; guarda el borrador. */
+  async function irAPaso(i: number) {
+    if (i === paso || i > maxVisto) return;
+    if (i > paso && !validar(SCHEMAS[paso])) return;
+    await guardarBorrador(false);
+    setPaso(i);
   }
 
   async function finalizar() {
@@ -121,28 +136,18 @@ export function WizardAlta({
     }
   }
 
-  async function localizar() {
-    setGeoMsg(undefined);
-    const res = await fetch("/api/protectoras/geocode", {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({
-        address: form.address,
-        city: form.city,
-        province: form.province,
-        postalCode: form.postalCode,
-      }),
-    });
-    const { data } = await res.json();
-    if (data?.lat != null) {
-      set("lat", data.lat);
-      set("lng", data.lng);
-    } else {
-      setGeoMsg(t("geocodeFailed"));
-      // pin por defecto (centro de España) para ajuste manual
-      set("lat", 40.4168);
-      set("lng", -3.7038);
-    }
+  /** Al elegir una sugerencia se rellenan los campos y se coloca el pin. */
+  function elegirDireccion(s: Sugerencia) {
+    setForm((f) => ({
+      ...f,
+      address: s.address || f.address,
+      city: s.city || f.city,
+      province: s.province || f.province,
+      postalCode: s.postalCode || f.postalCode,
+      lat: s.lat,
+      lng: s.lng,
+    }));
+    setErrores({});
   }
 
   if (enviado) {
@@ -166,7 +171,7 @@ export function WizardAlta({
   const IconoPaso = Iconos[paso];
 
   return (
-    <div className="mx-auto w-full max-w-5xl px-4 py-8 pb-28">
+    <div className="mx-auto w-full max-w-5xl px-4 py-8">
       <header>
         <h1 className="font-heading text-2xl font-bold text-foreground sm:text-3xl">
           {t(esEdicion ? "editTitle" : "title")}
@@ -180,6 +185,8 @@ export function WizardAlta({
         <Stepper
           pasos={[t("stepEntity"), t("stepLocation"), t("stepProfile")]}
           actual={paso}
+          maxAlcanzable={maxVisto}
+          onStepClick={irAPaso}
           label={t("stepperLabel")}
         />
       </div>
@@ -220,9 +227,17 @@ export function WizardAlta({
       {/* -------- Paso 2: ubicación -------- */}
       {paso === 1 && (
         <div className="flex flex-col gap-3">
-          <Campo id="address" label={t("address")} error={errores.address}>
-            <Input id="address" value={form.address ?? ""} onChange={(e) => set("address", e.target.value)} />
-          </Campo>
+          <AddressAutocomplete
+            id="address"
+            label={t("address")}
+            value={form.address ?? ""}
+            onChange={(v) => set("address", v)}
+            onSelect={elegirDireccion}
+            placeholder={t("addressPlaceholder")}
+            searchingLabel={t("addressSearching")}
+            noResultsLabel={t("addressNoResults")}
+          />
+          {errores.address && <p className="text-sm text-destructive">{errores.address}</p>}
           <div className="grid grid-cols-2 gap-3">
             <Campo id="city" label={t("city")} error={errores.city}>
               <Input id="city" value={form.city ?? ""} onChange={(e) => set("city", e.target.value)} />
@@ -234,11 +249,10 @@ export function WizardAlta({
           <Campo id="postalCode" label={t("postalCode")} error={errores.postalCode}>
             <Input id="postalCode" value={form.postalCode ?? ""} onChange={(e) => set("postalCode", e.target.value)} />
           </Campo>
-          <Button type="button" variant="outline" onClick={localizar}>
-            {t("locate")}
-          </Button>
-          {geoMsg && <p className="text-sm text-destructive">{geoMsg}</p>}
-          <p className="text-sm text-muted-foreground">{t("pinHelp")}</p>
+          <p className="flex items-center gap-1.5 text-sm text-muted-foreground">
+            <MapPin className="size-4 shrink-0" aria-hidden="true" />
+            {t("pinHelp")}
+          </p>
           <MapPinPicker
             value={{ lat: form.lat ?? 40.4168, lng: form.lng ?? -3.7038 }}
             onChange={({ lat, lng }) => {
@@ -331,9 +345,9 @@ export function WizardAlta({
         </aside>
       </div>
 
-      {/* -------- Footer sticky de acciones -------- */}
-      <div className="fixed inset-x-0 bottom-0 z-30 border-t border-border bg-background/95 backdrop-blur lg:pl-64">
-        <div className="mx-auto flex max-w-5xl items-center justify-between gap-3 px-4 py-3">
+      {/* -------- Barra de acciones (sticky dentro del flujo) -------- */}
+      <div className="sticky bottom-0 z-30 -mx-4 mt-6 border-t border-border bg-background/95 px-4 backdrop-blur">
+        <div className="mx-auto flex max-w-5xl items-center justify-between gap-3 py-3">
           <span className="flex items-center gap-1.5 text-sm text-muted-foreground">
             <Check className="size-4 text-tertiary" aria-hidden="true" />
             <span className="hidden sm:inline">{t("autosaved")}</span>
