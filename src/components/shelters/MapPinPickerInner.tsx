@@ -50,7 +50,7 @@ export default function MapPinPickerInner({
     <MapContainer
       center={[value.lat, value.lng]}
       zoom={15}
-      className="h-72 w-full rounded-xl"
+      className="isolate h-72 w-full overflow-hidden rounded-xl"
       scrollWheelZoom={false}
     >
       <TileLayer

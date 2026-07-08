@@ -29,16 +29,22 @@ export async function GET(req: Request) {
     return json({ error: { code: "forbidden", message: "Solo protectoras" } }, 403);
   }
 
-  const q = new URL(req.url).searchParams.get("q")?.trim() ?? "";
+  const params = new URL(req.url).searchParams;
+  const q = params.get("q")?.trim() ?? "";
+  const tipo = params.get("tipo") === "place" ? "place" : "address";
   if (q.length < 3) return json({ data: [] });
 
   try {
-    const url = `${PHOTON}?q=${encodeURIComponent(q)}&lang=es&limit=6&bbox=${BBOX_ES}`;
+    let url = `${PHOTON}?q=${encodeURIComponent(q)}&lang=es&limit=6&bbox=${BBOX_ES}`;
+    // Para municipios, filtra a lugares habitados (ciudad/pueblo/aldea).
+    if (tipo === "place") {
+      url += "&osm_tag=place:city&osm_tag=place:town&osm_tag=place:village";
+    }
     const res = await fetch(url, { headers: { "User-Agent": "Adoptia/1.0" } });
     if (!res.ok) return json({ data: [] });
     const body = (await res.json()) as { features?: Parameters<typeof normalizePhoton>[0] };
     const features = Array.isArray(body.features) ? body.features : [];
-    return json({ data: normalizePhoton(features) });
+    return json({ data: normalizePhoton(features, tipo) });
   } catch {
     return json({ data: [] });
   }

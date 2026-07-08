@@ -16,6 +16,10 @@ type Props = {
   placeholder?: string;
   searchingLabel: string;
   noResultsLabel: string;
+  /** "address" (por defecto) o "place" (municipios). */
+  tipo?: "address" | "place";
+  /** Contexto que se añade a la búsqueda sin mostrarse (p. ej. provincia/ciudad). */
+  contexto?: string;
 };
 
 export function AddressAutocomplete({
@@ -27,6 +31,8 @@ export function AddressAutocomplete({
   placeholder,
   searchingLabel,
   noResultsLabel,
+  tipo = "address",
+  contexto = "",
 }: Props) {
   const [items, setItems] = useState<Sugerencia[]>([]);
   const [open, setOpen] = useState(false);
@@ -52,9 +58,11 @@ export function AddressAutocomplete({
     const t = setTimeout(async () => {
       setLoading(true);
       try {
-        const res = await fetch(`/api/protectoras/direcciones?q=${encodeURIComponent(q)}`, {
-          signal: ctrl.signal,
-        });
+        const busqueda = contexto.trim() ? `${q} ${contexto.trim()}` : q;
+        const res = await fetch(
+          `/api/protectoras/direcciones?q=${encodeURIComponent(busqueda)}&tipo=${tipo}`,
+          { signal: ctrl.signal },
+        );
         const body = (await res.json()) as { data?: Sugerencia[] };
         setItems(body.data ?? []);
         setOpen(true);
@@ -69,7 +77,7 @@ export function AddressAutocomplete({
       clearTimeout(t);
       ctrl.abort();
     };
-  }, [value]);
+  }, [value, tipo, contexto]);
 
   // Cerrar al hacer clic fuera
   useEffect(() => {
