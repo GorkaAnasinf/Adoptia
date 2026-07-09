@@ -50,7 +50,7 @@ Es la cara de la plataforma y la fuente de tráfico orgánico (SEO). Las fichas 
 
 1. [x] Test query de listado con filtros combinados (unit sobre builder). *(ciclo 1)*
 2. [x] Test orden por distancia con seed geolocalizado. *(ciclo 1 — `src/test/rls/animal-search.test.ts`)*
-3. [ ] Test: animal reservado muestra badge y sin botón "Me interesa". *(badge en tarjeta cubierto en ciclo 1; "Me interesa" en ciclo 2)*
+3. [x] Test: animal reservado muestra badge y sin botón "Me interesa". *(ciclo 1 tarjeta + ciclo 2 ficha)*
 4. [x] Test estados vacíos (sin resultados) *(ciclo 1; protectora sin animales ya cubierto en FEATURE-004)*
 5. [ ] E2E: home → filtrar → ficha → volver conservando filtros. *(ciclo 3)*
 
@@ -61,6 +61,11 @@ Es la cara de la plataforma y la fuente de tráfico orgánico (SEO). Las fichas 
   (migración `20260709120000`, security invoker → RLS aplica, distancia PostGIS, total_count),
   componentes `AnimalCard`/`AnimalSearchFilters`/`AnimalSearchEmpty` y página con filtros
   combinables en URL, paginación y aviso de ubicación. 337 tests en verde.
+- **Ciclo 2 (2026-07-09)** — Ficha pública `/animales/[slug]`: `AnimalPublicProfile` (galería
+  accesible con miniaturas, chips de rasgos, convivencia tri-estado, salud, historia, tarjeta
+  de protectora con `MiniMapa` Leaflet sin SSR, barra sticky móvil), `InterestButton` (pide
+  login al pulsar; con sesión aviso "próximamente" hasta FEATURE-007), compartir WhatsApp,
+  página amable con sugerencias para despublicados (noindex) y `generateMetadata`. 349 tests.
 - **Nota:** los umbrales de cobertura (70% funcs/stmts) ya fallaban en `develop` antes de este
   ciclo (63.65% funcs); la rama los mejora pero no los alcanza — pendiente item de deuda.
 
