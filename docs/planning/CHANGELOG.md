@@ -2,6 +2,16 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/es/) adaptado. Versionado 0.x hasta el MVP.
 
+## [0.0.15] — 2026-07-09
+
+### Corregido
+
+- **IMPROVEMENT-009 — Autocompletado de ciudad y dirección**: volvían vacíos porque el proveedor de direcciones (Photon) no admite el idioma español como parámetro y rechazaba la petición; ahora se omite y las sugerencias de municipio y calle vuelven a aparecer al escribir.
+
+### Cambiado
+
+- **IMPROVEMENT-009 — Pulido del wizard de alta**: en el paso de ubicación los campos se colocan de dos en dos (provincia/ciudad y código postal/dirección). En el paso de perfil, el horario de apertura pasa de siete tarjetas grandes a una tabla compacta —una fila por día con "Cerrado" y franjas en pastillas—, y las opciones de voluntariado y acogida se muestran como dos tarjetas seleccionables.
+
 ## [0.0.14] — 2026-07-08
 
 ### Corregido
