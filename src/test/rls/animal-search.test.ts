@@ -57,7 +57,7 @@ describe.skipIf(!rlsDisponible)("RPC animals_search", () => {
     });
 
     const publicado = new Date().toISOString();
-    const animales = [
+    const animales: Record<string, unknown>[] = [
       // Bilbao: perra pequeña joven, buena con niños
       {
         shelter_id: bilbaoId,
