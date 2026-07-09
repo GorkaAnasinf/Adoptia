@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   PAGE_SIZE,
   buildQueryString,
+  edadAproximada,
   parseAnimalSearch,
   searchToRpcArgs,
   totalPaginas,
@@ -165,6 +166,19 @@ describe("buildQueryString", () => {
     const reparsed = parseAnimalSearch(Object.fromEntries(new URLSearchParams(qs)));
     expect(reparsed.especie).toBe("cat");
     expect(reparsed.pagina).toBe(4);
+  });
+});
+
+describe("edadAproximada", () => {
+  it("devuelve años para mayores de un año y meses para cachorros", () => {
+    expect(edadAproximada("2020-01-15", HOY)).toEqual({ unidad: "anios", n: 6 });
+    expect(edadAproximada("2026-02-01", HOY)).toEqual({ unidad: "meses", n: 5 });
+  });
+
+  it("devuelve null sin fecha o con fecha inválida o futura", () => {
+    expect(edadAproximada(null, HOY)).toBeNull();
+    expect(edadAproximada("no-fecha", HOY)).toBeNull();
+    expect(edadAproximada("2030-01-01", HOY)).toBeNull();
   });
 });
 

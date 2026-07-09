@@ -163,6 +163,22 @@ export function buildQueryString(s: AnimalSearch): string {
   return qs.toString();
 }
 
+/** Edad aproximada a partir de birth_date_approx: años, o meses si <1 año. */
+export function edadAproximada(
+  birth: string | null | undefined,
+  hoy: Date = new Date(),
+): { unidad: "anios" | "meses"; n: number } | null {
+  if (!birth) return null;
+  const nacimiento = new Date(birth);
+  if (Number.isNaN(nacimiento.getTime())) return null;
+  const meses =
+    (hoy.getUTCFullYear() - nacimiento.getUTCFullYear()) * 12 +
+    (hoy.getUTCMonth() - nacimiento.getUTCMonth());
+  if (meses < 0) return null;
+  if (meses < 12) return { unidad: "meses", n: meses };
+  return { unidad: "anios", n: Math.floor(meses / 12) };
+}
+
 export function totalPaginas(total: number): number {
   return Math.max(1, Math.ceil(total / PAGE_SIZE));
 }
