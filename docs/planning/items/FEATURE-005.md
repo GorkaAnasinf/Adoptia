@@ -2,12 +2,12 @@
 id: FEATURE-005
 tipo: feature
 titulo: Área pública — home, búsqueda de animales y fichas
-estado: listo
+estado: desarrollo
 prioridad: alta
 hito: "0.2"
 duplicado_de: null
 creado: 2026-07-04
-actualizado: 2026-07-04
+actualizado: 2026-07-09
 ---
 
 # FEATURE-005 — Área pública: home, búsqueda de animales y fichas
