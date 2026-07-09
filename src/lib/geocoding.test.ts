@@ -55,4 +55,17 @@ describe("normalizePhoton", () => {
     expect(s.address).toBe("");
     expect(s.province).toBe("Navarra");
   });
+
+  it("limpia los nombres bilingües de OSM (toma la primera forma)", () => {
+    const [s] = normalizePhoton([
+      feature({
+        countrycode: "ES",
+        street: "Nafarroako Erresumaren etorbidea",
+        city: "Valle de Egüés / Eguesibar",
+        county: "Iruñerria",
+      }),
+    ]);
+    expect(s.city).toBe("Valle de Egüés");
+    expect(s.province).toBe("Iruñerria"); // el filtrado a provincia válida ocurre en el cliente
+  });
 });

@@ -35,3 +35,4 @@
 | [IMPROVEMENT-007](IMPROVEMENT-007.md) | Pulido del wizard de alta — autocompletado de direcciones y layout | improvement | hecho | 0.2 |
 | [IMPROVEMENT-008](IMPROVEMENT-008.md) | Paso de ubicación del wizard — combos, orden top-down y fixes | improvement | hecho | 0.2 |
 | [IMPROVEMENT-009](IMPROVEMENT-009.md) | Wizard de alta — fix autocompletado y pulido de ubicación/perfil | improvement | hecho | 0.2 |
+| [IMPROVEMENT-010](IMPROVEMENT-010.md) | Wizard de alta — autorrelleno de provincia y nombres OSM | improvement | hecho | 0.2 |
