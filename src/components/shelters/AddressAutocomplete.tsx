@@ -39,15 +39,16 @@ export function AddressAutocomplete({
   const [loading, setLoading] = useState(false);
   const [activo, setActivo] = useState(-1);
   const listboxId = useId();
-  const saltarBusqueda = useRef(false); // evita re-buscar tras elegir una sugerencia
+  // Solo se busca cuando el usuario escribe en ESTA caja (no al precargar el
+  // borrador ni al cambiar el contexto de otra caja como la provincia).
+  const tecleando = useRef(false);
+  const contextoRef = useRef(contexto);
+  contextoRef.current = contexto;
   const contenedor = useRef<HTMLDivElement>(null);
 
-  // Búsqueda con debounce
+  // Búsqueda con debounce, disparada solo por el tecleo del usuario.
   useEffect(() => {
-    if (saltarBusqueda.current) {
-      saltarBusqueda.current = false;
-      return;
-    }
+    if (!tecleando.current) return;
     const q = value.trim();
     if (q.length < 3) {
       setItems([]);
@@ -58,7 +59,8 @@ export function AddressAutocomplete({
     const t = setTimeout(async () => {
       setLoading(true);
       try {
-        const busqueda = contexto.trim() ? `${q} ${contexto.trim()}` : q;
+        const ctx = contextoRef.current.trim();
+        const busqueda = ctx ? `${q} ${ctx}` : q;
         const res = await fetch(
           `/api/protectoras/direcciones?q=${encodeURIComponent(busqueda)}&tipo=${tipo}`,
           { signal: ctrl.signal },
@@ -77,7 +79,7 @@ export function AddressAutocomplete({
       clearTimeout(t);
       ctrl.abort();
     };
-  }, [value, tipo, contexto]);
+  }, [value, tipo]);
 
   // Cerrar al hacer clic fuera
   useEffect(() => {
@@ -89,7 +91,7 @@ export function AddressAutocomplete({
   }, []);
 
   function elegir(s: Sugerencia) {
-    saltarBusqueda.current = true;
+    tecleando.current = false;
     onSelect(s);
     setOpen(false);
     setItems([]);
@@ -119,7 +121,10 @@ export function AddressAutocomplete({
         <Input
           id={id}
           value={value}
-          onChange={(e) => onChange(e.target.value)}
+          onChange={(e) => {
+            tecleando.current = true;
+            onChange(e.target.value);
+          }}
           onKeyDown={onKeyDown}
           onFocus={() => items.length > 0 && setOpen(true)}
           placeholder={placeholder}

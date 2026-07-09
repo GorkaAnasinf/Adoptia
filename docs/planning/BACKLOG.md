@@ -9,10 +9,10 @@
 - **Progreso:** FEATURE-001, FEATURE-002 y FEATURE-003 (gestión de animales) hechos; app shell autenticado (FEATURE-018), rediseño del wizard (IMPROVEMENT-002), pulido del chrome (IMPROVEMENT-003/004), edición del alta en revisión (IMPROVEMENT-005) y sidebar del adoptante (IMPROVEMENT-006) en producción; correcciones de confirmación de email y mapa (BUG-001/002/003).
 - **Siguiente (Bloque A — protectora):** FEATURE-004 (dashboard + perfil público de la protectora).
 - **Luego (Bloque B — persona):** FEATURE-005 → 006 → 007 → 008.
-- **En curso:** nada (IMPROVEMENT-010 en rama `feature/IMPROVEMENT-010-wizard-provincia-fix`, pendiente de merge a `develop`).
+- **En curso:** nada (IMPROVEMENT-011 en rama `feature/IMPROVEMENT-011-wizard-combo-titulo`, pendiente de merge a `develop`).
 - **Bloqueos:** ninguno.
 - **Follow-ups abiertos:** IMPROVEMENT-001 (de-duplicar slug de protectora), sin planificar.
-- **Última actualización:** 2026-07-09 (cierre de IMPROVEMENT-010 — fix provincia/comarca y nombres OSM).
+- **Última actualización:** 2026-07-09 (cierre de IMPROVEMENT-011 — combo provincia, autocompletado al teclear, título lateral).
 
 ## Items abiertos por estado
 

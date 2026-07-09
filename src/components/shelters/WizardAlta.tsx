@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import type { Sugerencia } from "@/lib/geocoding";
-import { matchProvincia, PROVINCIAS } from "@/lib/provincias";
+import { matchProvincia } from "@/lib/provincias";
 import {
   entidadSchema,
   perfilSchema,
@@ -19,6 +19,7 @@ import { formToShelterRow, type ShelterForm } from "@/lib/shelter-mapping";
 import { createClient } from "@/lib/supabase/client";
 import { AddressAutocomplete } from "./AddressAutocomplete";
 import { LogoUploader } from "./LogoUploader";
+import { ProvinciaCombo } from "./ProvinciaCombo";
 import { MapPinPicker } from "./MapPinPicker";
 import { OpeningHoursEditor } from "./OpeningHoursEditor";
 import { Stepper } from "./Stepper";
@@ -221,17 +222,8 @@ export function WizardAlta({
   const IconoPaso = Iconos[paso];
 
   return (
-    <div className="mx-auto w-full max-w-5xl px-4 py-8">
-      <header>
-        <h1 className="font-heading text-2xl font-bold text-foreground sm:text-3xl">
-          {t(esEdicion ? "editTitle" : "title")}
-        </h1>
-        <p className="mt-1 text-muted-foreground">
-          {esEdicion ? t("editSubtitle") : subtitulos[paso]}
-        </p>
-      </header>
-
-      <div className="mt-6">
+    <div className="mx-auto w-full max-w-5xl px-4 py-6">
+      <div>
         <Stepper
           pasos={[t("stepEntity"), t("stepLocation"), t("stepProfile")]}
           actual={paso}
@@ -278,21 +270,19 @@ export function WizardAlta({
       {paso === 1 && (
         <div className="flex flex-col gap-3">
           <div className="grid gap-3 sm:grid-cols-2">
-            {/* Provincia: combo escribible con la lista fija */}
-            <Campo id="province" label={t("province")} error={errores.province}>
-              <Input
+            {/* Provincia: combo escribible sobre la lista fija */}
+            <div>
+              <ProvinciaCombo
                 id="province"
-                list="provincias-list"
+                label={t("province")}
                 value={form.province ?? ""}
-                onChange={(e) => set("province", e.target.value)}
+                onChange={(v) => set("province", v)}
                 placeholder={t("provincePlaceholder")}
               />
-              <datalist id="provincias-list">
-                {PROVINCIAS.map((p) => (
-                  <option key={p} value={p} />
-                ))}
-              </datalist>
-            </Campo>
+              {errores.province && (
+                <p className="mt-1.5 text-sm text-destructive">{errores.province}</p>
+              )}
+            </div>
 
             {/* Ciudad: sugerencias de municipios (filtradas por provincia) */}
             <div>
@@ -403,6 +393,16 @@ export function WizardAlta({
 
         {/* -------- Columna lateral: Consejo + Resumen -------- */}
         <aside className="flex flex-col gap-4">
+          {/* Título de la vista (movido aquí para ganar alto arriba) */}
+          <div className="rounded-xl border border-primary/25 bg-primary/5 p-4">
+            <h1 className="font-heading text-lg font-bold text-foreground">
+              {t(esEdicion ? "editTitle" : "title")}
+            </h1>
+            <p className="mt-1 text-sm text-muted-foreground">
+              {esEdicion ? t("editSubtitle") : subtitulos[paso]}
+            </p>
+          </div>
+
           <div className="rounded-xl border border-tertiary/30 bg-tertiary/10 p-4">
             <div className="mb-1.5 flex items-center gap-2 text-tertiary">
               <Lightbulb className="size-4" aria-hidden="true" />
