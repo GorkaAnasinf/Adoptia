@@ -2,6 +2,12 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/es/) adaptado. Versionado 0.x hasta el MVP.
 
+## [0.0.16] — 2026-07-09
+
+### Corregido
+
+- **IMPROVEMENT-010 — Provincia y municipios en el alta**: al elegir una calle sugerida ya no se sobrescribe la provincia que elegiste con la comarca (antes salía, p. ej., "Iruñerria" en lugar de "Navarra", y el desplegable de provincias se quedaba vacío). La provincia autocompletada solo se acepta si es una de las 52 oficiales, y los nombres de municipio bilingües de OpenStreetMap ("Valle de Egüés / Eguesibar") se muestran ya limpios. Además, "Localizar en el mapa" y la ayuda para arrastrar el pin comparten fila.
+
 ## [0.0.15] — 2026-07-09
 
 ### Corregido

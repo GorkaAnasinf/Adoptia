@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import type { Sugerencia } from "@/lib/geocoding";
-import { PROVINCIAS } from "@/lib/provincias";
+import { matchProvincia, PROVINCIAS } from "@/lib/provincias";
 import {
   entidadSchema,
   perfilSchema,
@@ -148,22 +148,23 @@ export function WizardAlta({
     setForm((f) => ({
       ...f,
       address: s.address || f.address,
-      city: s.city || f.city,
-      province: s.province || f.province,
-      postalCode: s.postalCode || f.postalCode,
+      // No se pisa lo que el usuario ya eligió (flujo de más a menos).
+      city: f.city || s.city,
+      province: f.province || matchProvincia(s.province),
+      postalCode: f.postalCode || s.postalCode,
       lat: s.lat,
       lng: s.lng,
     }));
     setErrores({});
   }
 
-  /** Al elegir un municipio se rellena ciudad (y provincia si faltaba) + pin. */
+  /** Al elegir un municipio se rellena ciudad (y provincia si faltaba y es válida) + pin. */
   function elegirCiudad(s: Sugerencia) {
     setForm((f) => ({
       ...f,
       city: s.city || f.city,
-      province: f.province || s.province,
-      postalCode: s.postalCode || f.postalCode,
+      province: f.province || matchProvincia(s.province),
+      postalCode: f.postalCode || s.postalCode,
       lat: s.lat,
       lng: s.lng,
     }));
@@ -331,16 +332,17 @@ export function WizardAlta({
             </div>
           </div>
 
-          <Button type="button" variant="outline" className="w-fit" onClick={localizar}>
-            <MapPin className="size-4" aria-hidden="true" />
-            {t("locate")}
-          </Button>
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5">
+            <Button type="button" variant="outline" className="w-fit shrink-0" onClick={localizar}>
+              <MapPin className="size-4" aria-hidden="true" />
+              {t("locate")}
+            </Button>
+            <p className="flex items-center gap-1.5 text-sm text-muted-foreground">
+              <MapPin className="size-4 shrink-0" aria-hidden="true" />
+              {t("pinHelp")}
+            </p>
+          </div>
           {geoMsg && <p className="text-sm text-destructive">{geoMsg}</p>}
-
-          <p className="flex items-center gap-1.5 text-sm text-muted-foreground">
-            <MapPin className="size-4 shrink-0" aria-hidden="true" />
-            {t("pinHelp")}
-          </p>
           <MapPinPicker
             value={{ lat: form.lat ?? 40.4168, lng: form.lng ?? -3.7038 }}
             onChange={({ lat, lng }) => {
