@@ -6,13 +6,12 @@
 ## 📍 ESTADO ACTUAL
 
 - **Hito activo:** 0.2 — MVP (en dos bloques: 🐕 protectora → 🧑 persona; ver "Orden de trabajo" en ROADMAP)
-- **Progreso:** FEATURE-001, FEATURE-002 y FEATURE-003 (gestión de animales) hechos; app shell autenticado (FEATURE-018), rediseño del wizard (IMPROVEMENT-002), pulido del chrome (IMPROVEMENT-003/004), edición del alta en revisión (IMPROVEMENT-005) y sidebar del adoptante (IMPROVEMENT-006) en producción; correcciones de confirmación de email y mapa (BUG-001/002/003).
-- **Siguiente (Bloque A — protectora):** FEATURE-004 (dashboard + perfil público de la protectora).
-- **Luego (Bloque B — persona):** FEATURE-005 → 006 → 007 → 008.
-- **En curso:** nada (IMPROVEMENT-011 en rama `feature/IMPROVEMENT-011-wizard-combo-titulo`, pendiente de merge a `develop`).
+- **Progreso:** Bloque A (protectora) **completo** — FEATURE-001/002/003/004 hechos, más app shell (FEATURE-018) y pulidos del wizard (IMPROVEMENT-002/003/004/005/007/008/009/010/011) y sidebar del adoptante (IMPROVEMENT-006) en producción; correcciones de email y mapa (BUG-001/002/003).
+- **Siguiente (Bloque B — persona):** FEATURE-005 (área pública: home, búsqueda y fichas) → 006 → 007 → 008.
+- **En curso:** nada (FEATURE-004 en rama `feature/FEATURE-004-panel-dashboard`, pendiente de merge; requiere migración del bucket `shelter-media` en prod).
 - **Bloqueos:** ninguno.
-- **Follow-ups abiertos:** IMPROVEMENT-001 (de-duplicar slug de protectora), sin planificar.
-- **Última actualización:** 2026-07-09 (cierre de IMPROVEMENT-011 — combo provincia, autocompletado al teclear, título lateral).
+- **Follow-ups abiertos:** IMPROVEMENT-001 (de-duplicar slug de protectora), sin planificar. "Próximas citas" del dashboard pospuesto a FEATURE-009.
+- **Última actualización:** 2026-07-09 (cierre de FEATURE-004 — dashboard + perfil público, 3 ciclos; cierra el Bloque A).
 
 ## Items abiertos por estado
 
@@ -25,11 +24,10 @@ Los items `hecho`/`descartado` no aparecen aquí — su histórico vive en [CHAN
 |------|--------|-----------|------|
 | [BUG-001](items/BUG-001.md) | Tras confirmar el correo, la protectora no entra al onboarding; falta pantalla de "correo verificado | alta | 0.2 |
 
-### ✅ Listo para desarrollo (13)
+### ✅ Listo para desarrollo (12)
 
 | Item | Título | Prioridad | Hito |
 |------|--------|-----------|------|
-| [FEATURE-004](items/FEATURE-004.md) | Panel de protectora — dashboard y perfil público | alta | 0.2 |
 | [FEATURE-005](items/FEATURE-005.md) | Área pública — home, búsqueda de animales y fichas | alta | 0.2 |
 | [FEATURE-006](items/FEATURE-006.md) | Mapa de protectoras con búsqueda por proximidad | alta | 0.2 |
 | [FEATURE-007](items/FEATURE-007.md) | Solicitud "Me interesa" con cuestionario y bandeja de la protectora | alta | 0.2 |

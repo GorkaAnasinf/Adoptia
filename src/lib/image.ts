@@ -46,3 +46,11 @@ export function rutaFoto(shelterId: string, animalId: string, file: File): strin
     : "jpg";
   return `${shelterId}/${animalId}/${crypto.randomUUID()}.${ext}`;
 }
+
+/** Ruta de una foto de instalaciones (bucket `shelter-media`): `{shelterId}/{uuid}.{ext}`. */
+export function rutaMediaShelter(shelterId: string, file: File): string {
+  const ext = file.name.includes(".")
+    ? (file.name.split(".").pop() as string).toLowerCase()
+    : "jpg";
+  return `${shelterId}/${crypto.randomUUID()}.${ext}`;
+}
