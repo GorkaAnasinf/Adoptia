@@ -85,7 +85,26 @@
   },
   "panel": {
     "title": "Panel de la protectora",
-    "placeholder": "Aquí gestionarás tus animales y solicitudes."
+    "placeholder": "Aquí gestionarás tus animales y solicitudes.",
+    "greeting": "Hola, {name}",
+    "subtitle": "Este es el resumen de tu protectora.",
+    "statPublished": "Publicados",
+    "statDrafts": "Borradores",
+    "statPending": "Solicitudes pendientes",
+    "statAdopted": "Adoptados este año",
+    "addAnimal": "Añadir animal",
+    "recentRequests": "Solicitudes recientes",
+    "noRequests": "Aún no tienes solicitudes.",
+    "recentAnimals": "Tus animales",
+    "viewAll": "Ver todos",
+    "noAnimalsYet": "Todavía no has añadido animales.",
+    "firstStepsTitle": "Empieza por aquí",
+    "firstStepsText": "Da los primeros pasos para que tu protectora reciba adopciones.",
+    "stepProfile": "Completa tu perfil público",
+    "stepProfileDone": "Perfil público listo",
+    "stepAnimal": "Añade tu primer animal",
+    "editProfile": "Editar perfil",
+    "requestPending": "Pendiente"
   },
   "animales": {
     "title": "Mis animales",

@@ -2,12 +2,12 @@
 id: FEATURE-004
 tipo: feature
 titulo: Panel de protectora — dashboard y perfil público
-estado: listo
+estado: desarrollo
 prioridad: alta
 hito: "0.2"
 duplicado_de: null
 creado: 2026-07-04
-actualizado: 2026-07-07
+actualizado: 2026-07-09
 ---
 
 # FEATURE-004 — Panel de protectora: dashboard y perfil público
