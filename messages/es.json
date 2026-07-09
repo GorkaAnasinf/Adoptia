@@ -301,6 +301,16 @@
       "sab": "Sábado",
       "dom": "Domingo"
     },
+    "daysShort": {
+      "lun": "Lun",
+      "mar": "Mar",
+      "mie": "Mié",
+      "jue": "Jue",
+      "vie": "Vie",
+      "sab": "Sáb",
+      "dom": "Dom"
+    },
+    "closed": "Cerrado",
     "logoTooBig": "La imagen es demasiado grande.",
     "logoNotImage": "El archivo debe ser una imagen.",
     "logoChoose": "Subir logo",

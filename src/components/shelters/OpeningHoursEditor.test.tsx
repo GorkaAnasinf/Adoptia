@@ -25,7 +25,7 @@ describe("OpeningHoursEditor", () => {
   it("muestra los siete días de la semana", () => {
     render(<Harness />);
     for (const dia of ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"]) {
-      expect(screen.getByText(dia)).toBeInTheDocument();
+      expect(screen.getByRole("group", { name: dia })).toBeInTheDocument();
     }
   });
 
