@@ -117,7 +117,8 @@
     "fostering": "Acepta acogida",
     "website": "Sitio web",
     "contact": "Contacto",
-    "verified": "Protectora verificada"
+    "verified": "Protectora verificada",
+    "facilitiesTitle": "Nuestras instalaciones"
   },
   "perfil": {
     "title": "Perfil público",
@@ -137,6 +138,11 @@
     "collabTitle": "Colaboración",
     "acceptsVolunteers": "Aceptamos voluntariado",
     "acceptsFostering": "Aceptamos acogida",
+    "facilitiesTitle": "Fotos de las instalaciones",
+    "addPhotos": "Añadir fotos",
+    "uploading": "Subiendo…",
+    "deletePhoto": "Eliminar foto",
+    "errUpload": "No se pudo subir la foto. Inténtalo de nuevo.",
     "errorGeneric": "No se pudieron guardar los cambios. Inténtalo de nuevo."
   },
   "animales": {

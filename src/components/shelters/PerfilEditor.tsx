@@ -12,6 +12,7 @@ import type { OpeningHours, SocialLinks } from "@/lib/schemas/shelter";
 import { createClient } from "@/lib/supabase/client";
 import { LogoUploader } from "./LogoUploader";
 import { OpeningHoursEditor } from "./OpeningHoursEditor";
+import { type ShelterMedia, ShelterMediaUploader } from "./ShelterMediaUploader";
 import {
   type PublicAnimal,
   type PublicShelter,
@@ -38,16 +39,19 @@ export function PerfilEditor({
   shelterId,
   base,
   initial,
+  initialMedia = [],
   animals,
 }: {
   shelterId: string;
   base: Pick<PublicShelter, "name" | "city" | "province" | "website" | "status">;
   initial: Form;
+  initialMedia?: ShelterMedia[];
   animals: PublicAnimal[];
 }) {
   const t = useTranslations("perfil");
   const router = useRouter();
   const [form, setForm] = useState<Form>(initial);
+  const [media, setMedia] = useState<ShelterMedia[]>(initialMedia);
   const [preview, setPreview] = useState(false);
   const [guardando, setGuardando] = useState(false);
   const [guardado, setGuardado] = useState(false);
@@ -123,7 +127,7 @@ export function PerfilEditor({
 
       {preview ? (
         <div className="mt-6 overflow-hidden rounded-2xl border border-border">
-          <ShelterPublicProfile shelter={shelterPreview} animals={animals} />
+          <ShelterPublicProfile shelter={shelterPreview} animals={animals} photos={media} />
         </div>
       ) : (
         <div className="mt-6 flex flex-col gap-6">
@@ -146,6 +150,8 @@ export function PerfilEditor({
           </div>
 
           <OpeningHoursEditor value={form.openingHours} onChange={(v) => set("openingHours", v)} />
+
+          <ShelterMediaUploader shelterId={shelterId} media={media} onChange={setMedia} />
 
           <fieldset className="flex flex-col gap-3">
             <legend className="font-medium">{t("socialsTitle")}</legend>

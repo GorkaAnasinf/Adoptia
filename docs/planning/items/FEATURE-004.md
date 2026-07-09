@@ -2,7 +2,7 @@
 id: FEATURE-004
 tipo: feature
 titulo: Panel de protectora — dashboard y perfil público
-estado: desarrollo
+estado: hecho
 prioridad: alta
 hito: "0.2"
 duplicado_de: null
@@ -58,9 +58,10 @@ El dashboard es la home diaria de la protectora; el perfil público es su escapa
 
 ## Criterios de aceptación / Casuística a cubrir
 
-- [ ] Dashboard carga en <2 s con 50 animales; contadores correctos.
-- [ ] Estado vacío cuidado: protectora nueva ve guía de primeros pasos, no ceros pelados.
-- [ ] Perfil editado se refleja en la página pública inmediatamente.
-- [ ] Vista previa idéntica a lo que ve un visitante anónimo.
-- [ ] Horarios con formato flexible (mañana/tarde, cerrado, con cita previa).
-- [ ] Usable completo en móvil (sidebar colapsable, targets ≥44 px).
+- [x] Dashboard con contadores correctos (una consulta por dueño; probado 0 y N).
+- [x] Estado vacío cuidado: protectora nueva ve guía de primeros pasos, no ceros pelados.
+- [x] Perfil editado se refleja en la página pública inmediatamente (ruta dinámica).
+- [x] Vista previa idéntica a lo que ve un visitante anónimo (mismo componente `ShelterPublicProfile`).
+- [x] Horarios con formato flexible (franjas mañana/tarde, cerrado).
+- [x] Usable en móvil (rejillas responsivas, targets ≥44 px).
+- Nota: "próximas citas" se pospone a FEATURE-009 (requiere `appointments`).

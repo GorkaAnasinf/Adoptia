@@ -19,15 +19,27 @@ async function cargarProtectora(slug: string) {
     .maybeSingle();
   if (!shelter) return null;
 
+  const shelterId = (shelter as { id: string }).id;
   const { data: animals } = await supabase
     .from("animals")
     .select("id,name,slug,status,animal_media(url,is_cover,sort_order)")
-    .eq("shelter_id", (shelter as { id: string }).id)
+    .eq("shelter_id", shelterId)
     .not("published_at", "is", null)
     .eq("status", "available")
     .order("updated_at", { ascending: false });
 
-  return { shelter: shelter as PublicShelter & { id: string }, animals: (animals as PublicAnimal[]) ?? [] };
+  const { data: photos } = await supabase
+    .from("shelter_media")
+    .select("id,url,sort_order")
+    .eq("shelter_id", shelterId)
+    .eq("type", "photo")
+    .order("sort_order", { ascending: true });
+
+  return {
+    shelter: shelter as PublicShelter & { id: string },
+    animals: (animals as PublicAnimal[]) ?? [],
+    photos: (photos as { id: string; url: string }[]) ?? [],
+  };
 }
 
 export async function generateMetadata({
@@ -49,5 +61,5 @@ export default async function ProtectoraPublicaPage({
   const data = await cargarProtectora(slug);
   if (!data) notFound();
 
-  return <ShelterPublicProfile shelter={data.shelter} animals={data.animals} />;
+  return <ShelterPublicProfile shelter={data.shelter} animals={data.animals} photos={data.photos} />;
 }

@@ -52,6 +52,13 @@ export default async function PerfilPage() {
     .eq("status", "available")
     .order("updated_at", { ascending: false });
 
+  const { data: photos } = await supabase
+    .from("shelter_media")
+    .select("id,url,sort_order")
+    .eq("shelter_id", s.id)
+    .eq("type", "photo")
+    .order("sort_order", { ascending: true });
+
   return (
     <PerfilEditor
       shelterId={s.id}
@@ -64,6 +71,7 @@ export default async function PerfilPage() {
         acceptsVolunteers: s.accepts_volunteers,
         acceptsFostering: s.accepts_fostering,
       }}
+      initialMedia={(photos as { id: string; url: string; sort_order: number }[] | null) ?? []}
       animals={(animals as PublicAnimal[] | null) ?? []}
     />
   );

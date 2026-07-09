@@ -2,6 +2,12 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/es/) adaptado. Versionado 0.x hasta el MVP.
 
+## [0.0.18] — 2026-07-09
+
+### Añadido
+
+- **FEATURE-004 — Panel de protectora: dashboard y perfil público**: al entrar al panel la protectora ve ahora un resumen —cuatro indicadores (animales publicados, borradores, solicitudes pendientes y adoptados del año), sus animales recientes y las solicitudes pendientes—, con acceso directo a "Añadir animal"; una protectora nueva ve una guía de primeros pasos en vez de ceros. Estrena su **perfil público** en `/protectoras/[slug]` (nombre, logo, ubicación, descripción, horario de visitas, redes, opciones de colaboración, fotos de instalaciones y animales en adopción) y un **editor de perfil** en el panel con **vista previa** que usa exactamente el mismo componente que ven los visitantes. Las fotos de instalaciones se suben al nuevo bucket `shelter-media` (compresión en cliente, subida sin dejar huérfanas). *"Próximas citas" llegará con FEATURE-009.*
+
 ## [0.0.17] — 2026-07-09
 
 ### Corregido

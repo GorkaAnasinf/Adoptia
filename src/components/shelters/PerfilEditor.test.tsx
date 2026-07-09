@@ -5,10 +5,13 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import messages from "../../../messages/es.json";
 import { PerfilEditor } from "./PerfilEditor";
 
-const { updateMock, eqMock } = vi.hoisted(() => ({
-  updateMock: vi.fn(() => ({ eq: eqMock })),
-  eqMock: vi.fn(async () => ({ error: null })),
-}));
+const { updateMock, eqMock } = vi.hoisted(() => {
+  const eqMock = vi.fn(async () => ({ error: null }));
+  const updateMock = vi.fn<(row: Record<string, unknown>) => { eq: typeof eqMock }>(() => ({
+    eq: eqMock,
+  }));
+  return { updateMock, eqMock };
+});
 
 vi.mock("next/navigation", () => ({ useRouter: () => ({ refresh: vi.fn() }) }));
 vi.mock("@/lib/supabase/client", () => ({
