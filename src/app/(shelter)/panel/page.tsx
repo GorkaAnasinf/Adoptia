@@ -253,7 +253,7 @@ function PrimerosPasos({
       <ol className="mx-auto mt-6 flex max-w-md flex-col gap-3">
         <PasoLink
           hecho={perfilListo}
-          href="/panel/alta"
+          href="/panel/perfil"
           label={perfilListo ? t("stepProfileDone") : t("stepProfile")}
         />
         <PasoLink hecho={false} href="/panel/animales/nueva" label={t("stepAnimal")} />
