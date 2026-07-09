@@ -32,17 +32,25 @@ export async function signInAs(email: string, password: string) {
 /** Crea (o reutiliza) un usuario de test confirmado y devuelve su id. */
 export async function ensureUser(email: string, password: string) {
   const admin = adminClient();
-  const { data, error } = await admin.auth.admin.createUser({
-    email,
-    password,
-    email_confirm: true,
-  });
-  if (error) {
+  // createUser puede devolver { error } o rechazar directamente si el email ya
+  // existe; en ambos casos reutilizamos el usuario existente.
+  try {
+    const { data, error } = await admin.auth.admin.createUser({
+      email,
+      password,
+      email_confirm: true,
+    });
+    if (!error) return data.user.id;
     if (!error.message.includes("already been registered")) throw error;
-    const { data: list } = await admin.auth.admin.listUsers();
-    const existing = list.users.find((u) => u.email === email);
-    if (!existing) throw error;
-    return existing.id;
+  } catch (e) {
+    if (!(e instanceof Error) || !e.message.includes("already been registered")) throw e;
   }
-  return data.user.id;
+  // Puede haber más usuarios de test que una página: paginamos hasta hallarlo.
+  for (let page = 1; page <= 50; page++) {
+    const { data: list } = await admin.auth.admin.listUsers({ page, perPage: 200 });
+    const existing = list.users.find((u) => u.email === email);
+    if (existing) return existing.id;
+    if (list.users.length < 200) break;
+  }
+  throw new Error(`No se encontró el usuario ${email}`);
 }
