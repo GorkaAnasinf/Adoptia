@@ -43,6 +43,14 @@ Formato ligero tipo ADR. Toda decisión con impacto estructural se registra aqu�
 | 22 | **SMTP de Gmail + plantillas HTML propias** para el MVP | Coste 0 y control total del diseño de los correos; suficiente para el volumen inicial (~500/día) | SMTP por defecto de Supabase (2/h, remitente genérico), Resend (requiere dominio verificado) |
 | 23 | **Política de contraseña fuerte** (mayús+minús+dígito+símbolo) alineada cliente y servidor | El servidor (Supabase) la exige; el cliente debe reflejarla para no rebotar al usuario | Solo validación en servidor (mala UX) |
 
+## 2026-07-09 — FEATURE-004 / pulido del alta (IMPROVEMENT-007..011)
+
+| # | Decisión | Motivo | Alternativa descartada |
+|---|----------|--------|------------------------|
+| 24 | **Photon (photon.komoot.io) para autocompletar direcciones** (complementa a Nominatim de #6; llamado desde el servidor con caché) | Nominatim no está pensado para autocompletar (1 req/s, sin tipo *search-as-you-type*); Photon es gratis, sin clave y devuelve sugerencias al teclear. **Nota:** Photon **no** admite `lang=es` (solo default/de/en/fr). Nominatim se mantiene para "Localizar en el mapa" | Cartociudad/IGN (mejor callejero ES pero API antigua y más costosa de integrar); seguir solo con Nominatim (UX pobre) |
+| 25 | **Provincia con lista fija de las 52** (`matchProvincia`) y municipios vía Photon `place`; nunca se pisa la provincia elegida con la comarca de OSM (`county`) | OSM mete comarcas ("Iruñerria") en `county`; sin control, el combo quedaba con valores inválidos | Confiar en los campos administrativos de OSM tal cual |
+| 26 | **Vista previa del perfil = componente público real** (`ShelterPublicProfile` compartido entre `/protectoras/[slug]` y el editor) | Garantiza que "lo que ves es lo que se publica" sin duplicar UI ni divergencias | Renderizar una maqueta aparte para la vista previa |
+
 ## Cómo añadir una decisión
 
 Nueva fila con fecha en sección nueva si cambia el mes. Si revierte una anterior, enlázala ("revierte #9") en vez de borrarla.
