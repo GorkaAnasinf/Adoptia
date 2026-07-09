@@ -34,7 +34,7 @@ Para centrar el desarrollo en un lado de la app cada vez, el 0.2 se aborda en do
 | [FEATURE-000](items/FEATURE-000.md) | Inicialización y andamiaje del proyecto | hecho | alta |
 | [FEATURE-017](items/FEATURE-017.md) | Despliegue inicial — Supabase cloud y Vercel enlazados | hecho | alta |
 
-### Hito 0.2 — 68% completado (13/19)
+### Hito 0.2 — 70% completado (14/20)
 
 | Item | Título | Estado | Prioridad |
 |------|--------|--------|-----------|
@@ -56,6 +56,7 @@ Para centrar el desarrollo en un lado de la app cada vez, el 0.2 se aborda en do
 | [IMPROVEMENT-007](items/IMPROVEMENT-007.md) | Pulido del wizard de alta — autocompletado de direcciones y layout | hecho | media |
 | [IMPROVEMENT-008](items/IMPROVEMENT-008.md) | Paso de ubicación del wizard — combos, orden top-down y fixes | hecho | media |
 | [IMPROVEMENT-009](items/IMPROVEMENT-009.md) | Wizard de alta — fix autocompletado y pulido de ubicación/perfil | hecho | media |
+| [IMPROVEMENT-010](items/IMPROVEMENT-010.md) | Wizard de alta — autorrelleno de provincia y nombres OSM | hecho | media |
 | [IMPROVEMENT-006](items/IMPROVEMENT-006.md) | Completar el sidebar del adoptante con sus secciones (deshabilitadas) | hecho | baja |
 
 ### Hito 0.3 — 0% completado (0/3)

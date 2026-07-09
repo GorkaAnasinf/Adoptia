@@ -53,3 +53,21 @@ export const PROVINCIAS = [
   "Zamora",
   "Zaragoza",
 ] as const;
+
+function normaliza(v: string): string {
+  return v
+    .trim()
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[̀-ͯ]/g, "");
+}
+
+/**
+ * Devuelve la provincia oficial que coincide con un texto libre (de OSM/Photon),
+ * o "" si no encaja. Evita meter comarcas ("Iruñerria") o CCAA en el combo.
+ */
+export function matchProvincia(valor: string | undefined | null): string {
+  if (!valor) return "";
+  const n = normaliza(valor);
+  return PROVINCIAS.find((p) => normaliza(p) === n || n.includes(normaliza(p))) ?? "";
+}
