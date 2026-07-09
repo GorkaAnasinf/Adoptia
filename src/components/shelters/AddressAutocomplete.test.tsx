@@ -45,15 +45,46 @@ describe("AddressAutocomplete", () => {
     expect(onChange).toHaveBeenCalled();
   });
 
-  it("con ≥3 caracteres busca y al elegir una sugerencia llama onSelect", async () => {
-    const { onSelect } = setup("Calle Iparraguirre");
+  it("al teclear ≥3 caracteres busca y al elegir una sugerencia llama onSelect", async () => {
+    // value controlado desde el padre: simulamos el tecleo real
+    let val = "";
+    const onSelect = vi.fn();
+    const { rerender } = render(
+      <AddressAutocomplete
+        id="address"
+        label="Dirección"
+        value={val}
+        onChange={(v) => {
+          val = v;
+        }}
+        onSelect={onSelect}
+        searchingLabel="Buscando…"
+        noResultsLabel="Sin resultados"
+      />,
+    );
+    const input = screen.getByLabelText("Dirección");
+    await userEvent.type(input, "Iparraguirre");
+    // reflejar el valor tecleado en el prop controlado
+    rerender(
+      <AddressAutocomplete
+        id="address"
+        label="Dirección"
+        value="Iparraguirre"
+        onChange={(v) => {
+          val = v;
+        }}
+        onSelect={onSelect}
+        searchingLabel="Buscando…"
+        noResultsLabel="Sin resultados"
+      />,
+    );
     const opcion = await screen.findByText(sugerencia.label);
     await userEvent.click(opcion);
     expect(onSelect).toHaveBeenCalledWith(sugerencia);
   });
 
-  it("no busca con menos de 3 caracteres", async () => {
-    setup("Ca");
+  it("no busca si el valor llega precargado sin teclear (borrador)", async () => {
+    setup("Calle Iparraguirre 12");
     await waitFor(() => expect(fetch).not.toHaveBeenCalled());
   });
 });

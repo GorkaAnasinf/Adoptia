@@ -2,6 +2,16 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/es/) adaptado. Versionado 0.x hasta el MVP.
 
+## [0.0.17] — 2026-07-09
+
+### Corregido
+
+- **IMPROVEMENT-011 — Combo de provincia y autocompletado**: el desplegable de provincias vuelve a aparecer (se sustituye el `datalist` nativo, poco fiable, por un combo propio que filtra al escribir). Los campos de ciudad y dirección dejan de buscar solos: antes se disparaban al escribir en provincia o al cargar el borrador y "no paraban de sugerir" la dirección guardada; ahora solo buscan cuando escribes en esa misma caja.
+
+### Cambiado
+
+- **IMPROVEMENT-011 — Título en la columna lateral**: el encabezado del alta ("Edita los datos…" y su subtítulo) se mueve de la parte superior a un recuadro con color propio en la columna derecha (junto a "Consejo"), visible en todas las pestañas, para ganar espacio vertical arriba.
+
 ## [0.0.16] — 2026-07-09
 
 ### Corregido
