@@ -35,7 +35,8 @@ export async function GET(req: Request) {
   if (q.length < 3) return json({ data: [] });
 
   try {
-    let url = `${PHOTON}?q=${encodeURIComponent(q)}&lang=es&limit=6&bbox=${BBOX_ES}`;
+    // Nota: Photon NO soporta lang=es (solo default/de/en/fr); omitirlo.
+    let url = `${PHOTON}?q=${encodeURIComponent(q)}&limit=6&bbox=${BBOX_ES}`;
     // Para municipios, filtra a lugares habitados (ciudad/pueblo/aldea).
     if (tipo === "place") {
       url += "&osm_tag=place:city&osm_tag=place:town&osm_tag=place:village";

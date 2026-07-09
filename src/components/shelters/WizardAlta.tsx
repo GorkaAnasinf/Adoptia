@@ -276,57 +276,59 @@ export function WizardAlta({
       {/* -------- Paso 2: ubicación (de más a menos: provincia → dirección) -------- */}
       {paso === 1 && (
         <div className="flex flex-col gap-3">
-          {/* Provincia: combo escribible con la lista fija */}
-          <Campo id="province" label={t("province")} error={errores.province}>
-            <Input
-              id="province"
-              list="provincias-list"
-              value={form.province ?? ""}
-              onChange={(e) => set("province", e.target.value)}
-              placeholder={t("provincePlaceholder")}
-            />
-            <datalist id="provincias-list">
-              {PROVINCIAS.map((p) => (
-                <option key={p} value={p} />
-              ))}
-            </datalist>
-          </Campo>
+          <div className="grid gap-3 sm:grid-cols-2">
+            {/* Provincia: combo escribible con la lista fija */}
+            <Campo id="province" label={t("province")} error={errores.province}>
+              <Input
+                id="province"
+                list="provincias-list"
+                value={form.province ?? ""}
+                onChange={(e) => set("province", e.target.value)}
+                placeholder={t("provincePlaceholder")}
+              />
+              <datalist id="provincias-list">
+                {PROVINCIAS.map((p) => (
+                  <option key={p} value={p} />
+                ))}
+              </datalist>
+            </Campo>
 
-          {/* Ciudad: sugerencias de municipios (filtradas por provincia) */}
-          <div>
-            <AddressAutocomplete
-              id="city"
-              label={t("city")}
-              value={form.city ?? ""}
-              onChange={(v) => set("city", v)}
-              onSelect={elegirCiudad}
-              tipo="place"
-              contexto={form.province ?? ""}
-              placeholder={t("cityPlaceholder")}
-              searchingLabel={t("addressSearching")}
-              noResultsLabel={t("addressNoResults")}
-            />
-            {errores.city && <p className="mt-1.5 text-sm text-destructive">{errores.city}</p>}
-          </div>
+            {/* Ciudad: sugerencias de municipios (filtradas por provincia) */}
+            <div>
+              <AddressAutocomplete
+                id="city"
+                label={t("city")}
+                value={form.city ?? ""}
+                onChange={(v) => set("city", v)}
+                onSelect={elegirCiudad}
+                tipo="place"
+                contexto={form.province ?? ""}
+                placeholder={t("cityPlaceholder")}
+                searchingLabel={t("addressSearching")}
+                noResultsLabel={t("addressNoResults")}
+              />
+              {errores.city && <p className="mt-1.5 text-sm text-destructive">{errores.city}</p>}
+            </div>
 
-          <Campo id="postalCode" label={t("postalCode")} error={errores.postalCode}>
-            <Input id="postalCode" value={form.postalCode ?? ""} onChange={(e) => set("postalCode", e.target.value)} />
-          </Campo>
+            <Campo id="postalCode" label={t("postalCode")} error={errores.postalCode}>
+              <Input id="postalCode" value={form.postalCode ?? ""} onChange={(e) => set("postalCode", e.target.value)} />
+            </Campo>
 
-          {/* Dirección: sugerencias sesgadas por ciudad + provincia */}
-          <div>
-            <AddressAutocomplete
-              id="address"
-              label={t("address")}
-              value={form.address ?? ""}
-              onChange={(v) => set("address", v)}
-              onSelect={elegirDireccion}
-              contexto={`${form.city ?? ""} ${form.province ?? ""}`.trim()}
-              placeholder={t("addressPlaceholder")}
-              searchingLabel={t("addressSearching")}
-              noResultsLabel={t("addressNoResults")}
-            />
-            {errores.address && <p className="mt-1.5 text-sm text-destructive">{errores.address}</p>}
+            {/* Dirección: sugerencias sesgadas por ciudad + provincia */}
+            <div>
+              <AddressAutocomplete
+                id="address"
+                label={t("address")}
+                value={form.address ?? ""}
+                onChange={(v) => set("address", v)}
+                onSelect={elegirDireccion}
+                contexto={`${form.city ?? ""} ${form.province ?? ""}`.trim()}
+                placeholder={t("addressPlaceholder")}
+                searchingLabel={t("addressSearching")}
+                noResultsLabel={t("addressNoResults")}
+              />
+              {errores.address && <p className="mt-1.5 text-sm text-destructive">{errores.address}</p>}
+            </div>
           </div>
 
           <Button type="button" variant="outline" className="w-fit" onClick={localizar}>
@@ -371,24 +373,26 @@ export function WizardAlta({
             value={form.openingHours ?? {}}
             onChange={(v) => set("openingHours", v)}
           />
-          <label className="flex items-center gap-2 text-sm">
-            <input
-              type="checkbox"
-              checked={form.acceptsVolunteers ?? false}
-              onChange={(e) => set("acceptsVolunteers", e.target.checked)}
-              className="size-4 accent-[var(--primary)]"
-            />
-            {t("acceptsVolunteers")}
-          </label>
-          <label className="flex items-center gap-2 text-sm">
-            <input
-              type="checkbox"
-              checked={form.acceptsFostering ?? false}
-              onChange={(e) => set("acceptsFostering", e.target.checked)}
-              className="size-4 accent-[var(--primary)]"
-            />
-            {t("acceptsFostering")}
-          </label>
+          <div className="grid gap-3 sm:grid-cols-2">
+            <label className="flex cursor-pointer items-center gap-2.5 rounded-xl border border-border p-3 text-sm has-[:checked]:border-primary has-[:checked]:bg-primary/5">
+              <input
+                type="checkbox"
+                checked={form.acceptsVolunteers ?? false}
+                onChange={(e) => set("acceptsVolunteers", e.target.checked)}
+                className="size-4 accent-[var(--primary)]"
+              />
+              {t("acceptsVolunteers")}
+            </label>
+            <label className="flex cursor-pointer items-center gap-2.5 rounded-xl border border-border p-3 text-sm has-[:checked]:border-primary has-[:checked]:bg-primary/5">
+              <input
+                type="checkbox"
+                checked={form.acceptsFostering ?? false}
+                onChange={(e) => set("acceptsFostering", e.target.checked)}
+                className="size-4 accent-[var(--primary)]"
+              />
+              {t("acceptsFostering")}
+            </label>
+          </div>
         </div>
       )}
 

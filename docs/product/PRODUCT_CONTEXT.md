@@ -53,6 +53,7 @@ Estado de cada capacidad en lenguaje de usuario. Se regenera con `python scripts
 - Completar el sidebar del adoptante con sus secciones (deshabilitadas) ([IMPROVEMENT-006](../planning/items/IMPROVEMENT-006.md))
 - Pulido del wizard de alta — autocompletado de direcciones y layout ([IMPROVEMENT-007](../planning/items/IMPROVEMENT-007.md))
 - Paso de ubicación del wizard — combos, orden top-down y fixes ([IMPROVEMENT-008](../planning/items/IMPROVEMENT-008.md))
+- Wizard de alta — fix autocompletado y pulido de ubicación/perfil ([IMPROVEMENT-009](../planning/items/IMPROVEMENT-009.md))
 
 #### 🚧 En camino (en desarrollo ahora)
 
