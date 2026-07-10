@@ -34,11 +34,11 @@ Para centrar el desarrollo en un lado de la app cada vez, el 0.2 se aborda en do
 | [FEATURE-000](items/FEATURE-000.md) | Inicialización y andamiaje del proyecto | hecho | alta |
 | [FEATURE-017](items/FEATURE-017.md) | Despliegue inicial — Supabase cloud y Vercel enlazados | hecho | alta |
 
-### Hito 0.2 — 90% completado (19/21)
+### Hito 0.2 — 95% completado (20/21)
 
 | Item | Título | Estado | Prioridad |
 |------|--------|--------|-----------|
-| [BUG-001](items/BUG-001.md) | Tras confirmar el correo, la protectora no entra al onboarding; falta pantalla de "correo verificado | desarrollo | alta |
+| [BUG-001](items/BUG-001.md) | Tras confirmar el correo, la protectora no entra al onboarding; falta pantalla de "correo verificado | hecho | alta |
 | [BUG-003](items/BUG-003.md) | El mapa del alta se ve en gris (la CSP bloquea las tiles de OpenStreetMap) | hecho | alta |
 | [FEATURE-001](items/FEATURE-001.md) | Registro y login de adoptantes y protectoras | hecho | alta |
 | [FEATURE-002](items/FEATURE-002.md) | Onboarding de protectoras y verificación por admin | hecho | alta |

@@ -8,22 +8,16 @@
 - **Hito activo:** 0.2 — MVP (en dos bloques: 🐕 protectora → 🧑 persona; ver "Orden de trabajo" en ROADMAP)
 - **Progreso:** Bloque A (protectora) completo. Bloque B en marcha: FEATURE-005 hecho (área pública), FEATURE-006 hecho (mapa de protectoras) y **FEATURE-007 hecho** (solicitud "Me interesa": cuestionario de 4 pasos, bandeja de dos paneles para la protectora, RLS por columna en `adoption_requests` para que `shelter_notes` sea invisible/inescribible por el adoptante, emails de solicitud recibida/resuelta/cierre por adopción con animales similares).
 - **Siguiente (Bloque B — persona):** FEATURE-008.
-- **En curso:** nada (FEATURE-007 en rama `feature/FEATURE-007-solicitud-me-interesa`, pendiente de merge a develop).
+- **En curso:** nada (FEATURE-007 mergeado a develop y desplegado en main; BUG-001 regularizado como hecho — estaba resuelto y desplegado desde 0.0.7/0.0.8 pero el item quedó sin cerrar).
 - **Bloqueos:** ninguno.
 - **Follow-ups abiertos:** IMPROVEMENT-001 (de-duplicar slug de protectora), IMPROVEMENT-012 (deuda de cobertura de funciones + medir LCP móvil del listado tras deploy), IMPROVEMENT-013 (vista "mis solicitudes" del adoptante, detectado en QA de FEATURE-007). "Próximas citas" del dashboard pospuesto a FEATURE-009.
-- **Última actualización:** 2026-07-10 (cierre de FEATURE-007 — solicitud "Me interesa", 2 ciclos con QA; tercer item del Bloque B).
+- **Última actualización:** 2026-07-10 (regularización de BUG-001; siguiente: FEATURE-008).
 
 ## Items abiertos por estado
 
 Los items `hecho`/`descartado` no aparecen aquí — su histórico vive en [CHANGELOG](CHANGELOG.md) y git.
 
 <!-- RENDER:START -->
-### 🔨 En desarrollo (1)
-
-| Item | Título | Prioridad | Hito |
-|------|--------|-----------|------|
-| [BUG-001](items/BUG-001.md) | Tras confirmar el correo, la protectora no entra al onboarding; falta pantalla de "correo verificado | alta | 0.2 |
-
 ### ✅ Listo para desarrollo (9)
 
 | Item | Título | Prioridad | Hito |
