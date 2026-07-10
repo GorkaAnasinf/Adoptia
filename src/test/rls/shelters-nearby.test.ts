@@ -143,6 +143,13 @@ describe.skipIf(!rlsDisponible)("RPC shelters_nearby", () => {
     expect(distancias[0]).toBeLessThan(distancias[1]);
   });
 
+  it("expone lat/lng de la protectora para colocar el marcador", async () => {
+    const filas = await buscar({ lat: BILBAO.lat, lng: BILBAO.lng, radius_m: 100_000 });
+    const bilbao = filas.find((f) => f.slug === "mapa-bilbao");
+    expect(Number(bilbao?.lat)).toBeCloseTo(43.26, 1);
+    expect(Number(bilbao?.lng)).toBeCloseTo(-2.94, 1);
+  });
+
   it("animal_count cuenta solo animales publicados y disponibles/reservados", async () => {
     const filas = await buscar({ lat: BILBAO.lat, lng: BILBAO.lng, radius_m: 100_000 });
     const bilbao = filas.find((f) => f.slug === "mapa-bilbao");
