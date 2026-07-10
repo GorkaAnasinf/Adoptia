@@ -39,6 +39,7 @@ Estado de cada capacidad en lenguaje de usuario. Se regenera con `python scripts
 <!-- RENDER:START -->
 #### ✅ Disponible
 
+- Tras confirmar el correo, la protectora no entra al onboarding; falta pantalla de "correo verificado ([BUG-001](../planning/items/BUG-001.md))
 - El mapa del alta se ve en gris (la CSP bloquea las tiles de OpenStreetMap) ([BUG-003](../planning/items/BUG-003.md))
 - Inicialización y andamiaje del proyecto ([FEATURE-000](../planning/items/FEATURE-000.md))
 - Registro y login de adoptantes y protectoras ([FEATURE-001](../planning/items/FEATURE-001.md))
@@ -63,7 +64,7 @@ Estado de cada capacidad en lenguaje de usuario. Se regenera con `python scripts
 
 #### 🚧 En camino (en desarrollo ahora)
 
-- Tras confirmar el correo, la protectora no entra al onboarding; falta pantalla de "correo verificado ([BUG-001](../planning/items/BUG-001.md))
+_Nada en desarrollo en este momento._
 
 #### 🗓️ Previsto
 
