@@ -7,7 +7,7 @@ import { createClient } from "@/lib/supabase/server";
 
 type Params = Promise<{ slug: string }>;
 
-export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
+export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("solicitud");
   return { title: t("title") };
 }

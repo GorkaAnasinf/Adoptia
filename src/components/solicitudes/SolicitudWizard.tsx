@@ -235,7 +235,6 @@ export function SolicitudWizard({
                       name="vivienda"
                       checked={form.vivienda === valor}
                       onChange={() => set("vivienda", valor)}
-                      aria-invalid={Boolean(errores.vivienda)}
                     />
                     {t(clave)}
                   </label>
@@ -259,7 +258,6 @@ export function SolicitudWizard({
                       name="regimen"
                       checked={form.regimen === valor}
                       onChange={() => set("regimen", valor)}
-                      aria-invalid={Boolean(errores.regimen)}
                     />
                     {t(clave)}
                   </label>
