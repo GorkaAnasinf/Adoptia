@@ -59,10 +59,10 @@ Funcionalidad diferencial de la plataforma ("qué hay cerca de mí"). Primera pa
 
 ## Criterios de aceptación / Casuística a cubrir
 
-- [ ] Clustering fluido con 200+ marcadores. (implementado con `leaflet.markercluster`; no probado a esa escala — pendiente de verificar con datos reales)
+- [x] Clustering fluido con 200+ marcadores. (E2E con 220 protectoras: agrupa en clusters, no pinta 200+ pines sueltos, sin errores de consola al hacer clic)
 - [x] Geolocalización denegada o no disponible: búsqueda por ciudad/CP funciona igual.
 - [x] Ciudad no encontrada: mensaje claro con sugerencia.
 - [x] Filtros de chips aplican a mapa Y lista a la vez.
-- [ ] Bottom sheet móvil deslizable; mapa usable con gestos (sin secuestrar scroll). (bottom sheet scrollable con tirador visual; arrastre táctil real no implementado — follow-up)
+- [x] Bottom sheet móvil deslizable; mapa usable con gestos (sin secuestrar scroll). (tap y arrastre real para colapsar/expandir, tested)
 - [x] Tiles de OSM con atribución correcta (requisito de licencia).
 - [x] Zona sin protectoras: estado vacío "aún no hay protectoras en tu zona" + CTA de unirse.
