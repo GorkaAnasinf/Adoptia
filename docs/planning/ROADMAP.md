@@ -78,11 +78,10 @@ Para centrar el desarrollo en un lado de la app cada vez, el 0.2 se aborda en do
 | [FEATURE-015](items/FEATURE-015.md) | Contenido educativo sobre adopción responsable | listo | baja |
 | [FEATURE-016](items/FEATURE-016.md) | Registro de casas de acogida | listo | baja |
 
-### Sin hito asignado (3)
+### Sin hito asignado (2)
 
 _Capturas pendientes de promover — no forman parte del roadmap todavía._
 
-- [IMPROVEMENT-001](items/IMPROVEMENT-001.md) — De-duplicar el slug de protectora (nombres repetidos) (recibido)
 - [IMPROVEMENT-012](items/IMPROVEMENT-012.md) — Recuperar el umbral de cobertura de funciones (deuda de tests) (recibido)
 - [IMPROVEMENT-013](items/IMPROVEMENT-013.md) — Vista "mis solicitudes" del adoptante (recibido)
 <!-- RENDER:END -->

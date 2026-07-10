@@ -487,6 +487,7 @@
     "errorNoPin": "Coloca el pin en el mapa para fijar la ubicación.",
     "errorGeneric": "No hemos podido guardar. Inténtalo de nuevo.",
     "errorDuplicado": "Ese CIF o email de entidad ya está registrado en Adoptia.",
+    "errorSlugDuplicado": "Ya existe otra protectora con ese nombre. Vuelve a intentarlo; si el problema persiste, prueba con una variante del nombre (p. ej. añadiendo tu ciudad).",
     "reviewTitle": "¡Alta enviada! 🎉",
     "reviewBody": "El equipo de Adoptia revisará tus datos. Te avisaremos por email cuando tu protectora esté verificada y sea pública.",
     "goToPanel": "Ir a mi panel",

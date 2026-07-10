@@ -12,28 +12,31 @@
 
 -- ---------- Usuarios (el trigger handle_new_user crea sus profiles) ----------
 
+-- Los campos de token van como cadena vacía (no NULL): GoTrue no tolera NULL
+-- en esas columnas y rompería la API de administración de usuarios.
 insert into auth.users
   (instance_id, id, aud, role, email, encrypted_password, email_confirmed_at,
-   raw_app_meta_data, raw_user_meta_data, created_at, updated_at)
+   raw_app_meta_data, raw_user_meta_data, created_at, updated_at,
+   confirmation_token, recovery_token, email_change, email_change_token_new)
 values
   ('00000000-0000-0000-0000-000000000000', '11111111-1111-4111-8111-111111111101', 'authenticated', 'authenticated',
    'protectora.bilbao@demo.adoptia.es', extensions.crypt('AdoptiaDemo1!', extensions.gen_salt('bf')), now(),
-   '{"provider":"email","providers":["email"]}', '{"role":"shelter","full_name":"Gestora Última Oportunidad"}', now(), now()),
+   '{"provider":"email","providers":["email"]}', '{"role":"shelter","full_name":"Gestora Última Oportunidad"}', now(), now(), '', '', '', ''),
   ('00000000-0000-0000-0000-000000000000', '11111111-1111-4111-8111-111111111102', 'authenticated', 'authenticated',
    'protectora.madrid@demo.adoptia.es', extensions.crypt('AdoptiaDemo1!', extensions.gen_salt('bf')), now(),
-   '{"provider":"email","providers":["email"]}', '{"role":"shelter","full_name":"Gestor Huellas Madrid"}', now(), now()),
+   '{"provider":"email","providers":["email"]}', '{"role":"shelter","full_name":"Gestor Huellas Madrid"}', now(), now(), '', '', '', ''),
   ('00000000-0000-0000-0000-000000000000', '11111111-1111-4111-8111-111111111103', 'authenticated', 'authenticated',
    'protectora.valencia@demo.adoptia.es', extensions.crypt('AdoptiaDemo1!', extensions.gen_salt('bf')), now(),
-   '{"provider":"email","providers":["email"]}', '{"role":"shelter","full_name":"Gestora SOS Peludos"}', now(), now()),
+   '{"provider":"email","providers":["email"]}', '{"role":"shelter","full_name":"Gestora SOS Peludos"}', now(), now(), '', '', '', ''),
   ('00000000-0000-0000-0000-000000000000', '11111111-1111-4111-8111-111111111104', 'authenticated', 'authenticated',
    'protectora.sevilla@demo.adoptia.es', extensions.crypt('AdoptiaDemo1!', extensions.gen_salt('bf')), now(),
-   '{"provider":"email","providers":["email"]}', '{"role":"shelter","full_name":"Gestor La Alameda"}', now(), now()),
+   '{"provider":"email","providers":["email"]}', '{"role":"shelter","full_name":"Gestor La Alameda"}', now(), now(), '', '', '', ''),
   ('00000000-0000-0000-0000-000000000000', '11111111-1111-4111-8111-111111111201', 'authenticated', 'authenticated',
    'adoptante.ana@demo.adoptia.es', extensions.crypt('AdoptiaDemo1!', extensions.gen_salt('bf')), now(),
-   '{"provider":"email","providers":["email"]}', '{"role":"adopter","full_name":"Ana Ejemplo"}', now(), now()),
+   '{"provider":"email","providers":["email"]}', '{"role":"adopter","full_name":"Ana Ejemplo"}', now(), now(), '', '', '', ''),
   ('00000000-0000-0000-0000-000000000000', '11111111-1111-4111-8111-111111111202', 'authenticated', 'authenticated',
    'adoptante.luis@demo.adoptia.es', extensions.crypt('AdoptiaDemo1!', extensions.gen_salt('bf')), now(),
-   '{"provider":"email","providers":["email"]}', '{"role":"adopter","full_name":"Luis Ejemplo"}', now(), now())
+   '{"provider":"email","providers":["email"]}', '{"role":"adopter","full_name":"Luis Ejemplo"}', now(), now(), '', '', '', '')
 on conflict (id) do nothing;
 
 -- ---------- Protectoras (verificadas para que su contenido sea público) ----------
