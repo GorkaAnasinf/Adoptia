@@ -5,17 +5,17 @@ import { LegalArticle } from "@/components/legal/LegalArticle";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("legal");
-  return { title: t("privacyTitle") };
+  return { title: t("cookiesTitle") };
 }
 
-export default function PrivacidadPage() {
+export default function CookiesPage() {
   const t = useTranslations("legal");
 
   return (
     <LegalArticle
-      titulo={t("privacyTitle")}
-      intro={t("privacy.intro")}
-      secciones={["privacy.s1", "privacy.s2", "privacy.s3", "privacy.s4", "privacy.s5", "privacy.s6", "privacy.s7"]}
+      titulo={t("cookiesTitle")}
+      intro={t("cookiesPage.intro")}
+      secciones={["cookiesPage.s1", "cookiesPage.s2", "cookiesPage.s3"]}
     />
   );
 }

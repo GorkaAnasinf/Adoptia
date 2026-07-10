@@ -2,6 +2,12 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/es/) adaptado. Versionado 0.x hasta el MVP.
 
+## [0.0.22] — 2026-07-10
+
+### Añadido
+
+- **FEATURE-008 — SEO, datos de demo y pulido del MVP**: las fichas son ya **indexables y compartibles**: al compartir por WhatsApp se ve una imagen generada con la foto del animal, su nombre, "En adopción" y la protectora (`/api/og/[slug]`), y cada ficha lleva metadatos OpenGraph, URL canónica y datos estructurados JSON-LD. Nuevos `sitemap.xml` (solo contenido publicado de protectoras verificadas; borradores fuera) y `robots.txt` (bloquea panel, admin, cuenta, API y auth). Páginas de **error amables** (404/500) con navegación de escape, y **textos legales reales** publicados y enlazados en el footer: privacidad (RGPD, sin decisiones automatizadas), aviso legal (Adoptia intermedia; la adopción la formaliza la protectora), cookies (solo técnicas, sin banner) y términos. La home muestra **contadores reales** (animales publicados, protectoras verificadas y adopciones). Nuevo **seed de demostración** (`supabase db reset`): 4 protectoras verificadas (Bilbao, Madrid, Valencia, Sevilla), 23 animales con fotos y solicitudes de ejemplo; contraseña única de demo documentada en el propio seed. Lighthouse móvil local: SEO 100 y A11y ≥98 en home/listado/ficha; la performance de la ficha se re-medirá en producción (ver IMPROVEMENT-012).
+
 ## [0.0.21] — 2026-07-10
 
 ### Añadido

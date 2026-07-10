@@ -15,6 +15,10 @@ const openSans = Open_Sans({
 });
 
 export const metadata: Metadata = {
+  // Base para resolver URLs relativas de og:image/canonical en producción.
+  metadataBase: process.env.NEXT_PUBLIC_SITE_URL
+    ? new URL(process.env.NEXT_PUBLIC_SITE_URL)
+    : undefined,
   title: {
     default: "Adoptia — Adopción de animales de protectoras",
     template: "%s | Adoptia",

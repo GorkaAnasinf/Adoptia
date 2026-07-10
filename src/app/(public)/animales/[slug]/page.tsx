@@ -64,9 +64,47 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   if (!animal) {
     return { title: t("notFoundTitle"), robots: { index: false } };
   }
+  const titulo = t("metaTitle", { nombre: animal.name });
+  const descripcion = animal.description?.slice(0, 160) ?? undefined;
   return {
-    title: t("metaTitle", { nombre: animal.name }),
-    description: animal.description?.slice(0, 160) ?? undefined,
+    title: titulo,
+    description: descripcion,
+    alternates: { canonical: `/animales/${animal.slug}` },
+    openGraph: {
+      title: titulo,
+      description: descripcion,
+      type: "website",
+      url: `/animales/${animal.slug}`,
+      images: [`/api/og/${animal.slug}`],
+    },
+    twitter: { card: "summary_large_image" },
+  };
+}
+
+/** JSON-LD (schema.org) de la ficha: el animal como Product ofrecido por la protectora. */
+function jsonLdAnimal(animal: PublicAnimalFull, url: string) {
+  const portada = animal.media.find((m) => m.is_cover) ?? animal.media[0];
+  return {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: animal.name,
+    description: animal.description ?? undefined,
+    image: portada?.url ? [portada.url] : undefined,
+    url,
+    offers: {
+      "@type": "Offer",
+      availability:
+        animal.status === "available"
+          ? "https://schema.org/InStock"
+          : "https://schema.org/OutOfStock",
+      price: animal.adoption_fee ?? 0,
+      priceCurrency: "EUR",
+      offeredBy: {
+        "@type": "Organization",
+        name: animal.shelter.name,
+        address: animal.shelter.city ?? undefined,
+      },
+    },
   };
 }
 
@@ -106,5 +144,13 @@ export default async function AnimalPublicoPage({ params }: { params: Params }) 
   }
 
   const shareUrl = `${process.env.NEXT_PUBLIC_SITE_URL ?? ""}/animales/${animal.slug}`;
-  return <AnimalPublicProfile animal={animal} shareUrl={shareUrl} />;
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdAnimal(animal, shareUrl)) }}
+      />
+      <AnimalPublicProfile animal={animal} shareUrl={shareUrl} />
+    </>
+  );
 }
