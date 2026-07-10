@@ -10,15 +10,33 @@ const { getUserMock, enviarEmailMock, obtenerContactoMock, state } = vi.hoisted(
       status: "pending",
       animal_id: "animal1",
       adopter_id: "adopter1",
-      animals: { id: "animal1", name: "Pipa", status: "available", shelter_id: "shelter1", shelters: { owner_id: "owner1" } },
+      animals: {
+        id: "animal1",
+        name: "Pipa",
+        status: "available",
+        shelter_id: "shelter1",
+        species: "dog",
+        shelters: { owner_id: "owner1" },
+      },
     } as Record<string, unknown> | null,
     otherPending: [] as Record<string, unknown>[],
     updateError: null as { code: string; message: string } | null,
     lastUpdate: null as Record<string, unknown> | null,
     animalUpdateError: null as { message: string } | null,
     lastAnimalUpdate: null as Record<string, unknown> | null,
+    similares: [] as Record<string, unknown>[],
   },
 }));
+
+function similarChain() {
+  const chain = {
+    eq: () => chain,
+    not: () => chain,
+    neq: () => chain,
+    limit: async () => ({ data: state.similares }),
+  };
+  return chain;
+}
 
 vi.mock("@/lib/supabase/server", () => ({
   createClient: vi.fn(async () => ({
@@ -63,6 +81,7 @@ vi.mock("@/lib/supabase/server", () => ({
               return { error: state.animalUpdateError };
             },
           }),
+          select: () => similarChain(),
         };
       }
       throw new Error(`tabla no mockeada: ${table}`);
@@ -110,6 +129,7 @@ describe("PATCH /api/solicitudes/[id]", () => {
         name: "Pipa",
         status: "available",
         shelter_id: "shelter1",
+        species: "dog",
         shelters: { owner_id: "owner1" },
       },
     };
@@ -118,6 +138,7 @@ describe("PATCH /api/solicitudes/[id]", () => {
     state.lastUpdate = null;
     state.animalUpdateError = null;
     state.lastAnimalUpdate = null;
+    state.similares = [];
   });
 
   it("401 sin sesión", async () => {
@@ -169,6 +190,15 @@ describe("PATCH /api/solicitudes/[id]", () => {
     expect(state.lastAnimalUpdate).toMatchObject({ status: "adopted" });
     expect(enviarEmailMock).toHaveBeenCalledTimes(1);
     expect(enviarEmailMock.mock.calls[0][0].to).toBe("juan@test.com");
+  });
+
+  it("marcar adoptado: el email a las solicitudes restantes sugiere animales similares disponibles", async () => {
+    state.otherPending = [{ id: "req2", adopter_id: "adopter2" }];
+    state.similares = [{ name: "Rocky", slug: "rocky" }];
+    const res = await PATCH(req({ accion: "complete" }), params);
+    expect(res.status).toBe(200);
+    expect(enviarEmailMock.mock.calls[0][0].html).toContain("Rocky");
+    expect(enviarEmailMock.mock.calls[0][0].html).toContain("/animales/rocky");
   });
 
   it("si el envío del email falla, la solicitud igual queda aprobada (no revienta la respuesta)", async () => {

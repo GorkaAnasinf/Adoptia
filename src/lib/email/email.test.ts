@@ -129,4 +129,28 @@ describe("plantillas de solicitudes (FEATURE-007)", () => {
     expect(html).toContain("Juan");
     expect(html.toLowerCase()).toContain("adoptado");
   });
+
+  it("cierre por adopción: sugiere animales similares disponibles con enlace a su ficha", () => {
+    const { html } = plantillaSolicitudCerradaPorAdopcion({
+      adopterName: "Juan",
+      animalName: "Pipa",
+      animalesSimilares: [
+        { name: "Rocky", slug: "rocky" },
+        { name: "Luna", slug: "luna" },
+      ],
+    });
+    expect(html).toContain("Rocky");
+    expect(html).toContain("/animales/rocky");
+    expect(html).toContain("Luna");
+    expect(html).toContain("/animales/luna");
+  });
+
+  it("cierre por adopción: sin animales similares no revienta ni muestra la sección", () => {
+    const { html } = plantillaSolicitudCerradaPorAdopcion({
+      adopterName: "Juan",
+      animalName: "Pipa",
+      animalesSimilares: [],
+    });
+    expect(html).toContain("Juan");
+  });
 });

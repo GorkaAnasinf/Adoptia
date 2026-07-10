@@ -36,9 +36,27 @@ type SolicitudConAnimal = {
     name: string;
     status: string;
     shelter_id: string;
+    species: string | null;
     shelters: { owner_id: string } | null;
   } | null;
 };
+
+/** Animales disponibles de la misma especie, para sugerir en el email de cierre por adopción. */
+async function cargarAnimalesSimilares(
+  supabase: Awaited<ReturnType<typeof createClient>>,
+  animal: { id: string; species: string | null },
+): Promise<{ name: string; slug: string }[]> {
+  if (!animal.species) return [];
+  const { data } = await supabase
+    .from("animals")
+    .select("name, slug")
+    .eq("species", animal.species)
+    .eq("status", "available")
+    .not("published_at", "is", null)
+    .neq("id", animal.id)
+    .limit(3);
+  return (data as { name: string; slug: string }[] | null) ?? [];
+}
 
 /**
  * Aprueba, rechaza o cierra ("marcar adoptado") una solicitud. Solo la
@@ -60,7 +78,7 @@ export async function PATCH(
 
   const { data: solicitud } = await supabase
     .from("adoption_requests")
-    .select("id, status, animal_id, adopter_id, animals(id, name, status, shelter_id, shelters(owner_id))")
+    .select("id, status, animal_id, adopter_id, animals(id, name, status, shelter_id, species, shelters(owner_id))")
     .eq("id", id)
     .maybeSingle();
   const fila = solicitud as unknown as SolicitudConAnimal | null;
@@ -165,6 +183,8 @@ export async function PATCH(
       .eq("status", "pending")
       .neq("id", id);
 
+    const animalesSimilares = await cargarAnimalesSimilares(supabase, animal);
+
     for (const otra of (otras as { id: string; adopter_id: string }[] | null) ?? []) {
       await supabase.from("adoption_requests").update({ status: "rejected" }).eq("id", otra.id);
       const contacto = await obtenerContactoAdoptante(admin, otra.adopter_id);
@@ -172,6 +192,7 @@ export async function PATCH(
         const plantilla = plantillaSolicitudCerradaPorAdopcion({
           adopterName: contacto.fullName ?? "",
           animalName: animal.name,
+          animalesSimilares,
         });
         await enviarEmailSeguro({ to: contacto.email, ...plantilla });
       }

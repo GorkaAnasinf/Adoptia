@@ -77,10 +77,24 @@ export function plantillaSolicitudResuelta({
 export function plantillaSolicitudCerradaPorAdopcion({
   adopterName,
   animalName,
+  animalesSimilares = [],
 }: {
   adopterName: string;
   animalName: string;
+  animalesSimilares?: { name: string; slug: string }[];
 }) {
+  const seccionSimilares = animalesSimilares.length
+    ? `
+      <p style="margin-top:20px"><strong>Puede que te interese conocer a:</strong></p>
+      <ul style="padding-left:20px">
+        ${animalesSimilares
+          .map(
+            (a) =>
+              `<li><a href="https://adoptia-eight.vercel.app/animales/${a.slug}" style="color:#396662">${a.name}</a></li>`,
+          )
+          .join("")}
+      </ul>`
+    : "";
   return {
     subject: `${animalName} ya ha encontrado hogar`,
     html: BASE(`
@@ -89,6 +103,7 @@ export function plantillaSolicitudCerradaPorAdopcion({
       cerrado tu solicitud. Sentimos no poder darte mejores noticias esta vez.</p>
       <p>Hay muchos otros animales esperando un hogar como el tuyo:
       <a href="https://adoptia-eight.vercel.app/animales" style="color:#396662">sigue buscando en Adoptia</a>.</p>
+      ${seccionSimilares}
     `),
   };
 }
