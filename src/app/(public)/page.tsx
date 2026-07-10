@@ -6,13 +6,31 @@ import { createClient } from "@/lib/supabase/server";
 
 export const revalidate = 300;
 
-async function contarAnimales(): Promise<number | null> {
+type Estadisticas = { animales: number; protectoras: number; adopciones: number };
+
+async function cargarEstadisticas(): Promise<Estadisticas | null> {
   try {
     const supabase = await createClient();
-    const { count, error } = await supabase
-      .from("animals")
-      .select("*", { count: "exact", head: true });
-    return error ? null : count;
+    const [animales, protectoras, adopciones] = await Promise.all([
+      supabase
+        .from("animals")
+        .select("*", { count: "exact", head: true })
+        .not("published_at", "is", null),
+      supabase
+        .from("shelters")
+        .select("*", { count: "exact", head: true })
+        .eq("status", "verified"),
+      supabase
+        .from("animals")
+        .select("*", { count: "exact", head: true })
+        .eq("status", "adopted"),
+    ]);
+    if (animales.error || protectoras.error || adopciones.error) return null;
+    return {
+      animales: animales.count ?? 0,
+      protectoras: protectoras.count ?? 0,
+      adopciones: adopciones.count ?? 0,
+    };
   } catch {
     // Sin conexión o sin .env: la home sigue funcionando
     return null;
@@ -32,7 +50,8 @@ async function cargarRecientes(): Promise<AnimalSearchResult[]> {
 
 export default async function HomePage() {
   const t = await getTranslations();
-  const [animalCount, recientes] = await Promise.all([contarAnimales(), cargarRecientes()]);
+  const [stats, recientes] = await Promise.all([cargarEstadisticas(), cargarRecientes()]);
+  const animalCount = stats?.animales ?? null;
 
   const pasos = [
     { icono: Search, titulo: t("home.how1Title"), texto: t("home.how1Text") },
@@ -98,6 +117,29 @@ export default async function HomePage() {
           </div>
         </nav>
       </section>
+
+      {/* Adoptia en números */}
+      {stats !== null && (
+        <section aria-label={t("home.statsTitle")} className="bg-white">
+          <dl
+            data-testid="home-stats"
+            className="mx-auto grid max-w-6xl grid-cols-3 gap-4 px-4 py-10 text-center"
+          >
+            {[
+              { valor: stats.animales, etiqueta: t("home.statsAnimalsLabel") },
+              { valor: stats.protectoras, etiqueta: t("home.statsSheltersLabel") },
+              { valor: stats.adopciones, etiqueta: t("home.statsAdoptionsLabel") },
+            ].map(({ valor, etiqueta }) => (
+              <div key={etiqueta} className="flex flex-col gap-1">
+                <dd className="font-heading text-3xl font-bold text-primary sm:text-4xl">
+                  {valor}
+                </dd>
+                <dt className="text-sm text-muted-foreground">{etiqueta}</dt>
+              </div>
+            ))}
+          </dl>
+        </section>
+      )}
 
       {/* Recién llegados */}
       {recientes.length > 0 && (

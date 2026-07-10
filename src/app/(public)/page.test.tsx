@@ -3,13 +3,18 @@ import { NextIntlClientProvider } from "next-intl";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import messages from "../../../messages/es.json";
 
-const countMock = vi.fn();
+// (tabla, filtro) => resultado de conteo; "published" = animales publicados,
+// "verified" = protectoras verificadas, "adopted" = adopciones.
+const statsMock = vi.fn();
 const rpcMock = vi.fn();
 
 vi.mock("@/lib/supabase/server", () => ({
   createClient: vi.fn(async () => ({
-    from: vi.fn(() => ({
-      select: countMock,
+    from: vi.fn((tabla: string) => ({
+      select: vi.fn(() => ({
+        not: vi.fn(() => statsMock(tabla, "published")),
+        eq: vi.fn((_col: string, valor: string) => statsMock(tabla, valor)),
+      })),
     })),
     rpc: rpcMock,
   })),
@@ -53,9 +58,13 @@ async function renderHome() {
 
 describe("Home", () => {
   beforeEach(() => {
-    countMock.mockReset();
+    statsMock.mockReset();
     rpcMock.mockReset();
-    countMock.mockResolvedValue({ count: 12, error: null });
+    statsMock.mockImplementation((tabla: string, filtro: string) => {
+      if (filtro === "published") return { count: 12, error: null };
+      if (tabla === "shelters") return { count: 4, error: null };
+      return { count: 7, error: null };
+    });
     rpcMock.mockResolvedValue({ data: [reciente("Pipa"), reciente("Golfo")], error: null });
   });
 
@@ -114,9 +123,22 @@ describe("Home", () => {
   });
 
   it("oculta el contador si Supabase no está disponible", async () => {
-    countMock.mockRejectedValue(new Error("sin conexión"));
+    statsMock.mockImplementation(() => {
+      throw new Error("sin conexión");
+    });
     await renderHome();
     expect(screen.queryByTestId("animal-count")).not.toBeInTheDocument();
+    expect(screen.queryByTestId("home-stats")).not.toBeInTheDocument();
+  });
+
+  it("muestra los contadores reales de animales, protectoras y adopciones", async () => {
+    await renderHome();
+    const stats = screen.getByTestId("home-stats");
+    expect(stats).toHaveTextContent("12");
+    expect(stats).toHaveTextContent("4");
+    expect(stats).toHaveTextContent("7");
+    expect(stats).toHaveTextContent(messages.home.statsSheltersLabel);
+    expect(stats).toHaveTextContent(messages.home.statsAdoptionsLabel);
   });
 
   it("incluye el bloque para protectoras con su CTA", async () => {
