@@ -190,9 +190,14 @@ describe.skipIf(!rlsDisponible)("RLS baseline", () => {
     expect(data ?? []).toHaveLength(0);
   });
 
+  // `select()` sin columnas equivale a `select *`, y `shelter_notes` tiene el
+  // privilegio de columna revocado para `authenticated`/`anon` desde
+  // FEATURE-007 (column RLS) — de ahí la lista explícita de columnas.
+  const COLUMNAS_ADOPTION_REQUESTS_PUBLICAS = "id, animal_id, adopter_id, status, questionnaire, message, created_at, updated_at";
+
   it("anon NO lee solicitudes de adopción", async () => {
     const anon = anonClient();
-    const { data } = await anon.from("adoption_requests").select();
+    const { data } = await anon.from("adoption_requests").select(COLUMNAS_ADOPTION_REQUESTS_PUBLICAS);
     expect(data).toHaveLength(0);
   });
 
@@ -210,7 +215,7 @@ describe.skipIf(!rlsDisponible)("RLS baseline", () => {
 
     const { data: propias } = await adoptante
       .from("adoption_requests")
-      .select()
+      .select(COLUMNAS_ADOPTION_REQUESTS_PUBLICAS)
       .eq("animal_id", animalPublicadoId);
     expect(propias).toHaveLength(1);
 
@@ -218,7 +223,7 @@ describe.skipIf(!rlsDisponible)("RLS baseline", () => {
     const clientA = await signInAs("protectora-a@test.com", PASS);
     const { data: comoShelter } = await clientA
       .from("adoption_requests")
-      .select()
+      .select(COLUMNAS_ADOPTION_REQUESTS_PUBLICAS)
       .eq("animal_id", animalPublicadoId);
     expect(comoShelter).toHaveLength(1);
 
@@ -226,7 +231,7 @@ describe.skipIf(!rlsDisponible)("RLS baseline", () => {
     const clientB = await signInAs("protectora-b@test.com", PASS);
     const { data: ajenas } = await clientB
       .from("adoption_requests")
-      .select()
+      .select(COLUMNAS_ADOPTION_REQUESTS_PUBLICAS)
       .eq("animal_id", animalPublicadoId);
     expect(ajenas).toHaveLength(0);
   });

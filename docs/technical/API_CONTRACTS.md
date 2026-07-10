@@ -44,9 +44,66 @@ Fase 2 añade: `/api/citas` (proponer/confirmar/cancelar + recordatorios), `/api
   "message": "texto libre del adoptante"
 }
 // 201 → { "data": { "id": "uuid", "status": "pending" } }
+// 401 → { "error": { "code": "unauthorized" } }          // sin sesión
+// 403 → { "error": { "code": "not_available" } }         // animal no disponible (status !== "available")
+// 404 → { "error": { "code": "not_found" } }              // animal inexistente
 // 409 → { "error": { "code": "duplicate_request", "message": "Ya tienes una solicitud para este animal" } }
 // 422 → { "error": { "code": "validation", "message": "...", "issues": [...] } }
+// 429 → { "error": { "code": "rate_limited" } }           // límite por usuario superado
 ```
+
+Anti-spam: honeypot (`website`, campo oculto — si viene relleno se responde 201
+"falso" sin crear nada ni avisar) + rate limit en memoria por usuario
+(10 peticiones/min). El email a la protectora es *best-effort*: si SMTP falla,
+la solicitud se crea igualmente (nunca se pierde el envío del adoptante por un
+fallo de correo).
+
+## Contrato — PATCH /api/solicitudes/[id] *(FEATURE-007)*
+
+Auth: protectora dueña del animal de la solicitud (verificado en el handler:
+`animals.shelter_id → shelters.owner_id = auth.uid()`; RLS como red). Cuatro
+acciones posibles, discriminadas por `accion`:
+
+```jsonc
+// Aprobar: la solicitud pasa a "approved" y el animal a "reserved"
+// (transición validada con esTransicionValida). Email al adoptante.
+{ "accion": "approve" }
+
+// Rechazar: exige motivo. La solicitud pasa a "rejected". Email al
+// adoptante con el motivo y sugerencia de seguir buscando.
+{ "accion": "reject", "motivo": "No cumple los requisitos de vivienda" }
+
+// Marcar adoptado: la solicitud pasa a "completed", el animal a "adopted"
+// (si la transición es válida) y TODAS las demás solicitudes pendientes del
+// mismo animal se cierran automáticamente a "rejected" con un email amable
+// ("ya ha encontrado hogar").
+{ "accion": "complete" }
+
+// Notas internas: no cambia el estado ni envía email. Editable en cualquier
+// momento (incluso con la solicitud ya resuelta).
+{ "accion": "note", "nota": "Familia muy implicada, llamar para confirmar visita" }
+
+// 200 → { "data": { "id": "uuid", "status": "approved" | "rejected" | "completed" } }
+//        (accion "note" → { "data": { "id": "uuid", "shelter_notes": "..." } })
+// 401 → { "error": { "code": "unauthorized" } }           // sin sesión
+// 403 → { "error": { "code": "forbidden" } }              // no es la protectora dueña
+// 404 → { "error": { "code": "not_found" } }              // solicitud inexistente
+// 409 → { "error": { "code": "invalid_state" } }          // ya resuelta (no aplica a "note")
+// 422 → { "error": { "code": "validation", "issues": [...] } }  // p. ej. reject sin motivo
+```
+
+Los emails de esta ruta (aprobación/rechazo/cierre por adopción) también son
+*best-effort*: un fallo de SMTP se registra en logs pero no impide que el
+cambio de estado, ya persistido en BD, se devuelva como éxito al cliente.
+
+**Gap conocido (fuera de alcance de FEATURE-007):** la policy RLS de `update`
+en `adoption_requests` es a nivel de fila, no de columna. El adoptante dueño
+de la fila pasa el mismo `using`/`with check` que la protectora, así que en
+teoría también podría escribir `shelter_notes` o `status` directamente contra
+la API de Supabase (sin pasar por este handler). Está cubierto y documentado
+en `src/test/rls/adoption-requests.test.ts` (test `[gap conocido]`); cerrarlo
+requeriría una policy o vista específica por columna — se deja para un item
+aparte.
 
 ## Contrato — POST /api/protectoras/geocode  *(FEATURE-002)*
 

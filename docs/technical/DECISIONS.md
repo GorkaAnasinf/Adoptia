@@ -61,6 +61,12 @@ Formato ligero tipo ADR. Toda decisión con impacto estructural se registra aqu�
 | 30 | **`leaflet.markercluster` imperativo** (vía `useMap()` + `L.markerClusterGroup()` en un efecto) en vez de un wrapper React del ecosistema | Los wrappers de `react-leaflet-markercluster` no tienen versión compatible con `react-leaflet` 5 / React 19; la librería vanilla es estable y el efecto imperativo es el mismo patrón ya usado para Leaflet en el proyecto (Decisión #8) | `@changey/react-leaflet-markercluster` (peer deps desactualizadas, riesgo de incompatibilidad silenciosa) |
 | 31 | **Bottom sheet móvil con gesto propio** (pointer events con umbral tap/arrastre) en vez de una librería de bottom sheet | Sin dependencia nueva; el gesto necesario (colapsar/expandir con tap o arrastre) es simple y totalmente testeable con `fireEvent.pointerDown/Up` | Librería dedicada (`vaul`, `react-modal-sheet`): más peso y menos control sobre el layout `lg:hidden` ya existente |
 
+## 2026-07-10 — FEATURE-007 (solicitud "Me interesa")
+
+| # | Decisión | Motivo | Alternativa descartada |
+|---|----------|--------|------------------------|
+| 32 | **RLS por columna en `adoption_requests`** (revoke de `SELECT`/`UPDATE` completo a `authenticated`/`anon`, grant explícito columna a columna sin `shelter_notes`, trigger `BEFORE UPDATE` que bloquea que el adoptante cambie `status` a algo distinto de `withdrawn` o toque `shelter_notes`) | Postgres no soporta un `USING`/`WITH CHECK` de RLS distinto por columna; con solo RLS de fila, el adoptante dueño de la solicitud podía leer y escribir las notas internas de la protectora directamente contra la API de Supabase | Vista separada para la protectora (duplica la superficie de lectura y la RLS habría que replicarla igual); mover `shelter_notes` a tabla aparte (más JOIN sin necesidad a esta escala) |
+
 ## Cómo añadir una decisión
 
 Nueva fila con fecha en sección nueva si cambia el mes. Si revierte una anterior, enlázala ("revierte #9") en vez de borrarla.

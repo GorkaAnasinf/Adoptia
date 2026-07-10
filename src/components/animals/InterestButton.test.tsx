@@ -37,13 +37,10 @@ describe("InterestButton", () => {
     expect(pushMock).toHaveBeenCalledWith("/login?next=%2Fanimales%2Fpipa-abc123");
   });
 
-  it("con sesión muestra el aviso de solicitudes próximamente", async () => {
+  it("con sesión lleva al cuestionario de la solicitud", async () => {
     getUserMock.mockResolvedValue({ data: { user: { id: "u1" } } });
     renderButton();
     await userEvent.click(screen.getByRole("button", { name: "Me interesa" }));
-    expect(pushMock).not.toHaveBeenCalled();
-    expect(
-      await screen.findByText("¡Genial! Muy pronto podrás enviar tu solicitud desde aquí."),
-    ).toBeInTheDocument();
+    expect(pushMock).toHaveBeenCalledWith("/mi-cuenta/solicitudes/nueva/pipa-abc123");
   });
 });
