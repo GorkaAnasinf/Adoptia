@@ -5,7 +5,7 @@
 
 | ID | Título | Tipo | Estado | Hito |
 |----|--------|------|--------|------|
-| [BUG-001](BUG-001.md) | Tras confirmar el correo, la protectora no entra al onboarding; falta pantalla de "correo verificado | bug | desarrollo | 0.2 |
+| [BUG-001](BUG-001.md) | Tras confirmar el correo, la protectora no entra al onboarding; falta pantalla de "correo verificado | bug | hecho | 0.2 |
 | [BUG-003](BUG-003.md) | El mapa del alta se ve en gris (la CSP bloquea las tiles de OpenStreetMap) | bug | hecho | 0.2 |
 | [FEATURE-000](FEATURE-000.md) | Inicialización y andamiaje del proyecto | feature | hecho | 0.1 |
 | [FEATURE-001](FEATURE-001.md) | Registro y login de adoptantes y protectoras | feature | hecho | 0.2 |
@@ -15,7 +15,7 @@
 | [FEATURE-005](FEATURE-005.md) | Área pública — home, búsqueda de animales y fichas | feature | hecho | 0.2 |
 | [FEATURE-006](FEATURE-006.md) | Mapa de protectoras con búsqueda por proximidad | feature | hecho | 0.2 |
 | [FEATURE-007](FEATURE-007.md) | Solicitud "Me interesa" con cuestionario y bandeja de la protectora | feature | hecho | 0.2 |
-| [FEATURE-008](FEATURE-008.md) | SEO, datos de demo y pulido del MVP | feature | listo | 0.2 |
+| [FEATURE-008](FEATURE-008.md) | SEO, datos de demo y pulido del MVP | feature | hecho | 0.2 |
 | [FEATURE-009](FEATURE-009.md) | Citas con calendario y agenda de disponibilidad | feature | listo | 0.3 |
 | [FEATURE-010](FEATURE-010.md) | Área personal del adoptante — solicitudes, favoritos y alertas | feature | listo | 0.3 |
 | [FEATURE-011](FEATURE-011.md) | Moderación de contenido y cuentas (admin) | feature | listo | 0.3 |

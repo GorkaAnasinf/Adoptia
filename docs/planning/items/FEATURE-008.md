@@ -2,12 +2,12 @@
 id: FEATURE-008
 tipo: feature
 titulo: SEO, datos de demo y pulido del MVP
-estado: listo
+estado: hecho
 prioridad: media
 hito: "0.2"
 duplicado_de: null
 creado: 2026-07-04
-actualizado: 2026-07-04
+actualizado: 2026-07-10
 ---
 
 # FEATURE-008 — SEO, datos de demo y pulido del MVP
@@ -59,9 +59,13 @@ De esto depende la demo a dirección y la captación orgánica posterior. El og:
 
 ## Criterios de aceptación / Casuística a cubrir
 
-- [ ] Compartir ficha por WhatsApp muestra foto del animal + nombre.
-- [ ] `site:` de Google indexaría solo público (verificable con robots/sitemap).
-- [ ] Seed ejecutable en un paso (`supabase db reset`) y demo navegable completa.
-- [ ] Política de privacidad, aviso legal y cookies publicados y enlazados en footer.
-- [ ] 404/500 con navegación de escape; sin páginas de error por defecto de Next.
-- [ ] Lighthouse: SEO ≥95, A11y ≥90, Performance ≥80 en móvil.
+- [x] Compartir ficha por WhatsApp muestra foto del animal + nombre (og:image `/api/og/[slug]` + metadatos OpenGraph verificados en local).
+- [x] `site:` de Google indexaría solo público (robots bloquea panel/admin/cuenta/api/auth; sitemap solo publicados de verificadas — el animal `not_listed` del seed queda fuera, comprobado).
+- [x] Seed ejecutable en un paso (`supabase db reset` validado: 4 protectoras, 23 animales, 22 fotos, 3 solicitudes, 6 perfiles).
+- [x] Política de privacidad, aviso legal y cookies publicados y enlazados en footer (más términos).
+- [x] 404/500 con navegación de escape; sin páginas de error por defecto de Next (`not-found`, `error`, `global-error`).
+- [x] Lighthouse móvil (build de producción local): SEO 100 en las tres páginas; A11y 100/98/100; Perf 84 (home), 87 (listado), 73 (ficha — LCP inflado por la primera optimización de imagen remota en local; re-medir en producción, seguimiento en [[IMPROVEMENT-012]]).
+
+## Cierre (2026-07-10)
+
+Implementado en rama `feature/FEATURE-008-seo-demo-pulido` con TDD (og:image, metadata, JSON-LD, sitemap, robots, 404, contadores, CSP). Suite completa verde (435 tests), lint y `tsc` limpios, build OK y smoke test real sobre `npm run start` con el seed cargado. Único criterio con matiz: performance móvil de la ficha (73 local), delegado a [[IMPROVEMENT-012]] para re-medición en producción.

@@ -34,11 +34,11 @@ Para centrar el desarrollo en un lado de la app cada vez, el 0.2 se aborda en do
 | [FEATURE-000](items/FEATURE-000.md) | Inicialización y andamiaje del proyecto | hecho | alta |
 | [FEATURE-017](items/FEATURE-017.md) | Despliegue inicial — Supabase cloud y Vercel enlazados | hecho | alta |
 
-### Hito 0.2 — 90% completado (19/21)
+### Hito 0.2 — 100% completado (21/21)
 
 | Item | Título | Estado | Prioridad |
 |------|--------|--------|-----------|
-| [BUG-001](items/BUG-001.md) | Tras confirmar el correo, la protectora no entra al onboarding; falta pantalla de "correo verificado | desarrollo | alta |
+| [BUG-001](items/BUG-001.md) | Tras confirmar el correo, la protectora no entra al onboarding; falta pantalla de "correo verificado | hecho | alta |
 | [BUG-003](items/BUG-003.md) | El mapa del alta se ve en gris (la CSP bloquea las tiles de OpenStreetMap) | hecho | alta |
 | [FEATURE-001](items/FEATURE-001.md) | Registro y login de adoptantes y protectoras | hecho | alta |
 | [FEATURE-002](items/FEATURE-002.md) | Onboarding de protectoras y verificación por admin | hecho | alta |
@@ -49,7 +49,7 @@ Para centrar el desarrollo en un lado de la app cada vez, el 0.2 se aborda en do
 | [FEATURE-007](items/FEATURE-007.md) | Solicitud "Me interesa" con cuestionario y bandeja de la protectora | hecho | alta |
 | [FEATURE-018](items/FEATURE-018.md) | App shell autenticado — cabecera común, navegación por rol y breadcrumbs | hecho | alta |
 | [IMPROVEMENT-002](items/IMPROVEMENT-002.md) | Rediseño UX del wizard de alta de protectora (+ fix del mapa gris) | hecho | alta |
-| [FEATURE-008](items/FEATURE-008.md) | SEO, datos de demo y pulido del MVP | listo | media |
+| [FEATURE-008](items/FEATURE-008.md) | SEO, datos de demo y pulido del MVP | hecho | media |
 | [IMPROVEMENT-003](items/IMPROVEMENT-003.md) | Pulido del shell chrome (sidebar + cabecera) hacia el mockup de Stitch | hecho | media |
 | [IMPROVEMENT-004](items/IMPROVEMENT-004.md) | Pulido del chrome (sidebar arena, cabecera) y estado vacío de Mi cuenta | hecho | media |
 | [IMPROVEMENT-005](items/IMPROVEMENT-005.md) | Editar los datos de la protectora mientras el alta está en revisión | hecho | media |

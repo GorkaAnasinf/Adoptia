@@ -6,30 +6,23 @@
 ## 📍 ESTADO ACTUAL
 
 - **Hito activo:** 0.2 — MVP (en dos bloques: 🐕 protectora → 🧑 persona; ver "Orden de trabajo" en ROADMAP)
-- **Progreso:** Bloque A (protectora) completo. Bloque B en marcha: FEATURE-005 hecho (área pública), FEATURE-006 hecho (mapa de protectoras) y **FEATURE-007 hecho** (solicitud "Me interesa": cuestionario de 4 pasos, bandeja de dos paneles para la protectora, RLS por columna en `adoption_requests` para que `shelter_notes` sea invisible/inescribible por el adoptante, emails de solicitud recibida/resuelta/cierre por adopción con animales similares).
-- **Siguiente (Bloque B — persona):** FEATURE-008.
-- **En curso:** nada (FEATURE-007 en rama `feature/FEATURE-007-solicitud-me-interesa`, pendiente de merge a develop).
+- **Progreso:** Bloque A (protectora) completo. Bloque B: FEATURE-005, 006 y 007 hechos, y **FEATURE-008 hecho** (SEO: og:image/JSON-LD/sitemap/robots; páginas de error y textos legales; contadores reales en home; seed de demo con 4 protectoras y 23 animales validado con `supabase db reset`). **Hito 0.2 (MVP) completo.**
+- **Siguiente:** FEATURE-009 (citas con calendario, hito 0.3) — antes, revisar follow-ups abiertos.
+- **En curso:** nada.
 - **Bloqueos:** ninguno.
-- **Follow-ups abiertos:** IMPROVEMENT-001 (de-duplicar slug de protectora), IMPROVEMENT-012 (deuda de cobertura de funciones + medir LCP móvil del listado tras deploy), IMPROVEMENT-013 (vista "mis solicitudes" del adoptante, detectado en QA de FEATURE-007). "Próximas citas" del dashboard pospuesto a FEATURE-009.
-- **Última actualización:** 2026-07-10 (cierre de FEATURE-007 — solicitud "Me interesa", 2 ciclos con QA; tercer item del Bloque B).
+- **Follow-ups abiertos:** IMPROVEMENT-001 (de-duplicar slug de protectora), IMPROVEMENT-012 (deuda de cobertura de funciones + medir LCP/Lighthouse de listado y ficha en producción tras el deploy de 0.0.22), IMPROVEMENT-013 (vista "mis solicitudes" del adoptante). "Próximas citas" del dashboard llega con FEATURE-009.
+- **Última actualización:** 2026-07-10 (cierre de FEATURE-008 — SEO/demo/pulido; fin del hito 0.2).
 
 ## Items abiertos por estado
 
 Los items `hecho`/`descartado` no aparecen aquí — su histórico vive en [CHANGELOG](CHANGELOG.md) y git.
 
 <!-- RENDER:START -->
-### 🔨 En desarrollo (1)
-
-| Item | Título | Prioridad | Hito |
-|------|--------|-----------|------|
-| [BUG-001](items/BUG-001.md) | Tras confirmar el correo, la protectora no entra al onboarding; falta pantalla de "correo verificado | alta | 0.2 |
-
-### ✅ Listo para desarrollo (9)
+### ✅ Listo para desarrollo (8)
 
 | Item | Título | Prioridad | Hito |
 |------|--------|-----------|------|
 | [FEATURE-009](items/FEATURE-009.md) | Citas con calendario y agenda de disponibilidad | alta | 0.3 |
-| [FEATURE-008](items/FEATURE-008.md) | SEO, datos de demo y pulido del MVP | media | 0.2 |
 | [FEATURE-010](items/FEATURE-010.md) | Área personal del adoptante — solicitudes, favoritos y alertas | media | 0.3 |
 | [FEATURE-011](items/FEATURE-011.md) | Moderación de contenido y cuentas (admin) | media | 0.3 |
 | [FEATURE-012](items/FEATURE-012.md) | Animales perdidos y encontrados | media | 0.4 |

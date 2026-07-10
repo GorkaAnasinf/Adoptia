@@ -14,13 +14,19 @@
   "footer": {
     "rights": "Hecho con cariño por y para las protectoras.",
     "privacy": "Privacidad",
-    "terms": "Términos"
+    "terms": "Términos",
+    "legalNotice": "Aviso legal",
+    "cookies": "Cookies"
   },
   "home": {
     "title": "Encuentra a tu nuevo mejor amigo",
     "subtitle": "Miles de animales de protectoras de toda España esperan un hogar. Adopta, no compres.",
     "cta": "Ver animales en adopción",
     "animalsCount": "{count} animales buscan hogar ahora mismo",
+    "statsTitle": "Adoptia en números",
+    "statsAnimalsLabel": "animales en adopción",
+    "statsSheltersLabel": "protectoras verificadas",
+    "statsAdoptionsLabel": "adopciones felices",
     "ctaShelters": "Soy una protectora",
     "sheltersCount": "{count} protectoras verificadas",
     "quickTitle": "¿Qué compañero buscas?",
@@ -99,7 +105,55 @@
   "legal": {
     "privacyTitle": "Política de privacidad",
     "termsTitle": "Términos de servicio",
-    "placeholder": "Estamos redactando este documento. Estará disponible antes del lanzamiento."
+    "noticeTitle": "Aviso legal",
+    "cookiesTitle": "Política de cookies",
+    "updated": "Última actualización: julio de 2026",
+    "privacy": {
+      "intro": "En Adoptia tratamos tus datos con el mismo cariño con el que tratamos a los animales. Esta política explica qué datos recogemos, para qué y qué derechos tienes según el RGPD.",
+      "s1Title": "Responsable del tratamiento",
+      "s1Text": "Adoptia es la plataforma responsable del tratamiento de los datos que facilitas al usarla. Puedes ejercer cualquier derecho escribiendo al correo de privacidad indicado al final.",
+      "s2Title": "Qué datos tratamos y para qué",
+      "s2Text": "Datos de cuenta (email, nombre y teléfono opcional) para prestarte el servicio; el cuestionario de pre-adopción (vivienda, convivientes, experiencia) solo con tu consentimiento explícito y únicamente para valorar tu solicitud; y emails transaccionales sobre tus solicitudes. La analítica es agregada y sin cookies: no identifica a nadie.",
+      "s3Title": "Con quién se comparten",
+      "s3Text": "Tu cuestionario y mensaje se comparten solo con la protectora del animal que solicitas; tus datos de contacto, únicamente si la protectora aprueba tu solicitud. Nunca vendemos datos ni los cedemos a terceros con fines comerciales.",
+      "s4Title": "Encargados del tratamiento",
+      "s4Text": "Usamos proveedores con acuerdos de tratamiento de datos: Supabase (base de datos y autenticación, región UE), Vercel (alojamiento) y Resend (envío de emails).",
+      "s5Title": "Tus derechos",
+      "s5Text": "Puedes acceder, rectificar, suprimir y llevarte tus datos, además de retirar tu consentimiento en cualquier momento. Respondemos en menos de 30 días. Al suprimir tu cuenta, tus solicitudes se anonimizan: la protectora conserva la estadística pero no tu identidad.",
+      "s6Title": "Sin decisiones automatizadas",
+      "s6Text": "El cuestionario no filtra ni puntúa automáticamente: la decisión sobre cada solicitud la toma siempre una persona de la protectora.",
+      "s7Title": "Conservación y seguridad",
+      "s7Text": "Los datos viajan y se guardan cifrados. Las cuentas inactivas más de 3 años reciben un aviso y se suprimen."
+    },
+    "notice": {
+      "s1Title": "Qué es Adoptia",
+      "s1Text": "Adoptia es una plataforma que conecta protectoras de animales con personas adoptantes. Adoptia intermedia: no es propietaria de los animales publicados ni parte en las adopciones.",
+      "s2Title": "Responsabilidad sobre las adopciones",
+      "s2Text": "Cada adopción la formaliza directamente la protectora conforme a sus propios criterios y a la normativa aplicable. La información de cada animal la publica su protectora, que es responsable de su veracidad.",
+      "s3Title": "Uso de la plataforma",
+      "s3Text": "Te comprometes a usar Adoptia de buena fe: sin publicar contenido falso u ofensivo, sin suplantar identidades y sin usar los datos de contacto para fines ajenos a la adopción.",
+      "s4Title": "Propiedad intelectual",
+      "s4Text": "La marca, el diseño y el código de la plataforma pertenecen a Adoptia. Las fotos y textos de los animales pertenecen a sus protectoras, que autorizan su difusión en la plataforma y al compartir las fichas."
+    },
+    "cookiesPage": {
+      "intro": "Usamos las cookies mínimas imprescindibles. Por eso no verás un muro de consentimiento.",
+      "s1Title": "Cookies técnicas de sesión",
+      "s1Text": "Solo empleamos cookies técnicas para mantener tu sesión iniciada (httpOnly). Son estrictamente necesarias y están exentas de consentimiento según la normativa vigente.",
+      "s2Title": "Analítica sin cookies",
+      "s2Text": "Medimos el uso de la web de forma agregada y anónima, sin cookies ni identificadores personales.",
+      "s3Title": "Cómo gestionarlas",
+      "s3Text": "Puedes borrar o bloquear las cookies desde tu navegador; si bloqueas la de sesión no podrás mantener la sesión iniciada."
+    },
+    "terms": {
+      "s1Title": "El servicio",
+      "s1Text": "Adoptia pone en contacto a protectoras verificadas con personas que quieren adoptar. El servicio es gratuito para adoptantes y protectoras.",
+      "s2Title": "Tu cuenta",
+      "s2Text": "Eres responsable de la veracidad de los datos de tu cuenta y del cuestionario de pre-adopción. Las protectoras son responsables de la información de sus animales y de gestionar las solicitudes.",
+      "s3Title": "Límites de responsabilidad",
+      "s3Text": "Adoptia intermedia entre las partes: la adopción se formaliza entre la protectora y la persona adoptante. No garantizamos la disponibilidad de un animal ni el resultado de una solicitud.",
+      "s4Title": "Suspensión de cuentas",
+      "s4Text": "Podemos suspender cuentas que incumplan estas condiciones, publiquen contenido falso o hagan un uso fraudulento de la plataforma."
+    }
   },
   "panel": {
     "title": "Panel de la protectora",
@@ -338,6 +392,7 @@
     "adoptedNotice": "¡{nombre} ya ha encontrado hogar! 🎉",
     "reservedNotice": "{nombre} está reservado. Echa un vistazo a otros animales parecidos.",
     "metaTitle": "{nombre}, en adopción",
+    "ogBadge": "En adopción",
     "vacunado": "Vacunado",
     "esterilizado": "Esterilizado",
     "microchip": "Con microchip",
@@ -514,7 +569,14 @@
     "emptyCta": "Explorar animales"
   },
   "errors": {
-    "missingEnv": "Faltan variables de entorno de Supabase. Copia .env.example a .env.local y rellena NEXT_PUBLIC_SUPABASE_URL y NEXT_PUBLIC_SUPABASE_ANON_KEY."
+    "missingEnv": "Faltan variables de entorno de Supabase. Copia .env.example a .env.local y rellena NEXT_PUBLIC_SUPABASE_URL y NEXT_PUBLIC_SUPABASE_ANON_KEY.",
+    "notFoundTitle": "Esta página se ha escapado",
+    "notFoundText": "La página que buscas no existe o ha cambiado de sitio. Pero hay muchos peludos esperándote.",
+    "errorTitle": "Algo ha salido mal",
+    "errorText": "Ha ocurrido un error inesperado. Puedes intentarlo de nuevo o volver al inicio.",
+    "retry": "Reintentar",
+    "backHome": "Volver al inicio",
+    "seeAnimals": "Ver animales en adopción"
   },
   "solicitud": {
     "title": "Cuestionario de pre-adopción",
