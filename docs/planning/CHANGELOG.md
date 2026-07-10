@@ -2,6 +2,12 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/es/) adaptado. Versionado 0.x hasta el MVP.
 
+## [0.0.21] — 2026-07-10
+
+### Añadido
+
+- **FEATURE-007 — Solicitud "Me interesa": cuestionario y bandeja**: el adoptante interesado en un animal rellena ahora un cuestionario de pre-adopción en 4 pasos (vivienda, hogar, experiencia y motivación) desde `/mi-cuenta/solicitudes/nueva/[slug]` —progreso conservado al retroceder, avisa si ya envió una solicitud para ese animal o si dejó de estar disponible mientras la rellenaba— y la protectora la recibe por email y la gestiona en su nueva bandeja `/panel/solicitudes`: lista agrupada por animal, detalle con el cuestionario en formato pregunta/respuesta, notas internas privadas, y acciones para aprobar (reserva el animal), rechazar (con motivo, el adoptante recibe email respetuoso) o marcar como adoptado (cierra el resto de solicitudes pendientes con un email que sugiere animales similares disponibles). Las notas internas de la protectora quedan protegidas con RLS a nivel de columna: el adoptante no puede leerlas ni escribirlas aunque conozca el id de su propia solicitud.
+
 ## [0.0.20] — 2026-07-10
 
 ### Añadido

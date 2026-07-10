@@ -47,6 +47,7 @@ Estado de cada capacidad en lenguaje de usuario. Se regenera con `python scripts
 - Panel de protectora — dashboard y perfil público ([FEATURE-004](../planning/items/FEATURE-004.md))
 - Área pública — home, búsqueda de animales y fichas ([FEATURE-005](../planning/items/FEATURE-005.md))
 - Mapa de protectoras con búsqueda por proximidad ([FEATURE-006](../planning/items/FEATURE-006.md))
+- Solicitud "Me interesa" con cuestionario y bandeja de la protectora ([FEATURE-007](../planning/items/FEATURE-007.md))
 - Despliegue inicial — Supabase cloud y Vercel enlazados ([FEATURE-017](../planning/items/FEATURE-017.md))
 - App shell autenticado — cabecera común, navegación por rol y breadcrumbs ([FEATURE-018](../planning/items/FEATURE-018.md))
 - Rediseño UX del wizard de alta de protectora (+ fix del mapa gris) ([IMPROVEMENT-002](../planning/items/IMPROVEMENT-002.md))
@@ -66,7 +67,6 @@ Estado de cada capacidad en lenguaje de usuario. Se regenera con `python scripts
 
 #### 🗓️ Previsto
 
-- Solicitud "Me interesa" con cuestionario y bandeja de la protectora — hito 0.2 ([FEATURE-007](../planning/items/FEATURE-007.md))
 - SEO, datos de demo y pulido del MVP — hito 0.2 ([FEATURE-008](../planning/items/FEATURE-008.md))
 - Citas con calendario y agenda de disponibilidad — hito 0.3 ([FEATURE-009](../planning/items/FEATURE-009.md))
 - Área personal del adoptante — solicitudes, favoritos y alertas — hito 0.3 ([FEATURE-010](../planning/items/FEATURE-010.md))
@@ -78,4 +78,5 @@ Estado de cada capacidad en lenguaje de usuario. Se regenera con `python scripts
 - Registro de casas de acogida — hito 0.4 ([FEATURE-016](../planning/items/FEATURE-016.md))
 - De-duplicar el slug de protectora (nombres repetidos) — hito sin asignar ([IMPROVEMENT-001](../planning/items/IMPROVEMENT-001.md))
 - Recuperar el umbral de cobertura de funciones (deuda de tests) — hito sin asignar ([IMPROVEMENT-012](../planning/items/IMPROVEMENT-012.md))
+- Vista "mis solicitudes" del adoptante — hito sin asignar ([IMPROVEMENT-013](../planning/items/IMPROVEMENT-013.md))
 <!-- RENDER:END -->
