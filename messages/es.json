@@ -7,6 +7,7 @@
     "home": "Inicio",
     "animals": "Animales",
     "shelters": "Protectoras",
+    "map": "Mapa",
     "login": "Iniciar sesión",
     "register": "Crear cuenta"
   },
@@ -290,6 +291,29 @@
     "edadAnios": "{n, plural, one {# año} other {# años}}",
     "edadMeses": "{n, plural, one {# mes} other {# meses}}",
     "enProtectora": "En {nombre}"
+  },
+  "mapa": {
+    "title": "Protectoras cerca de ti",
+    "subtitle": "Encuentra protectoras verificadas y descubre qué hay cerca de ti.",
+    "filtros": "Filtros",
+    "perros": "Perros",
+    "gatos": "Gatos",
+    "acogida": "Acogida",
+    "voluntariado": "Voluntariado",
+    "usarUbicacion": "Usar mi ubicación",
+    "ubicacionActiva": "Ubicación activada",
+    "ubicacionError": "No se pudo obtener tu ubicación.",
+    "ciudadLabel": "Buscar por ciudad o código postal",
+    "ciudadPlaceholder": "Ciudad o código postal",
+    "ciudadBuscar": "Buscar",
+    "ciudadNoEncontrada": "No hemos encontrado esa ciudad. Prueba con otro nombre.",
+    "ciudadError": "No se pudo buscar la ciudad, inténtalo de nuevo.",
+    "animales": "{count, plural, =0 {Sin animales publicados} one {# animal} other {# animales}}",
+    "verProtectora": "Ver protectora",
+    "vacioTitulo": "Aún no hay protectoras en tu zona",
+    "vacioTexto": "¿Conoces una protectora que debería estar aquí? Puede unirse a Adoptia.",
+    "vacioCta": "Unir una protectora",
+    "bottomSheetToggle": "Mostrar u ocultar filtros y protectoras"
   },
   "ficha": {
     "notFoundTitle": "Este peludo ya no está disponible",

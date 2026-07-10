@@ -21,6 +21,9 @@ export function Header() {
           <Link href="/protectoras" className="hidden text-foreground hover:text-primary sm:block">
             {t("nav.shelters")}
           </Link>
+          <Link href="/mapa" className="hidden text-foreground hover:text-primary sm:block">
+            {t("nav.map")}
+          </Link>
           <UserMenu />
         </nav>
       </div>

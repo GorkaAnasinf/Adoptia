@@ -2,6 +2,12 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/es/) adaptado. Versionado 0.x hasta el MVP.
 
+## [0.0.20] — 2026-07-10
+
+### Añadido
+
+- **FEATURE-006 — Mapa de protectoras con búsqueda por proximidad**: nueva pantalla `/mapa` con todas las protectoras verificadas en un mapa a pantalla completa (marcadores agrupados en clusters), lista lateral en escritorio y bottom sheet deslizable en móvil (tap o arrastre para colapsar/expandir), sincronizados por clic y por hover. El visitante comparte su ubicación o busca por ciudad/CP (nuevo `/api/geocode` público con caché y límite de peticiones) y ve las protectoras ordenadas por cercanía, con distancia, nº de animales publicados y acceso directo a cada ficha; chips de filtro por perros/gatos/acogida/voluntariado se aplican a la vez al mapa y a la lista. Zona sin protectoras muestra un estado vacío con invitación a unirse.
+
 ## [0.0.19] — 2026-07-10
 
 ### Añadido

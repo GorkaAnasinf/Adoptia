@@ -34,7 +34,7 @@ Para centrar el desarrollo en un lado de la app cada vez, el 0.2 se aborda en do
 | [FEATURE-000](items/FEATURE-000.md) | Inicialización y andamiaje del proyecto | hecho | alta |
 | [FEATURE-017](items/FEATURE-017.md) | Despliegue inicial — Supabase cloud y Vercel enlazados | hecho | alta |
 
-### Hito 0.2 — 81% completado (17/21)
+### Hito 0.2 — 86% completado (18/21)
 
 | Item | Título | Estado | Prioridad |
 |------|--------|--------|-----------|
@@ -45,7 +45,7 @@ Para centrar el desarrollo en un lado de la app cada vez, el 0.2 se aborda en do
 | [FEATURE-003](items/FEATURE-003.md) | Gestión de animales con fotos y vídeo (panel protectora) | hecho | alta |
 | [FEATURE-004](items/FEATURE-004.md) | Panel de protectora — dashboard y perfil público | hecho | alta |
 | [FEATURE-005](items/FEATURE-005.md) | Área pública — home, búsqueda de animales y fichas | hecho | alta |
-| [FEATURE-006](items/FEATURE-006.md) | Mapa de protectoras con búsqueda por proximidad | listo | alta |
+| [FEATURE-006](items/FEATURE-006.md) | Mapa de protectoras con búsqueda por proximidad | hecho | alta |
 | [FEATURE-007](items/FEATURE-007.md) | Solicitud "Me interesa" con cuestionario y bandeja de la protectora | listo | alta |
 | [FEATURE-018](items/FEATURE-018.md) | App shell autenticado — cabecera común, navegación por rol y breadcrumbs | hecho | alta |
 | [IMPROVEMENT-002](items/IMPROVEMENT-002.md) | Rediseño UX del wizard de alta de protectora (+ fix del mapa gris) | hecho | alta |
