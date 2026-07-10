@@ -13,7 +13,13 @@ vi.mock("nodemailer", () => ({
 }));
 
 import { enviarEmail } from "./mailer";
-import { plantillaRechazada, plantillaVerificada } from "./templates";
+import {
+  plantillaRechazada,
+  plantillaSolicitudCerradaPorAdopcion,
+  plantillaSolicitudRecibida,
+  plantillaSolicitudResuelta,
+  plantillaVerificada,
+} from "./templates";
 
 describe("enviarEmail", () => {
   beforeEach(() => {
@@ -69,5 +75,58 @@ describe("plantillas de verificación", () => {
     expect(subject.toLowerCase()).toMatch(/revis|rechaz/);
     expect(html).toContain("Refugio Esperanza");
     expect(html).toContain("El CIF no coincide con el registro");
+  });
+});
+
+describe("plantillas de solicitudes (FEATURE-007)", () => {
+  it("solicitud recibida: avisa a la protectora con el nombre del animal", () => {
+    const { subject, html } = plantillaSolicitudRecibida({
+      shelterName: "Refugio Esperanza",
+      animalName: "Pipa",
+    });
+    expect(subject).toContain("Pipa");
+    expect(html).toContain("Refugio Esperanza");
+    expect(html).toContain("Pipa");
+  });
+
+  it("solicitud aprobada: tono positivo para el adoptante", () => {
+    const { subject, html } = plantillaSolicitudResuelta({
+      adopterName: "Marta",
+      animalName: "Pipa",
+      resultado: "approved",
+    });
+    expect(subject.toLowerCase()).toContain("aprobada");
+    expect(html).toContain("Marta");
+    expect(html.toLowerCase()).toContain("aprobado");
+  });
+
+  it("solicitud rechazada: incluye el motivo y sugiere seguir buscando", () => {
+    const { html } = plantillaSolicitudResuelta({
+      adopterName: "Marta",
+      animalName: "Pipa",
+      resultado: "rejected",
+      motivo: "Ya tenemos otra familia elegida",
+    });
+    expect(html).toContain("Ya tenemos otra familia elegida");
+    expect(html.toLowerCase()).toContain("adoptia");
+  });
+
+  it("solicitud rechazada sin motivo explícito no revienta", () => {
+    const { html } = plantillaSolicitudResuelta({
+      adopterName: "Marta",
+      animalName: "Pipa",
+      resultado: "rejected",
+    });
+    expect(html).toContain("Marta");
+  });
+
+  it("cierre por adopción: mensaje amable al resto de solicitantes", () => {
+    const { subject, html } = plantillaSolicitudCerradaPorAdopcion({
+      adopterName: "Juan",
+      animalName: "Pipa",
+    });
+    expect(subject).toContain("Pipa");
+    expect(html).toContain("Juan");
+    expect(html.toLowerCase()).toContain("adoptado");
   });
 });
