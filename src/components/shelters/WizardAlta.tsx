@@ -99,8 +99,16 @@ export function WizardAlta({
         .select("id")
         .single();
       if (error) {
-        // 23505 = unique_violation: CIF o email de entidad ya registrados
-        setErrores({ _: t(error.code === "23505" ? "errorDuplicado" : "errorGeneric") });
+        // 23505 = unique_violation. La BD ya de-duplica el slug (trigger), así
+        // que un choque de slug aquí es residual; si ocurre, el aviso debe
+        // hablar del nombre y no despistar con "CIF o email ya registrado".
+        const clave =
+          error.code === "23505"
+            ? error.message?.includes("slug")
+              ? "errorSlugDuplicado"
+              : "errorDuplicado"
+            : "errorGeneric";
+        setErrores({ _: t(clave) });
         return false;
       }
       if (data?.id) setCurrentId(data.id);

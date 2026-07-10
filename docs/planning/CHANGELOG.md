@@ -2,6 +2,12 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/es/) adaptado. Versionado 0.x hasta el MVP.
 
+## [0.0.23] — 2026-07-10
+
+### Corregido
+
+- **IMPROVEMENT-001 — Slug de protectora de-duplicado**: dos protectoras pueden llamarse igual sin que el alta falle: la base de datos añade un sufijo (`refugio-esperanza-2`, `-3`…) de forma atómica y resistente a altas simultáneas, y el slug de una protectora ya publicada no cambia al editar su perfil. Si aun así hubiera un choque, el wizard lo explica hablando del nombre (antes culpaba, engañosamente, al CIF/email). Además, los usuarios del seed de demo ya no rompen la API de administración de usuarios del stack local.
+
 ## [0.0.22] — 2026-07-10
 
 ### Añadido

@@ -52,6 +52,7 @@ Estado de cada capacidad en lenguaje de usuario. Se regenera con `python scripts
 - SEO, datos de demo y pulido del MVP ([FEATURE-008](../planning/items/FEATURE-008.md))
 - Despliegue inicial — Supabase cloud y Vercel enlazados ([FEATURE-017](../planning/items/FEATURE-017.md))
 - App shell autenticado — cabecera común, navegación por rol y breadcrumbs ([FEATURE-018](../planning/items/FEATURE-018.md))
+- De-duplicar el slug de protectora (nombres repetidos) ([IMPROVEMENT-001](../planning/items/IMPROVEMENT-001.md))
 - Rediseño UX del wizard de alta de protectora (+ fix del mapa gris) ([IMPROVEMENT-002](../planning/items/IMPROVEMENT-002.md))
 - Pulido del shell chrome (sidebar + cabecera) hacia el mockup de Stitch ([IMPROVEMENT-003](../planning/items/IMPROVEMENT-003.md))
 - Pulido del chrome (sidebar arena, cabecera) y estado vacío de Mi cuenta ([IMPROVEMENT-004](../planning/items/IMPROVEMENT-004.md))
@@ -77,7 +78,6 @@ _Nada en desarrollo en este momento._
 - Estadísticas para protectoras y difusión en redes — hito 0.4 ([FEATURE-014](../planning/items/FEATURE-014.md))
 - Contenido educativo sobre adopción responsable — hito 0.4 ([FEATURE-015](../planning/items/FEATURE-015.md))
 - Registro de casas de acogida — hito 0.4 ([FEATURE-016](../planning/items/FEATURE-016.md))
-- De-duplicar el slug de protectora (nombres repetidos) — hito sin asignar ([IMPROVEMENT-001](../planning/items/IMPROVEMENT-001.md))
 - Recuperar el umbral de cobertura de funciones (deuda de tests) — hito sin asignar ([IMPROVEMENT-012](../planning/items/IMPROVEMENT-012.md))
 - Vista "mis solicitudes" del adoptante — hito sin asignar ([IMPROVEMENT-013](../planning/items/IMPROVEMENT-013.md))
 <!-- RENDER:END -->
