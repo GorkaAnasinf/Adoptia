@@ -56,6 +56,13 @@ order by distance_m;
 
 Requiere extensión **PostGIS** activada (disponible en Supabase free) e índice GiST sobre `shelters.location`.
 
+Desde FEATURE-005 esta consulta vive en el RPC **`animals_search`** (migración
+`20260709120000`, SECURITY INVOKER → la RLS aplica): filtros combinables (especie, tamaños,
+sexos, convivencia, rango de nacimiento), radio y orden por distancia opcionales, portada
+desde `animal_media` y `total_count` por ventana para paginar. Lo consumen el listado
+`/animales`, la home y las sugerencias de la ficha vía `supabase.rpc("animals_search", args)`
+con el builder de `src/lib/animal-search.ts`.
+
 ## Migraciones
 
 SQL versionado en `supabase/migrations/` con la CLI de Supabase (`supabase migration new`, `supabase db push`). Nunca cambios manuales en el dashboard sin su migración correspondiente. Seed de demo en `supabase/seed.sql`.
