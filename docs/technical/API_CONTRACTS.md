@@ -17,6 +17,7 @@ La mayor parte del acceso a datos va **directo a Supabase** (supabase-js + RLS).
 | POST | `/api/solicitudes` | Crea `adoption_request` (valida cuestionario Zod, comprueba unique, email a protectora por SMTP) | adoptante |
 | PATCH | `/api/solicitudes/[id]` | Aprobar/rechazar (con motivo); email al adoptante | protectora dueña |
 | POST | `/api/protectoras/geocode` | Geocodifica dirección con Nominatim y devuelve lat/lng (cachea) | protectora |
+| GET | `/api/geocode?q=` | Geocodifica ciudad/CP para el buscador del mapa público (cachea, rate limit por IP) | público |
 | POST | `/api/admin/protectoras/[id]/verificar` | `pending → verified/suspended`; email de resultado | admin |
 | GET | `/api/cron/keepalive` | Ping BD (evita pausa Supabase free) | CRON_SECRET |
 
@@ -59,6 +60,18 @@ Auth: protectora. Geocodifica una dirección con Nominatim y **cachea** el resul
 // 401 → { "error": { "code": "unauthorized" } }        // sin sesión
 // 403 → { "error": { "code": "forbidden" } }           // rol distinto de shelter
 // 422 → { "error": { "code": "validation", "issues": [...] } }
+```
+
+## Contrato — GET /api/geocode?q=  *(FEATURE-006)*
+
+Público, sin sesión. Geocodifica una ciudad/CP para el buscador del mapa de protectoras (`/mapa`). Cachea en `geocode_cache` (misma tabla que el endpoint de protectoras) y aplica rate limit en memoria por IP (20 peticiones/min) para no abusar de Nominatim. **Nunca 500** por ciudad inexistente.
+
+```jsonc
+// GET /api/geocode?q=Bilbao
+// 200 → { "data": { "lat": 43.263, "lng": -2.935, "source": "cache" | "nominatim" } }
+// 200 (no encontrada) → { "data": { "lat": null, "lng": null, "source": "nominatim" } }
+// 422 → { "error": { "code": "validation", "issues": [...] } }  // falta q o está vacío
+// 429 → { "error": { "code": "rate_limited" } }                  // límite por IP superado
 ```
 
 ## Contrato — POST /api/admin/protectoras/[id]/verificar  *(FEATURE-002)*

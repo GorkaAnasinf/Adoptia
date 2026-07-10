@@ -34,7 +34,7 @@ Para centrar el desarrollo en un lado de la app cada vez, el 0.2 se aborda en do
 | [FEATURE-000](items/FEATURE-000.md) | Inicialización y andamiaje del proyecto | hecho | alta |
 | [FEATURE-017](items/FEATURE-017.md) | Despliegue inicial — Supabase cloud y Vercel enlazados | hecho | alta |
 
-### Hito 0.2 — 76% completado (16/21)
+### Hito 0.2 — 86% completado (18/21)
 
 | Item | Título | Estado | Prioridad |
 |------|--------|--------|-----------|
@@ -44,8 +44,8 @@ Para centrar el desarrollo en un lado de la app cada vez, el 0.2 se aborda en do
 | [FEATURE-002](items/FEATURE-002.md) | Onboarding de protectoras y verificación por admin | hecho | alta |
 | [FEATURE-003](items/FEATURE-003.md) | Gestión de animales con fotos y vídeo (panel protectora) | hecho | alta |
 | [FEATURE-004](items/FEATURE-004.md) | Panel de protectora — dashboard y perfil público | hecho | alta |
-| [FEATURE-005](items/FEATURE-005.md) | Área pública — home, búsqueda de animales y fichas | listo | alta |
-| [FEATURE-006](items/FEATURE-006.md) | Mapa de protectoras con búsqueda por proximidad | listo | alta |
+| [FEATURE-005](items/FEATURE-005.md) | Área pública — home, búsqueda de animales y fichas | hecho | alta |
+| [FEATURE-006](items/FEATURE-006.md) | Mapa de protectoras con búsqueda por proximidad | hecho | alta |
 | [FEATURE-007](items/FEATURE-007.md) | Solicitud "Me interesa" con cuestionario y bandeja de la protectora | listo | alta |
 | [FEATURE-018](items/FEATURE-018.md) | App shell autenticado — cabecera común, navegación por rol y breadcrumbs | hecho | alta |
 | [IMPROVEMENT-002](items/IMPROVEMENT-002.md) | Rediseño UX del wizard de alta de protectora (+ fix del mapa gris) | hecho | alta |
@@ -78,9 +78,10 @@ Para centrar el desarrollo en un lado de la app cada vez, el 0.2 se aborda en do
 | [FEATURE-015](items/FEATURE-015.md) | Contenido educativo sobre adopción responsable | listo | baja |
 | [FEATURE-016](items/FEATURE-016.md) | Registro de casas de acogida | listo | baja |
 
-### Sin hito asignado (1)
+### Sin hito asignado (2)
 
 _Capturas pendientes de promover — no forman parte del roadmap todavía._
 
 - [IMPROVEMENT-001](items/IMPROVEMENT-001.md) — De-duplicar el slug de protectora (nombres repetidos) (recibido)
+- [IMPROVEMENT-012](items/IMPROVEMENT-012.md) — Recuperar el umbral de cobertura de funciones (deuda de tests) (recibido)
 <!-- RENDER:END -->

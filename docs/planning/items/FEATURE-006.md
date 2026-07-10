@@ -2,12 +2,12 @@
 id: FEATURE-006
 tipo: feature
 titulo: Mapa de protectoras con búsqueda por proximidad
-estado: listo
+estado: hecho
 prioridad: alta
 hito: "0.2"
 duplicado_de: null
 creado: 2026-07-04
-actualizado: 2026-07-04
+actualizado: 2026-07-10
 ---
 
 # FEATURE-006 — Mapa de protectoras con búsqueda por proximidad
@@ -47,11 +47,11 @@ Funcionalidad diferencial de la plataforma ("qué hay cerca de mí"). Primera pa
 
 ### Tareas TDD
 
-1. Test RPC `shelters_nearby` con seed (dentro/fuera de radio, orden).
-2. Test: shelter `pending` no aparece en respuesta.
-3. Test geocode con caché (segunda llamada no toca Nominatim — mock).
-4. Test componente: denegación de geolocalización → fallback a buscador.
-5. E2E: permitir ubicación → lista ordenada → clic marcador → popup → ficha.
+1. [x] Test RPC `shelters_nearby` con seed (dentro/fuera de radio, orden).
+2. [x] Test: shelter `pending` no aparece en respuesta.
+3. [x] Test geocode con caché (segunda llamada no toca Nominatim — mock).
+4. [x] Test componente: denegación de geolocalización → fallback a buscador.
+5. [x] E2E: permitir ubicación → lista ordenada → clic marcador → popup → ficha.
 
 ### Dependencias
 
@@ -59,10 +59,10 @@ Funcionalidad diferencial de la plataforma ("qué hay cerca de mí"). Primera pa
 
 ## Criterios de aceptación / Casuística a cubrir
 
-- [ ] Clustering fluido con 200+ marcadores.
-- [ ] Geolocalización denegada o no disponible: búsqueda por ciudad/CP funciona igual.
-- [ ] Ciudad no encontrada: mensaje claro con sugerencia.
-- [ ] Filtros de chips aplican a mapa Y lista a la vez.
-- [ ] Bottom sheet móvil deslizable; mapa usable con gestos (sin secuestrar scroll).
-- [ ] Tiles de OSM con atribución correcta (requisito de licencia).
-- [ ] Zona sin protectoras: estado vacío "aún no hay protectoras en tu zona" + CTA de unirse.
+- [x] Clustering fluido con 200+ marcadores. (E2E con 220 protectoras: agrupa en clusters, no pinta 200+ pines sueltos, sin errores de consola al hacer clic)
+- [x] Geolocalización denegada o no disponible: búsqueda por ciudad/CP funciona igual.
+- [x] Ciudad no encontrada: mensaje claro con sugerencia.
+- [x] Filtros de chips aplican a mapa Y lista a la vez.
+- [x] Bottom sheet móvil deslizable; mapa usable con gestos (sin secuestrar scroll). (tap y arrastre real para colapsar/expandir, tested)
+- [x] Tiles de OSM con atribución correcta (requisito de licencia).
+- [x] Zona sin protectoras: estado vacío "aún no hay protectoras en tu zona" + CTA de unirse.

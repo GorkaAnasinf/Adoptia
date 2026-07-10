@@ -12,8 +12,8 @@
 | [FEATURE-002](FEATURE-002.md) | Onboarding de protectoras y verificación por admin | feature | hecho | 0.2 |
 | [FEATURE-003](FEATURE-003.md) | Gestión de animales con fotos y vídeo (panel protectora) | feature | hecho | 0.2 |
 | [FEATURE-004](FEATURE-004.md) | Panel de protectora — dashboard y perfil público | feature | hecho | 0.2 |
-| [FEATURE-005](FEATURE-005.md) | Área pública — home, búsqueda de animales y fichas | feature | listo | 0.2 |
-| [FEATURE-006](FEATURE-006.md) | Mapa de protectoras con búsqueda por proximidad | feature | listo | 0.2 |
+| [FEATURE-005](FEATURE-005.md) | Área pública — home, búsqueda de animales y fichas | feature | hecho | 0.2 |
+| [FEATURE-006](FEATURE-006.md) | Mapa de protectoras con búsqueda por proximidad | feature | hecho | 0.2 |
 | [FEATURE-007](FEATURE-007.md) | Solicitud "Me interesa" con cuestionario y bandeja de la protectora | feature | listo | 0.2 |
 | [FEATURE-008](FEATURE-008.md) | SEO, datos de demo y pulido del MVP | feature | listo | 0.2 |
 | [FEATURE-009](FEATURE-009.md) | Citas con calendario y agenda de disponibilidad | feature | listo | 0.3 |
@@ -37,3 +37,4 @@
 | [IMPROVEMENT-009](IMPROVEMENT-009.md) | Wizard de alta — fix autocompletado y pulido de ubicación/perfil | improvement | hecho | 0.2 |
 | [IMPROVEMENT-010](IMPROVEMENT-010.md) | Wizard de alta — autorrelleno de provincia y nombres OSM | improvement | hecho | 0.2 |
 | [IMPROVEMENT-011](IMPROVEMENT-011.md) | Wizard de alta — combo de provincia, autocompletado solo al teclear y título lateral | improvement | hecho | 0.2 |
+| [IMPROVEMENT-012](IMPROVEMENT-012.md) | Recuperar el umbral de cobertura de funciones (deuda de tests) | improvement | recibido | — |
