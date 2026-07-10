@@ -106,6 +106,13 @@ describe("POST /api/solicitudes", () => {
     expect(enviarEmailMock.mock.calls[0][0].to).toBe("gestor@refugio.org");
   });
 
+  it("si el envío del email falla, la solicitud igualmente se crea (201)", async () => {
+    enviarEmailMock.mockRejectedValueOnce(new Error("Faltan variables SMTP"));
+    const res = await POST(req({ animal_id: "11111111-1111-4111-8111-111111111111", questionnaire: cuestionarioValido }));
+    expect(res.status).toBe(201);
+    expect(state.inserted).not.toBeNull();
+  });
+
   it("422 si el cuestionario es inválido", async () => {
     const res = await POST(
       req({ animal_id: "11111111-1111-4111-8111-111111111111", questionnaire: { ...cuestionarioValido, horas_solo: 30 } }),

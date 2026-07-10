@@ -7,6 +7,15 @@ function json(body: unknown, status = 200) {
   return Response.json(body, { status });
 }
 
+/** El email es best-effort: si SMTP falla no debe tumbar una solicitud ya creada. */
+async function enviarEmailSeguro(payload: Parameters<typeof enviarEmail>[0]) {
+  try {
+    await enviarEmail(payload);
+  } catch (err) {
+    console.error("No se pudo enviar el email de nueva solicitud:", err);
+  }
+}
+
 // ---------- Rate limit en memoria por usuario ----------
 const LIMITE_PETICIONES = 10;
 const VENTANA_MS = 60_000;
@@ -108,7 +117,7 @@ export async function POST(req: Request) {
     .maybeSingle();
   if (shelter?.email) {
     const plantilla = plantillaSolicitudRecibida({ shelterName: shelter.name, animalName: animal.name });
-    await enviarEmail({ to: shelter.email, ...plantilla });
+    await enviarEmailSeguro({ to: shelter.email, ...plantilla });
   }
 
   return json({ data: solicitud }, 201);

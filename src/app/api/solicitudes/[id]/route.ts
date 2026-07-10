@@ -13,6 +13,19 @@ function json(body: unknown, status = 200) {
   return Response.json(body, { status });
 }
 
+/**
+ * El email es best-effort: si SMTP falla (config, red…) no debe tumbar la
+ * respuesta cuando el cambio de estado ya se guardó en BD. Se registra y se
+ * sigue.
+ */
+async function enviarEmailSeguro(payload: Parameters<typeof enviarEmail>[0]) {
+  try {
+    await enviarEmail(payload);
+  } catch (err) {
+    console.error("No se pudo enviar el email de la solicitud:", err);
+  }
+}
+
 type SolicitudConAnimal = {
   id: string;
   status: string;
@@ -117,7 +130,7 @@ export async function PATCH(
         animalName: animal.name,
         resultado: "approved",
       });
-      await enviarEmail({ to: contacto.email, ...plantilla });
+      await enviarEmailSeguro({ to: contacto.email, ...plantilla });
     }
   }
 
@@ -130,7 +143,7 @@ export async function PATCH(
         resultado: "rejected",
         motivo: accion.motivo,
       });
-      await enviarEmail({ to: contacto.email, ...plantilla });
+      await enviarEmailSeguro({ to: contacto.email, ...plantilla });
     }
   }
 
@@ -155,7 +168,7 @@ export async function PATCH(
           adopterName: contacto.fullName ?? "",
           animalName: animal.name,
         });
-        await enviarEmail({ to: contacto.email, ...plantilla });
+        await enviarEmailSeguro({ to: contacto.email, ...plantilla });
       }
     }
   }

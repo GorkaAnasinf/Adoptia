@@ -171,6 +171,13 @@ describe("PATCH /api/solicitudes/[id]", () => {
     expect(enviarEmailMock.mock.calls[0][0].to).toBe("juan@test.com");
   });
 
+  it("si el envío del email falla, la solicitud igual queda aprobada (no revienta la respuesta)", async () => {
+    enviarEmailMock.mockRejectedValueOnce(new Error("Faltan variables SMTP"));
+    const res = await PATCH(req({ accion: "approve" }), params);
+    expect(res.status).toBe(200);
+    expect(state.lastUpdate).toMatchObject({ status: "approved" });
+  });
+
   it("404 si no es protectora ni admite acción sobre solicitud ya resuelta más allá de complete", async () => {
     state.request = {
       ...(state.request as Record<string, unknown>),
