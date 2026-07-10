@@ -167,4 +167,22 @@ describe("Ficha pública del animal", () => {
     const meta = await generateMetadata({ params: Promise.resolve({ slug: "pipa-abc123" }) });
     expect(meta.title).toBe("Pipa, en adopción");
   });
+
+  it("generateMetadata incluye og:image apuntando al endpoint /api/og", async () => {
+    maybeSingleMock.mockResolvedValue({ data: ANIMAL, error: null });
+    const meta = await generateMetadata({ params: Promise.resolve({ slug: "pipa-abc123" }) });
+    expect(meta.openGraph?.images).toEqual(["/api/og/pipa-abc123"]);
+    expect(meta.openGraph?.title).toBe("Pipa, en adopción");
+    expect(meta.alternates?.canonical).toBe("/animales/pipa-abc123");
+  });
+
+  it("la ficha incluye JSON-LD con el nombre del animal y la protectora", async () => {
+    maybeSingleMock.mockResolvedValue({ data: ANIMAL, error: null });
+    const { container } = await renderFicha();
+    const script = container.querySelector('script[type="application/ld+json"]');
+    expect(script).not.toBeNull();
+    const datos = JSON.parse(script!.textContent ?? "{}");
+    expect(datos.name).toBe("Pipa");
+    expect(datos.offers?.offeredBy?.name).toBe("Protectora Bilbao");
+  });
 });
