@@ -40,6 +40,13 @@ Fase 3: `sponsorships`, `lost_found_posts`.
 | `favorites`, `saved_searches` | Solo su dueño | Solo su dueño |
 | Todo | `admin` acceso total (verificación, moderación) | — |
 
+### `adoption_requests.shelter_notes` — RLS por columna (FEATURE-007)
+
+La policy de `update`/`select` de `adoption_requests` es a nivel de fila (adoptante dueño y protectora dueña comparten `using`/`with check`), así que no puede impedir por sí sola que el adoptante lea o escriba `shelter_notes` (notas internas de la protectora). Migración `20260710120000_feature007_adoption_requests_column_rls.sql`:
+
+- **Lectura**: se revoca `SELECT` de tabla completa a `authenticated`/`anon` y se vuelve a conceder columna a columna, **sin** `shelter_notes`. Solo el backend con `service_role` (admin client) puede leerla — así lo hace ya el panel de la protectora (`src/app/(shelter)/panel/solicitudes/page.tsx`). Cualquier query desde un cliente `authenticated`/`anon` que use `select()`/`select("*")` sobre `adoption_requests` debe listar columnas explícitas (sin `shelter_notes`).
+- **Escritura**: un trigger `BEFORE UPDATE` (`adoption_requests_guard_adopter_update`) compara `OLD`/`NEW` (RLS `with check` no tiene acceso a `OLD`) y bloquea que el propio adoptante modifique `shelter_notes` o cambie `status` a un valor distinto de `withdrawn`. La protectora dueña del animal y el admin quedan exentos.
+
 ## Consulta clave — proximidad
 
 ```sql

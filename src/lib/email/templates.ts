@@ -22,6 +22,92 @@ export function plantillaVerificada({ shelterName }: { shelterName: string }) {
   };
 }
 
+export function plantillaSolicitudRecibida({
+  shelterName,
+  animalName,
+}: {
+  shelterName: string;
+  animalName: string;
+}) {
+  return {
+    subject: `Nueva solicitud de adopción para ${animalName}`,
+    html: BASE(`
+      <p>Hola <strong>${shelterName}</strong>,</p>
+      <p>Has recibido una nueva solicitud de adopción para <strong>${animalName}</strong>.</p>
+      <p>Entra en tu bandeja de solicitudes para ver el cuestionario completo y decidir.</p>
+      <p><a href="https://adoptia-eight.vercel.app/panel/solicitudes" style="color:#396662">Ver solicitud</a></p>
+    `),
+  };
+}
+
+export function plantillaSolicitudResuelta({
+  adopterName,
+  animalName,
+  resultado,
+  motivo,
+}: {
+  adopterName: string;
+  animalName: string;
+  resultado: "approved" | "rejected";
+  motivo?: string;
+}) {
+  if (resultado === "approved") {
+    return {
+      subject: `¡Tu solicitud para ${animalName} ha sido aprobada!`,
+      html: BASE(`
+        <p>Hola ${adopterName},</p>
+        <p>¡Buenas noticias! La protectora ha <strong>aprobado</strong> tu solicitud de adopción de
+        <strong>${animalName}</strong>. Se pondrán en contacto contigo para dar los siguientes pasos.</p>
+      `),
+    };
+  }
+  return {
+    subject: `Novedades sobre tu solicitud para ${animalName}`,
+    html: BASE(`
+      <p>Hola ${adopterName},</p>
+      <p>Gracias por tu interés en <strong>${animalName}</strong>. Por ahora, la protectora no ha podido
+      seguir adelante con tu solicitud.</p>
+      ${motivo ? `<p><strong>Motivo:</strong> ${motivo}</p>` : ""}
+      <p>No te desanimes: hay muchos otros peludos esperando un hogar como el tuyo.
+      <a href="https://adoptia-eight.vercel.app/animales" style="color:#396662">Sigue buscando en Adoptia</a>.</p>
+    `),
+  };
+}
+
+export function plantillaSolicitudCerradaPorAdopcion({
+  adopterName,
+  animalName,
+  animalesSimilares = [],
+}: {
+  adopterName: string;
+  animalName: string;
+  animalesSimilares?: { name: string; slug: string }[];
+}) {
+  const seccionSimilares = animalesSimilares.length
+    ? `
+      <p style="margin-top:20px"><strong>Puede que te interese conocer a:</strong></p>
+      <ul style="padding-left:20px">
+        ${animalesSimilares
+          .map(
+            (a) =>
+              `<li><a href="https://adoptia-eight.vercel.app/animales/${a.slug}" style="color:#396662">${a.name}</a></li>`,
+          )
+          .join("")}
+      </ul>`
+    : "";
+  return {
+    subject: `${animalName} ya ha encontrado hogar`,
+    html: BASE(`
+      <p>Hola ${adopterName},</p>
+      <p><strong>${animalName}</strong> ya ha sido adoptado/a por otra familia, así que la protectora ha
+      cerrado tu solicitud. Sentimos no poder darte mejores noticias esta vez.</p>
+      <p>Hay muchos otros animales esperando un hogar como el tuyo:
+      <a href="https://adoptia-eight.vercel.app/animales" style="color:#396662">sigue buscando en Adoptia</a>.</p>
+      ${seccionSimilares}
+    `),
+  };
+}
+
 export function plantillaRechazada({
   shelterName,
   motivo,

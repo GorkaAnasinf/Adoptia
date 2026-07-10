@@ -2,12 +2,12 @@
 id: FEATURE-007
 tipo: feature
 titulo: Solicitud "Me interesa" con cuestionario y bandeja de la protectora
-estado: listo
+estado: hecho
 prioridad: alta
 hito: "0.2"
 duplicado_de: null
 creado: 2026-07-04
-actualizado: 2026-07-04
+actualizado: 2026-07-10
 ---
 
 # FEATURE-007 — Solicitud "Me interesa": cuestionario y bandeja
@@ -62,11 +62,11 @@ Corazón del producto: es el ahorro de trabajo real para las protectoras (el fil
 
 ## Criterios de aceptación / Casuística a cubrir
 
-- [ ] Stepper completable en móvil en <3 min; progreso no se pierde al retroceder.
-- [ ] Sin sesión: "Me interesa" → login → vuelve al cuestionario del mismo animal.
-- [ ] Segunda solicitud al mismo animal: aviso "ya la enviaste" con enlace a su estado.
-- [ ] Animal reservado/adoptado durante el proceso: mensaje al enviar, sin crear solicitud.
-- [ ] Protectora ve el cuestionario completo en formato pregunta/respuesta legible.
-- [ ] Rechazo siempre con motivo; el adoptante recibe email respetuoso con sugerencias.
-- [ ] Al marcar adoptado: todas las solicitudes pendientes se cierran con email + animales similares.
-- [ ] Notas internas jamás visibles para el adoptante (RLS por columna o vista).
+- [x] Stepper completable en móvil en <3 min; progreso no se pierde al retroceder.
+- [x] Sin sesión: "Me interesa" → login → vuelve al cuestionario del mismo animal.
+- [x] Segunda solicitud al mismo animal: aviso "ya la enviaste" (enlace apunta a la ficha del animal, no a un detalle de la solicitud — no existe vista "mis solicitudes" todavía, ver IMPROVEMENT-013).
+- [x] Animal reservado/adoptado durante el proceso: mensaje al enviar, sin crear solicitud.
+- [x] Protectora ve el cuestionario completo en formato pregunta/respuesta legible.
+- [x] Rechazo siempre con motivo; el adoptante recibe email respetuoso con sugerencias.
+- [x] Al marcar adoptado: todas las solicitudes pendientes se cierran con email + animales similares.
+- [x] Notas internas jamás visibles para el adoptante (RLS por columna: revoke de columna + trigger que bloquea escritura de `shelter_notes` por el adoptante).
