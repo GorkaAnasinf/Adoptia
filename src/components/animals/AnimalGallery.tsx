@@ -4,13 +4,16 @@ import { PawPrint } from "lucide-react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
+import { esImagenValida } from "@/lib/animal-search";
 import { cn } from "@/lib/utils";
 
 export type AnimalMedia = { url: string; is_cover: boolean; sort_order: number };
 
 /** Portada primero, resto por sort_order. */
 function ordenar(media: AnimalMedia[]): AnimalMedia[] {
-  return [...media].sort(
+  return media
+    .filter((m) => esImagenValida(m.url))
+    .sort(
     (a, b) => Number(b.is_cover) - Number(a.is_cover) || a.sort_order - b.sort_order,
   );
 }

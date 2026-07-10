@@ -179,6 +179,14 @@ export function edadAproximada(
   return { unidad: "anios", n: Math.floor(meses / 12) };
 }
 
+/**
+ * `next/image` lanza con src relativas sin barra inicial (datos antiguos o
+ * corruptos). Solo aceptamos URLs absolutas o rutas del propio dominio.
+ */
+export function esImagenValida(url: string | null | undefined): url is string {
+  return Boolean(url && (/^https?:\/\//.test(url) || url.startsWith("/")));
+}
+
 export function totalPaginas(total: number): number {
   return Math.max(1, Math.ceil(total / PAGE_SIZE));
 }

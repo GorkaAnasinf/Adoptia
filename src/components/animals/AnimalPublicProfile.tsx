@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { MiniMapa } from "@/components/map/MiniMapa";
-import { edadAproximada } from "@/lib/animal-search";
+import { edadAproximada, esImagenValida } from "@/lib/animal-search";
 import type { AnimalStatus } from "@/lib/schemas/animal";
 import { AnimalGallery, type AnimalMedia } from "./AnimalGallery";
 import { InterestButton } from "./InterestButton";
@@ -218,7 +218,7 @@ export function AnimalPublicProfile({
         <h2 className="font-heading text-xl font-semibold">{t("shelterTitle")}</h2>
         <div className="mt-3 rounded-2xl border border-border bg-white p-4">
           <div className="flex items-center gap-3">
-            {animal.shelter.logo_url ? (
+            {esImagenValida(animal.shelter.logo_url) ? (
               <Image
                 src={animal.shelter.logo_url}
                 alt={animal.shelter.name}

@@ -63,6 +63,12 @@ describe("AnimalCard", () => {
     expect(screen.getByRole("img", { name: "Pipa" })).toBeInTheDocument();
   });
 
+  it("una cover_url inválida (sin http ni /) cae al placeholder sin romper", () => {
+    renderCard({ cover_url: "a.jpg" });
+    expect(screen.queryByRole("img")).not.toBeInTheDocument();
+    expect(screen.getByText("Sin foto")).toBeInTheDocument();
+  });
+
   it("muestra especie, edad aproximada y ciudad", () => {
     renderCard();
     expect(screen.getByText(/perro/i)).toBeInTheDocument();

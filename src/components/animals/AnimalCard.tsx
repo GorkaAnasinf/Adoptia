@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
-import { edadAproximada } from "@/lib/animal-search";
+import { edadAproximada, esImagenValida } from "@/lib/animal-search";
 import type { AnimalStatus } from "@/lib/schemas/animal";
 import { AnimalStatusBadge } from "./AnimalStatusBadge";
 
@@ -45,7 +45,7 @@ export function AnimalCard({ animal }: { animal: AnimalSearchResult }) {
       className="group flex flex-col overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-black/5 transition hover:shadow-md focus-visible:outline-2 focus-visible:outline-primary"
     >
       <div className="relative aspect-[4/3] bg-muted">
-        {animal.cover_url ? (
+        {esImagenValida(animal.cover_url) ? (
           <Image
             src={animal.cover_url}
             alt={animal.name}

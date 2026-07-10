@@ -138,7 +138,9 @@ describe.skipIf(!rlsDisponible)("RPC animals_search", () => {
 
   const buscar = async (args: Record<string, unknown> = {}) => {
     const anon = anonClient();
-    const { data, error } = await anon.rpc("animals_search", args);
+    // p_limit alto: otros tests siembran animales en paralelo y el límite
+    // por defecto (24) podría dejar fuera filas de nuestro seed.
+    const { data, error } = await anon.rpc("animals_search", { p_limit: 100, ...args });
     expect(error).toBeNull();
     // El stack de test puede tener otros datos; nos quedamos con el seed
     return (data as Record<string, unknown>[]).filter((r) =>

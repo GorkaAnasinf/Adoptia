@@ -52,7 +52,7 @@ Es la cara de la plataforma y la fuente de tráfico orgánico (SEO). Las fichas 
 2. [x] Test orden por distancia con seed geolocalizado. *(ciclo 1 — `src/test/rls/animal-search.test.ts`)*
 3. [x] Test: animal reservado muestra badge y sin botón "Me interesa". *(ciclo 1 tarjeta + ciclo 2 ficha)*
 4. [x] Test estados vacíos (sin resultados) *(ciclo 1; protectora sin animales ya cubierto en FEATURE-004)*
-5. [ ] E2E: home → filtrar → ficha → volver conservando filtros. *(ciclo 3)*
+5. [x] E2E: home → filtrar → ficha → volver conservando filtros. *(ciclo 3 — `e2e/area-publica.spec.ts`, chromium + móvil)*
 
 ### Registro de ciclos
 
@@ -66,6 +66,12 @@ Es la cara de la plataforma y la fuente de tráfico orgánico (SEO). Las fichas 
   de protectora con `MiniMapa` Leaflet sin SSR, barra sticky móvil), `InterestButton` (pide
   login al pulsar; con sesión aviso "próximamente" hasta FEATURE-007), compartir WhatsApp,
   página amable con sugerencias para despublicados (noindex) y `generateMetadata`. 349 tests.
+- **Ciclo 3 (2026-07-10)** — Home definitiva: hero + buscador rápido por especie (enlaces SEO
+  a `/animales?especie=…`), recién llegados (RPC `p_limit 4`), "cómo funciona" en 3 pasos,
+  CTA protectoras (arregla enlace muerto `/protectoras/alta` → `/registro`). E2E
+  `e2e/area-publica.spec.ts` (seed admin idempotente, se salta sin stack local): home →
+  filtrar → ficha → back conservando filtros + página amable. Defensa `esImagenValida` en
+  tarjeta/galería/logo contra URLs de imagen corruptas. 355 tests + 4 E2E.
 - **Nota:** los umbrales de cobertura (70% funcs/stmts) ya fallaban en `develop` antes de este
   ciclo (63.65% funcs); la rama los mejora pero no los alcanza — pendiente item de deuda.
 
