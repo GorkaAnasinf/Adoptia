@@ -14,6 +14,12 @@ describe("Content-Security-Policy", () => {
     expect(csp).toContain("https://*.supabase.co");
   });
 
+  it("permite las fotos del seed de demo (Unsplash) en img-src", () => {
+    const csp = buildCsp(true);
+    const imgSrc = csp.split(";").find((d) => d.trim().startsWith("img-src"))!;
+    expect(imgSrc).toContain("https://images.unsplash.com");
+  });
+
   it("mantiene Turnstile (Cloudflare) en script-src y frame-src", () => {
     const csp = buildCsp(true);
     expect(csp).toContain("https://challenges.cloudflare.com");

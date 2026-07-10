@@ -22,6 +22,8 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       // Avatares de Google (OAuth).
       { protocol: "https", hostname: "lh3.googleusercontent.com" },
+      // Fotos del seed de demo (FEATURE-008).
+      { protocol: "https", hostname: "images.unsplash.com" },
       // Supabase Storage (buckets logos, animal-media).
       ...(supabasePattern ? [supabasePattern] : []),
     ],

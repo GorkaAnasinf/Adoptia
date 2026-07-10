@@ -13,7 +13,8 @@ export function buildCsp(isDev: boolean): string {
     // Mapa Leaflet: tiles de OpenStreetMap servidas como <img>. Los iconos de
     // marcador se sirven desde el propio dominio (public/leaflet), sin CDN.
     // Avatares de Google (OAuth) desde lh3.googleusercontent.com.
-    "img-src 'self' data: blob: https://*.supabase.co https://*.tile.openstreetmap.org https://lh3.googleusercontent.com",
+    // images.unsplash.com: fotos del seed de demo (FEATURE-008).
+    "img-src 'self' data: blob: https://*.supabase.co https://*.tile.openstreetmap.org https://lh3.googleusercontent.com https://images.unsplash.com",
     "font-src 'self'",
     "frame-src 'self' https://challenges.cloudflare.com",
     `connect-src 'self' https://*.supabase.co wss://*.supabase.co${localSupabase}`,
