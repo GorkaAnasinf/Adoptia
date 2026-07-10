@@ -2,12 +2,12 @@
 id: FEATURE-006
 tipo: feature
 titulo: Mapa de protectoras con búsqueda por proximidad
-estado: desarrollo
+estado: hecho
 prioridad: alta
 hito: "0.2"
 duplicado_de: null
 creado: 2026-07-04
-actualizado: 2026-07-04
+actualizado: 2026-07-10
 ---
 
 # FEATURE-006 — Mapa de protectoras con búsqueda por proximidad

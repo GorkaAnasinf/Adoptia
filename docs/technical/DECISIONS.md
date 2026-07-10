@@ -52,6 +52,15 @@ Formato ligero tipo ADR. Toda decisión con impacto estructural se registra aqu�
 | 26 | **Vista previa del perfil = componente público real** (`ShelterPublicProfile` compartido entre `/protectoras/[slug]` y el editor) | Garantiza que "lo que ves es lo que se publica" sin duplicar UI ni divergencias | Renderizar una maqueta aparte para la vista previa |
 | 27 | **Búsqueda pública vía RPC `animals_search` SECURITY INVOKER** (2026-07-10): filtros, distancia PostGIS, portada y `total_count` en una sola función SQL; el builder TS (`src/lib/animal-search.ts`) traduce la URL a argumentos | El orden por distancia y el recuento total no se pueden expresar con el query builder de supabase-js; al ser *invoker*, la RLS de `animals`/`shelters` sigue aplicando (anon solo ve publicado+verificado) | Ordenar/paginar en JS (rompe con paginación), vista materializada (complejidad sin necesidad a esta escala), SECURITY DEFINER (duplicaría las garantías de RLS a mano) |
 
+## 2026-07-10 — FEATURE-006 (mapa de protectoras)
+
+| # | Decisión | Motivo | Alternativa descartada |
+|---|----------|--------|------------------------|
+| 28 | **`shelters_nearby` extendido manteniendo SECURITY DEFINER** (filtra `status='verified'` dentro de la función, añade especie/voluntariado/acogida, `animal_count` y `lat`/`lng`) | Ya existía como *definer* desde el baseline; cambiar a *invoker* habría exigido replicar en RLS la lógica de "solo verificadas" sin ganar nada, al ser una función de solo lectura ya acotada | Migrar a SECURITY INVOKER como `animals_search` (más consistente, pero sin beneficio real aquí) |
+| 29 | **Centro por defecto Madrid + radio 1000 km** cuando el usuario no comparte ubicación ni busca ciudad (`DEFAULT_CENTER`/`DEFAULT_RADIUS_KM` en `src/lib/shelters-search.ts`) | El RPC exige `lat`/`lng` no nulos; cubre península + Baleares sin tener que duplicar el RPC en una variante "sin filtro de radio" | RPC con `lat`/`lng` opcionales (más complejidad SQL para un caso — "ver todas" — que hoy no distingue de un radio amplio) |
+| 30 | **`leaflet.markercluster` imperativo** (vía `useMap()` + `L.markerClusterGroup()` en un efecto) en vez de un wrapper React del ecosistema | Los wrappers de `react-leaflet-markercluster` no tienen versión compatible con `react-leaflet` 5 / React 19; la librería vanilla es estable y el efecto imperativo es el mismo patrón ya usado para Leaflet en el proyecto (Decisión #8) | `@changey/react-leaflet-markercluster` (peer deps desactualizadas, riesgo de incompatibilidad silenciosa) |
+| 31 | **Bottom sheet móvil con gesto propio** (pointer events con umbral tap/arrastre) en vez de una librería de bottom sheet | Sin dependencia nueva; el gesto necesario (colapsar/expandir con tap o arrastre) es simple y totalmente testeable con `fireEvent.pointerDown/Up` | Librería dedicada (`vaul`, `react-modal-sheet`): más peso y menos control sobre el layout `lg:hidden` ya existente |
+
 ## Cómo añadir una decisión
 
 Nueva fila con fecha en sección nueva si cambia el mes. Si revierte una anterior, enlázala ("revierte #9") en vez de borrarla.

@@ -63,6 +63,14 @@ desde `animal_media` y `total_count` por ventana para paginar. Lo consumen el li
 `/animales`, la home y las sugerencias de la ficha vía `supabase.rpc("animals_search", args)`
 con el builder de `src/lib/animal-search.ts`.
 
+El equivalente para protectoras es el RPC **`shelters_nearby`** (baseline, extendido en
+FEATURE-006 por las migraciones `20260710100000`/`20260710110000`, SECURITY DEFINER que
+filtra `status = 'verified'` dentro de la función): recibe `lat`/`lng`/`radius_m` y filtros
+opcionales de especie/voluntariado/acogida, y devuelve además `lat`/`lng` (para el marcador)
+y `animal_count` (animales publicados, filtrados por la misma especie si aplica). Lo consume
+la pantalla `/mapa` vía `supabase.rpc("shelters_nearby", args)` con el builder de
+`src/lib/shelters-search.ts`.
+
 ## Migraciones
 
 SQL versionado en `supabase/migrations/` con la CLI de Supabase (`supabase migration new`, `supabase db push`). Nunca cambios manuales en el dashboard sin su migración correspondiente. Seed de demo en `supabase/seed.sql`.

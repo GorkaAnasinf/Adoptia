@@ -13,7 +13,7 @@
 | [FEATURE-003](FEATURE-003.md) | Gestión de animales con fotos y vídeo (panel protectora) | feature | hecho | 0.2 |
 | [FEATURE-004](FEATURE-004.md) | Panel de protectora — dashboard y perfil público | feature | hecho | 0.2 |
 | [FEATURE-005](FEATURE-005.md) | Área pública — home, búsqueda de animales y fichas | feature | hecho | 0.2 |
-| [FEATURE-006](FEATURE-006.md) | Mapa de protectoras con búsqueda por proximidad | feature | listo | 0.2 |
+| [FEATURE-006](FEATURE-006.md) | Mapa de protectoras con búsqueda por proximidad | feature | hecho | 0.2 |
 | [FEATURE-007](FEATURE-007.md) | Solicitud "Me interesa" con cuestionario y bandeja de la protectora | feature | listo | 0.2 |
 | [FEATURE-008](FEATURE-008.md) | SEO, datos de demo y pulido del MVP | feature | listo | 0.2 |
 | [FEATURE-009](FEATURE-009.md) | Citas con calendario y agenda de disponibilidad | feature | listo | 0.3 |

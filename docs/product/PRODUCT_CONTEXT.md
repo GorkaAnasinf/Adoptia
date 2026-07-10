@@ -46,6 +46,7 @@ Estado de cada capacidad en lenguaje de usuario. Se regenera con `python scripts
 - Gestión de animales con fotos y vídeo (panel protectora) ([FEATURE-003](../planning/items/FEATURE-003.md))
 - Panel de protectora — dashboard y perfil público ([FEATURE-004](../planning/items/FEATURE-004.md))
 - Área pública — home, búsqueda de animales y fichas ([FEATURE-005](../planning/items/FEATURE-005.md))
+- Mapa de protectoras con búsqueda por proximidad ([FEATURE-006](../planning/items/FEATURE-006.md))
 - Despliegue inicial — Supabase cloud y Vercel enlazados ([FEATURE-017](../planning/items/FEATURE-017.md))
 - App shell autenticado — cabecera común, navegación por rol y breadcrumbs ([FEATURE-018](../planning/items/FEATURE-018.md))
 - Rediseño UX del wizard de alta de protectora (+ fix del mapa gris) ([IMPROVEMENT-002](../planning/items/IMPROVEMENT-002.md))
@@ -65,7 +66,6 @@ Estado de cada capacidad en lenguaje de usuario. Se regenera con `python scripts
 
 #### 🗓️ Previsto
 
-- Mapa de protectoras con búsqueda por proximidad — hito 0.2 ([FEATURE-006](../planning/items/FEATURE-006.md))
 - Solicitud "Me interesa" con cuestionario y bandeja de la protectora — hito 0.2 ([FEATURE-007](../planning/items/FEATURE-007.md))
 - SEO, datos de demo y pulido del MVP — hito 0.2 ([FEATURE-008](../planning/items/FEATURE-008.md))
 - Citas con calendario y agenda de disponibilidad — hito 0.3 ([FEATURE-009](../planning/items/FEATURE-009.md))
