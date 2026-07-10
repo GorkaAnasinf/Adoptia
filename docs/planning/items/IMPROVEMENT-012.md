@@ -29,3 +29,10 @@ páginas de paneles `(shelter)`/`(admin)`/`(adopter)` a 0%.
 
 Pendiente asociado de FEATURE-005: **medir LCP móvil (<2.5 s) del listado en producción**
 (criterio no verificable en local; hacerlo tras el deploy con Lighthouse/Vercel Analytics).
+
+Pendiente asociado de FEATURE-008 (2026-07-10): Lighthouse móvil local sobre build de
+producción dio home SEO 100/A11y 100/Perf 84, listado SEO 100/A11y 98/Perf 87 y ficha
+SEO 100/A11y 100/**Perf 73** (LCP 5,1 s). La imagen de portada ya lleva `priority`; el LCP
+local está inflado por la primera optimización de `next/image` contra Unsplash en frío.
+**Repetir la medición de la ficha en producción** y, si sigue <80, optimizar (preconnect,
+`sizes` más ajustados o reducir TBT de 360 ms).

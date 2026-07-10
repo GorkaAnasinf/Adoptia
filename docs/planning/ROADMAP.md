@@ -34,7 +34,7 @@ Para centrar el desarrollo en un lado de la app cada vez, el 0.2 se aborda en do
 | [FEATURE-000](items/FEATURE-000.md) | Inicialización y andamiaje del proyecto | hecho | alta |
 | [FEATURE-017](items/FEATURE-017.md) | Despliegue inicial — Supabase cloud y Vercel enlazados | hecho | alta |
 
-### Hito 0.2 — 95% completado (20/21)
+### Hito 0.2 — 100% completado (21/21)
 
 | Item | Título | Estado | Prioridad |
 |------|--------|--------|-----------|
@@ -49,7 +49,7 @@ Para centrar el desarrollo en un lado de la app cada vez, el 0.2 se aborda en do
 | [FEATURE-007](items/FEATURE-007.md) | Solicitud "Me interesa" con cuestionario y bandeja de la protectora | hecho | alta |
 | [FEATURE-018](items/FEATURE-018.md) | App shell autenticado — cabecera común, navegación por rol y breadcrumbs | hecho | alta |
 | [IMPROVEMENT-002](items/IMPROVEMENT-002.md) | Rediseño UX del wizard de alta de protectora (+ fix del mapa gris) | hecho | alta |
-| [FEATURE-008](items/FEATURE-008.md) | SEO, datos de demo y pulido del MVP | listo | media |
+| [FEATURE-008](items/FEATURE-008.md) | SEO, datos de demo y pulido del MVP | hecho | media |
 | [IMPROVEMENT-003](items/IMPROVEMENT-003.md) | Pulido del shell chrome (sidebar + cabecera) hacia el mockup de Stitch | hecho | media |
 | [IMPROVEMENT-004](items/IMPROVEMENT-004.md) | Pulido del chrome (sidebar arena, cabecera) y estado vacío de Mi cuenta | hecho | media |
 | [IMPROVEMENT-005](items/IMPROVEMENT-005.md) | Editar los datos de la protectora mientras el alta está en revisión | hecho | media |
