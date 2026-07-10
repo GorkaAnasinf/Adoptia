@@ -2,6 +2,12 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/es/) adaptado. Versionado 0.x hasta el MVP.
 
+## [0.0.19] — 2026-07-10
+
+### Añadido
+
+- **FEATURE-005 — Área pública: home, búsqueda y fichas**: cualquier visitante, sin cuenta, puede ya **buscar animales** en `/animales` con filtros combinables (especie, tamaño, sexo, edad, convivencia con niños/perros/gatos y distancia) que quedan reflejados en la URL —compartible y con "atrás" que conserva la búsqueda—, ordenar por recientes o por cercanía usando su ubicación, y navegar con paginación. Cada animal tiene su **ficha pública** `/animales/[slug]` con galería de fotos accesible, datos de convivencia y salud, su historia, la tarjeta de la protectora con mini-mapa y botones de **"Me interesa"** (pide iniciar sesión solo al pulsarlo) y **compartir por WhatsApp**; un animal despublicado o inexistente muestra una página amable con sugerencias en vez de un 404. La **home** estrena buscador rápido por especie, "recién llegados", "cómo funciona" y llamada a protectoras. Todo servido con lectura pública segura (RPC `animals_search` bajo RLS: solo publicados de protectoras verificadas).
+
 ## [0.0.18] — 2026-07-09
 
 ### Añadido

@@ -2,12 +2,12 @@
 id: FEATURE-005
 tipo: feature
 titulo: Área pública — home, búsqueda de animales y fichas
-estado: desarrollo
+estado: hecho
 prioridad: alta
 hito: "0.2"
 duplicado_de: null
 creado: 2026-07-04
-actualizado: 2026-07-09
+actualizado: 2026-07-10
 ---
 
 # FEATURE-005 — Área pública: home, búsqueda de animales y fichas
@@ -81,10 +81,11 @@ Es la cara de la plataforma y la fuente de tráfico orgánico (SEO). Las fichas 
 
 ## Criterios de aceptación / Casuística a cubrir
 
-- [ ] Navegación completa sin cuenta; "Me interesa" pide login solo al pulsarlo.
-- [ ] Filtros combinables y reflejados en URL (compartible, back correcto).
-- [ ] Sin ubicación concedida: orden por recientes y aviso no intrusivo.
-- [ ] Distancia mostrada solo si hay ubicación del usuario.
-- [ ] Animal despublicado/adoptado: su URL devuelve página amable con sugerencias, no 404 seco.
-- [ ] LCP <2.5 s móvil en listado con imágenes optimizadas (`next/image`).
-- [ ] Accesibilidad AA: fotos con alt, navegación por teclado en galería y filtros.
+- [x] Navegación completa sin cuenta; "Me interesa" pide login solo al pulsarlo.
+- [x] Filtros combinables y reflejados en URL (compartible, back correcto).
+- [x] Sin ubicación concedida: orden por recientes y aviso no intrusivo.
+- [x] Distancia mostrada solo si hay ubicación del usuario.
+- [x] Animal despublicado/adoptado: su URL devuelve página amable con sugerencias, no 404 seco.
+- [ ] LCP <2.5 s móvil en listado con imágenes optimizadas (`next/image`). *(no medible en local;
+      pendiente tras deploy — seguimiento en [[IMPROVEMENT-012]])*
+- [x] Accesibilidad AA: fotos con alt, navegación por teclado en galería y filtros.
