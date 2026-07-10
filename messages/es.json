@@ -558,6 +558,7 @@
     "goToAccount": "Ir a mi cuenta",
     "duplicateTitle": "Ya has enviado una solicitud",
     "duplicateBody": "Ya tienes una solicitud para este animal. La protectora la está revisando.",
+    "viewRequestStatus": "Ver el estado de tu solicitud",
     "notAvailableTitle": "Este animal ya no está disponible",
     "notAvailableBody": "Puede que ya tenga una familia. Sigue buscando entre otros peludos que te esperan.",
     "errorGeneric": "No se ha podido enviar la solicitud. Inténtalo de nuevo.",

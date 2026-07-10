@@ -115,5 +115,7 @@ describe("SolicitudWizard", () => {
     await user.click(screen.getByRole("button", { name: /enviar solicitud/i }));
 
     expect(await screen.findByText(/ya has enviado una solicitud/i)).toBeInTheDocument();
+    const enlaceEstado = screen.getByRole("link", { name: /ver el estado de tu solicitud/i });
+    expect(enlaceEstado).toHaveAttribute("href", "/animales/pipa-abc123");
   });
 });

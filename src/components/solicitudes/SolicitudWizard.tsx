@@ -180,8 +180,13 @@ export function SolicitudWizard({
       <div className="mx-auto flex max-w-md flex-col items-center gap-4 px-4 py-16 text-center">
         <h1 className="font-heading text-2xl font-bold text-foreground">{t("duplicateTitle")}</h1>
         <p className="text-muted-foreground">{t("duplicateBody")}</p>
-        <Button size="lg" onClick={() => router.push("/mi-cuenta")}>
-          {t("goToAccount")}
+        {/*
+          Aún no existe una vista "mis solicitudes" para el adoptante (/mi-cuenta
+          es un placeholder sin datos): el enlace más útil disponible hoy es la
+          propia ficha del animal, donde puede ver su estado de disponibilidad.
+        */}
+        <Button size="lg" asChild>
+          <Link href={`/animales/${animalSlug}`}>{t("viewRequestStatus")}</Link>
         </Button>
       </div>
     );
