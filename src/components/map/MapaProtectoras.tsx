@@ -12,6 +12,8 @@ export function MapaProtectoras(props: {
   shelters: ShelterMapResult[];
   selectedId: string | null;
   onSelect: (id: string) => void;
+  hoveredId?: string | null;
+  onHover?: (id: string | null) => void;
 }) {
   return <MapaProtectorasInner {...props} />;
 }

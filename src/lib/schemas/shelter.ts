@@ -78,6 +78,12 @@ export const geocodeSchema = z.object({
 });
 export type GeocodeInput = z.infer<typeof geocodeSchema>;
 
+// ---------- Geocoding público del mapa (GET /api/geocode?q=ciudad) ----------
+export const geocodeQuerySchema = z.object({
+  q: z.string().trim().min(1).max(200),
+});
+export type GeocodeQueryInput = z.infer<typeof geocodeQuerySchema>;
+
 /** Normaliza una dirección para usarla como clave estable de caché. */
 export function normalizeGeoQuery(p: GeocodeInput): string {
   return [p.address, p.postalCode, p.city, p.province, "España"]

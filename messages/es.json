@@ -312,7 +312,8 @@
     "verProtectora": "Ver protectora",
     "vacioTitulo": "Aún no hay protectoras en tu zona",
     "vacioTexto": "¿Conoces una protectora que debería estar aquí? Puede unirse a Adoptia.",
-    "vacioCta": "Unir una protectora"
+    "vacioCta": "Unir una protectora",
+    "bottomSheetToggle": "Mostrar u ocultar filtros y protectoras"
   },
   "ficha": {
     "notFoundTitle": "Este peludo ya no está disponible",

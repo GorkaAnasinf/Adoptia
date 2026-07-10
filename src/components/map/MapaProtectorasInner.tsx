@@ -46,10 +46,14 @@ function ClusterLayer({
   shelters,
   selectedId,
   onSelect,
+  hoveredId,
+  onHover,
 }: {
   shelters: ShelterMapResult[];
   selectedId: string | null;
   onSelect: (id: string) => void;
+  hoveredId?: string | null;
+  onHover?: (id: string | null) => void;
 }) {
   const map = useMap();
   const t = useTranslations("mapa");
@@ -65,6 +69,8 @@ function ClusterLayer({
       const marker = L.marker([s.lat, s.lng], { icon, alt: s.name });
       marker.bindPopup(popupHtml(s, t("animales", { count: s.animal_count }), t("verProtectora")));
       marker.on("click", () => onSelect(s.id));
+      marker.on("mouseover", () => onHover?.(s.id));
+      marker.on("mouseout", () => onHover?.(null));
       clusterGroup.addLayer(marker);
       markersRef.current.set(s.id, marker);
     }
@@ -83,10 +89,11 @@ function ClusterLayer({
   }, [shelters, map]);
 
   useEffect(() => {
-    if (!selectedId) return;
-    const marker = markersRef.current.get(selectedId);
+    const activeId = hoveredId ?? selectedId;
+    if (!activeId) return;
+    const marker = markersRef.current.get(activeId);
     marker?.openPopup();
-  }, [selectedId]);
+  }, [selectedId, hoveredId]);
 
   return null;
 }
@@ -106,10 +113,14 @@ export default function MapaProtectorasInner({
   shelters,
   selectedId,
   onSelect,
+  hoveredId,
+  onHover,
 }: {
   shelters: ShelterMapResult[];
   selectedId: string | null;
   onSelect: (id: string) => void;
+  hoveredId?: string | null;
+  onHover?: (id: string | null) => void;
 }) {
   return (
     <MapContainer
@@ -123,7 +134,13 @@ export default function MapaProtectorasInner({
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
       <AjustarTamano />
-      <ClusterLayer shelters={shelters} selectedId={selectedId} onSelect={onSelect} />
+      <ClusterLayer
+        shelters={shelters}
+        selectedId={selectedId}
+        onSelect={onSelect}
+        hoveredId={hoveredId}
+        onHover={onHover}
+      />
     </MapContainer>
   );
 }

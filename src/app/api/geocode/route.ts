@@ -1,4 +1,5 @@
 import { createAdminClient } from "@/lib/supabase/admin";
+import { geocodeQuerySchema } from "@/lib/schemas/shelter";
 
 const NOMINATIM = "https://nominatim.openstreetmap.org/search";
 const USER_AGENT = "Adoptia/1.0 (https://adoptia-eight.vercel.app)";
@@ -44,12 +45,17 @@ export async function GET(req: Request) {
     return json({ error: { code: "rate_limited", message: "Demasiadas peticiones, espera un momento" } }, 429);
   }
 
-  const q = new URL(req.url).searchParams.get("q")?.trim();
-  if (!q) {
-    return json({ error: { code: "validation", message: "Falta el parámetro q" } }, 422);
+  const parsed = geocodeQuerySchema.safeParse({
+    q: new URL(req.url).searchParams.get("q") ?? undefined,
+  });
+  if (!parsed.success) {
+    return json(
+      { error: { code: "validation", message: "Falta el parámetro q", issues: parsed.error.issues } },
+      422,
+    );
   }
 
-  const query = normalizeCityQuery(q);
+  const query = normalizeCityQuery(parsed.data.q);
   const admin = createAdminClient();
 
   const { data: cached } = await admin

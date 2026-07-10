@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { NextIntlClientProvider } from "next-intl";
 import { describe, expect, it, vi } from "vitest";
@@ -10,12 +10,22 @@ const shelters: ShelterMapResult[] = [
   { id: "2", name: "Protectora Madrid", slug: "madrid", city: "Madrid", distance_m: null, animal_count: 0, lat: 40.42, lng: -3.7 },
 ];
 
-function renderLista(selectedId: string | null = null, onSelect = vi.fn()) {
+function renderLista(
+  selectedId: string | null = null,
+  onSelect = vi.fn(),
+  onHover = vi.fn(),
+) {
   return {
     onSelect,
+    onHover,
     ...render(
       <NextIntlClientProvider locale="es" messages={messages}>
-        <ListaProtectoras shelters={shelters} selectedId={selectedId} onSelect={onSelect} />
+        <ListaProtectoras
+          shelters={shelters}
+          selectedId={selectedId}
+          onSelect={onSelect}
+          onHover={onHover}
+        />
       </NextIntlClientProvider>,
     ),
   };
@@ -49,5 +59,31 @@ describe("ListaProtectoras", () => {
     renderLista();
     const enlace = screen.getAllByRole("link", { name: "Ver protectora" })[0];
     expect(enlace).toHaveAttribute("href", "/protectoras/bilbao");
+  });
+
+  it("pasar el ratón sincroniza la protectora con el mapa (onHover)", () => {
+    const { onHover } = renderLista();
+    const tarjeta = screen.getByRole("button", { name: /Protectora Madrid/ });
+    fireEvent.mouseEnter(tarjeta);
+    expect(onHover).toHaveBeenCalledWith("2");
+
+    fireEvent.mouseLeave(tarjeta);
+    expect(onHover).toHaveBeenLastCalledWith(null);
+  });
+
+  it("la protectora en hover (prop controlada) se marca como activa", () => {
+    render(
+      <NextIntlClientProvider locale="es" messages={messages}>
+        <ListaProtectoras
+          shelters={shelters}
+          selectedId={null}
+          hoveredId="2"
+          onSelect={vi.fn()}
+        />
+      </NextIntlClientProvider>,
+    );
+    expect(screen.getByRole("button", { name: /Protectora Madrid/ }).className).toContain(
+      "border-primary",
+    );
   });
 });

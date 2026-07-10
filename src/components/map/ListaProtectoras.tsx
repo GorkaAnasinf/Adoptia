@@ -24,10 +24,14 @@ export function ListaProtectoras({
   shelters,
   selectedId,
   onSelect,
+  hoveredId = null,
+  onHover,
 }: {
   shelters: ShelterMapResult[];
   selectedId: string | null;
   onSelect: (id: string) => void;
+  hoveredId?: string | null;
+  onHover?: (id: string | null) => void;
 }) {
   const t = useTranslations("mapa");
 
@@ -40,10 +44,12 @@ export function ListaProtectoras({
             <button
               type="button"
               onClick={() => onSelect(s.id)}
+              onMouseEnter={() => onHover?.(s.id)}
+              onMouseLeave={() => onHover?.(null)}
               aria-pressed={selectedId === s.id}
               className={cn(
-                "w-full rounded-2xl border bg-white p-4 text-left shadow-sm transition",
-                selectedId === s.id ? "border-primary ring-1 ring-primary" : "border-black/5",
+                "w-full rounded-2xl border bg-white p-4 text-left shadow-sm transition hover:border-primary hover:ring-1 hover:ring-primary",
+                selectedId === s.id || hoveredId === s.id ? "border-primary ring-1 ring-primary" : "border-black/5",
               )}
             >
               <p className="font-heading font-semibold text-foreground">{s.name}</p>
