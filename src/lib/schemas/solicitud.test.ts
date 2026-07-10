@@ -167,4 +167,15 @@ describe("accionSolicitudSchema", () => {
   it("rechaza acciones fuera del enum", () => {
     expect(accionSolicitudSchema.safeParse({ accion: "cancel" }).success).toBe(false);
   });
+
+  it("acepta note con texto (puede ir vacío)", () => {
+    expect(accionSolicitudSchema.safeParse({ accion: "note", nota: "Familia muy implicada" }).success).toBe(
+      true,
+    );
+    expect(accionSolicitudSchema.safeParse({ accion: "note", nota: "" }).success).toBe(true);
+  });
+
+  it("rechaza note sin el campo nota", () => {
+    expect(accionSolicitudSchema.safeParse({ accion: "note" }).success).toBe(false);
+  });
 });

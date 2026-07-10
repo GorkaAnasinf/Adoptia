@@ -57,8 +57,8 @@ export const crearSolicitudSchema = z.object({
   animal_id: z.uuid(),
   questionnaire: cuestionarioSchema,
   message: z.string().trim().max(4000).optional(),
-  // Honeypot: campo oculto que un humano nunca rellena.
-  website: z.string().max(0).optional(),
+  // Honeypot: campo oculto que un humano nunca rellena (los bots sí).
+  website: z.string().optional(),
 });
 export type CrearSolicitudInput = z.infer<typeof crearSolicitudSchema>;
 
@@ -67,5 +67,7 @@ export const accionSolicitudSchema = z.discriminatedUnion("accion", [
   z.object({ accion: z.literal("approve") }),
   z.object({ accion: z.literal("reject"), motivo: z.string().trim().min(1, "motivo_requerido") }),
   z.object({ accion: z.literal("complete") }),
+  // Guarda notas internas sin cambiar el estado; editable en cualquier momento.
+  z.object({ accion: z.literal("note"), nota: z.string().trim().max(4000) }),
 ]);
 export type AccionSolicitud = z.infer<typeof accionSolicitudSchema>;

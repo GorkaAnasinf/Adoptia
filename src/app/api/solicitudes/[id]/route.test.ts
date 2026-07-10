@@ -45,7 +45,10 @@ vi.mock("@/lib/supabase/server", () => ({
                 single: async () => {
                   state.lastUpdate = payload;
                   if (state.updateError) return { data: null, error: state.updateError };
-                  return { data: { id: "req1", status: payload.status }, error: null };
+                  return {
+                    data: { id: "req1", status: payload.status, shelter_notes: payload.shelter_notes },
+                    error: null,
+                  };
                 },
               }),
             }),
@@ -175,5 +178,18 @@ describe("PATCH /api/solicitudes/[id]", () => {
     };
     const res = await PATCH(req({ accion: "approve" }), params);
     expect(res.status).toBe(409);
+  });
+
+  it("guarda notas internas sin cambiar el estado ni enviar email", async () => {
+    const res = await PATCH(req({ accion: "note", nota: "Familia muy implicada" }), params);
+    expect(res.status).toBe(200);
+    expect(state.lastUpdate).toMatchObject({ shelter_notes: "Familia muy implicada" });
+    expect(enviarEmailMock).not.toHaveBeenCalled();
+  });
+
+  it("permite guardar notas aunque la solicitud ya esté resuelta", async () => {
+    state.request = { ...(state.request as Record<string, unknown>), status: "approved" };
+    const res = await PATCH(req({ accion: "note", nota: "Seguimiento post-adopción" }), params);
+    expect(res.status).toBe(200);
   });
 });

@@ -59,13 +59,6 @@ export async function PATCH(
     return json({ error: { code: "forbidden", message: "Solo la protectora dueña puede gestionar esta solicitud" } }, 403);
   }
 
-  if (fila.status !== "pending") {
-    return json(
-      { error: { code: "invalid_state", message: "Esta solicitud ya está resuelta" } },
-      409,
-    );
-  }
-
   const parsed = accionSolicitudSchema.safeParse(await req.json().catch(() => null));
   if (!parsed.success) {
     return json(
@@ -73,8 +66,28 @@ export async function PATCH(
       422,
     );
   }
-
   const accion = parsed.data;
+
+  // Las notas internas se pueden editar en cualquier momento; el resto de
+  // acciones exigen que la solicitud siga pendiente.
+  if (accion.accion !== "note" && fila.status !== "pending") {
+    return json(
+      { error: { code: "invalid_state", message: "Esta solicitud ya está resuelta" } },
+      409,
+    );
+  }
+
+  if (accion.accion === "note") {
+    const { data: actualizada, error } = await supabase
+      .from("adoption_requests")
+      .update({ shelter_notes: accion.nota })
+      .eq("id", id)
+      .select("id, shelter_notes")
+      .single();
+    if (error) return json({ error: { code: "db_error", message: error.message } }, 500);
+    return json({ data: actualizada });
+  }
+
   const nuevoEstado = { approve: "approved", reject: "rejected", complete: "completed" }[accion.accion] as
     | "approved"
     | "rejected"
