@@ -2,7 +2,7 @@
 id: FEATURE-006
 tipo: feature
 titulo: Mapa de protectoras con búsqueda por proximidad
-estado: listo
+estado: desarrollo
 prioridad: alta
 hito: "0.2"
 duplicado_de: null
