@@ -600,6 +600,7 @@
     "confirmComplete": "¿Confirmas que {nombre} ha sido adoptado? Esto cerrará el resto de solicitudes pendientes.",
     "confirm": "Confirmar",
     "actionError": "No se ha podido completar la acción.",
+    "unknownAdopter": "Adoptante",
     "requestFrom": "Solicitud de {nombre}",
     "requestedOn": "Enviada el {fecha}"
   }

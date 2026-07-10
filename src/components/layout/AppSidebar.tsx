@@ -30,7 +30,7 @@ const NAV: Record<Role, Item[]> = {
   shelter: [
     { key: "navHome", href: "/panel", icon: Home, exists: true },
     { key: "navAnimals", href: "/panel/animales", icon: PawPrint, exists: true },
-    { key: "navRequests", href: "/panel/solicitudes", icon: FileText },
+    { key: "navRequests", href: "/panel/solicitudes", icon: FileText, exists: true },
     { key: "navAppointments", href: "/panel/citas", icon: CalendarDays },
     { key: "navAgenda", href: "/panel/agenda", icon: Clock },
     { key: "navPublicProfile", href: "/panel/perfil", icon: Store, exists: true },
