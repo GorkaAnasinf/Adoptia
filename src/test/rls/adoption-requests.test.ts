@@ -148,19 +148,58 @@ describe.skipIf(!rlsDisponible)("FEATURE-007 RLS adoption_requests", () => {
     expect(error !== null || (data ?? []).length === 0).toBe(true);
   });
 
-  // GAP CONOCIDO (documentado en el resumen final, no se corrige aquí — fuera de
-  // alcance de FEATURE-007 sin rediseñar RLS): la policy de update es a nivel de
-  // fila, no de columna. El adoptante dueño de la fila pasa el `using`/`with check`
-  // y por tanto puede, en teoría, escribir en `shelter_notes` o `status` igual que
-  // la protectora. Este test documenta el comportamiento actual (no lo exige).
-  it("[gap conocido] el adoptante dueño puede escribir shelter_notes (no hay restricción por columna)", async () => {
+  // Cierre del hallazgo QA crítico: `shelter_notes` no es visible ni editable
+  // por el adoptante (migración 20260710120000_feature007_adoption_requests_column_rls).
+  it("el adoptante dueño NO puede leer shelter_notes (columna revocada)", async () => {
+    const client = await signInAs("solic-adoptante-a@test.com", PASS);
+    const { data, error } = await client
+      .from("adoption_requests")
+      .select("id, shelter_notes")
+      .eq("id", requestId)
+      .maybeSingle();
+    expect(data).toBeNull();
+    expect(error).not.toBeNull();
+  });
+
+  it("el adoptante dueño NO puede escribir shelter_notes (trigger lo bloquea)", async () => {
     const client = await signInAs("solic-adoptante-a@test.com", PASS);
     const { error } = await client
       .from("adoption_requests")
       .update({ shelter_notes: "intento del adoptante" })
       .eq("id", requestId);
-    // Si esto pasa a `null` (error) en el futuro, es que se cerró el gap: hay que
-    // actualizar este test y quitar la nota del resumen de entrega.
+    expect(error).not.toBeNull();
+  });
+
+  it("el adoptante dueño NO puede escalar su solicitud a 'completed' directamente", async () => {
+    const client = await signInAs("solic-adoptante-a@test.com", PASS);
+    const { error } = await client
+      .from("adoption_requests")
+      .update({ status: "completed" })
+      .eq("id", requestId);
+    expect(error).not.toBeNull();
+  });
+
+  it("el adoptante dueño SÍ puede retirar su propia solicitud (status 'withdrawn')", async () => {
+    const client = await signInAs("solic-adoptante-a@test.com", PASS);
+    const { error } = await client
+      .from("adoption_requests")
+      .update({ status: "withdrawn" })
+      .eq("id", requestId);
     expect(error).toBeNull();
+
+    // deja la fila en 'pending' de nuevo para no afectar otros tests del stack local
+    const admin = adminClient();
+    await admin.from("adoption_requests").update({ status: "pending" }).eq("id", requestId);
+  });
+
+  it("la protectora dueña SÍ puede leer shelter_notes vía service_role (no vía columna del cliente authenticated)", async () => {
+    const admin = adminClient();
+    const { data, error } = await admin
+      .from("adoption_requests")
+      .select("id, shelter_notes")
+      .eq("id", requestId)
+      .maybeSingle();
+    expect(error).toBeNull();
+    expect(data?.shelter_notes).toBe("nota interna solo de la protectora");
   });
 });

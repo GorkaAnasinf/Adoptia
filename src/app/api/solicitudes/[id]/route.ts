@@ -91,14 +91,19 @@ export async function PATCH(
   }
 
   if (accion.accion === "note") {
-    const { data: actualizada, error } = await supabase
+    // `shelter_notes` tiene el privilegio de columna SELECT revocado para el
+    // rol `authenticated` (migración FEATURE-007 column RLS): no se puede
+    // pedir de vuelta con `.select()` desde este cliente. Como la fila ya
+    // está autorizada (protectora dueña, verificado arriba) y sabemos qué se
+    // escribió, la respuesta se construye sin releer la columna.
+    const { error } = await supabase
       .from("adoption_requests")
       .update({ shelter_notes: accion.nota })
       .eq("id", id)
-      .select("id, shelter_notes")
+      .select("id")
       .single();
     if (error) return json({ error: { code: "db_error", message: error.message } }, 500);
-    return json({ data: actualizada });
+    return json({ data: { id, shelter_notes: accion.nota } });
   }
 
   const nuevoEstado = { approve: "approved", reject: "rejected", complete: "completed" }[accion.accion] as
