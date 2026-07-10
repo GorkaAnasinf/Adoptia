@@ -106,12 +106,15 @@ describe.skipIf(!rlsDisponible)("FEATURE-007 RLS adoption_requests", () => {
   });
 
   it("el adoptante propio SÍ puede insertar su solicitud (adopter_id = auth.uid())", async () => {
+    // upsert (no insert puro) para que el test sea idempotente entre ejecuciones
+    // repetidas contra el mismo stack local (unique animal_id+adopter_id).
     const client = await signInAs("solic-adoptante-b@test.com", PASS);
-    const { error } = await client.from("adoption_requests").insert({
-      animal_id: animalId,
-      adopter_id: adopterBId,
-      questionnaire: { vivienda: "casa_jardin" },
-    });
+    const { error } = await client
+      .from("adoption_requests")
+      .upsert(
+        { animal_id: animalId, adopter_id: adopterBId, questionnaire: { vivienda: "casa_jardin" } },
+        { onConflict: "animal_id,adopter_id" },
+      );
     expect(error).toBeNull();
   });
 
