@@ -62,7 +62,7 @@ function ClusterLayer({
     markersRef.current = new Map();
 
     for (const s of shelters) {
-      const marker = L.marker([s.lat, s.lng], { icon });
+      const marker = L.marker([s.lat, s.lng], { icon, alt: s.name });
       marker.bindPopup(popupHtml(s, t("animales", { count: s.animal_count }), t("verProtectora")));
       marker.on("click", () => onSelect(s.id));
       clusterGroup.addLayer(marker);
