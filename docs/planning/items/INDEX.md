@@ -26,7 +26,7 @@
 | [FEATURE-016](FEATURE-016.md) | Registro de casas de acogida | feature | listo | 0.4 |
 | [FEATURE-017](FEATURE-017.md) | Despliegue inicial — Supabase cloud y Vercel enlazados | feature | hecho | 0.1 |
 | [FEATURE-018](FEATURE-018.md) | App shell autenticado — cabecera común, navegación por rol y breadcrumbs | feature | hecho | 0.2 |
-| [IMPROVEMENT-001](IMPROVEMENT-001.md) | De-duplicar el slug de protectora (nombres repetidos) | improvement | recibido | — |
+| [IMPROVEMENT-001](IMPROVEMENT-001.md) | De-duplicar el slug de protectora (nombres repetidos) | improvement | hecho | — |
 | [IMPROVEMENT-002](IMPROVEMENT-002.md) | Rediseño UX del wizard de alta de protectora (+ fix del mapa gris) | improvement | hecho | 0.2 |
 | [IMPROVEMENT-003](IMPROVEMENT-003.md) | Pulido del shell chrome (sidebar + cabecera) hacia el mockup de Stitch | improvement | hecho | 0.2 |
 | [IMPROVEMENT-004](IMPROVEMENT-004.md) | Pulido del chrome (sidebar arena, cabecera) y estado vacío de Mi cuenta | improvement | hecho | 0.2 |

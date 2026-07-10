@@ -151,4 +151,20 @@ describe("WizardAlta", () => {
     // no avanza de paso
     expect(screen.queryByLabelText(/dirección/i)).not.toBeInTheDocument();
   });
+
+  it("si el choque 23505 es del slug (nombre), el aviso habla del nombre, no del CIF/email", async () => {
+    const user = userEvent.setup();
+    upsertMock.mockResolvedValue({
+      data: null,
+      error: {
+        code: "23505",
+        message: 'duplicate key value violates unique constraint "shelters_slug_key"',
+      },
+    });
+    renderWizard();
+    await rellenarPaso1(user);
+    await user.click(screen.getByRole("button", { name: /siguiente/i }));
+    expect(await screen.findByText(messages.onboarding.errorSlugDuplicado)).toBeInTheDocument();
+    expect(screen.queryByText(messages.onboarding.errorDuplicado)).not.toBeInTheDocument();
+  });
 });
