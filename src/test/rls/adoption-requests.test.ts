@@ -136,13 +136,13 @@ describe.skipIf(!rlsDisponible)("FEATURE-007 RLS adoption_requests", () => {
 
   it("otra protectora NO puede actualizar la solicitud", async () => {
     const client = await signInAs("solic-protectora-b@test.com", PASS);
-    const { error, count } = await client
+    const { error, data } = await client
       .from("adoption_requests")
       .update({ status: "rejected" })
       .eq("id", requestId)
-      .select("id", { count: "exact" });
+      .select("id");
     // RLS bloquea por fila: o da error, o actualiza 0 filas.
-    expect(error !== null || count === 0).toBe(true);
+    expect(error !== null || (data ?? []).length === 0).toBe(true);
   });
 
   // GAP CONOCIDO (documentado en el resumen final, no se corrige aquí — fuera de
