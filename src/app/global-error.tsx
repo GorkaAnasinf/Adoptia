@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 // global-error sustituye al layout raíz completo: aquí no hay proveedor de
 // next-intl, así que los textos se leen del JSON de mensajes directamente.
 import messages from "../../messages/es.json";
@@ -31,7 +32,7 @@ export default function GlobalError({ reset }: { error: Error & { digest?: strin
           <button type="button" onClick={reset} style={{ padding: "12px 24px", cursor: "pointer" }}>
             {t.retry}
           </button>
-          <a href="/">{t.backHome}</a>
+          <Link href="/">{t.backHome}</Link>
         </main>
       </body>
     </html>

@@ -1,6 +1,14 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
+import messages from "../../../../../messages/es.json";
 
 const maybeSingleMock = vi.fn();
+
+vi.mock("next-intl/server", () => ({
+  getTranslations: vi.fn(async (ns?: string) => {
+    const { createTranslator } = await import("next-intl");
+    return createTranslator({ locale: "es", messages, namespace: ns as never });
+  }),
+}));
 
 vi.mock("@/lib/supabase/server", () => ({
   createClient: vi.fn(async () => ({

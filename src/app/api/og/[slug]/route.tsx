@@ -1,4 +1,5 @@
 import { ImageResponse } from "next/og";
+import { getTranslations } from "next-intl/server";
 import { createClient } from "@/lib/supabase/server";
 
 export const runtime = "nodejs";
@@ -32,7 +33,11 @@ export async function GET(_req: Request, { params }: { params: Params }) {
     .slice()
     .sort((a, b) => Number(b.is_cover) - Number(a.is_cover) || a.sort_order - b.sort_order);
   const portada = media[0]?.url ?? null;
-  const shelter = data.shelters as { name: string } | null;
+  const shelter = data.shelters as unknown as { name: string } | null;
+  const t = await getTranslations("ficha");
+  const host = process.env.NEXT_PUBLIC_SITE_URL
+    ? new URL(process.env.NEXT_PUBLIC_SITE_URL).host
+    : "adoptia";
 
   return new ImageResponse(
     (
@@ -78,14 +83,14 @@ export async function GET(_req: Request, { params }: { params: Params }) {
             gap: 16,
           }}
         >
-          <div style={{ fontSize: 28, color: "#b45309", fontWeight: 700 }}>En adopción</div>
+          <div style={{ fontSize: 28, color: "#b45309", fontWeight: 700 }}>{t("ogBadge")}</div>
           <div style={{ fontSize: 64, fontWeight: 800, color: "#1c1917", lineHeight: 1.1 }}>
             {data.name}
           </div>
           {shelter?.name ? (
             <div style={{ fontSize: 26, color: "#57534e" }}>{shelter.name}</div>
           ) : null}
-          <div style={{ fontSize: 24, color: "#78716c", marginTop: 24 }}>adoptia.es</div>
+          <div style={{ fontSize: 24, color: "#78716c", marginTop: 24 }}>{host}</div>
         </div>
       </div>
     ),

@@ -392,6 +392,7 @@
     "adoptedNotice": "¡{nombre} ya ha encontrado hogar! 🎉",
     "reservedNotice": "{nombre} está reservado. Echa un vistazo a otros animales parecidos.",
     "metaTitle": "{nombre}, en adopción",
+    "ogBadge": "En adopción",
     "vacunado": "Vacunado",
     "esterilizado": "Esterilizado",
     "microchip": "Con microchip",
