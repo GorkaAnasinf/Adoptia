@@ -28,6 +28,7 @@ export default defineConfig({
         // Leaflet toca window/DOM real: no ejecutable en jsdom (Decisión #8)
         "src/components/shelters/MapPinPicker*.tsx",
         "src/components/map/MiniMapa*.tsx",
+        "src/components/map/MapaProtectoras*.tsx",
       ],
       thresholds: {
         lines: 70,
