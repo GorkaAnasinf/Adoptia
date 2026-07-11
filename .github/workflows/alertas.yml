@@ -19,3 +19,8 @@ jobs:
           curl -sf "${{ secrets.SITE_URL }}/api/cron/alertas" \
             -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}"
           echo "Alertas procesadas."
+      - name: Caducidad de avisos de perdidos/encontrados (FEATURE-012)
+        run: |
+          curl -sf "${{ secrets.SITE_URL }}/api/cron/avisos" \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}"
+          echo "Avisos caducados archivados."
