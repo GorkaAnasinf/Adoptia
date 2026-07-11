@@ -75,6 +75,7 @@ export function AnimalPublicProfile({
   shareUrl: string;
 }) {
   const t = useTranslations("ficha");
+  const tGuias = useTranslations("guias");
   const tAnimal = useTranslations("animales");
   const tBusqueda = useTranslations("busqueda");
 
@@ -284,8 +285,14 @@ export function AnimalPublicProfile({
         </section>
       )}
 
-      {/* Reportar (FEATURE-011): discreto, al pie de la ficha */}
-      <div className="mt-8">
+      {/* Guías (FEATURE-015) + Reportar (FEATURE-011): pie de la ficha */}
+      <div className="mt-8 flex flex-col gap-3">
+        <Link
+          href="/guias"
+          className="text-sm text-primary underline-offset-4 hover:underline"
+        >
+          {tGuias("fichaCta")}
+        </Link>
         <ReportarButton animalId={animal.id} />
       </div>
 

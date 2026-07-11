@@ -2,6 +2,12 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/es/) adaptado. Versionado 0.x hasta el MVP.
 
+## [0.0.32] — 2026-07-11
+
+### Añadido
+
+- **FEATURE-015 — Guías de adopción responsable**: nueva sección `/guias` con las cuatro primeras guías —los primeros días en casa (regla 3-3-3), cuánto cuesta tener un perro de verdad, cómo preparar la casa y por qué adoptar un animal mayor— maquetadas con tabla de contenidos, tiempo de lectura, avisos y checklists, y rematadas con la llamada "buscar animales cerca". Cada guía tiene SEO completo (metadatos, datos estructurados `Article`, sitemap) y se enlazan desde la home, el pie de cada ficha de animal y el footer. Añadir una guía nueva es soltar un fichero Markdown en `src/content/guias/`: el índice, las rutas y el sitemap se generan solos.
+
 ## [0.0.31] — 2026-07-11
 
 ### Añadido

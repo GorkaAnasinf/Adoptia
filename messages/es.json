@@ -641,6 +641,23 @@
     "citasEmptyText": "Cuando una protectora apruebe tu solicitud podrás reservar una visita desde \"Mis solicitudes\".",
     "citasEmptyCta": "Ver mis solicitudes"
   },
+  "guias": {
+    "title": "Guías de adopción responsable",
+    "subtitle": "Todo lo que conviene saber antes, durante y después de adoptar.",
+    "minutos": "{n} min de lectura",
+    "actualizado": "Actualizada el {fecha}",
+    "tocTitle": "En esta guía",
+    "ctaTitle": "¿Preparado para dar el paso?",
+    "ctaText": "Hay animales de protectoras verificadas esperando cerca de ti.",
+    "ctaBoton": "Buscar animales cerca",
+    "volver": "Todas las guías",
+    "leerGuia": "Leer guía",
+    "fichaCta": "¿Primera adopción? Lee nuestras guías de adopción responsable",
+    "homeTitle": "Aprende antes de adoptar",
+    "homeText": "Guías claras sobre costes, preparación de casa y primeros días.",
+    "homeCta": "Ver las guías",
+    "footer": "Guías"
+  },
   "stats": {
     "title": "Estadísticas",
     "subtitle": "Cómo funcionan tus fichas: visitas, solicitudes y ritmo de adopción de los últimos 30 días.",

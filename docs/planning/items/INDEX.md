@@ -22,7 +22,7 @@
 | [FEATURE-012](FEATURE-012.md) | Animales perdidos y encontrados | feature | hecho | 0.4 |
 | [FEATURE-013](FEATURE-013.md) | Apadrinamiento y donaciones | feature | hecho | 0.4 |
 | [FEATURE-014](FEATURE-014.md) | Estadísticas para protectoras y difusión en redes | feature | hecho | 0.4 |
-| [FEATURE-015](FEATURE-015.md) | Contenido educativo sobre adopción responsable | feature | listo | 0.4 |
+| [FEATURE-015](FEATURE-015.md) | Contenido educativo sobre adopción responsable | feature | hecho | 0.4 |
 | [FEATURE-016](FEATURE-016.md) | Registro de casas de acogida | feature | listo | 0.4 |
 | [FEATURE-017](FEATURE-017.md) | Despliegue inicial — Supabase cloud y Vercel enlazados | feature | hecho | 0.1 |
 | [FEATURE-018](FEATURE-018.md) | App shell autenticado — cabecera común, navegación por rol y breadcrumbs | feature | hecho | 0.2 |

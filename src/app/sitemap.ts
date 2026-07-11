@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { listarGuias } from "@/lib/guias";
 import { createClient } from "@/lib/supabase/server";
 
 export const revalidate = 3600;
@@ -20,6 +21,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${base}/animales`, changeFrequency: "hourly", priority: 0.9 },
     { url: `${base}/mapa`, changeFrequency: "weekly", priority: 0.6 },
     { url: `${base}/perdidos-encontrados`, changeFrequency: "daily", priority: 0.6 },
+    { url: `${base}/guias`, changeFrequency: "weekly", priority: 0.7 },
+    ...listarGuias().map((g) => ({
+      url: `${base}/guias/${g.slug}`,
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    })),
     { url: `${base}/privacidad`, changeFrequency: "yearly", priority: 0.2 },
     { url: `${base}/aviso-legal`, changeFrequency: "yearly", priority: 0.2 },
     { url: `${base}/cookies`, changeFrequency: "yearly", priority: 0.2 },
