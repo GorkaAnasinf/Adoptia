@@ -5,12 +5,15 @@ import messages from "../../../../../messages/es.json";
 
 const getUserMock = vi.fn();
 const orderMock = vi.fn();
+const citasMock = vi.fn();
 
 vi.mock("@/lib/supabase/server", () => ({
   createClient: vi.fn(async () => ({
     auth: { getUser: getUserMock },
-    from: vi.fn(() => ({
-      select: vi.fn(() => ({ order: orderMock })),
+    from: vi.fn((tabla: string) => ({
+      select: vi.fn(() =>
+        tabla === "appointments" ? { in: citasMock } : { order: orderMock },
+      ),
     })),
   })),
 }));
@@ -62,6 +65,7 @@ describe("Mis solicitudes (adoptante)", () => {
   beforeEach(() => {
     getUserMock.mockReset().mockResolvedValue({ data: { user: { id: "adopter1" } } });
     orderMock.mockReset().mockResolvedValue({ data: [SOLICITUD], error: null });
+    citasMock.mockReset().mockResolvedValue({ data: [], error: null });
   });
 
   it("sin sesión redirige a /login", async () => {
@@ -95,6 +99,27 @@ describe("Mis solicitudes (adoptante)", () => {
     expect(
       screen.queryByRole("button", { name: messages.account.retirar }),
     ).not.toBeInTheDocument();
+  });
+
+  it("una solicitud aprobada sin cita ofrece reservar visita", async () => {
+    orderMock.mockResolvedValue({ data: [{ ...SOLICITUD, status: "approved" }], error: null });
+    await renderPagina();
+    expect(screen.getByRole("link", { name: messages.citas.reservarVisita })).toHaveAttribute(
+      "href",
+      "/mi-cuenta/citas/nueva/req1",
+    );
+  });
+
+  it("una solicitud aprobada con cita muestra la fecha y permite cancelarla", async () => {
+    orderMock.mockResolvedValue({ data: [{ ...SOLICITUD, status: "approved" }], error: null });
+    citasMock.mockResolvedValue({
+      data: [{ id: "cita1", request_id: "req1", starts_at: "2026-08-01T10:00:00Z", status: "confirmed" }],
+      error: null,
+    });
+    await renderPagina();
+    expect(screen.getByText(/Visita:/)).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: messages.citas.cancelarCita })).toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: messages.citas.reservarVisita })).not.toBeInTheDocument();
   });
 
   it("sin solicitudes muestra estado vacío con CTA al listado", async () => {

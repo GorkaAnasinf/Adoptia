@@ -1,0 +1,21 @@
+name: Recordatorios de citas
+
+# FEATURE-009: recordatorio 24 h antes de cada cita confirmada.
+# El endpoint es idempotente (reminder_sent_at), así que correr cada hora
+# garantiza que toda cita cae dentro de la ventana 23–25 h exactamente una vez.
+# Requiere secrets: SITE_URL (p. ej. https://adoptia-eight.vercel.app) y CRON_SECRET.
+
+on:
+  schedule:
+    - cron: "10 * * * *" # cada hora, minuto 10
+  workflow_dispatch:
+
+jobs:
+  recordatorios:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Llama al endpoint de recordatorios
+        run: |
+          curl -sf "${{ secrets.SITE_URL }}/api/cron/recordatorios" \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}"
+          echo "Recordatorios procesados."

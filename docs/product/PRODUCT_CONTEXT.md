@@ -50,6 +50,7 @@ Estado de cada capacidad en lenguaje de usuario. Se regenera con `python scripts
 - Mapa de protectoras con búsqueda por proximidad ([FEATURE-006](../planning/items/FEATURE-006.md))
 - Solicitud "Me interesa" con cuestionario y bandeja de la protectora ([FEATURE-007](../planning/items/FEATURE-007.md))
 - SEO, datos de demo y pulido del MVP ([FEATURE-008](../planning/items/FEATURE-008.md))
+- Citas con calendario y agenda de disponibilidad ([FEATURE-009](../planning/items/FEATURE-009.md))
 - Despliegue inicial — Supabase cloud y Vercel enlazados ([FEATURE-017](../planning/items/FEATURE-017.md))
 - App shell autenticado — cabecera común, navegación por rol y breadcrumbs ([FEATURE-018](../planning/items/FEATURE-018.md))
 - De-duplicar el slug de protectora (nombres repetidos) ([IMPROVEMENT-001](../planning/items/IMPROVEMENT-001.md))
@@ -72,7 +73,6 @@ _Nada en desarrollo en este momento._
 
 #### 🗓️ Previsto
 
-- Citas con calendario y agenda de disponibilidad — hito 0.3 ([FEATURE-009](../planning/items/FEATURE-009.md))
 - Área personal del adoptante — solicitudes, favoritos y alertas — hito 0.3 ([FEATURE-010](../planning/items/FEATURE-010.md))
 - Moderación de contenido y cuentas (admin) — hito 0.3 ([FEATURE-011](../planning/items/FEATURE-011.md))
 - Animales perdidos y encontrados — hito 0.4 ([FEATURE-012](../planning/items/FEATURE-012.md))

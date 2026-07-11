@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getFormatter, getTranslations } from "next-intl/server";
+import { CancelarCitaButton } from "@/components/citas/CancelarCitaButton";
 import { RetirarSolicitudButton } from "@/components/solicitudes/RetirarSolicitudButton";
 import { esImagenValida } from "@/lib/animal-search";
 import { createClient } from "@/lib/supabase/server";
@@ -63,16 +64,29 @@ export default async function MisSolicitudesPage() {
   const t = await getTranslations("account");
   const format = await getFormatter();
 
-  const { data } = await supabase
-    .from("adoption_requests")
-    .select(
-      `id, status, created_at, message,
-       animals (name, slug, published_at,
-         animal_media (url, is_cover, sort_order),
-         shelters (name, slug))`,
-    )
-    .order("created_at", { ascending: false });
+  const [{ data }, { data: citasData }] = await Promise.all([
+    supabase
+      .from("adoption_requests")
+      .select(
+        `id, status, created_at, message,
+         animals (name, slug, published_at,
+           animal_media (url, is_cover, sort_order),
+           shelters (name, slug))`,
+      )
+      .order("created_at", { ascending: false }),
+    supabase
+      .from("appointments")
+      .select("id, request_id, starts_at, status")
+      .in("status", ["pending", "confirmed"]),
+  ]);
   const solicitudes = (data as unknown as Solicitud[] | null) ?? [];
+  const citaPorSolicitud = new Map(
+    (
+      (citasData as { id: string; request_id: string; starts_at: string; status: string }[] | null) ??
+      []
+    ).map((c) => [c.request_id, c]),
+  );
+  const tCitas = await getTranslations("citas");
 
   return (
     <section className="mx-auto max-w-4xl px-4 py-12">
@@ -159,6 +173,36 @@ export default async function MisSolicitudesPage() {
                       {t("solicitudAnimalNoDisponible")}
                     </p>
                   )}
+
+                  {/* Cita (FEATURE-009): reservar si está aprobada; ver/cancelar si ya hay */}
+                  {solicitud.status === "approved" &&
+                    (citaPorSolicitud.has(solicitud.id) ? (
+                      <div className="mt-2 flex flex-col gap-2">
+                        <p className="text-sm font-medium text-secondary">
+                          {tCitas("citaProxima", {
+                            fecha: format.dateTime(
+                              new Date(citaPorSolicitud.get(solicitud.id)!.starts_at),
+                              {
+                                weekday: "long",
+                                day: "numeric",
+                                month: "long",
+                                hour: "2-digit",
+                                minute: "2-digit",
+                                timeZone: "Europe/Madrid",
+                              },
+                            ),
+                          })}
+                        </p>
+                        <CancelarCitaButton citaId={citaPorSolicitud.get(solicitud.id)!.id} />
+                      </div>
+                    ) : (
+                      <Link
+                        href={`/mi-cuenta/citas/nueva/${solicitud.id}`}
+                        className="mt-2 inline-flex w-fit rounded-full bg-secondary px-4 py-1.5 text-sm font-semibold text-secondary-foreground hover:bg-secondary/90"
+                      >
+                        {tCitas("reservarVisita")}
+                      </Link>
+                    ))}
                 </div>
 
                 {solicitud.status === "pending" && (
