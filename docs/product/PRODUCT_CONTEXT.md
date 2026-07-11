@@ -54,6 +54,7 @@ Estado de cada capacidad en lenguaje de usuario. Se regenera con `python scripts
 - Área personal del adoptante — solicitudes, favoritos y alertas ([FEATURE-010](../planning/items/FEATURE-010.md))
 - Moderación de contenido y cuentas (admin) ([FEATURE-011](../planning/items/FEATURE-011.md))
 - Animales perdidos y encontrados ([FEATURE-012](../planning/items/FEATURE-012.md))
+- Apadrinamiento y donaciones ([FEATURE-013](../planning/items/FEATURE-013.md))
 - Despliegue inicial — Supabase cloud y Vercel enlazados ([FEATURE-017](../planning/items/FEATURE-017.md))
 - App shell autenticado — cabecera común, navegación por rol y breadcrumbs ([FEATURE-018](../planning/items/FEATURE-018.md))
 - De-duplicar el slug de protectora (nombres repetidos) ([IMPROVEMENT-001](../planning/items/IMPROVEMENT-001.md))
@@ -76,7 +77,6 @@ _Nada en desarrollo en este momento._
 
 #### 🗓️ Previsto
 
-- Apadrinamiento y donaciones — hito 0.4 ([FEATURE-013](../planning/items/FEATURE-013.md))
 - Estadísticas para protectoras y difusión en redes — hito 0.4 ([FEATURE-014](../planning/items/FEATURE-014.md))
 - Contenido educativo sobre adopción responsable — hito 0.4 ([FEATURE-015](../planning/items/FEATURE-015.md))
 - Registro de casas de acogida — hito 0.4 ([FEATURE-016](../planning/items/FEATURE-016.md))
