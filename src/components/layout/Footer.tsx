@@ -9,6 +9,9 @@ export function Footer() {
       <div className="mx-auto flex max-w-6xl flex-col items-center gap-2 px-4 py-8 text-sm text-muted-foreground sm:flex-row sm:justify-between">
         <p>{t("footer.rights")}</p>
         <nav className="flex flex-wrap justify-center gap-4">
+          <Link href="/guias" className="hover:text-primary">
+            {t("guias.footer")}
+          </Link>
           <Link href="/privacidad" className="hover:text-primary">
             {t("footer.privacy")}
           </Link>
