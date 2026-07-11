@@ -181,6 +181,20 @@ export default async function HomePage() {
         </div>
       </section>
 
+      {/* Guías (FEATURE-015) */}
+      <section className="mx-auto max-w-6xl px-4 pb-4 pt-8">
+        <div className="flex flex-col items-center gap-3 rounded-3xl border border-border bg-card px-6 py-10 text-center">
+          <h2 className="font-heading text-2xl font-semibold">{t("guias.homeTitle")}</h2>
+          <p className="max-w-xl text-muted-foreground">{t("guias.homeText")}</p>
+          <Link
+            href="/guias"
+            className="mt-1 rounded-full border border-primary px-6 py-2.5 font-medium text-primary hover:bg-primary hover:text-primary-foreground"
+          >
+            {t("guias.homeCta")}
+          </Link>
+        </div>
+      </section>
+
       {/* CTA protectoras */}
       <section className="mx-auto max-w-6xl px-4 py-16">
         <div className="flex flex-col items-center gap-4 rounded-3xl bg-secondary px-6 py-12 text-center text-secondary-foreground">
