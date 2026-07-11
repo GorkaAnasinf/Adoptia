@@ -37,5 +37,5 @@
 | [IMPROVEMENT-009](IMPROVEMENT-009.md) | Wizard de alta — fix autocompletado y pulido de ubicación/perfil | improvement | hecho | 0.2 |
 | [IMPROVEMENT-010](IMPROVEMENT-010.md) | Wizard de alta — autorrelleno de provincia y nombres OSM | improvement | hecho | 0.2 |
 | [IMPROVEMENT-011](IMPROVEMENT-011.md) | Wizard de alta — combo de provincia, autocompletado solo al teclear y título lateral | improvement | hecho | 0.2 |
-| [IMPROVEMENT-012](IMPROVEMENT-012.md) | Recuperar el umbral de cobertura de funciones (deuda de tests) | improvement | recibido | — |
+| [IMPROVEMENT-012](IMPROVEMENT-012.md) | Recuperar el umbral de cobertura de funciones (deuda de tests) | improvement | hecho | — |
 | [IMPROVEMENT-013](IMPROVEMENT-013.md) | Vista "mis solicitudes" del adoptante | improvement | hecho | — |

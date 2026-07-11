@@ -15,7 +15,6 @@ describe.skipIf(!rlsDisponible)("FEATURE-004 media de protectora", () => {
   const jpeg = () => new Blob([new Uint8Array([0xff, 0xd8, 0xff])], { type: "image/jpeg" });
 
   beforeAll(async () => {
-    const admin = adminClient();
     const a = await ensureUser("protectora-a@test.com", PASS);
     const b = await ensureUser("protectora-b@test.com", PASS);
 
