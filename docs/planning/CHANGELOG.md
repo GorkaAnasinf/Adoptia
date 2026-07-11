@@ -2,6 +2,12 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/es/) adaptado. Versionado 0.x hasta el MVP.
 
+## [0.0.33] — 2026-07-11
+
+### Añadido
+
+- **FEATURE-016 — Registro de casas de acogida**: cualquier persona con cuenta puede ofrecerse como **casa de acogida temporal** en `/acogida` (especies, vivienda, jardín, disponibilidad, zona en el mapa y radio), con **consentimiento explícito** para ser contactada. Las protectoras **verificadas** ven en su panel a los acogedores disponibles de su zona —solo zona aproximada y condiciones: la dirección exacta se redondea al guardar y nunca existe— y les proponen acogidas con un clic: el aviso llega **al acogedor por email con los datos de la protectora**, sin exponer nunca el contacto del acogedor. Pausa para vacaciones y baja con borrado completo de datos.
+
 ## [0.0.32] — 2026-07-11
 
 ### Añadido
