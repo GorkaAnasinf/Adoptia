@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { MiniMapa } from "@/components/map/MiniMapa";
+import { ReportarButton } from "@/components/moderacion/ReportarButton";
 import { edadAproximada, esImagenValida } from "@/lib/animal-search";
 import type { AnimalStatus } from "@/lib/schemas/animal";
 import { AnimalGallery, type AnimalMedia } from "./AnimalGallery";
@@ -251,6 +252,11 @@ export function AnimalPublicProfile({
           )}
         </div>
       </section>
+
+      {/* Reportar (FEATURE-011): discreto, al pie de la ficha */}
+      <div className="mt-8">
+        <ReportarButton animalId={animal.id} />
+      </div>
 
       {/* Barra sticky (móvil) */}
       <div className="fixed inset-x-0 bottom-0 z-40 flex items-center gap-3 border-t border-border bg-white/95 px-4 py-3 backdrop-blur lg:hidden">

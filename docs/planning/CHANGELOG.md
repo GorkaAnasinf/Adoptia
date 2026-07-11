@@ -2,6 +2,12 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/es/) adaptado. Versionado 0.x hasta el MVP.
 
+## [0.0.28] — 2026-07-11
+
+### Añadido
+
+- **FEATURE-011 — Moderación de contenido y cuentas (admin)**: cualquier usuario con cuenta puede **reportar una ficha** desde un botón discreto (categoría + detalles; máximo 5 reportes al día, garantizado en base de datos). El equipo admin revisa la **cola de reportes** en `/admin/reportes` y puede **despublicar fichas con motivo** (la protectora recibe email con la vía de contacto y ve el aviso en su panel; reversible con "republicar") y **suspender cuentas** de forma reversible (protectoras ya desde la verificación; adoptantes bloqueando su acceso). Toda acción de administración queda en un **log de auditoría inmutable** —ni siquiera la clave de servicio puede alterarlo— consultable en `/admin/auditoria`.
+
 ## [0.0.27] — 2026-07-11
 
 ### Añadido

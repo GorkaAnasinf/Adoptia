@@ -18,7 +18,7 @@
 | [FEATURE-008](FEATURE-008.md) | SEO, datos de demo y pulido del MVP | feature | hecho | 0.2 |
 | [FEATURE-009](FEATURE-009.md) | Citas con calendario y agenda de disponibilidad | feature | hecho | 0.3 |
 | [FEATURE-010](FEATURE-010.md) | Área personal del adoptante — solicitudes, favoritos y alertas | feature | hecho | 0.3 |
-| [FEATURE-011](FEATURE-011.md) | Moderación de contenido y cuentas (admin) | feature | listo | 0.3 |
+| [FEATURE-011](FEATURE-011.md) | Moderación de contenido y cuentas (admin) | feature | hecho | 0.3 |
 | [FEATURE-012](FEATURE-012.md) | Animales perdidos y encontrados | feature | listo | 0.4 |
 | [FEATURE-013](FEATURE-013.md) | Apadrinamiento y donaciones | feature | listo | 0.4 |
 | [FEATURE-014](FEATURE-014.md) | Estadísticas para protectoras y difusión en redes | feature | listo | 0.4 |
