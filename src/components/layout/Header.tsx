@@ -24,6 +24,12 @@ export function Header() {
           <Link href="/mapa" className="hidden text-foreground hover:text-primary sm:block">
             {t("nav.map")}
           </Link>
+          <Link
+            href="/perdidos-encontrados"
+            className="hidden text-foreground hover:text-primary sm:block"
+          >
+            {t("nav.lostFound")}
+          </Link>
           <UserMenu />
         </nav>
       </div>
