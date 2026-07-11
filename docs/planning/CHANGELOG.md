@@ -2,6 +2,12 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/es/) adaptado. Versionado 0.x hasta el MVP.
 
+## [0.0.31] — 2026-07-11
+
+### Añadido
+
+- **FEATURE-014 — Estadísticas y difusión en redes**: nueva sección **Estadísticas** en el panel de la protectora con las visitas de sus fichas (agregadas por día y completamente anónimas: solo un contador, sin ningún dato del visitante), solicitudes recibidas y tiempo medio hasta adopción, con gráfica de 30 días y desglose por animal. Desde ahí, un clic genera la **imagen lista para redes** de cada ficha publicada —foto, nombre, protectora y marca Adoptia— descargable en cuadrado (1080×1080) y vertical para stories (1080×1920).
+
 ## [0.0.30] — 2026-07-11
 
 ### Añadido
