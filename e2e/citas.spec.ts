@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { createClient } from "@supabase/supabase-js";
+import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 import messages from "../messages/es.json";
 
 /**
@@ -22,7 +22,7 @@ const ADOPTER_EMAIL = `e2e-citas-adoptante-${sello}@test.com`;
 const PASS = "Secreta-123-E2E";
 
 async function crearUsuario(
-  admin: ReturnType<typeof createClient>,
+  admin: SupabaseClient,
   email: string,
   role: "shelter" | "adopter",
   fullName: string,
