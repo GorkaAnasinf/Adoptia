@@ -4,6 +4,7 @@ import { BadgeCheck, Globe, HandHeart, Home, MapPin, PawPrint } from "lucide-rea
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { AnimalStatusBadge } from "@/components/animals/AnimalStatusBadge";
+import { EnlaceExternoPago } from "@/components/apadrinamiento/EnlaceExternoPago";
 import type { AnimalStatus } from "@/lib/schemas/animal";
 import { resumenHorario, tieneHorario } from "@/lib/opening-hours";
 import type { OpeningHours, SocialLinks } from "@/lib/schemas/shelter";
@@ -21,6 +22,7 @@ export type PublicShelter = {
   accepts_volunteers?: boolean;
   accepts_fostering?: boolean;
   status?: string | null;
+  donation_link?: string | null;
 };
 
 export type PublicAnimal = {
@@ -28,6 +30,7 @@ export type PublicAnimal = {
   name: string;
   slug: string;
   status: AnimalStatus;
+  sponsorable?: boolean;
   animal_media: { url: string; is_cover: boolean; sort_order: number }[];
 };
 
@@ -190,14 +193,33 @@ export function ShelterPublicProfile({
         )}
       </div>
 
-      {/* Animales en adopción */}
+      {/* Donaciones (FEATURE-013): enlace externo con aviso previo */}
+      {shelter.donation_link && (
+        <section className="mt-10 rounded-2xl bg-secondary/10 px-6 py-6">
+          <h2 className="font-heading text-xl font-semibold">{t("donarCta")}</h2>
+          <div className="mt-3">
+            <EnlaceExternoPago
+              href={shelter.donation_link}
+              cta={t("donarCta")}
+              aviso={t("donarAviso")}
+              continuar={t("donarContinuar")}
+              cancelar={t("donarCancelar")}
+              variante="secondary"
+            />
+          </div>
+        </section>
+      )}
+
+      {/* Animales en adopción (apadrinables destacados primero) */}
       <section className="mt-10">
         <h2 className="font-heading text-xl font-semibold">{t("animalsTitle")}</h2>
         {animals.length === 0 ? (
           <p className="mt-3 text-muted-foreground">{t("noAnimals")}</p>
         ) : (
           <ul className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-3">
-            {animals.map((a) => {
+            {[...animals]
+              .sort((a, b) => Number(b.sponsorable ?? false) - Number(a.sponsorable ?? false))
+              .map((a) => {
               const url = portada(a.animal_media);
               return (
                 <li key={a.id} className="overflow-hidden rounded-2xl border border-border bg-card">
@@ -216,7 +238,14 @@ export function ShelterPublicProfile({
                   )}
                   <div className="flex items-center justify-between gap-2 p-3">
                     <span className="min-w-0 truncate font-medium">{a.name}</span>
-                    <AnimalStatusBadge status={a.status} />
+                    <span className="flex shrink-0 items-center gap-1">
+                      {a.sponsorable && (
+                        <span className="rounded-full bg-tertiary/15 px-2 py-0.5 text-xs font-semibold text-tertiary">
+                          {t("sponsorBadge")}
+                        </span>
+                      )}
+                      <AnimalStatusBadge status={a.status} />
+                    </span>
                   </div>
                 </li>
               );

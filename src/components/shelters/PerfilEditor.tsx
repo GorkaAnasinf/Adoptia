@@ -7,6 +7,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { esEnlacePagoValido } from "@/lib/enlaces-pago";
 import { socialLinksSchema } from "@/lib/schemas/shelter";
 import type { OpeningHours, SocialLinks } from "@/lib/schemas/shelter";
 import { createClient } from "@/lib/supabase/client";
@@ -22,6 +23,7 @@ import {
 type Form = {
   logoUrl: string;
   description: string;
+  donationLink: string;
   openingHours: OpeningHours;
   socialLinks: SocialLinks;
   acceptsVolunteers: boolean;
@@ -71,6 +73,7 @@ export function PerfilEditor({
     ...base,
     logo_url: form.logoUrl || null,
     description: form.description || null,
+    donation_link: form.donationLink || null,
     social_links: form.socialLinks,
     opening_hours: form.openingHours,
     accepts_volunteers: form.acceptsVolunteers,
@@ -87,6 +90,10 @@ export function PerfilEditor({
       setError(t("errorGeneric"));
       return;
     }
+    if (form.donationLink.trim() && !esEnlacePagoValido(form.donationLink.trim())) {
+      setError(t("errDonationLink"));
+      return;
+    }
     setGuardando(true);
     try {
       const supabase = createClient();
@@ -95,6 +102,7 @@ export function PerfilEditor({
         .update({
           logo_url: form.logoUrl || null,
           description: form.description.trim() || null,
+          donation_link: form.donationLink.trim() || null,
           opening_hours: form.openingHours,
           social_links: limpias,
           accepts_volunteers: form.acceptsVolunteers,
@@ -147,6 +155,18 @@ export function PerfilEditor({
               onChange={(e) => set("description", e.target.value)}
               className="rounded-md border border-border bg-background px-3 py-2 text-sm"
             />
+          </div>
+
+          {/* Donaciones (FEATURE-013): enlace externo, Adoptia no cobra */}
+          <div className="flex flex-col gap-1.5">
+            <Label htmlFor="donationLink">{t("donationLink")}</Label>
+            <Input
+              id="donationLink"
+              value={form.donationLink}
+              placeholder="https://www.teaming.net/…"
+              onChange={(e) => set("donationLink", e.target.value)}
+            />
+            <p className="text-xs text-muted-foreground">{t("donationLinkHelp")}</p>
           </div>
 
           <OpeningHoursEditor value={form.openingHours} onChange={(v) => set("openingHours", v)} />

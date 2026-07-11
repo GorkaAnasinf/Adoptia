@@ -257,6 +257,38 @@ export function AnimalForm({
         </Campo>
       </Seccion>
 
+      {/* -------- Apadrinamiento (FEATURE-013) -------- */}
+      <Seccion titulo={t("secSponsor")}>
+        <p className="text-sm text-muted-foreground">{t("sponsorHelp")}</p>
+        <Check
+          label={t("fSponsorable")}
+          checked={form.sponsorable ?? false}
+          onChange={(v) => set("sponsorable", v)}
+        />
+        {form.sponsorable && (
+          <>
+            <Campo id="sponsorLink" label={t("fSponsorLink")}>
+              <Input
+                id="sponsorLink"
+                value={form.sponsorLink ?? ""}
+                onChange={(e) => set("sponsorLink", e.target.value)}
+                placeholder="https://buy.stripe.com/…"
+              />
+              <p className="text-xs text-muted-foreground">{t("fSponsorLinkHelp")}</p>
+            </Campo>
+            <Campo id="sponsorNote" label={t("fSponsorNote")}>
+              <textarea
+                id="sponsorNote"
+                rows={2}
+                value={form.sponsorNote ?? ""}
+                onChange={(e) => set("sponsorNote", e.target.value)}
+                className="rounded-md border border-border bg-background px-3 py-2 text-sm"
+              />
+            </Campo>
+          </>
+        )}
+      </Seccion>
+
       {/* -------- Fotos y vídeo -------- */}
       <Seccion titulo={t("secMedia")}>
         <AnimalMediaUploader shelterId={shelterId} animalId={currentId} media={media} onChange={setMedia} />

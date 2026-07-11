@@ -14,7 +14,7 @@ type Params = Promise<{ slug: string }>;
 const CAMPOS = `id, name, slug, species, breed, sex, size, birth_date_approx, weight_kg,
   status, description, good_with_kids, good_with_dogs, good_with_cats, apartment_suitable,
   energy_level, special_needs, vaccinated, sterilized, microchipped, health_notes,
-  adoption_fee, published_at,
+  adoption_fee, published_at, sponsorable, sponsor_link, sponsor_note,
   animal_media (url, is_cover, sort_order),
   shelters (name, slug, city, province, logo_url, location, status)`;
 

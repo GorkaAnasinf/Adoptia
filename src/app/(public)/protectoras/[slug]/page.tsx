@@ -8,7 +8,7 @@ import {
 import { createClient } from "@/lib/supabase/server";
 
 const CAMPOS =
-  "name, slug, description, city, province, website, social_links, opening_hours, accepts_volunteers, accepts_fostering, status";
+  "name, slug, description, city, province, website, social_links, opening_hours, accepts_volunteers, accepts_fostering, status, donation_link";
 
 async function cargarProtectora(slug: string) {
   const supabase = await createClient();
@@ -22,7 +22,7 @@ async function cargarProtectora(slug: string) {
   const shelterId = (shelter as { id: string }).id;
   const { data: animals } = await supabase
     .from("animals")
-    .select("id,name,slug,status,animal_media(url,is_cover,sort_order)")
+    .select("id,name,slug,status,sponsorable,animal_media(url,is_cover,sort_order)")
     .eq("shelter_id", shelterId)
     .not("published_at", "is", null)
     .eq("status", "available")

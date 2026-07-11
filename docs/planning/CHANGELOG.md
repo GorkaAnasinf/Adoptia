@@ -2,6 +2,12 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/es/) adaptado. Versionado 0.x hasta el MVP.
 
+## [0.0.30] — 2026-07-11
+
+### Añadido
+
+- **FEATURE-013 — Apadrinamiento y donaciones**: los animales difíciles de adoptar pueden marcarse como **apadrinables** (con su historia y un enlace de pago externo) y las protectoras pueden añadir un **enlace de donaciones** a su perfil. Solo se admiten plataformas conocidas —Stripe Payment Links, Teaming y PayPal, siempre https— validadas tanto en el formulario como en la propia base de datos. Antes de salir al pago, un **aviso claro** explica que el dinero va directo a la protectora: Adoptia no procesa ni recibe pagos. Los apadrinables aparecen destacados en el perfil de su protectora, y cada clic en "Apadrinar" queda contado (sin datos personales) como métrica para la protectora.
+
 ## [0.0.29] — 2026-07-11
 
 ### Añadido

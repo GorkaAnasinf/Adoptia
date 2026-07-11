@@ -36,6 +36,7 @@ function editor() {
       initial={{
         logoUrl: "",
         description: "Hola",
+        donationLink: "",
         openingHours: {},
         socialLinks: {},
         acceptsVolunteers: false,

@@ -16,6 +16,7 @@ type ShelterRow = {
   name: string;
   logo_url: string | null;
   description: string | null;
+  donation_link: string | null;
   city: string | null;
   province: string | null;
   website: string | null;
@@ -35,7 +36,7 @@ export default async function PerfilPage() {
     ? await supabase
         .from("shelters")
         .select(
-          "id, name, logo_url, description, city, province, website, social_links, opening_hours, accepts_volunteers, accepts_fostering, status",
+          "id, name, logo_url, description, donation_link, city, province, website, social_links, opening_hours, accepts_volunteers, accepts_fostering, status",
         )
         .eq("owner_id", user.id)
         .maybeSingle()
@@ -46,7 +47,7 @@ export default async function PerfilPage() {
 
   const { data: animals } = await supabase
     .from("animals")
-    .select("id,name,slug,status,animal_media(url,is_cover,sort_order)")
+    .select("id,name,slug,status,sponsorable,animal_media(url,is_cover,sort_order)")
     .eq("shelter_id", s.id)
     .not("published_at", "is", null)
     .eq("status", "available")
@@ -66,6 +67,7 @@ export default async function PerfilPage() {
       initial={{
         logoUrl: s.logo_url ?? "",
         description: s.description ?? "",
+        donationLink: s.donation_link ?? "",
         openingHours: s.opening_hours ?? {},
         socialLinks: s.social_links ?? {},
         acceptsVolunteers: s.accepts_volunteers,

@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { ENLACE_PAGO_RE } from "@/lib/enlaces-pago";
 
 // ---------- CIF español ----------
 // Letra de organización + 7 dígitos + carácter de control (dígito o letra).
@@ -125,6 +126,10 @@ export const socialLinksSchema = z
 export const perfilSchema = z.object({
   description: z.string().trim().max(2000).optional(),
   logoUrl: z.string().optional(),
+  // Donaciones (FEATURE-013): enlace externo a plataforma permitida.
+  donationLink: z
+    .union([z.string().trim().regex(ENLACE_PAGO_RE, "enlace_pago_invalido"), z.literal("")])
+    .optional(),
   openingHours: openingHoursSchema,
   socialLinks: socialLinksSchema,
   acceptsVolunteers: z.boolean(),

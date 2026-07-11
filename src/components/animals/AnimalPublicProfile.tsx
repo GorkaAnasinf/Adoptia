@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { MiniMapa } from "@/components/map/MiniMapa";
+import { EnlaceExternoPago } from "@/components/apadrinamiento/EnlaceExternoPago";
 import { ReportarButton } from "@/components/moderacion/ReportarButton";
 import { edadAproximada, esImagenValida } from "@/lib/animal-search";
 import type { AnimalStatus } from "@/lib/schemas/animal";
@@ -30,6 +31,9 @@ export type PublicAnimalFull = {
   apartment_suitable: boolean | null;
   energy_level: "low" | "medium" | "high" | null;
   special_needs: string | null;
+  sponsorable?: boolean;
+  sponsor_link?: string | null;
+  sponsor_note?: string | null;
   vaccinated: boolean;
   sterilized: boolean;
   microchipped: boolean;
@@ -252,6 +256,33 @@ export function AnimalPublicProfile({
           )}
         </div>
       </section>
+
+      {/* Apadrinamiento (FEATURE-013): pago externo con aviso previo */}
+      {animal.sponsorable && animal.sponsor_link && (
+        <section className="mt-8 rounded-2xl bg-tertiary/10 px-6 py-6">
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="rounded-full bg-tertiary/20 px-3 py-1 text-sm font-semibold text-tertiary">
+              {t("sponsorBadge")}
+            </span>
+            <h2 className="font-heading text-xl font-semibold">
+              {t("sponsorTitle", { nombre: animal.name })}
+            </h2>
+          </div>
+          {animal.sponsor_note && (
+            <p className="mt-2 max-w-2xl text-muted-foreground">{animal.sponsor_note}</p>
+          )}
+          <div className="mt-4">
+            <EnlaceExternoPago
+              href={animal.sponsor_link}
+              cta={t("sponsorCta")}
+              aviso={t("sponsorAviso")}
+              continuar={t("sponsorContinuar")}
+              cancelar={t("sponsorCancelar")}
+              registrarUrl={`/api/apadrinar/${animal.id}`}
+            />
+          </div>
+        </section>
+      )}
 
       {/* Reportar (FEATURE-011): discreto, al pie de la ficha */}
       <div className="mt-8">
