@@ -116,6 +116,6 @@ describe("SolicitudWizard", () => {
 
     expect(await screen.findByText(/ya has enviado una solicitud/i)).toBeInTheDocument();
     const enlaceEstado = screen.getByRole("link", { name: /ver el estado de tu solicitud/i });
-    expect(enlaceEstado).toHaveAttribute("href", "/animales/pipa-abc123");
+    expect(enlaceEstado).toHaveAttribute("href", "/mi-cuenta/solicitudes");
   });
 });

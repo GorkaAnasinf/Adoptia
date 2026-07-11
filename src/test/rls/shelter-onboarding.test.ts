@@ -7,6 +7,7 @@ import {
   ensureUser,
   rlsDisponible,
   signInAs,
+  upsertShelterFixture,
 } from "./helpers";
 
 /**
@@ -32,21 +33,14 @@ describe.skipIf(!rlsDisponible)("RLS onboarding de protectoras", () => {
       .eq("id", adminId);
     if (eRole) throw eRole;
 
-    const { data, error } = await admin
-      .from("shelters")
-      .upsert(
-        {
-          owner_id: ownerId,
-          name: "Refugio Onboarding",
-          slug: "refugio-onboarding",
-          cif: "B98000003",
-          email: "entidad-onboarding@test.com",
-          status: "pending",
-        },
-        { onConflict: "slug" },
-      )
-      .select()
-      .single();
+    const { data, error } = await upsertShelterFixture({
+      owner_id: ownerId,
+      name: "Refugio Onboarding",
+      slug: "refugio-onboarding",
+      cif: "B98000003",
+      email: "entidad-onboarding@test.com",
+      status: "pending",
+    });
     if (error) throw error;
     shelterId = data.id;
   });

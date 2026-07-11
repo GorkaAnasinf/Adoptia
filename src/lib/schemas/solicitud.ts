@@ -69,5 +69,7 @@ export const accionSolicitudSchema = z.discriminatedUnion("accion", [
   z.object({ accion: z.literal("complete") }),
   // Guarda notas internas sin cambiar el estado; editable en cualquier momento.
   z.object({ accion: z.literal("note"), nota: z.string().trim().max(4000) }),
+  // Acción del adoptante: retira su propia solicitud pendiente.
+  z.object({ accion: z.literal("withdraw") }),
 ]);
 export type AccionSolicitud = z.infer<typeof accionSolicitudSchema>;
