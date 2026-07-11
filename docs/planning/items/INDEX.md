@@ -20,7 +20,7 @@
 | [FEATURE-010](FEATURE-010.md) | Área personal del adoptante — solicitudes, favoritos y alertas | feature | hecho | 0.3 |
 | [FEATURE-011](FEATURE-011.md) | Moderación de contenido y cuentas (admin) | feature | hecho | 0.3 |
 | [FEATURE-012](FEATURE-012.md) | Animales perdidos y encontrados | feature | hecho | 0.4 |
-| [FEATURE-013](FEATURE-013.md) | Apadrinamiento y donaciones | feature | listo | 0.4 |
+| [FEATURE-013](FEATURE-013.md) | Apadrinamiento y donaciones | feature | hecho | 0.4 |
 | [FEATURE-014](FEATURE-014.md) | Estadísticas para protectoras y difusión en redes | feature | listo | 0.4 |
 | [FEATURE-015](FEATURE-015.md) | Contenido educativo sobre adopción responsable | feature | listo | 0.4 |
 | [FEATURE-016](FEATURE-016.md) | Registro de casas de acogida | feature | listo | 0.4 |

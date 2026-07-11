@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { ENLACE_PAGO_RE } from "@/lib/enlaces-pago";
 
 // ---------- Valores del dominio (enums de la BD) ----------
 export const ESPECIES = ["dog", "cat", "other"] as const;
@@ -33,6 +34,15 @@ export const animalDraftSchema = z.object({
   microchipped: z.boolean().optional(),
   healthNotes: z.string().trim().optional(),
   adoptionFee: z.number().nonnegative().nullable().optional(),
+  // Apadrinamiento (FEATURE-013): enlace externo validado; Adoptia no cobra.
+  sponsorable: z.boolean().optional(),
+  sponsorLink: z
+    .string()
+    .trim()
+    .regex(ENLACE_PAGO_RE, "enlace_pago_invalido")
+    .optional()
+    .or(z.literal("")),
+  sponsorNote: z.string().trim().max(2000).optional(),
 });
 
 // ---------- Publicar: exige los mínimos de una ficha útil ----------
@@ -102,6 +112,9 @@ export function animalToRow(
     microchipped: data.microchipped ?? false,
     health_notes: data.healthNotes?.trim() || null,
     adoption_fee: data.adoptionFee ?? null,
+    sponsorable: (data.sponsorable ?? false) && Boolean(data.sponsorLink),
+    sponsor_link: data.sponsorLink?.trim() || null,
+    sponsor_note: data.sponsorNote?.trim() || null,
   };
 }
 
