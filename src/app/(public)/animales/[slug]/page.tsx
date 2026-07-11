@@ -143,6 +143,14 @@ export default async function AnimalPublicoPage({ params }: { params: Params }) 
     );
   }
 
+  // Métrica de visitas (FEATURE-014): agregado anónimo por día, best-effort.
+  try {
+    const supabase = await createClient();
+    await supabase.rpc("registrar_visita", { p_animal_id: animal.id });
+  } catch {
+    // Sin BD o sin RPC: la ficha se sirve igual.
+  }
+
   const shareUrl = `${process.env.NEXT_PUBLIC_SITE_URL ?? ""}/animales/${animal.slug}`;
   return (
     <>
