@@ -7,11 +7,11 @@
 
 - **Hito activo:** 0.2 — MVP (en dos bloques: 🐕 protectora → 🧑 persona; ver "Orden de trabajo" en ROADMAP)
 - **Progreso:** Bloque A (protectora) completo. Bloque B: FEATURE-005, 006 y 007 hechos, y **FEATURE-008 hecho** (SEO: og:image/JSON-LD/sitemap/robots; páginas de error y textos legales; contadores reales en home; seed de demo con 4 protectoras y 23 animales validado con `supabase db reset`). **Hito 0.2 (MVP) completo.**
-- **Siguiente:** IMPROVEMENT-013 (vista "mis solicitudes"), luego IMPROVEMENT-012 y FEATURE-009 (citas, hito 0.3).
+- **Siguiente:** IMPROVEMENT-012 (deuda de cobertura), luego FEATURE-009 (citas, hito 0.3).
 - **En curso:** nada.
-- **Bloqueos:** ninguno.
-- **Follow-ups abiertos:** IMPROVEMENT-012 (deuda de cobertura de funciones + medir LCP/Lighthouse de listado y ficha en producción tras el deploy de 0.0.22), IMPROVEMENT-013 (vista "mis solicitudes" del adoptante). "Próximas citas" del dashboard llega con FEATURE-009.
-- **Última actualización:** 2026-07-10 (cierre de IMPROVEMENT-001 — slug de protectora de-duplicado en BD).
+- **Bloqueos:** ⚠️ pendiente de ejecutar a mano `npx supabase db push` (migración del slug de IMPROVEMENT-001 al Supabase remoto; bloqueada al agente por permisos).
+- **Follow-ups abiertos:** IMPROVEMENT-012 (deuda de cobertura de funciones + medir LCP/Lighthouse de listado y ficha en producción tras el deploy de 0.0.22). "Próximas citas" del dashboard llega con FEATURE-009.
+- **Última actualización:** 2026-07-10 (cierre de IMPROVEMENT-013 — "mis solicitudes" del adoptante con retirada).
 
 ## Items abiertos por estado
 
@@ -31,10 +31,9 @@ Los items `hecho`/`descartado` no aparecen aquí — su histórico vive en [CHAN
 | [FEATURE-015](items/FEATURE-015.md) | Contenido educativo sobre adopción responsable | baja | 0.4 |
 | [FEATURE-016](items/FEATURE-016.md) | Registro de casas de acogida | baja | 0.4 |
 
-### 📥 Recibido (2)
+### 📥 Recibido (1)
 
 | Item | Título | Prioridad | Hito |
 |------|--------|-----------|------|
 | [IMPROVEMENT-012](items/IMPROVEMENT-012.md) | Recuperar el umbral de cobertura de funciones (deuda de tests) | media | — |
-| [IMPROVEMENT-013](items/IMPROVEMENT-013.md) | Vista "mis solicitudes" del adoptante | media | — |
 <!-- RENDER:END -->

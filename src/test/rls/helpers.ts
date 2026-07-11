@@ -29,6 +29,26 @@ export async function signInAs(email: string, password: string) {
   return client;
 }
 
+/**
+ * Upsert de una protectora de fixtures por slug. El trigger de de-duplicación
+ * (IMPROVEMENT-001) reescribe el slug ANTES de que se evalúe `on conflict`,
+ * así que `upsert(..., { onConflict: "slug" })` insertaría un duplicado
+ * (`slug-2`, `-3`…) en cada ejecución. Aquí: update por id si ya existe la
+ * fila con ese slug, insert si no.
+ */
+export async function upsertShelterFixture(fila: Record<string, unknown>) {
+  const admin = adminClient();
+  const { data: existente } = await admin
+    .from("shelters")
+    .select("id")
+    .eq("slug", fila.slug as string)
+    .maybeSingle();
+  if (existente) {
+    return admin.from("shelters").update(fila).eq("id", existente.id).select().single();
+  }
+  return admin.from("shelters").insert(fila).select().single();
+}
+
 /** Crea (o reutiliza) un usuario de test confirmado y devuelve su id. */
 export async function ensureUser(email: string, password: string) {
   const admin = adminClient();

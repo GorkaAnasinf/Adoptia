@@ -229,4 +229,33 @@ describe("PATCH /api/solicitudes/[id]", () => {
     const res = await PATCH(req({ accion: "note", nota: "Seguimiento post-adopción" }), params);
     expect(res.status).toBe(200);
   });
+
+  it("el adoptante retira su solicitud pendiente (withdraw), sin emails", async () => {
+    getUserMock.mockResolvedValue({ data: { user: { id: "adopter1" } } });
+    const res = await PATCH(req({ accion: "withdraw" }), params);
+    expect(res.status).toBe(200);
+    expect(state.lastUpdate).toMatchObject({ status: "withdrawn" });
+    expect(enviarEmailMock).not.toHaveBeenCalled();
+    // el animal no cambia de estado al retirar
+    expect(state.lastAnimalUpdate).toBeNull();
+  });
+
+  it("un usuario que no es el adoptante NO puede retirar la solicitud", async () => {
+    getUserMock.mockResolvedValue({ data: { user: { id: "otro-usuario" } } });
+    const res = await PATCH(req({ accion: "withdraw" }), params);
+    expect(res.status).toBe(403);
+  });
+
+  it("la protectora dueña tampoco puede usar withdraw (es una acción del adoptante)", async () => {
+    getUserMock.mockResolvedValue({ data: { user: { id: "owner1" } } });
+    const res = await PATCH(req({ accion: "withdraw" }), params);
+    expect(res.status).toBe(403);
+  });
+
+  it("no se puede retirar una solicitud ya resuelta", async () => {
+    getUserMock.mockResolvedValue({ data: { user: { id: "adopter1" } } });
+    state.request = { ...(state.request as Record<string, unknown>), status: "approved" };
+    const res = await PATCH(req({ accion: "withdraw" }), params);
+    expect(res.status).toBe(409);
+  });
 });

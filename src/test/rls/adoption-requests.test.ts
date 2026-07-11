@@ -1,6 +1,6 @@
 // @vitest-environment node
 import { beforeAll, describe, expect, it } from "vitest";
-import { adminClient, ensureUser, rlsDisponible, signInAs } from "./helpers";
+import { adminClient, ensureUser, rlsDisponible, signInAs, upsertShelterFixture } from "./helpers";
 
 /**
  * FEATURE-007 — RLS de `adoption_requests`: la solicitud solo es visible/editable
@@ -26,24 +26,20 @@ describe.skipIf(!rlsDisponible)("FEATURE-007 RLS adoption_requests", () => {
     adopterAId = await ensureUser("solic-adoptante-a@test.com", PASS);
     adopterBId = await ensureUser("solic-adoptante-b@test.com", PASS);
 
-    const { data: shelterA } = await admin
-      .from("shelters")
-      .upsert(
-        { owner_id: shelterAOwnerId, name: "Protectora Solic A", slug: "protectora-solic-a", status: "verified" },
-        { onConflict: "slug" },
-      )
-      .select()
-      .single();
+    const { data: shelterA } = await upsertShelterFixture({
+      owner_id: shelterAOwnerId,
+      name: "Protectora Solic A",
+      slug: "protectora-solic-a",
+      status: "verified",
+    });
     shelterAId = shelterA.id;
 
-    await admin
-      .from("shelters")
-      .upsert(
-        { owner_id: shelterBOwnerId, name: "Protectora Solic B", slug: "protectora-solic-b", status: "verified" },
-        { onConflict: "slug" },
-      )
-      .select()
-      .single();
+    await upsertShelterFixture({
+      owner_id: shelterBOwnerId,
+      name: "Protectora Solic B",
+      slug: "protectora-solic-b",
+      status: "verified",
+    });
 
     const { data: animal } = await admin
       .from("animals")
