@@ -320,3 +320,35 @@ export function plantillaFichaDespublicada({
     `),
   };
 }
+
+// ---------- FEATURE-016: casas de acogida ----------
+
+export function plantillaContactoAcogida({
+  fosterName,
+  shelterName,
+  shelterEmail,
+  shelterPhone,
+}: {
+  fosterName: string;
+  shelterName: string;
+  shelterEmail: string | null;
+  shelterPhone: string | null;
+}) {
+  const contacto = [
+    shelterEmail ? `<li>Email: <a href="mailto:${shelterEmail}" style="color:#396662">${shelterEmail}</a></li>` : "",
+    shelterPhone ? `<li>Teléfono: ${shelterPhone}</li>` : "",
+  ].join("");
+  return {
+    subject: `${shelterName} busca casa de acogida y ha pensado en ti`,
+    html: BASE(`
+      <p>Hola ${fosterName},</p>
+      <p>La protectora <strong>${shelterName}</strong> ha visto tu registro de casa de acogida
+      y le encajas para una acogida temporal.</p>
+      <p>Si te viene bien, ponte en contacto con ellos:</p>
+      <ul style="margin:4px 0;padding-left:18px">${contacto}</ul>
+      <p>Tus datos de contacto <strong>no</strong> se han compartido: eres tú quien decide responder.
+      Si ahora no puedes acoger, puedes pausar tu disponibilidad desde
+      <a href="https://adoptia-eight.vercel.app/acogida" style="color:#396662">tu registro de acogida</a>.</p>
+    `),
+  };
+}

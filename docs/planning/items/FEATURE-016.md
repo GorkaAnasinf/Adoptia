@@ -2,12 +2,12 @@
 id: FEATURE-016
 tipo: feature
 titulo: Registro de casas de acogida
-estado: listo
+estado: hecho
 prioridad: baja
 hito: "0.4"
 duplicado_de: null
 creado: 2026-07-04
-actualizado: 2026-07-04
+actualizado: 2026-07-11
 ---
 
 # FEATURE-016 — Registro de casas de acogida
@@ -55,6 +55,13 @@ Las casas de acogida son una necesidad constante de las protectoras (cachorros, 
 
 ## Criterios de aceptación / Casuística a cubrir
 
-- [ ] Alta de acogedor en <2 min con consentimiento explícito.
-- [ ] La protectora ve zona aproximada y condiciones, nunca dirección exacta.
-- [ ] Acogedor puede pausarse (vacaciones) y darse de baja con supresión de datos.
+- [x] Alta de acogedor en <2 min con consentimiento explícito (una pantalla en `/acogida`: especies, vivienda, jardín, notas, ciudad, pin y radio; checkbox de consentimiento obligatorio con `consent_at` en BD).
+- [x] La protectora ve zona aproximada y condiciones, nunca dirección exacta (redondeo ~200 m al guardar —la exacta no existe—, y el RPC no devuelve coordenadas ni email; probado).
+- [x] Acogedor puede pausarse (vacaciones) y darse de baja con supresión real de datos (delete, no soft-delete; probado que desaparece de las listas en ambos casos).
+
+## Cierre (2026-07-11)
+
+- **BD**: `foster_homes` (pk = user, condiciones jsonb, radio 1–200 km, `consent_at` obligatorio) con redondeo de privacidad reutilizado de FEATURE-012. RLS: solo el dueño toca su fila; las protectoras acceden únicamente por el RPC `foster_homes_nearby`, que exige llamante dueño de la protectora indicada Y protectora verificada, y solo devuelve acogedores activos dentro de SU propio radio (probado: protectora lejana 0, pendiente 0, ajena 0).
+- **Contacto vía plataforma**: `POST /api/acogida/contactar` — el email va AL ACOGEDOR con los datos de la protectora, nunca al revés (probado); revalida el alcance contra el RPC y rate-limita por protectora.
+- **UI**: `/acogida` pública (alta/gestión con pausa y baja) enlazada en el footer y el sitemap; `/panel/acogida` para la protectora (chips de condiciones, distancia, "Proponer acogida") con estado para no verificadas; entrada "Acogidas" en el nav del panel.
+- **Tests**: 6 RLS + 4 de la API de contacto. Suite: 658.
