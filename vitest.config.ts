@@ -32,9 +32,7 @@ export default defineConfig({
       ],
       thresholds: {
         lines: 70,
-        // TEMPORAL (IMPROVEMENT-012): deuda heredada en funciones; devolver a 70
-        // cubriendo uploaders y páginas de panel sin tests.
-        functions: 66,
+        functions: 70,
         branches: 70,
         statements: 70,
         "src/lib/**": {

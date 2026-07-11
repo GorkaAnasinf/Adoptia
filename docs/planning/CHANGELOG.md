@@ -2,6 +2,12 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/es/) adaptado. Versionado 0.x hasta el MVP.
 
+## [0.0.25] — 2026-07-11
+
+### Cambiado
+
+- **IMPROVEMENT-012 — Deuda de cobertura saldada**: el umbral de cobertura de funciones vuelve al 70% (estaba rebajado temporalmente al 66%), con tests nuevos para la subida de fotos de instalaciones (incluido el rollback que evita ficheros huérfanos), el contacto del adoptante y el botón de retirar solicitud. Lighthouse móvil en producción: home 96 y listado 94 de rendimiento, SEO y accesibilidad 100 en ambas; la ficha se medirá cuando haya animales publicados reales.
+
 ## [0.0.24] — 2026-07-10
 
 ### Añadido
