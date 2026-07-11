@@ -293,3 +293,30 @@ export function plantillaFavoritoAdoptado({
     `),
   };
 }
+
+// ---------- FEATURE-011: moderación ----------
+
+const CONTACTO = process.env.NEXT_PUBLIC_SUPPORT_EMAIL ?? "hola@adoptia.app";
+
+export function plantillaFichaDespublicada({
+  shelterName,
+  animalName,
+  motivo,
+}: {
+  shelterName: string;
+  animalName: string;
+  motivo: string;
+}) {
+  return {
+    subject: `La ficha de ${animalName} se ha despublicado`,
+    html: BASE(`
+      <p>Hola <strong>${shelterName}</strong>,</p>
+      <p>Nuestro equipo de moderación ha despublicado temporalmente la ficha de
+      <strong>${animalName}</strong>.</p>
+      <p><strong>Motivo:</strong> ${motivo}</p>
+      <p>Puedes corregir la ficha desde tu panel. Si crees que es un error,
+      escríbenos a <a href="mailto:${CONTACTO}" style="color:#396662">${CONTACTO}</a>
+      y lo revisamos.</p>
+    `),
+  };
+}

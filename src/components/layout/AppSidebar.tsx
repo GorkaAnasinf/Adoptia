@@ -36,7 +36,11 @@ const NAV: Record<Role, Item[]> = {
     { key: "navPublicProfile", href: "/panel/perfil", icon: Store, exists: true },
     { key: "navStats", href: "/panel/estadisticas", icon: BarChart3 },
   ],
-  admin: [{ key: "navAdminShelters", href: "/admin/protectoras", icon: Store, exists: true }],
+  admin: [
+    { key: "navAdminShelters", href: "/admin/protectoras", icon: Store, exists: true },
+    { key: "navAdminReports", href: "/admin/reportes", icon: FileText, exists: true },
+    { key: "navAdminAudit", href: "/admin/auditoria", icon: BarChart3, exists: true },
+  ],
   adopter: [
     { key: "navAccount", href: "/mi-cuenta", icon: Home, exists: true },
     { key: "navMyRequests", href: "/mi-cuenta/solicitudes", icon: FileText, exists: true },
