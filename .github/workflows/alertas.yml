@@ -1,0 +1,21 @@
+name: Alertas de nuevos animales
+
+# FEATURE-010: email diario con los animales nuevos que casan con las alertas
+# activas + aviso único de favoritos adoptados. El endpoint agrupa por usuario
+# y limita a 1 email/día por alerta, así que es seguro relanzarlo.
+# Requiere secrets: SITE_URL y CRON_SECRET (los mismos que recordatorios.yml).
+
+on:
+  schedule:
+    - cron: "0 9 * * *" # cada día 09:00 UTC (11:00 CEST)
+  workflow_dispatch:
+
+jobs:
+  alertas:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Llama al endpoint de alertas
+        run: |
+          curl -sf "${{ secrets.SITE_URL }}/api/cron/alertas" \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}"
+          echo "Alertas procesadas."

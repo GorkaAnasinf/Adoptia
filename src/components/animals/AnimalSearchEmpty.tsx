@@ -1,7 +1,8 @@
 import { useTranslations } from "next-intl";
 import { PawPrint } from "lucide-react";
+import { CrearAlertaButton } from "@/components/alertas/CrearAlertaButton";
 
-/** Estado vacío del listado público. El CTA de alerta se activará con FEATURE-010. */
+/** Estado vacío del listado público, con creación de alerta (FEATURE-010). */
 export function AnimalSearchEmpty() {
   const t = useTranslations("busqueda");
   return (
@@ -11,13 +12,7 @@ export function AnimalSearchEmpty() {
       </div>
       <h2 className="font-heading text-lg font-semibold text-foreground">{t("vacioTitulo")}</h2>
       <p className="max-w-sm text-sm text-muted-foreground">{t("vacioTexto")}</p>
-      <button
-        type="button"
-        disabled
-        className="mt-2 rounded-full border border-input px-4 py-2 text-sm text-muted-foreground opacity-70"
-      >
-        {t("vacioAlerta")}
-      </button>
+      <CrearAlertaButton />
     </div>
   );
 }

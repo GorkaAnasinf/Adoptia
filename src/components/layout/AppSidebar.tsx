@@ -40,9 +40,9 @@ const NAV: Record<Role, Item[]> = {
   adopter: [
     { key: "navAccount", href: "/mi-cuenta", icon: Home, exists: true },
     { key: "navMyRequests", href: "/mi-cuenta/solicitudes", icon: FileText, exists: true },
-    { key: "navFavorites", href: "/mi-cuenta/favoritos", icon: Heart },
-    { key: "navMyAppointments", href: "/mi-cuenta/citas", icon: CalendarHeart },
-    { key: "navMyAlerts", href: "/mi-cuenta/alertas", icon: Bell },
+    { key: "navFavorites", href: "/mi-cuenta/favoritos", icon: Heart, exists: true },
+    { key: "navMyAppointments", href: "/mi-cuenta/citas", icon: CalendarHeart, exists: true },
+    { key: "navMyAlerts", href: "/mi-cuenta/alertas", icon: Bell, exists: true },
   ],
 };
 

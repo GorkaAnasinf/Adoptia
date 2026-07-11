@@ -2,6 +2,16 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/es/) adaptado. Versionado 0.x hasta el MVP.
 
+## [0.0.27] — 2026-07-11
+
+### Añadido
+
+- **FEATURE-010 — Área personal del adoptante: favoritos y alertas**: el adoptante puede **guardar favoritos** con el corazón de la ficha y verlos en `/mi-cuenta/favoritos` (con marca "¡Adoptado!" y un único email de aviso cuando un favorito encuentra hogar), y **crear alertas** desde el listado sin resultados con los filtros activos: cada día un email agrupa los animales nuevos que encajan (máximo uno al día por alerta, tope de 5 alertas por usuario garantizado en base de datos) con **baja en un clic** desde el propio email, sin iniciar sesión. Estrena también `/mi-cuenta/citas` y el menú del área personal queda completo (solicitudes, favoritos, citas, alertas).
+
+### Corregido
+
+- Error de tipos en el E2E de citas que rompía el `typecheck` estricto (colado en 0.0.26).
+
 ## [0.0.26] — 2026-07-11
 
 ### Añadido

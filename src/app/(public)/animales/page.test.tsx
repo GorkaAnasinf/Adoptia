@@ -10,8 +10,9 @@ vi.mock("@/lib/supabase/server", () => ({
 }));
 
 vi.mock("next/navigation", () => ({
-  useRouter: () => ({ replace: vi.fn() }),
+  useRouter: () => ({ replace: vi.fn(), push: vi.fn(), refresh: vi.fn() }),
   usePathname: () => "/animales",
+  useSearchParams: () => new URLSearchParams(""),
 }));
 
 vi.mock("next-intl/server", () => ({
