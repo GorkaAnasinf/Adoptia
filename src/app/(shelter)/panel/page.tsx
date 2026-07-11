@@ -28,6 +28,11 @@ type RequestRow = {
   created_at: string;
   animal: { name: string; slug: string } | null;
 };
+type CitaRow = {
+  id: string;
+  starts_at: string;
+  adoption_requests: { animals: { name: string } | null } | null;
+};
 
 function portada(media: MediaRow[]): string | null {
   if (media.length === 0) return null;
@@ -37,6 +42,7 @@ function portada(media: MediaRow[]): string | null {
 export default async function PanelPage() {
   const t = await getTranslations("panel");
   const to = await getTranslations("onboarding");
+  const tc = await getTranslations("citas");
 
   const supabase = await createClient();
   const {
@@ -53,6 +59,7 @@ export default async function PanelPage() {
   let animals: AnimalRow[] = [];
   let pendingCount = 0;
   let recentRequests: RequestRow[] = [];
+  let proximasCitas: CitaRow[] = [];
 
   if (shelter) {
     const { data: a } = await supabase
@@ -75,6 +82,16 @@ export default async function PanelPage() {
       .order("created_at", { ascending: false })
       .limit(5);
     recentRequests = (r as RequestRow[] | null) ?? [];
+
+    const { data: citas } = await supabase
+      .from("appointments")
+      .select("id, starts_at, adoption_requests(animals(name))")
+      .eq("shelter_id", shelter.id)
+      .in("status", ["pending", "confirmed"])
+      .gte("starts_at", new Date().toISOString())
+      .order("starts_at", { ascending: true })
+      .limit(3);
+    proximasCitas = (citas as unknown as CitaRow[] | null) ?? [];
   }
 
   const anyoActual = new Date().getFullYear();
@@ -165,6 +182,8 @@ export default async function PanelPage() {
               </ul>
             </div>
 
+            {/* Columna lateral: solicitudes recientes + próximas citas */}
+            <div className="flex flex-col gap-6">
             {/* Solicitudes recientes */}
             <div className="rounded-2xl border border-border bg-card p-5">
               <div className="mb-4 flex items-center justify-between">
@@ -194,6 +213,46 @@ export default async function PanelPage() {
                   ))}
                 </ul>
               )}
+            </div>
+
+            {/* Próximas citas (FEATURE-009) */}
+            <div className="rounded-2xl border border-border bg-card p-5">
+              <div className="mb-4 flex items-center justify-between">
+                <h2 className="font-heading text-lg font-semibold">{tc("dashboardTitle")}</h2>
+                {proximasCitas.length > 0 && (
+                  <Link href="/panel/citas" className="text-sm font-semibold text-tertiary hover:underline">
+                    {tc("dashboardVer")}
+                  </Link>
+                )}
+              </div>
+              {proximasCitas.length === 0 ? (
+                <p className="text-sm text-muted-foreground">{tc("dashboardEmpty")}</p>
+              ) : (
+                <ul className="flex flex-col divide-y divide-border">
+                  {proximasCitas.map((c) => (
+                    <li key={c.id}>
+                      <Link
+                        href="/panel/citas"
+                        className="flex items-center justify-between gap-2 py-2.5 text-sm hover:opacity-80"
+                      >
+                        <span className="min-w-0 truncate font-medium">
+                          {c.adoption_requests?.animals?.name ?? "—"}
+                        </span>
+                        <span className="shrink-0 text-xs text-muted-foreground">
+                          {new Intl.DateTimeFormat("es-ES", {
+                            day: "numeric",
+                            month: "short",
+                            hour: "2-digit",
+                            minute: "2-digit",
+                            timeZone: "Europe/Madrid",
+                          }).format(new Date(c.starts_at))}
+                        </span>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
             </div>
           </div>
         </>

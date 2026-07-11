@@ -125,3 +125,107 @@ export function plantillaRechazada({
     `),
   };
 }
+
+// ---------- FEATURE-009: citas ----------
+
+/** Fecha de cita legible en español peninsular (Europe/Madrid). */
+export function formatearFechaCita(fecha: Date): string {
+  return new Intl.DateTimeFormat("es-ES", {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+    hour: "2-digit",
+    minute: "2-digit",
+    timeZone: "Europe/Madrid",
+  }).format(fecha);
+}
+
+export function plantillaCitaReservadaAdoptante({
+  adopterName,
+  animalName,
+  shelterName,
+  fecha,
+}: {
+  adopterName: string;
+  animalName: string;
+  shelterName: string;
+  fecha: Date;
+}) {
+  return {
+    subject: `Cita confirmada para conocer a ${animalName}`,
+    html: BASE(`
+      <p>Hola ${adopterName},</p>
+      <p>Tu cita para conocer a <strong>${animalName}</strong> con <strong>${shelterName}</strong>
+      queda confirmada:</p>
+      <p style="font-size:18px"><strong>${formatearFechaCita(fecha)}</strong></p>
+      <p>Si no puedes acudir, cancela la cita desde tu cuenta con la mayor antelación posible.</p>
+      <p><a href="https://adoptia-eight.vercel.app/mi-cuenta/solicitudes" style="color:#396662">Ver mis solicitudes y citas</a></p>
+    `),
+  };
+}
+
+export function plantillaCitaReservadaProtectora({
+  shelterName,
+  animalName,
+  fecha,
+}: {
+  shelterName: string;
+  animalName: string;
+  fecha: Date;
+}) {
+  return {
+    subject: `Nueva cita para ${animalName}`,
+    html: BASE(`
+      <p>Hola <strong>${shelterName}</strong>,</p>
+      <p>Un adoptante ha reservado cita para conocer a <strong>${animalName}</strong>:</p>
+      <p style="font-size:18px"><strong>${formatearFechaCita(fecha)}</strong></p>
+      <p><a href="https://adoptia-eight.vercel.app/panel/citas" style="color:#396662">Ver mi agenda</a></p>
+    `),
+  };
+}
+
+export function plantillaCitaCancelada({
+  nombre,
+  animalName,
+  fecha,
+  motivo,
+  canceladaPorProtectora,
+}: {
+  nombre: string;
+  animalName: string;
+  fecha: Date;
+  motivo: string;
+  canceladaPorProtectora: boolean;
+}) {
+  const quien = canceladaPorProtectora ? "La protectora" : "El adoptante";
+  return {
+    subject: `Cita cancelada — ${animalName}`,
+    html: BASE(`
+      <p>Hola ${nombre},</p>
+      <p>${quien} ha cancelado la cita para conocer a <strong>${animalName}</strong>
+      (${formatearFechaCita(fecha)}).</p>
+      <p><strong>Motivo:</strong> ${motivo}</p>
+      <p>Podéis acordar una nueva fecha cuando queráis.</p>
+    `),
+  };
+}
+
+export function plantillaCitaRecordatorio({
+  nombre,
+  animalName,
+  fecha,
+}: {
+  nombre: string;
+  animalName: string;
+  fecha: Date;
+}) {
+  return {
+    subject: `Recordatorio: mañana tienes cita por ${animalName}`,
+    html: BASE(`
+      <p>Hola ${nombre},</p>
+      <p>Te recordamos la cita para conocer a <strong>${animalName}</strong>:</p>
+      <p style="font-size:18px"><strong>${formatearFechaCita(fecha)}</strong></p>
+      <p>Si no puedes acudir, cancela la cita cuanto antes para liberar el hueco.</p>
+    `),
+  };
+}

@@ -60,11 +60,11 @@ Para centrar el desarrollo en un lado de la app cada vez, el 0.2 se aborda en do
 | [IMPROVEMENT-011](items/IMPROVEMENT-011.md) | Wizard de alta — combo de provincia, autocompletado solo al teclear y título lateral | hecho | media |
 | [IMPROVEMENT-006](items/IMPROVEMENT-006.md) | Completar el sidebar del adoptante con sus secciones (deshabilitadas) | hecho | baja |
 
-### Hito 0.3 — 0% completado (0/3)
+### Hito 0.3 — 33% completado (1/3)
 
 | Item | Título | Estado | Prioridad |
 |------|--------|--------|-----------|
-| [FEATURE-009](items/FEATURE-009.md) | Citas con calendario y agenda de disponibilidad | listo | alta |
+| [FEATURE-009](items/FEATURE-009.md) | Citas con calendario y agenda de disponibilidad | hecho | alta |
 | [FEATURE-010](items/FEATURE-010.md) | Área personal del adoptante — solicitudes, favoritos y alertas | listo | media |
 | [FEATURE-011](items/FEATURE-011.md) | Moderación de contenido y cuentas (admin) | listo | media |
 
