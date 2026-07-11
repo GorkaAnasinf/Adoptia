@@ -2,12 +2,12 @@
 id: IMPROVEMENT-012
 tipo: improvement
 titulo: Recuperar el umbral de cobertura de funciones (deuda de tests)
-estado: recibido
+estado: hecho
 prioridad: media
 hito: null
 duplicado_de: null
 creado: 2026-07-10
-actualizado: 2026-07-10
+actualizado: 2026-07-11
 ---
 
 # IMPROVEMENT-012 — Recuperar el umbral de cobertura de funciones
@@ -36,3 +36,15 @@ SEO 100/A11y 100/**Perf 73** (LCP 5,1 s). La imagen de portada ya lleva `priorit
 local está inflado por la primera optimización de `next/image` contra Unsplash en frío.
 **Repetir la medición de la ficha en producción** y, si sigue <80, optimizar (preconnect,
 `sizes` más ajustados o reducir TBT de 360 ms).
+
+## Cierre (2026-07-11)
+
+**Cobertura**: umbral de funciones devuelto a **70** en `vitest.config.ts` (real: 70,61%).
+Tests nuevos: `ShelterMediaUploader` (subida, error de Storage, rollback sin media huérfana,
+borrado, filtro de no-imágenes), `adopter-contact` y `RetirarSolicitudButton`.
+
+**Lighthouse móvil en producción** (adoptia-eight.vercel.app, 2026-07-11):
+home SEO 100 / A11y 100 / Perf 96 (LCP 2,6 s); listado SEO 100 / A11y 100 / Perf 94
+(LCP 2,9 s). El objetivo de LCP <2,5 s queda rozado con el listado aún sin datos reales;
+la **ficha no es medible en producción** hasta que haya animales publicados de protectoras
+verificadas. Re-medir ficha y LCP del listado cuando haya contenido real (nota en BACKLOG).

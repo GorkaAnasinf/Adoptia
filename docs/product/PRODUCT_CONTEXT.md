@@ -63,6 +63,7 @@ Estado de cada capacidad en lenguaje de usuario. Se regenera con `python scripts
 - Wizard de alta — fix autocompletado y pulido de ubicación/perfil ([IMPROVEMENT-009](../planning/items/IMPROVEMENT-009.md))
 - Wizard de alta — autorrelleno de provincia y nombres OSM ([IMPROVEMENT-010](../planning/items/IMPROVEMENT-010.md))
 - Wizard de alta — combo de provincia, autocompletado solo al teclear y título lateral ([IMPROVEMENT-011](../planning/items/IMPROVEMENT-011.md))
+- Recuperar el umbral de cobertura de funciones (deuda de tests) ([IMPROVEMENT-012](../planning/items/IMPROVEMENT-012.md))
 - Vista "mis solicitudes" del adoptante ([IMPROVEMENT-013](../planning/items/IMPROVEMENT-013.md))
 
 #### 🚧 En camino (en desarrollo ahora)
@@ -79,5 +80,4 @@ _Nada en desarrollo en este momento._
 - Estadísticas para protectoras y difusión en redes — hito 0.4 ([FEATURE-014](../planning/items/FEATURE-014.md))
 - Contenido educativo sobre adopción responsable — hito 0.4 ([FEATURE-015](../planning/items/FEATURE-015.md))
 - Registro de casas de acogida — hito 0.4 ([FEATURE-016](../planning/items/FEATURE-016.md))
-- Recuperar el umbral de cobertura de funciones (deuda de tests) — hito sin asignar ([IMPROVEMENT-012](../planning/items/IMPROVEMENT-012.md))
 <!-- RENDER:END -->
