@@ -2,12 +2,12 @@
 id: FEATURE-009
 tipo: feature
 titulo: Citas con calendario y agenda de disponibilidad
-estado: listo
+estado: hecho
 prioridad: alta
 hito: "0.3"
 duplicado_de: null
 creado: 2026-07-04
-actualizado: 2026-07-04
+actualizado: 2026-07-11
 ---
 
 # FEATURE-009 — Citas con calendario y agenda de disponibilidad
@@ -58,8 +58,16 @@ Cierra el ciclo de adopción dentro de la plataforma; hoy las citas se concierta
 
 ## Criterios de aceptación / Casuística a cubrir
 
-- [ ] Adoptante solo ve huecos futuros y libres; zona horaria Europe/Madrid consistente.
-- [ ] Cancelación por cualquiera de las partes notifica a la otra con motivo.
-- [ ] Cambio de disponibilidad no rompe citas ya confirmadas (aviso a la protectora).
-- [ ] Recordatorio 24 h antes a ambos; sin duplicados si el cron corre dos veces.
-- [ ] "No se presentó" registrable; visible en historial interno de la protectora.
+- [x] Adoptante solo ve huecos futuros y libres; zona horaria Europe/Madrid consistente (RPC `appointment_free_slots` genera y filtra en Europe/Madrid; tests RLS).
+- [x] Cancelación por cualquiera de las partes notifica a la otra con motivo (PATCH `cancel` + email; tests de ambos sentidos).
+- [x] Cambio de disponibilidad no rompe citas ya confirmadas (las franjas solo generan huecos futuros; el editor avisa de que pausar/borrar no cancela citas).
+- [x] Recordatorio 24 h antes a ambos; sin duplicados si el cron corre dos veces (`reminder_sent_at` + ventana 23–25 h; workflow horario `recordatorios.yml`).
+- [x] "No se presentó" registrable; visible en historial interno de la protectora (`no_show` en `/panel/citas`).
+
+## Cierre (2026-07-11)
+
+- **BD**: `availability_slots` + `appointments` con RLS, exclusion constraint anti doble reserva (btree_gist) y RPC `appointment_free_slots` (security definer, solo huecos, no expone citas ajenas).
+- **API**: `POST /api/citas` (revalida hueco, 409 en carrera 23P01, emails a ambos), `PATCH /api/citas/[id]` (cancel con motivo por cualquiera de las partes con aviso a la otra; done/no_show solo protectora), `GET /api/cron/recordatorios` (idempotente).
+- **UI**: booking del adoptante (tira de días + pills de hora) desde su solicitud aprobada, con ver/cancelar cita; agenda `/panel/citas` (próximas con acciones + historial) y editor de disponibilidad `/panel/agenda`; tarjeta "Próximas citas" en el dashboard (pendiente desde FEATURE-004).
+- **Tests**: 6 RLS/RPC, 8+8 de API, 4 del cron, 4 del booking + actualizaciones; E2E Playwright completo (reservar → agenda → realizada) en desktop y móvil. Suite: 551 unit + 2 E2E.
+- **Pendiente de operación (usuario)**: `npx supabase db push` (migraciones de slug y citas) y secrets de GitHub Actions `SITE_URL` + `CRON_SECRET` (y `CRON_SECRET` en Vercel) para activar los recordatorios.

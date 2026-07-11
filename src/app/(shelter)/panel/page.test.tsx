@@ -11,6 +11,7 @@ const state = vi.hoisted(() => ({
   animals: [] as Array<Record<string, unknown>>,
   pendingCount: 0,
   requests: [] as Array<Record<string, unknown>>,
+  citas: [] as Array<Record<string, unknown>>,
 }));
 
 vi.mock("next-intl/server", () => ({
@@ -25,7 +26,7 @@ vi.mock("next-intl/server", () => ({
 vi.mock("@/lib/supabase/server", () => {
   const thenable = (payload: unknown) => {
     const b: Record<string, unknown> = {};
-    for (const m of ["select", "eq", "order", "limit"]) b[m] = () => b;
+    for (const m of ["select", "eq", "order", "limit", "in", "gte"]) b[m] = () => b;
     b.then = (resolve: (v: unknown) => void) => resolve(payload);
     return b;
   };
@@ -39,6 +40,7 @@ vi.mock("@/lib/supabase/server", () => {
           };
         }
         if (table === "animals") return thenable({ data: state.animals });
+        if (table === "appointments") return thenable({ data: state.citas });
         return thenable({ count: state.pendingCount, data: state.requests });
       }),
     })),
@@ -59,6 +61,7 @@ describe("PanelPage — dashboard", () => {
     state.animals = [];
     state.pendingCount = 0;
     state.requests = [];
+    state.citas = [];
   });
 
   it("protectora nueva (sin animales) ve los primeros pasos, no ceros", async () => {

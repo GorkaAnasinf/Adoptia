@@ -7,22 +7,21 @@
 
 - **Hito activo:** 0.2 — MVP (en dos bloques: 🐕 protectora → 🧑 persona; ver "Orden de trabajo" en ROADMAP)
 - **Progreso:** Bloque A (protectora) completo. Bloque B: FEATURE-005, 006 y 007 hechos, y **FEATURE-008 hecho** (SEO: og:image/JSON-LD/sitemap/robots; páginas de error y textos legales; contadores reales en home; seed de demo con 4 protectoras y 23 animales validado con `supabase db reset`). **Hito 0.2 (MVP) completo.**
-- **Siguiente:** FEATURE-009 (citas con calendario, hito 0.3).
+- **Siguiente:** FEATURE-010 (área personal del adoptante — favoritos y alertas; "mis solicitudes" ya cubierto por IMPROVEMENT-013).
 - **En curso:** nada.
-- **Bloqueos:** ⚠️ pendiente de ejecutar a mano `npx supabase db push` (migración del slug de IMPROVEMENT-001 al Supabase remoto; bloqueada al agente por permisos).
-- **Follow-ups abiertos:** re-medir Lighthouse de la ficha y LCP del listado en producción cuando haya animales publicados reales (hoy solo hay rutas estáticas; ver cierre de IMPROVEMENT-012). "Próximas citas" del dashboard llega con FEATURE-009.
-- **Última actualización:** 2026-07-11 (cierre de IMPROVEMENT-012 — umbral de funciones de vuelta a 70; Lighthouse prod OK).
+- **Bloqueos (operación manual pendiente):** ⚠️ `npx supabase db push` (migraciones de slug **y de citas** al Supabase remoto; bloqueado al agente por permisos) y ⚠️ secrets de GitHub Actions `SITE_URL` + `CRON_SECRET` (más `CRON_SECRET` en Vercel) para activar los recordatorios de citas.
+- **Follow-ups abiertos:** re-medir Lighthouse de la ficha y LCP del listado en producción cuando haya animales publicados reales (ver cierre de IMPROVEMENT-012).
+- **Última actualización:** 2026-07-11 (cierre de FEATURE-009 — citas con calendario y agenda; primer item del hito 0.3).
 
 ## Items abiertos por estado
 
 Los items `hecho`/`descartado` no aparecen aquí — su histórico vive en [CHANGELOG](CHANGELOG.md) y git.
 
 <!-- RENDER:START -->
-### ✅ Listo para desarrollo (8)
+### ✅ Listo para desarrollo (7)
 
 | Item | Título | Prioridad | Hito |
 |------|--------|-----------|------|
-| [FEATURE-009](items/FEATURE-009.md) | Citas con calendario y agenda de disponibilidad | alta | 0.3 |
 | [FEATURE-010](items/FEATURE-010.md) | Área personal del adoptante — solicitudes, favoritos y alertas | media | 0.3 |
 | [FEATURE-011](items/FEATURE-011.md) | Moderación de contenido y cuentas (admin) | media | 0.3 |
 | [FEATURE-012](items/FEATURE-012.md) | Animales perdidos y encontrados | media | 0.4 |

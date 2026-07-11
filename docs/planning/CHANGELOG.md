@@ -2,6 +2,12 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/es/) adaptado. Versionado 0.x hasta el MVP.
 
+## [0.0.26] — 2026-07-11
+
+### Añadido
+
+- **FEATURE-009 — Citas con calendario y agenda de disponibilidad**: la protectora define en `/panel/agenda` sus **franjas semanales de visitas** (día, horas y duración de cada visita, pausables), y el adoptante con **solicitud aprobada** reserva un hueco desde "Mis solicitudes" en una pantalla de tira de días y horas (solo huecos futuros y libres, hora peninsular). La doble reserva es imposible incluso con dos personas a la vez (bloqueo en base de datos). Ambas partes reciben **email de confirmación**, pueden **cancelar con motivo** (la otra parte recibe el aviso) y reciben un **recordatorio 24 h antes** (cron horario idempotente). La protectora gestiona su agenda en `/panel/citas` —próximas citas con "Realizada"/"No se presentó"/"Cancelar" e historial— y el dashboard estrena la tarjeta "Próximas citas" pendiente desde FEATURE-004. Cubierto con tests de RLS/concurrencia, de API, del cron y un E2E completo del flujo.
+
 ## [0.0.25] — 2026-07-11
 
 ### Cambiado

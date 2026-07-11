@@ -33,8 +33,13 @@ describe("AppSidebar", () => {
     // Mi cuenta activa y enlazada
     const cuenta = screen.getByRole("link", { name: messages.shell.navAccount });
     expect(cuenta).toHaveAttribute("href", "/mi-cuenta");
+    // Mis solicitudes existe desde IMPROVEMENT-013
+    expect(screen.getByRole("link", { name: messages.shell.navMyRequests })).toHaveAttribute(
+      "href",
+      "/mi-cuenta/solicitudes",
+    );
     // Secciones aún sin desarrollar: presentes pero deshabilitadas (sin enlace)
-    for (const clave of ["navMyRequests", "navFavorites", "navMyAppointments", "navMyAlerts"] as const) {
+    for (const clave of ["navFavorites", "navMyAppointments", "navMyAlerts"] as const) {
       const etiqueta = messages.shell[clave];
       expect(screen.queryByRole("link", { name: etiqueta })).not.toBeInTheDocument();
       expect(screen.getByText(etiqueta).closest('[aria-disabled="true"]')).not.toBeNull();
