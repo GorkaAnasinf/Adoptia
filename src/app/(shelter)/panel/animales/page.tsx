@@ -21,6 +21,7 @@ type AnimalRow = {
   species: "dog" | "cat" | "other";
   status: AnimalStatus;
   published_at: string | null;
+  moderation_note: string | null;
   animal_media: MediaRow[];
 };
 
@@ -37,6 +38,7 @@ export default async function AnimalesPage({
   searchParams: Promise<{ estado?: string }>;
 }) {
   const t = await getTranslations("animales");
+  const tm = await getTranslations("moderacion");
   const { estado } = await searchParams;
   const filtro: AnimalStatus | null = ESTADOS.includes(estado as AnimalStatus)
     ? (estado as AnimalStatus)
@@ -54,7 +56,7 @@ export default async function AnimalesPage({
   if (shelter) {
     let q = supabase
       .from("animals")
-      .select("id,name,slug,species,status,published_at,animal_media(url,is_cover,sort_order)")
+      .select("id,name,slug,species,status,published_at,moderation_note,animal_media(url,is_cover,sort_order)")
       .eq("shelter_id", shelter.id)
       .order("updated_at", { ascending: false });
     if (filtro) q = q.eq("status", filtro);
@@ -103,6 +105,19 @@ export default async function AnimalesPage({
           );
         })}
       </nav>
+
+      {/* Aviso de moderación (FEATURE-011): fichas despublicadas por un admin */}
+      {animales
+        .filter((a) => a.moderation_note)
+        .map((a) => (
+          <p
+            key={`mod-${a.id}`}
+            className="mt-4 rounded-xl border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-900"
+          >
+            <strong>{a.name}:</strong>{" "}
+            {tm("avisoFichaModerada", { motivo: a.moderation_note ?? "" })}
+          </p>
+        ))}
 
       {animales.length === 0 ? (
         <div className="mt-10 flex flex-col items-center gap-4 rounded-2xl border-2 border-dashed border-border py-16 text-center">

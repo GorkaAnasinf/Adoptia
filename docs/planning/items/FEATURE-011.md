@@ -2,12 +2,12 @@
 id: FEATURE-011
 tipo: feature
 titulo: Moderación de contenido y cuentas (admin)
-estado: listo
+estado: hecho
 prioridad: media
 hito: "0.3"
 duplicado_de: null
 creado: 2026-07-04
-actualizado: 2026-07-04
+actualizado: 2026-07-11
 ---
 
 # FEATURE-011 — Moderación de contenido y cuentas
@@ -57,7 +57,15 @@ Protege la confianza de la plataforma. Sin moderación, un solo caso de fraude o
 
 ## Criterios de aceptación / Casuística a cubrir
 
-- [ ] Reportar requiere cuenta y categoría; anti-abuso (máx. reportes/día).
-- [ ] Despublicación y suspensión reversibles, siempre con motivo.
-- [ ] La protectora afectada recibe email con el motivo y vía de contacto.
-- [ ] Log de auditoría consultable por admins, inmodificable.
+- [x] Reportar requiere cuenta y categoría (401 sin sesión; enum de razones); anti-abuso doble: rate limit en memoria + trigger BD de 5 reportes/día (el 6º rechazado, probado).
+- [x] Despublicación y suspensión reversibles, siempre con motivo (despublicar exige motivo y hay `republish`; suspensión de protectora ya existía en verificar; suspensión de adoptante vía ban de GoTrue con `reactivate`).
+- [x] La protectora afectada recibe email con el motivo y vía de contacto (`plantillaFichaDespublicada` con soporte; además ve el aviso con motivo en su panel de animales).
+- [x] Log de auditoría consultable por admins (`/admin/auditoria`), inmodificable de verdad: trigger que bloquea update/delete incluso a service_role (probado).
+
+## Cierre (2026-07-11)
+
+- **BD**: `reports` (razones tipadas, tope 5/día por trigger), `audit_log` inmutable (sin policies de escritura + trigger anti update/delete), `animals.moderation_note`.
+- **API**: `POST /api/reportes` (auth + rate limit doble), `POST /api/admin/animales/[id]/moderar` (unpublish con motivo/email/auditoría, republish), `POST /api/admin/usuarios/[id]/suspender` (ban GoTrue reversible, no puede auto-suspenderse), `PATCH /api/admin/reportes/[id]`. Helper común `usuarioAdminId`/`auditar` en `src/lib/admin.ts`.
+- **UI**: botón "Reportar" discreto al pie de la ficha (form en línea), cola `/admin/reportes` (pendientes con despublicar+revisar+descartar, resueltos recientes), `/admin/auditoria` (tabla) y aviso ámbar con el motivo en `/panel/animales` de la protectora afectada.
+- **Recorte consciente**: el buscador admin de cuentas/fichas del plan no se implementa (los criterios no lo exigen; la cola de reportes enlaza directo a cada ficha). Item nuevo si se echa en falta.
+- **Tests**: 5 RLS (incluida inmutabilidad contra service_role), 5+5+4 de API. Suite: 593.
