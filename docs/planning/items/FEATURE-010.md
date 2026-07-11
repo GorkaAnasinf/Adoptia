@@ -2,12 +2,12 @@
 id: FEATURE-010
 tipo: feature
 titulo: Área personal del adoptante — solicitudes, favoritos y alertas
-estado: listo
+estado: hecho
 prioridad: media
 hito: "0.3"
 duplicado_de: null
 creado: 2026-07-04
-actualizado: 2026-07-04
+actualizado: 2026-07-11
 ---
 
 # FEATURE-010 — Área personal del adoptante
@@ -56,8 +56,17 @@ Retención: el adoptante que no encuentra hoy vuelve mañana gracias a alertas y
 
 ## Criterios de aceptación / Casuística a cubrir
 
-- [ ] Solicitud retirable por el adoptante (`withdrawn`) mientras esté pendiente.
-- [ ] Favorito de animal adoptado se marca visualmente y notifica una sola vez.
-- [ ] Alerta con topes: máx. 5 alertas por usuario; frecuencia máx. 1 email/día por alerta.
-- [ ] Darse de baja de una alerta desde el email en un clic.
-- [ ] Todo el área inaccesible sin sesión; datos de otro usuario inaccesibles (RLS probada).
+- [x] Solicitud retirable por el adoptante (`withdrawn`) mientras esté pendiente (hecho en [[IMPROVEMENT-013]]).
+- [x] Favorito de animal adoptado se marca visualmente (badge en `/mi-cuenta/favoritos`) y notifica una sola vez (`favorites.notified_at`, cron de alertas).
+- [x] Alerta con topes: máx. 5 por usuario (trigger en BD, probado el 6º rechazo) y máx. 1 email/día por alerta (`last_sent_at`, filtrado en el RPC).
+- [x] Darse de baja de una alerta desde el email en un clic (`/alertas/baja?token=…` con token-capacidad, sin sesión; solo desactiva, reactivable desde la cuenta).
+- [x] Todo el área inaccesible sin sesión (redirect a /login probado por página); datos de otro usuario inaccesibles (RLS probada: lectura ajena vacía, insert a nombre de otro rechazado).
+
+## Cierre (2026-07-11)
+
+- **BD**: `favorites` (pk compuesta, `notified_at`) y `saved_searches` (filtros jsonb, `unsubscribe_token`, `last_sent_at`, tope 5 por trigger) + RPC `saved_search_matches` (matching por especie/tamaño/sexo y distancia PostGIS; solo service_role). Sin tabla `notifications` (decisión #33).
+- **Cron** `/api/cron/alertas` + workflow diario `alertas.yml`: agrupa todas las coincidencias de un usuario en un email (límite Resend) y avisa una única vez de favoritos adoptados.
+- **UI**: corazón de favorito en la ficha (optimistic, autocontenido), `/mi-cuenta/favoritos`, `/mi-cuenta/alertas` (pausar/activar/borrar, aviso de tope) y `/mi-cuenta/citas`; "Crear alerta" desde el estado vacío del listado con los filtros actuales de la URL. Sidebar del adoptante completo.
+- **Recorte consciente**: el corazón en las tarjetas del listado (plan §frontend) queda fuera — el criterio de aceptación no lo exige y requiere estado por usuario en un componente hoy presentacional; si se quiere, item nuevo.
+- **Fix de paso**: error de tipos en `e2e/citas.spec.ts` que se coló en 0.0.26 (rompía `tsc` estricto).
+- **Tests**: 6 RLS (incluido tope de 5 y matching), 5 del cron, 4+5+5 de páginas, 4 del CTA de alerta. Suite: 574.

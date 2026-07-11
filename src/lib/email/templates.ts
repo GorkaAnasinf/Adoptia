@@ -229,3 +229,67 @@ export function plantillaCitaRecordatorio({
     `),
   };
 }
+
+// ---------- FEATURE-010: alertas y favoritos ----------
+
+const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? "https://adoptia-eight.vercel.app";
+
+export function plantillaAlertaAnimales({
+  nombre,
+  secciones,
+}: {
+  nombre: string;
+  secciones: {
+    searchName: string;
+    unsubscribeToken: string;
+    animales: { name: string; slug: string }[];
+  }[];
+}) {
+  const total = secciones.reduce((n, s) => n + s.animales.length, 0);
+  const bloques = secciones
+    .map(
+      (s) => `
+      <h2 style="font-family:Montserrat,Arial,sans-serif;font-size:16px;margin:16px 0 4px">${s.searchName}</h2>
+      <ul style="margin:4px 0;padding-left:18px">
+        ${s.animales
+          .map((a) => `<li><a href="${SITE}/animales/${a.slug}" style="color:#396662">${a.name}</a></li>`)
+          .join("")}
+      </ul>
+      <p style="font-size:12px;color:#6b6b6b;margin:4px 0 0">
+        <a href="${SITE}/alertas/baja?token=${s.unsubscribeToken}" style="color:#6b6b6b">Darme de baja de esta alerta</a>
+      </p>`,
+    )
+    .join("");
+  return {
+    subject: `${total === 1 ? "Un nuevo peludo encaja" : `${total} nuevos peludos encajan`} con tu búsqueda`,
+    html: BASE(`
+      <p>Hola ${nombre},</p>
+      <p>Hay animales recién publicados que encajan con lo que buscas:</p>
+      ${bloques}
+    `),
+  };
+}
+
+export function plantillaFavoritoAdoptado({
+  nombre,
+  animales,
+}: {
+  nombre: string;
+  animales: { name: string; slug: string }[];
+}) {
+  return {
+    subject:
+      animales.length === 1
+        ? `${animales[0].name} ya ha encontrado hogar 🧡`
+        : "Algunos de tus favoritos ya han encontrado hogar 🧡",
+    html: BASE(`
+      <p>Hola ${nombre},</p>
+      <p>Te avisamos de que ${animales.length === 1 ? "uno de tus favoritos ha sido adoptado" : "algunos de tus favoritos han sido adoptados"}:</p>
+      <ul style="margin:4px 0;padding-left:18px">
+        ${animales.map((a) => `<li><a href="${SITE}/animales/${a.slug}" style="color:#396662">${a.name}</a></li>`).join("")}
+      </ul>
+      <p>¡Buenas noticias para ellos! Hay muchos más esperando:
+      <a href="${SITE}/animales" style="color:#396662">sigue buscando en Adoptia</a>.</p>
+    `),
+  };
+}

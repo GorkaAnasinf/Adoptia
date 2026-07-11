@@ -8,6 +8,7 @@ import { MiniMapa } from "@/components/map/MiniMapa";
 import { edadAproximada, esImagenValida } from "@/lib/animal-search";
 import type { AnimalStatus } from "@/lib/schemas/animal";
 import { AnimalGallery, type AnimalMedia } from "./AnimalGallery";
+import { FavoritoButton } from "./FavoritoButton";
 import { InterestButton } from "./InterestButton";
 
 export type PublicAnimalFull = {
@@ -140,6 +141,7 @@ export function AnimalPublicProfile({
           {/* Acciones (desktop) */}
           <div className="hidden items-center gap-3 lg:flex">
             {disponible && <InterestButton slug={animal.slug} />}
+            <FavoritoButton animalId={animal.id} />
             <a
               href={whatsapp}
               target="_blank"
@@ -259,6 +261,7 @@ export function AnimalPublicProfile({
         ) : (
           <span className="flex-1" />
         )}
+        <FavoritoButton animalId={animal.id} />
         <a
           href={whatsapp}
           target="_blank"
