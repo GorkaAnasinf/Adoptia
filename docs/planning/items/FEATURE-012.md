@@ -2,12 +2,12 @@
 id: FEATURE-012
 tipo: feature
 titulo: Animales perdidos y encontrados
-estado: listo
+estado: hecho
 prioridad: media
 hito: "0.4"
 duplicado_de: null
 creado: 2026-07-04
-actualizado: 2026-07-04
+actualizado: 2026-07-11
 ---
 
 # FEATURE-012 — Animales perdidos y encontrados
@@ -56,7 +56,15 @@ Amplía la plataforma a todo el ecosistema de protección animal y atrae tráfic
 
 ## Criterios de aceptación / Casuística a cubrir
 
-- [ ] Aviso con foto, especie, descripción y zona en <2 min desde el móvil.
-- [ ] Filtro perdido/encontrado en el mapa; distinción visual clara.
-- [ ] Resuelto desaparece del mapa; historia visible si el autor la comparte.
-- [ ] La ubicación exacta nunca se expone públicamente.
+- [x] Aviso con foto, especie, descripción y zona en <2 min desde el móvil (form de una pantalla: tipo, especie, nombre opcional, descripción, foto comprimida en cliente, pin en mapa).
+- [x] Filtro perdido/encontrado en el mapa; distinción visual clara (marcadores rojo/verde + chips; probado en test de componente).
+- [x] Resuelto desaparece del mapa (RPC solo devuelve `open`) e historia visible si el autor la comparte (probado en RLS y E2E).
+- [x] La ubicación exacta nunca se expone públicamente: trigger de BD redondea a rejilla de ~0.002° (~200 m) ANTES de guardar — la coordenada exacta no llega a existir (probado).
+
+## Cierre (2026-07-11)
+
+- **BD**: `lost_found_posts` (open/resolved/archived, `last_activity_at`), trigger de redondeo de privacidad, RPC `lost_found_list` (solo abiertos, máx. 500), bucket `lost-found` (lectura pública, subida por carpeta de usuario). RLS: público lee open+resolved; solo el autor edita/resuelve; archived solo autor/admin.
+- **Cron**: `/api/cron/avisos` archiva abiertos sin actividad en 60 días; añadido como segundo paso del workflow diario `alertas.yml`.
+- **UI**: `/perdidos-encontrados` (mapa Leaflet con círculos rojo/verde + popup, chips de filtro, listado, aviso de privacidad), `/perdidos-encontrados/nuevo` (requiere cuenta), detalle con mini-mapa, badge y "Marcar como resuelto" con historia; enlace "Perdidos" en el header y ruta en el sitemap.
+- **Recorte consciente**: listado ordenado por fecha, no por cercanía (el criterio no lo exige; el mapa ya da la lectura espacial). La moderación de avisos reusa la suspensión de cuentas de FEATURE-011 (no hay botón reportar en avisos — item nuevo si se quiere).
+- **Tests**: 5 RLS (incluido el redondeo y visibilidad por estado), 2 del cron, 4 de la vista; E2E (aparece en listado → autor resuelve con historia → desaparece de abiertos) en desktop y móvil. Suite: 604 + 2 E2E.

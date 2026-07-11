@@ -68,11 +68,11 @@ Para centrar el desarrollo en un lado de la app cada vez, el 0.2 se aborda en do
 | [FEATURE-010](items/FEATURE-010.md) | Área personal del adoptante — solicitudes, favoritos y alertas | hecho | media |
 | [FEATURE-011](items/FEATURE-011.md) | Moderación de contenido y cuentas (admin) | hecho | media |
 
-### Hito 0.4 — 0% completado (0/5)
+### Hito 0.4 — 20% completado (1/5)
 
 | Item | Título | Estado | Prioridad |
 |------|--------|--------|-----------|
-| [FEATURE-012](items/FEATURE-012.md) | Animales perdidos y encontrados | listo | media |
+| [FEATURE-012](items/FEATURE-012.md) | Animales perdidos y encontrados | hecho | media |
 | [FEATURE-013](items/FEATURE-013.md) | Apadrinamiento y donaciones | listo | baja |
 | [FEATURE-014](items/FEATURE-014.md) | Estadísticas para protectoras y difusión en redes | listo | baja |
 | [FEATURE-015](items/FEATURE-015.md) | Contenido educativo sobre adopción responsable | listo | baja |

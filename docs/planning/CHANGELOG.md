@@ -2,6 +2,12 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/es/) adaptado. Versionado 0.x hasta el MVP.
 
+## [0.0.29] — 2026-07-11
+
+### Añadido
+
+- **FEATURE-012 — Animales perdidos y encontrados**: nueva sección pública `/perdidos-encontrados` (enlazada en el menú) donde cualquier persona con cuenta publica en una sola pantalla un aviso de animal **perdido o encontrado** con foto, especie, descripción y un pin en el mapa. Los avisos se ven sobre el mapa con **distinción clara** (rojo = perdido, verde = encontrado) y filtro, y en un listado con ficha de detalle. **La ubicación exacta nunca se guarda**: la base de datos la redondea a ~200 m antes de almacenarla. El autor marca su aviso como **resuelto** con una mini-historia opcional que queda visible (los resueltos desaparecen del mapa), y los avisos sin actividad en 60 días se archivan solos.
+
 ## [0.0.28] — 2026-07-11
 
 ### Añadido
