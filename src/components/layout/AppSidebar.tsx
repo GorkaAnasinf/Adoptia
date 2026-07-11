@@ -33,6 +33,7 @@ const NAV: Record<Role, Item[]> = {
     { key: "navRequests", href: "/panel/solicitudes", icon: FileText, exists: true },
     { key: "navAppointments", href: "/panel/citas", icon: CalendarDays, exists: true },
     { key: "navAgenda", href: "/panel/agenda", icon: Clock, exists: true },
+    { key: "navFosterHomes", href: "/panel/acogida", icon: LifeBuoy, exists: true },
     { key: "navPublicProfile", href: "/panel/perfil", icon: Store, exists: true },
     { key: "navStats", href: "/panel/estadisticas", icon: BarChart3, exists: true },
   ],

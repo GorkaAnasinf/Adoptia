@@ -23,7 +23,7 @@
 | [FEATURE-013](FEATURE-013.md) | Apadrinamiento y donaciones | feature | hecho | 0.4 |
 | [FEATURE-014](FEATURE-014.md) | Estadísticas para protectoras y difusión en redes | feature | hecho | 0.4 |
 | [FEATURE-015](FEATURE-015.md) | Contenido educativo sobre adopción responsable | feature | hecho | 0.4 |
-| [FEATURE-016](FEATURE-016.md) | Registro de casas de acogida | feature | listo | 0.4 |
+| [FEATURE-016](FEATURE-016.md) | Registro de casas de acogida | feature | hecho | 0.4 |
 | [FEATURE-017](FEATURE-017.md) | Despliegue inicial — Supabase cloud y Vercel enlazados | feature | hecho | 0.1 |
 | [FEATURE-018](FEATURE-018.md) | App shell autenticado — cabecera común, navegación por rol y breadcrumbs | feature | hecho | 0.2 |
 | [IMPROVEMENT-001](IMPROVEMENT-001.md) | De-duplicar el slug de protectora (nombres repetidos) | improvement | hecho | — |
@@ -39,3 +39,4 @@
 | [IMPROVEMENT-011](IMPROVEMENT-011.md) | Wizard de alta — combo de provincia, autocompletado solo al teclear y título lateral | improvement | hecho | 0.2 |
 | [IMPROVEMENT-012](IMPROVEMENT-012.md) | Recuperar el umbral de cobertura de funciones (deuda de tests) | improvement | hecho | — |
 | [IMPROVEMENT-013](IMPROVEMENT-013.md) | Vista "mis solicitudes" del adoptante | improvement | hecho | — |
+| [IMPROVEMENT-014](IMPROVEMENT-014.md) | Tests RLS ocasionalmente flaky por concurrencia entre ficheros | improvement | recibido | — |
