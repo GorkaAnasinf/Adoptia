@@ -2,6 +2,12 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/es/) adaptado. Versionado 0.x hasta el MVP.
 
+## [0.0.24] — 2026-07-10
+
+### Añadido
+
+- **IMPROVEMENT-013 — "Mis solicitudes" del adoptante**: nueva página `/mi-cuenta/solicitudes` donde el adoptante sigue sus solicitudes de adopción (animal con foto y enlace a la ficha, protectora, fecha y estado) y puede **retirar** las que sigan pendientes (con confirmación; la protectora deja de verlas como activas). El aviso de "ya enviaste una solicitud para este animal" lleva ahora a esta vista, y "Mi cuenta" la enlaza.
+
 ## [0.0.23] — 2026-07-10
 
 ### Corregido

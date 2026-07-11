@@ -5,6 +5,7 @@ import {
   ensureUser,
   rlsDisponible,
   signInAs,
+  upsertShelterFixture,
 } from "./helpers";
 
 /**
@@ -30,35 +31,21 @@ describe.skipIf(!rlsDisponible)("RLS baseline", () => {
     adopterUserId = await ensureUser("adoptante@test.com", PASS);
 
     // Fixtures con service_role (salta RLS)
-    const { data: sa, error: ea } = await admin
-      .from("shelters")
-      .upsert(
-        {
-          owner_id: shelterAUserId,
-          name: "Protectora A",
-          slug: "protectora-a",
-          status: "verified",
-        },
-        { onConflict: "slug" },
-      )
-      .select()
-      .single();
+    const { data: sa, error: ea } = await upsertShelterFixture({
+      owner_id: shelterAUserId,
+      name: "Protectora A",
+      slug: "protectora-a",
+      status: "verified",
+    });
     if (ea) throw ea;
     shelterAId = sa.id;
 
-    const { data: sb, error: eb } = await admin
-      .from("shelters")
-      .upsert(
-        {
-          owner_id: shelterBUserId,
-          name: "Protectora B",
-          slug: "protectora-b",
-          status: "verified",
-        },
-        { onConflict: "slug" },
-      )
-      .select()
-      .single();
+    const { data: sb, error: eb } = await upsertShelterFixture({
+      owner_id: shelterBUserId,
+      name: "Protectora B",
+      slug: "protectora-b",
+      status: "verified",
+    });
     if (eb) throw eb;
     shelterBId = sb.id;
 

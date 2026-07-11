@@ -22,12 +22,20 @@ export default function MiCuentaPage() {
         </span>
         <h2 className="mt-5 font-heading text-xl font-semibold">{t("emptyTitle")}</h2>
         <p className="mt-2 max-w-md text-muted-foreground">{t("emptyText")}</p>
-        <Link
-          href="/"
-          className="mt-6 inline-flex min-h-11 items-center rounded-full bg-secondary px-6 text-sm font-semibold text-secondary-foreground transition-colors hover:bg-secondary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-        >
-          {t("emptyCta")}
-        </Link>
+        <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+          <Link
+            href="/mi-cuenta/solicitudes"
+            className="inline-flex min-h-11 items-center justify-center rounded-full bg-secondary px-6 text-sm font-semibold text-secondary-foreground transition-colors hover:bg-secondary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+          >
+            {t("solicitudesLink")}
+          </Link>
+          <Link
+            href="/"
+            className="inline-flex min-h-11 items-center justify-center rounded-full border border-primary px-6 text-sm font-semibold text-primary transition-colors hover:bg-primary hover:text-primary-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+          >
+            {t("emptyCta")}
+          </Link>
+        </div>
       </div>
     </section>
   );

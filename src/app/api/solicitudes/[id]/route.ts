@@ -86,10 +86,6 @@ export async function PATCH(
     return json({ error: { code: "not_found", message: "Solicitud no encontrada" } }, 404);
   }
 
-  if (fila.animals?.shelters?.owner_id !== user.id) {
-    return json({ error: { code: "forbidden", message: "Solo la protectora dueña puede gestionar esta solicitud" } }, 403);
-  }
-
   const parsed = accionSolicitudSchema.safeParse(await req.json().catch(() => null));
   if (!parsed.success) {
     return json(
@@ -99,6 +95,16 @@ export async function PATCH(
   }
   const accion = parsed.data;
 
+  // Autorización por acción: withdraw es del adoptante dueño de la solicitud;
+  // el resto (aprobar/rechazar/adoptar/notas) son de la protectora del animal.
+  if (accion.accion === "withdraw") {
+    if (fila.adopter_id !== user.id) {
+      return json({ error: { code: "forbidden", message: "Solo quien envió la solicitud puede retirarla" } }, 403);
+    }
+  } else if (fila.animals?.shelters?.owner_id !== user.id) {
+    return json({ error: { code: "forbidden", message: "Solo la protectora dueña puede gestionar esta solicitud" } }, 403);
+  }
+
   // Las notas internas se pueden editar en cualquier momento; el resto de
   // acciones exigen que la solicitud siga pendiente.
   if (accion.accion !== "note" && fila.status !== "pending") {
@@ -106,6 +112,17 @@ export async function PATCH(
       { error: { code: "invalid_state", message: "Esta solicitud ya está resuelta" } },
       409,
     );
+  }
+
+  if (accion.accion === "withdraw") {
+    const { data, error } = await supabase
+      .from("adoption_requests")
+      .update({ status: "withdrawn" })
+      .eq("id", id)
+      .select("id, status")
+      .single();
+    if (error) return json({ error: { code: "db_error", message: error.message } }, 500);
+    return json({ data });
   }
 
   if (accion.accion === "note") {

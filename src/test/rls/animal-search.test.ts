@@ -1,5 +1,5 @@
 import { beforeAll, describe, expect, it } from "vitest";
-import { adminClient, anonClient, ensureUser, rlsDisponible } from "./helpers";
+import { adminClient, anonClient, ensureUser, rlsDisponible, upsertShelterFixture } from "./helpers";
 
 /**
  * Tests del RPC `animals_search` (listado público con filtros y distancia).
@@ -23,11 +23,7 @@ describe.skipIf(!rlsDisponible)("RPC animals_search", () => {
     const pendienteUser = await ensureUser("busqueda-pendiente@test.com", PASS);
 
     const upsertShelter = async (fila: Record<string, unknown>) => {
-      const { data, error } = await admin
-        .from("shelters")
-        .upsert(fila, { onConflict: "slug" })
-        .select()
-        .single();
+      const { data, error } = await upsertShelterFixture(fila);
       if (error) throw error;
       return data.id as string;
     };

@@ -1,6 +1,6 @@
 // @vitest-environment node
 import { beforeAll, describe, expect, it } from "vitest";
-import { adminClient, anonClient, ensureUser, rlsDisponible, signInAs } from "./helpers";
+import { adminClient, anonClient, ensureUser, rlsDisponible, signInAs, upsertShelterFixture } from "./helpers";
 
 /**
  * FEATURE-004 — Storage bucket `shelter-media` (fotos de instalaciones).
@@ -19,17 +19,19 @@ describe.skipIf(!rlsDisponible)("FEATURE-004 media de protectora", () => {
     const a = await ensureUser("protectora-a@test.com", PASS);
     const b = await ensureUser("protectora-b@test.com", PASS);
 
-    const { data: sa } = await admin
-      .from("shelters")
-      .upsert({ owner_id: a, name: "Protectora A", slug: "protectora-a", status: "verified" }, { onConflict: "slug" })
-      .select()
-      .single();
+    const { data: sa } = await upsertShelterFixture({
+      owner_id: a,
+      name: "Protectora A",
+      slug: "protectora-a",
+      status: "verified",
+    });
     shelterAId = sa.id;
-    const { data: sb } = await admin
-      .from("shelters")
-      .upsert({ owner_id: b, name: "Protectora B", slug: "protectora-b", status: "verified" }, { onConflict: "slug" })
-      .select()
-      .single();
+    const { data: sb } = await upsertShelterFixture({
+      owner_id: b,
+      name: "Protectora B",
+      slug: "protectora-b",
+      status: "verified",
+    });
     shelterBId = sb.id;
   });
 
