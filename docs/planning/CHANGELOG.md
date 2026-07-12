@@ -2,6 +2,12 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/es/) adaptado. Versionado 0.x hasta el MVP.
 
+## [0.0.34] — 2026-07-12
+
+### Corregido
+
+- **IMPROVEMENT-014 — CI verde de nuevo y suite estable**: el CI llevaba en rojo desde la 0.0.29 porque la cobertura había caído por debajo del umbral con el volumen de interfaz nueva (el control de calidad local corría los tests sin medir cobertura — corregido el proceso). Se añaden ~60 tests de los formularios, acciones y páginas de las últimas features, devolviendo los cuatro umbrales por encima del 70% (funciones 71,7%, líneas 80,6%). Además, los tests de base de datos corren ahora en serie entre sí (adiós al flaky ocasional) y los tests de interacción largos ya no expiran bajo la instrumentación de cobertura.
+
 ## [0.0.33] — 2026-07-11
 
 ### Añadido

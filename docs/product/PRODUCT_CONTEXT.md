@@ -73,6 +73,7 @@ Estado de cada capacidad en lenguaje de usuario. Se regenera con `python scripts
 - Wizard de alta — combo de provincia, autocompletado solo al teclear y título lateral ([IMPROVEMENT-011](../planning/items/IMPROVEMENT-011.md))
 - Recuperar el umbral de cobertura de funciones (deuda de tests) ([IMPROVEMENT-012](../planning/items/IMPROVEMENT-012.md))
 - Vista "mis solicitudes" del adoptante ([IMPROVEMENT-013](../planning/items/IMPROVEMENT-013.md))
+- Tests RLS ocasionalmente flaky por concurrencia entre ficheros ([IMPROVEMENT-014](../planning/items/IMPROVEMENT-014.md))
 
 #### 🚧 En camino (en desarrollo ahora)
 
@@ -80,5 +81,5 @@ _Nada en desarrollo en este momento._
 
 #### 🗓️ Previsto
 
-- Tests RLS ocasionalmente flaky por concurrencia entre ficheros — hito sin asignar ([IMPROVEMENT-014](../planning/items/IMPROVEMENT-014.md))
+_Backlog vacío._
 <!-- RENDER:END -->

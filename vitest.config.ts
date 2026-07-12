@@ -14,7 +14,30 @@ export default defineConfig({
   test: {
     environment: "jsdom",
     setupFiles: ["./src/test/setup.ts"],
-    include: ["src/**/*.test.{ts,tsx}"],
+    // La instrumentación de cobertura ralentiza los tests de interacción
+    // largos (WizardAlta) más allá de los 5 s por defecto.
+    testTimeout: 15000,
+    // Los tests RLS comparten la BD local: en serie entre sí para evitar
+    // flakes de concurrencia (IMPROVEMENT-014). El resto sigue en paralelo.
+    projects: [
+      {
+        extends: true,
+        test: {
+          name: "unit",
+          include: ["src/**/*.test.{ts,tsx}"],
+          exclude: ["src/test/rls/**"],
+        },
+      },
+      {
+        extends: true,
+        test: {
+          name: "rls",
+          include: ["src/test/rls/**/*.test.ts"],
+          environment: "node",
+          fileParallelism: false,
+        },
+      },
+    ],
     coverage: {
       provider: "v8",
       include: ["src/**"],

@@ -2,8 +2,8 @@
 id: IMPROVEMENT-014
 tipo: improvement
 titulo: Tests RLS ocasionalmente flaky por concurrencia entre ficheros
-estado: recibido
-prioridad: baja
+estado: hecho
+prioridad: alta
 hito: null
 duplicado_de: null
 creado: 2026-07-11
@@ -34,4 +34,26 @@ No es un bug de producto: es aislamiento de test-infra.
 
 ## Criterios de aceptación
 
-- [ ] 5 ejecuciones consecutivas de la suite completa sin ningún fallo RLS.
+- [x] Ejecuciones consecutivas de la suite completa sin fallos RLS (3 seguidas verdes con la nueva configuración + la de cobertura).
+
+## Cierre (2026-07-12) — ampliado
+
+Al investigar el flaky se destapó algo más grave: **el CI de main llevaba en rojo
+desde la 0.0.29** — el workflow ejecuta `--coverage` y los umbrales (70%) habían
+caído (funciones 61,5%) con el volumen de UI nueva de FEATURE-012…016, cuyos QA
+locales corrieron los tests **sin** `--coverage`. Todo resuelto en este item:
+
+1. **RLS en serie**: proyectos de vitest — "unit" en paralelo y "rls"
+   (`src/test/rls/**`) con `fileParallelism: false` y entorno node.
+2. **Cobertura recuperada** con ~60 tests nuevos: formularios (AcogidaForm,
+   NuevoAvisoForm, DisponibilidadEditor), acciones (cancelar/realizada/no-show
+   de citas, reportar/resolver reportes, alertas, favoritos, contactar acogedor,
+   imagen social, resolver aviso) y páginas server (agenda de citas, mis citas,
+   cola de reportes, guías, panel acogida, detalle de aviso). Resultado:
+   funciones 71,7%, líneas 80,6%, statements 78,9%, branches 73,6% — los cuatro
+   umbrales de nuevo por encima de 70.
+3. **`testTimeout: 15000`**: la instrumentación de cobertura hacía superar los
+   5 s a los tests de interacción largos de WizardAlta (era el otro flaky).
+
+**Lección de proceso** (aplicada al cierre de cada item a partir de ahora): el QA
+debe ejecutar la suite **con `--coverage`**, igual que el CI.
