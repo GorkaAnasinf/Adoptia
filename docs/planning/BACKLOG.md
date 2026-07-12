@@ -11,7 +11,7 @@
 - **Siguiente:** nada en cola — lo que entre por la pasarela del analista. **CI de main verde de nuevo** (IMPROVEMENT-014: llevaba en rojo desde 0.0.29 por cobertura; regla nueva: el QA corre siempre con `--coverage`).
 - **Bloqueos:** ninguno. ✅ Migraciones aplicadas con `npx supabase db push` (las 8 pendientes: slug, citas, favoritos/alertas, moderación, perdidos/encontrados, apadrinamiento, estadísticas y acogida) y ✅ secrets configurados (`SITE_URL` + `CRON_SECRET` en GitHub Actions y `CRON_SECRET` en Vercel) — crons activos. (Confirmado 2026-07-12.)
 - **Follow-ups abiertos:** re-medir Lighthouse de ficha/listado en producción cuando haya contenido real (ver IMPROVEMENT-012).
-- **Última actualización:** 2026-07-12 (confirmadas operaciones manuales: migraciones aplicadas y secrets de crons configurados).
+- **Última actualización:** 2026-07-12 (cierre de IMPROVEMENT-015 — README reescrito y manual de usuario nuevo en `docs/manual/MANUAL_USUARIO.md` para la entrega del TFM; además, confirmadas las operaciones manuales: migraciones aplicadas y secrets de crons configurados).
 
 ## Items abiertos por estado
 

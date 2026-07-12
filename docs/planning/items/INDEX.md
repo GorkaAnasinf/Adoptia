@@ -40,3 +40,4 @@
 | [IMPROVEMENT-012](IMPROVEMENT-012.md) | Recuperar el umbral de cobertura de funciones (deuda de tests) | improvement | hecho | — |
 | [IMPROVEMENT-013](IMPROVEMENT-013.md) | Vista "mis solicitudes" del adoptante | improvement | hecho | — |
 | [IMPROVEMENT-014](IMPROVEMENT-014.md) | Tests RLS ocasionalmente flaky por concurrencia entre ficheros | improvement | hecho | — |
+| [IMPROVEMENT-015](IMPROVEMENT-015.md) | README de calidad y manual de usuario (entrega TFM) | improvement | hecho | 0.4 |

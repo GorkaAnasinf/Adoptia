@@ -74,6 +74,7 @@ Estado de cada capacidad en lenguaje de usuario. Se regenera con `python scripts
 - Recuperar el umbral de cobertura de funciones (deuda de tests) ([IMPROVEMENT-012](../planning/items/IMPROVEMENT-012.md))
 - Vista "mis solicitudes" del adoptante ([IMPROVEMENT-013](../planning/items/IMPROVEMENT-013.md))
 - Tests RLS ocasionalmente flaky por concurrencia entre ficheros ([IMPROVEMENT-014](../planning/items/IMPROVEMENT-014.md))
+- README de calidad y manual de usuario (entrega TFM) ([IMPROVEMENT-015](../planning/items/IMPROVEMENT-015.md))
 
 #### 🚧 En camino (en desarrollo ahora)
 
