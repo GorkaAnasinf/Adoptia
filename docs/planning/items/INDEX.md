@@ -39,4 +39,4 @@
 | [IMPROVEMENT-011](IMPROVEMENT-011.md) | Wizard de alta — combo de provincia, autocompletado solo al teclear y título lateral | improvement | hecho | 0.2 |
 | [IMPROVEMENT-012](IMPROVEMENT-012.md) | Recuperar el umbral de cobertura de funciones (deuda de tests) | improvement | hecho | — |
 | [IMPROVEMENT-013](IMPROVEMENT-013.md) | Vista "mis solicitudes" del adoptante | improvement | hecho | — |
-| [IMPROVEMENT-014](IMPROVEMENT-014.md) | Tests RLS ocasionalmente flaky por concurrencia entre ficheros | improvement | recibido | — |
+| [IMPROVEMENT-014](IMPROVEMENT-014.md) | Tests RLS ocasionalmente flaky por concurrencia entre ficheros | improvement | hecho | — |
