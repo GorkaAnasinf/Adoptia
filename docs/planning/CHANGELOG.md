@@ -2,6 +2,12 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/es/) adaptado. Versionado 0.x hasta el MVP.
 
+## [0.0.38] — 2026-07-13
+
+### Cambiado
+
+- **IMPROVEMENT-017 — Rediseño del dashboard de protectora**: el panel gana identidad visual con tres tarjetas de color sobre la paleta de marca — solicitudes pendientes (coral, con variación semanal real «+N% desde la última semana»), citas de hoy (teal, con la hora de la próxima) y perfiles activos (crema, con pila de avatares de los animales publicados). Nueva sección «Próximas Citas» con bloque de fecha, «adoptante - animal (raza)» y franja horaria, más enlace al calendario. El botón principal pasa a «Publicar mascota». Se conservan banners de verificación, primeros pasos, animales y solicitudes recientes.
+
 ## [0.0.37] — 2026-07-13
 
 ### Añadido

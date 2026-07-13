@@ -77,6 +77,7 @@ Estado de cada capacidad en lenguaje de usuario. Se regenera con `python scripts
 - Tests RLS ocasionalmente flaky por concurrencia entre ficheros ([IMPROVEMENT-014](../planning/items/IMPROVEMENT-014.md))
 - README de calidad y manual de usuario (entrega TFM) ([IMPROVEMENT-015](../planning/items/IMPROVEMENT-015.md))
 - Redirección post-login según rol (protectora al panel, admin a admin) ([IMPROVEMENT-016](../planning/items/IMPROVEMENT-016.md))
+- Rediseño del dashboard de protectora (tarjetas de color y próximas citas) ([IMPROVEMENT-017](../planning/items/IMPROVEMENT-017.md))
 
 #### 🚧 En camino (en desarrollo ahora)
 
@@ -84,5 +85,5 @@ _Nada en desarrollo en este momento._
 
 #### 🗓️ Previsto
 
-- Rediseño del dashboard de protectora (tarjetas de color y próximas citas) — hito 0.5 ([IMPROVEMENT-017](../planning/items/IMPROVEMENT-017.md))
+_Backlog vacío._
 <!-- RENDER:END -->

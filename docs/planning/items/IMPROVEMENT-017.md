@@ -2,7 +2,7 @@
 id: IMPROVEMENT-017
 tipo: improvement
 titulo: Rediseño del dashboard de protectora (tarjetas de color y próximas citas)
-estado: desarrollo
+estado: hecho
 prioridad: media
 hito: "0.5"
 duplicado_de: null

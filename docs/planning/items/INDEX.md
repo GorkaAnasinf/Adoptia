@@ -43,4 +43,4 @@
 | [IMPROVEMENT-014](IMPROVEMENT-014.md) | Tests RLS ocasionalmente flaky por concurrencia entre ficheros | improvement | hecho | — |
 | [IMPROVEMENT-015](IMPROVEMENT-015.md) | README de calidad y manual de usuario (entrega TFM) | improvement | hecho | 0.4 |
 | [IMPROVEMENT-016](IMPROVEMENT-016.md) | Redirección post-login según rol (protectora al panel, admin a admin) | improvement | hecho | 0.5 |
-| [IMPROVEMENT-017](IMPROVEMENT-017.md) | Rediseño del dashboard de protectora (tarjetas de color y próximas citas) | improvement | listo | 0.5 |
+| [IMPROVEMENT-017](IMPROVEMENT-017.md) | Rediseño del dashboard de protectora (tarjetas de color y próximas citas) | improvement | hecho | 0.5 |
