@@ -179,6 +179,15 @@
     "editProfile": "Editar perfil",
     "requestPending": "Pendiente"
   },
+  "protectorasDir": {
+    "title": "Protectoras",
+    "subtitle": "Conoce a las protectoras verificadas que publican sus animales en Adoptia.",
+    "disponibles": "{count, plural, =0 {Sin animales publicados} one {# animal en adopción} other {# animales en adopción}}",
+    "verMapa": "Ver en el mapa",
+    "vacioTitulo": "Todavía no hay protectoras",
+    "vacioTexto": "Estamos dando de alta a las primeras protectoras. Mientras tanto, echa un vistazo a los peludos que buscan hogar.",
+    "vacioCta": "Ver animales en adopción"
+  },
   "shelterPublic": {
     "aboutTitle": "Sobre nosotros",
     "hoursTitle": "Horario de visitas",

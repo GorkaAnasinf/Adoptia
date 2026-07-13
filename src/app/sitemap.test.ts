@@ -38,6 +38,7 @@ describe("sitemap.xml", () => {
     expect(urls).toContain("https://adoptia.example/");
     expect(urls).toContain("https://adoptia.example/animales");
     expect(urls).toContain("https://adoptia.example/mapa");
+    expect(urls).toContain("https://adoptia.example/protectoras");
     expect(urls).toContain("https://adoptia.example/animales/pipa-abc123");
     expect(urls).toContain("https://adoptia.example/protectoras/protectora-bilbao");
   });

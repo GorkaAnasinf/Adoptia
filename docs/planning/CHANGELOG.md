@@ -2,6 +2,12 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/es/) adaptado. Versionado 0.x hasta el MVP.
 
+## [0.0.36] — 2026-07-13
+
+### Añadido
+
+- **FEATURE-019 — Directorio público de protectoras**: nueva página `/protectoras` que arregla el 404 del enlace "Protectoras" de la cabecera. Lista las protectoras **verificadas** ordenadas por nombre, con logo, ubicación, extracto y el número de animales que tienen en adopción; cada tarjeta lleva a su perfil público y hay enlace al mapa. Estado vacío cuidado, textos en `es.json`, metadatos SEO y la ruta añadida al sitemap.
+
 ## [0.0.35] — 2026-07-12
 
 ### Añadido
