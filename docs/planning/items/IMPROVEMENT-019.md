@@ -2,7 +2,7 @@
 id: IMPROVEMENT-019
 tipo: improvement
 titulo: Rediseño del listado /animales (filtros horizontales, tarjetas con favorito y paginación numerada)
-estado: desarrollo
+estado: hecho
 prioridad: media
 hito: "0.5"
 duplicado_de: null

@@ -79,6 +79,7 @@ Estado de cada capacidad en lenguaje de usuario. Se regenera con `python scripts
 - Redirección post-login según rol (protectora al panel, admin a admin) ([IMPROVEMENT-016](../planning/items/IMPROVEMENT-016.md))
 - Rediseño del dashboard de protectora (tarjetas de color y próximas citas) ([IMPROVEMENT-017](../planning/items/IMPROVEMENT-017.md))
 - Rediseño de la home pública (hero con buscador, recién llegados, banda de stats y CTA) ([IMPROVEMENT-018](../planning/items/IMPROVEMENT-018.md))
+- Rediseño del listado /animales (filtros horizontales, tarjetas con favorito y paginación numerada) ([IMPROVEMENT-019](../planning/items/IMPROVEMENT-019.md))
 
 #### 🚧 En camino (en desarrollo ahora)
 
@@ -86,5 +87,5 @@ _Nada en desarrollo en este momento._
 
 #### 🗓️ Previsto
 
-- Rediseño del listado /animales (filtros horizontales, tarjetas con favorito y paginación numerada) — hito 0.5 ([IMPROVEMENT-019](../planning/items/IMPROVEMENT-019.md))
+_Backlog vacío._
 <!-- RENDER:END -->

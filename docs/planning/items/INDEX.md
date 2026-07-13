@@ -45,4 +45,4 @@
 | [IMPROVEMENT-016](IMPROVEMENT-016.md) | Redirección post-login según rol (protectora al panel, admin a admin) | improvement | hecho | 0.5 |
 | [IMPROVEMENT-017](IMPROVEMENT-017.md) | Rediseño del dashboard de protectora (tarjetas de color y próximas citas) | improvement | hecho | 0.5 |
 | [IMPROVEMENT-018](IMPROVEMENT-018.md) | Rediseño de la home pública (hero con buscador, recién llegados, banda de stats y CTA) | improvement | hecho | 0.5 |
-| [IMPROVEMENT-019](IMPROVEMENT-019.md) | Rediseño del listado /animales (filtros horizontales, tarjetas con favorito y paginación numerada) | improvement | listo | 0.5 |
+| [IMPROVEMENT-019](IMPROVEMENT-019.md) | Rediseño del listado /animales (filtros horizontales, tarjetas con favorito y paginación numerada) | improvement | hecho | 0.5 |
