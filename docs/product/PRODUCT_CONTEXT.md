@@ -78,6 +78,7 @@ Estado de cada capacidad en lenguaje de usuario. Se regenera con `python scripts
 - README de calidad y manual de usuario (entrega TFM) ([IMPROVEMENT-015](../planning/items/IMPROVEMENT-015.md))
 - Redirección post-login según rol (protectora al panel, admin a admin) ([IMPROVEMENT-016](../planning/items/IMPROVEMENT-016.md))
 - Rediseño del dashboard de protectora (tarjetas de color y próximas citas) ([IMPROVEMENT-017](../planning/items/IMPROVEMENT-017.md))
+- Rediseño de la home pública (hero con buscador, recién llegados, banda de stats y CTA) ([IMPROVEMENT-018](../planning/items/IMPROVEMENT-018.md))
 
 #### 🚧 En camino (en desarrollo ahora)
 
@@ -85,5 +86,5 @@ _Nada en desarrollo en este momento._
 
 #### 🗓️ Previsto
 
-- Rediseño de la home pública (hero con buscador, recién llegados, banda de stats y CTA) — hito 0.5 ([IMPROVEMENT-018](../planning/items/IMPROVEMENT-018.md))
+_Backlog vacío._
 <!-- RENDER:END -->

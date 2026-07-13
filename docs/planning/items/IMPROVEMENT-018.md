@@ -2,7 +2,7 @@
 id: IMPROVEMENT-018
 tipo: improvement
 titulo: Rediseño de la home pública (hero con buscador, recién llegados, banda de stats y CTA)
-estado: desarrollo
+estado: hecho
 prioridad: media
 hito: "0.5"
 duplicado_de: null
