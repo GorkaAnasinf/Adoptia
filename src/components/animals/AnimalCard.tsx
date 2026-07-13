@@ -1,9 +1,11 @@
+import { Building2, Mars, Venus } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { edadAproximada, esImagenValida } from "@/lib/animal-search";
 import type { AnimalStatus } from "@/lib/schemas/animal";
 import { AnimalStatusBadge } from "./AnimalStatusBadge";
+import { FavoritoButton } from "./FavoritoButton";
 
 /** Fila que devuelve el RPC animals_search. */
 export interface AnimalSearchResult {
@@ -25,8 +27,7 @@ export interface AnimalSearchResult {
   total_count: number;
 }
 
-const CLAVE_ESPECIE = { dog: "speciesDog", cat: "speciesCat", other: "speciesOther" } as const;
-const CLAVE_SEXO = { male: "sexMale", female: "sexFemale", unknown: "sexUnknown" } as const;
+const CLAVE_TAMANO = { small: "sizeSmall", medium: "sizeMedium", large: "sizeLarge" } as const;
 
 const DIAS_NUEVO = 14;
 
@@ -36,21 +37,29 @@ function esRecienLlegado(publishedAt: string | null): boolean {
   return Number.isFinite(publicado) && Date.now() - publicado < DIAS_NUEVO * 86_400_000;
 }
 
-export function AnimalCard({ animal, conCta = false }: { animal: AnimalSearchResult; conCta?: boolean }) {
+export function AnimalCard({
+  animal,
+  conCta = false,
+  conFavorito = false,
+}: {
+  animal: AnimalSearchResult;
+  conCta?: boolean;
+  conFavorito?: boolean;
+}) {
   const t = useTranslations("busqueda");
   const tAnimal = useTranslations("animales");
 
   const edad = edadAproximada(animal.birth_date_approx);
-  const rasgos = [
-    tAnimal(CLAVE_ESPECIE[animal.species]),
-    tAnimal(CLAVE_SEXO[animal.sex]),
+  const datos = [
     edad ? t(edad.unidad === "anios" ? "edadAnios" : "edadMeses", { n: edad.n }) : null,
+    animal.size ? tAnimal(CLAVE_TAMANO[animal.size]) : null,
+    animal.distance_m !== null ? t("distanciaDe", { km: Math.round(animal.distance_m / 1000) }) : null,
   ].filter(Boolean);
 
   return (
     <Link
       href={`/animales/${animal.slug}`}
-      className="group flex flex-col overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-black/5 transition hover:shadow-md focus-visible:outline-2 focus-visible:outline-primary"
+      className="group relative flex flex-col overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-black/5 transition hover:shadow-md focus-visible:outline-2 focus-visible:outline-primary"
     >
       <div className="relative aspect-[4/3] bg-muted">
         {esImagenValida(animal.cover_url) ? (
@@ -71,27 +80,40 @@ export function AnimalCard({ animal, conCta = false }: { animal: AnimalSearchRes
             <AnimalStatusBadge status={animal.status} />
           </div>
         ) : (
-          conCta &&
           esRecienLlegado(animal.published_at) && (
-            <span className="absolute left-2 top-2 rounded-full bg-white/90 px-2.5 py-1 text-xs font-semibold text-primary shadow-sm">
+            <span className="absolute bottom-2 left-2 rounded-full bg-primary-container px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-white shadow-sm">
               {t("badgeNuevo")}
             </span>
           )
         )}
       </div>
+      {conFavorito && (
+        // Corta el clic hacia el Link: marcar favorito no debe navegar a la ficha
+        <div
+          className="absolute right-2 top-2"
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+          }}
+        >
+          <FavoritoButton animalId={animal.id} />
+        </div>
+      )}
       <div className="flex flex-1 flex-col gap-1 p-3">
-        <h3 className="font-heading text-base font-semibold text-foreground">{animal.name}</h3>
-        <p className="text-sm text-muted-foreground">{rasgos.join(" · ")}</p>
-        {(animal.city || animal.distance_m !== null) && (
-          <p className="mt-auto pt-1 text-sm text-muted-foreground">
-            {animal.city}
-            {animal.distance_m !== null && (
-              <span className="ml-1 font-medium text-secondary">
-                {t("distanciaDe", { km: Math.round(animal.distance_m / 1000) })}
-              </span>
-            )}
-          </p>
-        )}
+        <h3 className="flex items-center gap-1.5 font-heading text-base font-semibold text-primary">
+          {animal.name}
+          {animal.sex === "male" && (
+            <Mars className="size-4 text-secondary" aria-label={tAnimal("sexMale")} role="img" />
+          )}
+          {animal.sex === "female" && (
+            <Venus className="size-4 text-secondary" aria-label={tAnimal("sexFemale")} role="img" />
+          )}
+        </h3>
+        {datos.length > 0 && <p className="text-sm text-muted-foreground">{datos.join(" · ")}</p>}
+        <p className="mt-auto flex items-center gap-1.5 pt-1 text-sm text-muted-foreground">
+          <Building2 className="size-3.5 shrink-0" aria-hidden="true" />
+          <span className="truncate">{animal.shelter_name}</span>
+        </p>
         {conCta && (
           <span
             aria-hidden="true"

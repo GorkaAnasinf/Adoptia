@@ -17,5 +17,9 @@
 Los items `hecho`/`descartado` no aparecen aquí — su histórico vive en [CHANGELOG](CHANGELOG.md) y git.
 
 <!-- RENDER:START -->
-_No hay items abiertos._
+### ✅ Listo para desarrollo (1)
+
+| Item | Título | Prioridad | Hito |
+|------|--------|-----------|------|
+| [IMPROVEMENT-019](items/IMPROVEMENT-019.md) | Rediseño del listado /animales (filtros horizontales, tarjetas con favorito y paginación numerada) | media | 0.5 |
 <!-- RENDER:END -->

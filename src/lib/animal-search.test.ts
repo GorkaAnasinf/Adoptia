@@ -3,6 +3,7 @@ import {
   PAGE_SIZE,
   buildQueryString,
   edadAproximada,
+  paginasVisibles,
   parseAnimalSearch,
   searchToRpcArgs,
   totalPaginas,
@@ -188,5 +189,28 @@ describe("totalPaginas", () => {
     expect(totalPaginas(24)).toBe(1);
     expect(totalPaginas(25)).toBe(2);
     expect(totalPaginas(100)).toBe(5);
+  });
+});
+
+describe("paginasVisibles", () => {
+  it("con pocas páginas las muestra todas sin elipsis", () => {
+    expect(paginasVisibles(1, 3)).toEqual([1, 2, 3]);
+    expect(paginasVisibles(2, 5)).toEqual([1, 2, 3, "...", 5]);
+  });
+
+  it("desde la primera página muestra el arranque, elipsis y la última", () => {
+    expect(paginasVisibles(1, 12)).toEqual([1, 2, 3, "...", 12]);
+  });
+
+  it("en una página intermedia muestra los vecinos con elipsis a ambos lados", () => {
+    expect(paginasVisibles(6, 12)).toEqual([1, "...", 5, 6, 7, "...", 12]);
+  });
+
+  it("al final muestra la primera, elipsis y el tramo final", () => {
+    expect(paginasVisibles(12, 12)).toEqual([1, "...", 10, 11, 12]);
+  });
+
+  it("con una sola página devuelve lista vacía (no hay nada que paginar)", () => {
+    expect(paginasVisibles(1, 1)).toEqual([]);
   });
 });

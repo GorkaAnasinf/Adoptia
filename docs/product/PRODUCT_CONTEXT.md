@@ -86,5 +86,5 @@ _Nada en desarrollo en este momento._
 
 #### 🗓️ Previsto
 
-_Backlog vacío._
+- Rediseño del listado /animales (filtros horizontales, tarjetas con favorito y paginación numerada) — hito 0.5 ([IMPROVEMENT-019](../planning/items/IMPROVEMENT-019.md))
 <!-- RENDER:END -->
