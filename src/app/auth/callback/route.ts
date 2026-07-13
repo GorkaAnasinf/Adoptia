@@ -1,5 +1,6 @@
 import { type EmailOtpType } from "@supabase/supabase-js";
 import { NextResponse } from "next/server";
+import { destinoPostLogin } from "@/lib/post-login";
 import { createClient } from "@/lib/supabase/server";
 
 /**
@@ -10,15 +11,15 @@ import { createClient } from "@/lib/supabase/server";
  *   que funciona también entre dispositivos (no necesita `code_verifier`).
  *
  * Si tras cualquiera de los dos hay sesión, redirige a `next` (solo rutas
- * internas). Si GoTrue ya dejó la sesión en cookies, `getUser` lo detecta.
+ * internas) o, en su defecto, al destino según el rol del perfil
+ * (protectora → `/panel`, admin → `/admin`). Si GoTrue ya dejó la sesión en
+ * cookies, `getUser` lo detecta.
  */
 export async function GET(req: Request) {
   const url = new URL(req.url);
   const code = url.searchParams.get("code");
   const tokenHash = url.searchParams.get("token_hash");
   const type = url.searchParams.get("type") as EmailOtpType | null;
-  const next = url.searchParams.get("next") ?? "/";
-  const destino = next.startsWith("/") ? next : "/";
 
   const supabase = await createClient();
 
@@ -32,6 +33,15 @@ export async function GET(req: Request) {
     data: { user },
   } = await supabase.auth.getUser();
   if (user) {
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("role")
+      .eq("id", user.id)
+      .single();
+    const destino = destinoPostLogin({
+      role: profile?.role,
+      redirect: url.searchParams.get("next"),
+    });
     return NextResponse.redirect(new URL(destino, url.origin));
   }
 
