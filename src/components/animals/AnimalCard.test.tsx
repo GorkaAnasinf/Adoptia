@@ -23,13 +23,15 @@ const base: AnimalSearchResult = {
   total_count: 1,
 };
 
-function renderCard(animal: Partial<AnimalSearchResult> = {}) {
+function renderCard(animal: Partial<AnimalSearchResult> = {}, conCta = false) {
   return render(
     <NextIntlClientProvider locale="es" messages={messages}>
-      <AnimalCard animal={{ ...base, ...animal }} />
+      <AnimalCard animal={{ ...base, ...animal }} conCta={conCta} />
     </NextIntlClientProvider>,
   );
 }
+
+const hacedias = (n: number) => new Date(Date.now() - n * 86_400_000).toISOString();
 
 describe("AnimalCard", () => {
   it("enlaza a la ficha del animal por slug", () => {
@@ -73,5 +75,32 @@ describe("AnimalCard", () => {
     renderCard();
     expect(screen.getByText(/perro/i)).toBeInTheDocument();
     expect(screen.getByText(/Bilbao/)).toBeInTheDocument();
+  });
+
+  it("con conCta muestra el botón visual de Adoptar", () => {
+    renderCard({}, true);
+    expect(screen.getByText(messages.busqueda.ctaAdoptar)).toBeInTheDocument();
+  });
+
+  it("sin conCta no muestra Adoptar ni badge de recién llegado", () => {
+    renderCard({ published_at: hacedias(2) });
+    expect(screen.queryByText(messages.busqueda.ctaAdoptar)).not.toBeInTheDocument();
+    expect(screen.queryByText(messages.busqueda.badgeNuevo)).not.toBeInTheDocument();
+  });
+
+  it("con conCta y publicado hace menos de 14 días muestra el badge Recién llegado", () => {
+    renderCard({ published_at: hacedias(2) }, true);
+    expect(screen.getByText(messages.busqueda.badgeNuevo)).toBeInTheDocument();
+  });
+
+  it("con conCta pero publicado hace más de 14 días no lleva badge", () => {
+    renderCard({ published_at: hacedias(30) }, true);
+    expect(screen.queryByText(messages.busqueda.badgeNuevo)).not.toBeInTheDocument();
+  });
+
+  it("un animal reservado con conCta no muestra el badge de nuevo (prima el estado)", () => {
+    renderCard({ status: "reserved", published_at: hacedias(2) }, true);
+    expect(screen.getByText("Reservado")).toBeInTheDocument();
+    expect(screen.queryByText(messages.busqueda.badgeNuevo)).not.toBeInTheDocument();
   });
 });

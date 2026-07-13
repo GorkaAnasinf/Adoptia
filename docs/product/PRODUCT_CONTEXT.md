@@ -85,5 +85,5 @@ _Nada en desarrollo en este momento._
 
 #### 🗓️ Previsto
 
-_Backlog vacío._
+- Rediseño de la home pública (hero con buscador, recién llegados, banda de stats y CTA) — hito 0.5 ([IMPROVEMENT-018](../planning/items/IMPROVEMENT-018.md))
 <!-- RENDER:END -->

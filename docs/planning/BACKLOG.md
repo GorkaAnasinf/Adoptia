@@ -17,5 +17,9 @@
 Los items `hecho`/`descartado` no aparecen aquí — su histórico vive en [CHANGELOG](CHANGELOG.md) y git.
 
 <!-- RENDER:START -->
-_No hay items abiertos._
+### ✅ Listo para desarrollo (1)
+
+| Item | Título | Prioridad | Hito |
+|------|--------|-----------|------|
+| [IMPROVEMENT-018](items/IMPROVEMENT-018.md) | Rediseño de la home pública (hero con buscador, recién llegados, banda de stats y CTA) | media | 0.5 |
 <!-- RENDER:END -->
