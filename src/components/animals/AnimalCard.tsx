@@ -5,7 +5,7 @@ import { useTranslations } from "next-intl";
 import { edadAproximada, esImagenValida } from "@/lib/animal-search";
 import type { AnimalStatus } from "@/lib/schemas/animal";
 import { AnimalStatusBadge } from "./AnimalStatusBadge";
-import { FavoritoButton } from "./FavoritoButton";
+import { FavoritoOverlay } from "./FavoritoOverlay";
 
 /** Fila que devuelve el RPC animals_search. */
 export interface AnimalSearchResult {
@@ -87,18 +87,7 @@ export function AnimalCard({
           )
         )}
       </div>
-      {conFavorito && (
-        // Corta el clic hacia el Link: marcar favorito no debe navegar a la ficha
-        <div
-          className="absolute right-2 top-2"
-          onClick={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-          }}
-        >
-          <FavoritoButton animalId={animal.id} />
-        </div>
-      )}
+      {conFavorito && <FavoritoOverlay animalId={animal.id} />}
       <div className="flex flex-1 flex-col gap-1 p-3">
         <h3 className="flex items-center gap-1.5 font-heading text-base font-semibold text-primary">
           {animal.name}
