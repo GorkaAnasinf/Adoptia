@@ -78,6 +78,14 @@ y `animal_count` (animales publicados, filtrados por la misma especie si aplica)
 la pantalla `/mapa` vía `supabase.rpc("shelters_nearby", args)` con el builder de
 `src/lib/shelters-search.ts`.
 
+Los agregados públicos anónimos de la ficha van por funciones **SECURITY DEFINER** que
+blindan la visibilidad dentro (solo animal publicado de protectora `verified`, si no
+devuelven neutro): **`registrar_visita`** (FEATURE-014, incrementa `page_views` sin PII) y
+**`contar_interesados`** (IMPROVEMENT-020, migración `20260713140000`, devuelve el nº de
+adoptantes distintos con solicitud sobre el animal — sin filtrar identidades; la tabla
+`adoption_requests` sigue sin lectura pública). La ficha lo consume con
+`supabase.rpc("contar_interesados", { p_animal_id })`.
+
 ## Migraciones
 
 SQL versionado en `supabase/migrations/` con la CLI de Supabase (`supabase migration new`, `supabase db push`). Nunca cambios manuales en el dashboard sin su migración correspondiente. Seed de demo en `supabase/seed.sql`.

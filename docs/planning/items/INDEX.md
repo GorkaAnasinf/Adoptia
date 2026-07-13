@@ -46,3 +46,4 @@
 | [IMPROVEMENT-017](IMPROVEMENT-017.md) | Rediseño del dashboard de protectora (tarjetas de color y próximas citas) | improvement | hecho | 0.5 |
 | [IMPROVEMENT-018](IMPROVEMENT-018.md) | Rediseño de la home pública (hero con buscador, recién llegados, banda de stats y CTA) | improvement | hecho | 0.5 |
 | [IMPROVEMENT-019](IMPROVEMENT-019.md) | Rediseño del listado /animales (filtros horizontales, tarjetas con favorito y paginación numerada) | improvement | hecho | 0.5 |
+| [IMPROVEMENT-020](IMPROVEMENT-020.md) | Rediseño de la ficha pública de animal | improvement | hecho | 0.5 |
