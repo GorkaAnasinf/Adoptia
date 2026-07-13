@@ -100,7 +100,7 @@ describe("Ficha pública del animal", () => {
     expect(screen.getByText(/perrita muy cariñosa/)).toBeInTheDocument();
     expect(screen.getByText("Protectora Bilbao")).toBeInTheDocument();
     // CTA presente en la columna de acciones y en la barra sticky móvil
-    expect(screen.getAllByRole("button", { name: "Me interesa" }).length).toBeGreaterThan(0);
+    expect(screen.getAllByRole("button", { name: "Me interesa adoptar" }).length).toBeGreaterThan(0);
   });
 
   it("incluye el enlace de compartir por WhatsApp con la URL de la ficha", async () => {

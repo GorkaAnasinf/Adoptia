@@ -1,6 +1,6 @@
 "use client";
 
-import { Heart } from "lucide-react";
+import { Bookmark, Heart } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
@@ -10,7 +10,13 @@ import { createClient } from "@/lib/supabase/client";
  * Corazón de favorito (optimistic). Autocontenido: consulta sesión y estado
  * al montar; sin sesión, el clic lleva a /login.
  */
-export function FavoritoButton({ animalId }: { animalId: string }) {
+export function FavoritoButton({
+  animalId,
+  variant = "icon",
+}: {
+  animalId: string;
+  variant?: "icon" | "wide";
+}) {
   const t = useTranslations("ficha");
   const router = useRouter();
   const [userId, setUserId] = useState<string | null>(null);
@@ -49,6 +55,26 @@ export function FavoritoButton({ animalId }: { animalId: string }) {
   }
 
   const etiqueta = fav ? t("favQuitar") : t("favGuardar");
+
+  if (variant === "wide") {
+    const texto = fav ? t("favQuitar") : t("guardarLuego");
+    return (
+      <button
+        type="button"
+        onClick={alternar}
+        aria-pressed={fav}
+        className={`inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-full border px-5 py-2.5 text-sm font-medium transition-colors ${
+          fav
+            ? "border-rose-300 bg-rose-50 text-rose-600"
+            : "border-input bg-card text-foreground hover:border-primary/50"
+        }`}
+      >
+        <Bookmark className={`size-5 ${fav ? "fill-current" : ""}`} aria-hidden="true" />
+        {texto}
+      </button>
+    );
+  }
+
   return (
     <button
       type="button"

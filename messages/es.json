@@ -455,7 +455,18 @@
     "microchip": "Con microchip",
     "necesidades": "Necesidades especiales",
     "notasSalud": "Notas de salud",
-    "aptoPiso": "Apto para piso"
+    "aptoPiso": "Apto para piso",
+    "publicadoHace": "Publicado {rel}",
+    "enamoradoTitle": "¿Te has enamorado?",
+    "enamoradoText": "{nombre} está esperando conocer a su familia definitiva. Inicia el proceso de adopción hoy mismo.",
+    "interesaCta": "Me interesa adoptar",
+    "guardarLuego": "Guardar para luego",
+    "interesados": "{n, plural, =0 {Sé la primera persona en interesarte} =1 {1 persona interesada} other {# personas interesadas}}",
+    "procesoTitle": "Proceso de adopción",
+    "procesoPaso1": "Solicitud inicial online",
+    "procesoPaso2": "Entrevista con el refugio",
+    "procesoPaso3": "Visita presencial",
+    "procesoPaso4": "Contrato y seguimiento"
   },
   "shell": {
     "statusVerified": "Verificada",
