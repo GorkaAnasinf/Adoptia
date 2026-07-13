@@ -144,9 +144,13 @@ export default async function AnimalPublicoPage({ params }: { params: Params }) 
   }
 
   // Métrica de visitas (FEATURE-014): agregado anónimo por día, best-effort.
+  // Contador público de interesados (IMPROVEMENT-020): agregado anónimo.
+  let interesados = 0;
   try {
     const supabase = await createClient();
     await supabase.rpc("registrar_visita", { p_animal_id: animal.id });
+    const { data } = await supabase.rpc("contar_interesados", { p_animal_id: animal.id });
+    if (typeof data === "number") interesados = data;
   } catch {
     // Sin BD o sin RPC: la ficha se sirve igual.
   }
@@ -158,7 +162,7 @@ export default async function AnimalPublicoPage({ params }: { params: Params }) 
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdAnimal(animal, shareUrl)) }}
       />
-      <AnimalPublicProfile animal={animal} shareUrl={shareUrl} />
+      <AnimalPublicProfile animal={animal} shareUrl={shareUrl} interesados={interesados} />
     </>
   );
 }
