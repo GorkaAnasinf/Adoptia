@@ -190,3 +190,26 @@ export function esImagenValida(url: string | null | undefined): url is string {
 export function totalPaginas(total: number): number {
   return Math.max(1, Math.ceil(total / PAGE_SIZE));
 }
+
+/**
+ * Números de página a pintar en la paginación: primera, última y vecinos de
+ * la actual, con "..." en los huecos. Con una sola página no hay paginación.
+ */
+export function paginasVisibles(actual: number, total: number): (number | "...")[] {
+  if (total <= 1) return [];
+  const numeros = new Set<number>([1, total]);
+  for (let p = actual - 1; p <= actual + 1; p++) {
+    if (p >= 1 && p <= total) numeros.add(p);
+  }
+  // Desde los extremos enseña un arranque de 3 (1,2,3 o n-2,n-1,n)
+  if (actual <= 2) numeros.add(3);
+  if (actual >= total - 1) numeros.add(total - 2);
+
+  const orden = [...numeros].filter((n) => n >= 1 && n <= total).sort((a, b) => a - b);
+  const salida: (number | "...")[] = [];
+  for (const [i, n] of orden.entries()) {
+    if (i > 0 && n - orden[i - 1] > 1) salida.push("...");
+    salida.push(n);
+  }
+  return salida;
+}

@@ -9,6 +9,12 @@ vi.mock("@/lib/supabase/server", () => ({
   createClient: vi.fn(async () => ({ rpc: rpcMock })),
 }));
 
+vi.mock("@/lib/supabase/client", () => ({
+  createClient: vi.fn(() => ({
+    auth: { getUser: vi.fn(async () => ({ data: { user: null } })) },
+  })),
+}));
+
 vi.mock("next/navigation", () => ({
   useRouter: () => ({ replace: vi.fn(), push: vi.fn(), refresh: vi.fn() }),
   usePathname: () => "/animales",
@@ -63,7 +69,7 @@ describe("Página /animales", () => {
     rpcMock.mockReset();
   });
 
-  it("pinta las tarjetas devueltas por el RPC y el recuento", async () => {
+  it("pinta las tarjetas devueltas por el RPC y el recuento junto al título", async () => {
     rpcMock.mockResolvedValue({
       data: [
         fila({ name: "Pipa", total_count: 2 }),
@@ -72,10 +78,12 @@ describe("Página /animales", () => {
       error: null,
     });
     await renderPagina();
-    expect(screen.getByRole("heading", { level: 1, name: "Animales en adopción" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { level: 1, name: /Peludos cerca de ti/ }),
+    ).toBeInTheDocument();
+    expect(screen.getByText("(2 resultados)")).toBeInTheDocument();
     expect(screen.getByText("Pipa")).toBeInTheDocument();
     expect(screen.getByText("Golfo")).toBeInTheDocument();
-    expect(screen.getByText("2 animales")).toBeInTheDocument();
   });
 
   it("pasa los filtros de la URL al RPC", async () => {
@@ -99,28 +107,46 @@ describe("Página /animales", () => {
     expect(screen.getByText("No hay animales con esos filtros")).toBeInTheDocument();
   });
 
-  it("pagina conservando los filtros en los enlaces", async () => {
+  it("pagina con números conservando los filtros y ofrece Ver más resultados", async () => {
     rpcMock.mockResolvedValue({
       data: Array.from({ length: 24 }, (_, i) => fila({ name: `Animal ${i}`, total_count: 60 })),
       error: null,
     });
     await renderPagina({ especie: "dog" });
-    expect(screen.getByText("Página 1 de 3")).toBeInTheDocument();
-    const siguiente = screen.getByRole("link", { name: "Siguiente" });
-    expect(siguiente).toHaveAttribute("href", "/animales?especie=dog&pagina=2");
-    expect(screen.queryByRole("link", { name: "Anterior" })).not.toBeInTheDocument();
+    // 60 resultados → 3 páginas: 1 (actual), 2 y 3 numeradas
+    expect(screen.getByRole("link", { name: "2" })).toHaveAttribute(
+      "href",
+      "/animales?especie=dog&pagina=2",
+    );
+    expect(screen.getByRole("link", { name: "3" })).toHaveAttribute(
+      "href",
+      "/animales?especie=dog&pagina=3",
+    );
+    expect(screen.getByRole("link", { name: messages.busqueda.verMas })).toHaveAttribute(
+      "href",
+      "/animales?especie=dog&pagina=2",
+    );
   });
 
-  it("en páginas intermedias enlaza a anterior y siguiente", async () => {
+  it("en la última página no aparece Ver más resultados", async () => {
     rpcMock.mockResolvedValue({
-      data: Array.from({ length: 24 }, (_, i) => fila({ name: `Animal ${i}`, total_count: 60 })),
+      data: Array.from({ length: 12 }, (_, i) => fila({ name: `Animal ${i}`, total_count: 60 })),
       error: null,
     });
-    await renderPagina({ pagina: "2" });
-    expect(screen.getByRole("link", { name: "Anterior" })).toHaveAttribute("href", "/animales");
-    expect(screen.getByRole("link", { name: "Siguiente" })).toHaveAttribute(
-      "href",
-      "/animales?pagina=3",
-    );
+    await renderPagina({ pagina: "3" });
+    expect(
+      screen.queryByRole("link", { name: messages.busqueda.verMas }),
+    ).not.toBeInTheDocument();
+    // La página 1 sigue enlazada (sin parámetro pagina)
+    expect(screen.getByRole("link", { name: "1" })).toHaveAttribute("href", "/animales");
+  });
+
+  it("con una sola página no hay paginación", async () => {
+    rpcMock.mockResolvedValue({
+      data: [fila({ total_count: 1 })],
+      error: null,
+    });
+    await renderPagina();
+    expect(screen.queryByRole("link", { name: "1" })).not.toBeInTheDocument();
   });
 });
