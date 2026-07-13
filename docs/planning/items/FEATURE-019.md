@@ -2,7 +2,7 @@
 id: FEATURE-019
 tipo: feature
 titulo: Directorio público de protectoras (/protectoras)
-estado: desarrollo
+estado: hecho
 prioridad: alta
 hito: "0.5"
 duplicado_de: null

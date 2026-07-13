@@ -60,11 +60,11 @@ Solo se necesita un **navegador web actual** (Chrome, Firefox, Edge o Safari) en
 3. Ordena o filtra por **cercanía** para ver primero los animales de protectoras próximas a ti.
 4. Pulsa cualquier tarjeta para abrir la **ficha completa** del animal.
 
-### 3.2 El mapa de protectoras
+### 3.2 El directorio y el mapa de protectoras
 
-1. Entra en **Mapa** desde el menú.
-2. El mapa muestra todas las protectoras verificadas; los grupos de marcadores se despliegan al acercar el zoom.
-3. Pulsa un marcador para ver la tarjeta de la protectora y saltar a su **perfil público**, donde están todos sus animales.
+1. Entra en **Protectoras** desde el menú: verás el directorio de protectoras verificadas con su logo, ubicación y cuántos animales tienen en adopción. Pulsa una tarjeta para abrir su **perfil público**.
+2. Si prefieres buscarlas por zona, entra en **Mapa**: muestra las mismas protectoras sobre el mapa y los grupos de marcadores se despliegan al acercar el zoom.
+3. Pulsa un marcador para ver la tarjeta de la protectora y saltar a su perfil público, donde están todos sus animales.
 
 ### 3.3 La ficha del animal
 

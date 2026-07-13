@@ -60,6 +60,7 @@ Estado de cada capacidad en lenguaje de usuario. Se regenera con `python scripts
 - Registro de casas de acogida ([FEATURE-016](../planning/items/FEATURE-016.md))
 - Despliegue inicial — Supabase cloud y Vercel enlazados ([FEATURE-017](../planning/items/FEATURE-017.md))
 - App shell autenticado — cabecera común, navegación por rol y breadcrumbs ([FEATURE-018](../planning/items/FEATURE-018.md))
+- Directorio público de protectoras (/protectoras) ([FEATURE-019](../planning/items/FEATURE-019.md))
 - De-duplicar el slug de protectora (nombres repetidos) ([IMPROVEMENT-001](../planning/items/IMPROVEMENT-001.md))
 - Rediseño UX del wizard de alta de protectora (+ fix del mapa gris) ([IMPROVEMENT-002](../planning/items/IMPROVEMENT-002.md))
 - Pulido del shell chrome (sidebar + cabecera) hacia el mockup de Stitch ([IMPROVEMENT-003](../planning/items/IMPROVEMENT-003.md))
@@ -82,5 +83,5 @@ _Nada en desarrollo en este momento._
 
 #### 🗓️ Previsto
 
-- Directorio público de protectoras (/protectoras) — hito 0.5 ([FEATURE-019](../planning/items/FEATURE-019.md))
+_Backlog vacío._
 <!-- RENDER:END -->
