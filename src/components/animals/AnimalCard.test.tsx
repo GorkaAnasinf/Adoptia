@@ -1,8 +1,18 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { NextIntlClientProvider } from "next-intl";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import messages from "../../../messages/es.json";
 import { AnimalCard, type AnimalSearchResult } from "./AnimalCard";
+
+vi.mock("next/navigation", () => ({
+  useRouter: () => ({ push: vi.fn() }),
+}));
+
+vi.mock("@/lib/supabase/client", () => ({
+  createClient: vi.fn(() => ({
+    auth: { getUser: vi.fn(async () => ({ data: { user: null } })) },
+  })),
+}));
 
 const base: AnimalSearchResult = {
   id: "a1",
@@ -23,10 +33,13 @@ const base: AnimalSearchResult = {
   total_count: 1,
 };
 
-function renderCard(animal: Partial<AnimalSearchResult> = {}, conCta = false) {
+function renderCard(
+  animal: Partial<AnimalSearchResult> = {},
+  opciones: { conCta?: boolean; conFavorito?: boolean } = {},
+) {
   return render(
     <NextIntlClientProvider locale="es" messages={messages}>
-      <AnimalCard animal={{ ...base, ...animal }} conCta={conCta} />
+      <AnimalCard animal={{ ...base, ...animal }} {...opciones} />
     </NextIntlClientProvider>,
   );
 }
@@ -67,40 +80,55 @@ describe("AnimalCard", () => {
 
   it("una cover_url inválida (sin http ni /) cae al placeholder sin romper", () => {
     renderCard({ cover_url: "a.jpg" });
-    expect(screen.queryByRole("img")).not.toBeInTheDocument();
+    expect(screen.queryByRole("img", { name: "Pipa" })).not.toBeInTheDocument();
     expect(screen.getByText("Sin foto")).toBeInTheDocument();
   });
 
-  it("muestra especie, edad aproximada y ciudad", () => {
+  it("muestra edad, tamaño, sexo (icono) y protectora", () => {
     renderCard();
-    expect(screen.getByText(/perro/i)).toBeInTheDocument();
-    expect(screen.getByText(/Bilbao/)).toBeInTheDocument();
+    expect(screen.getByText(/Pequeño/)).toBeInTheDocument();
+    expect(screen.getByLabelText("Hembra")).toBeInTheDocument();
+    expect(screen.getByText("Protectora Bilbao")).toBeInTheDocument();
   });
 
   it("con conCta muestra el botón visual de Adoptar", () => {
-    renderCard({}, true);
+    renderCard({}, { conCta: true });
     expect(screen.getByText(messages.busqueda.ctaAdoptar)).toBeInTheDocument();
   });
 
-  it("sin conCta no muestra Adoptar ni badge de recién llegado", () => {
-    renderCard({ published_at: hacedias(2) });
+  it("sin conCta no muestra el botón de Adoptar", () => {
+    renderCard();
     expect(screen.queryByText(messages.busqueda.ctaAdoptar)).not.toBeInTheDocument();
-    expect(screen.queryByText(messages.busqueda.badgeNuevo)).not.toBeInTheDocument();
   });
 
-  it("con conCta y publicado hace menos de 14 días muestra el badge Recién llegado", () => {
-    renderCard({ published_at: hacedias(2) }, true);
+  it("publicado hace menos de 14 días lleva el badge Recién llegado (también sin conCta)", () => {
+    renderCard({ published_at: hacedias(2) });
     expect(screen.getByText(messages.busqueda.badgeNuevo)).toBeInTheDocument();
   });
 
-  it("con conCta pero publicado hace más de 14 días no lleva badge", () => {
-    renderCard({ published_at: hacedias(30) }, true);
+  it("publicado hace más de 14 días no lleva badge", () => {
+    renderCard({ published_at: hacedias(30) });
     expect(screen.queryByText(messages.busqueda.badgeNuevo)).not.toBeInTheDocument();
   });
 
-  it("un animal reservado con conCta no muestra el badge de nuevo (prima el estado)", () => {
-    renderCard({ status: "reserved", published_at: hacedias(2) }, true);
+  it("un animal reservado no muestra el badge de nuevo (prima el estado)", () => {
+    renderCard({ status: "reserved", published_at: hacedias(2) });
     expect(screen.getByText("Reservado")).toBeInTheDocument();
     expect(screen.queryByText(messages.busqueda.badgeNuevo)).not.toBeInTheDocument();
+  });
+
+  it("con conFavorito muestra el corazón y su clic no navega a la ficha", () => {
+    renderCard({}, { conFavorito: true });
+    const corazon = screen.getByRole("button", { name: messages.ficha.favGuardar });
+    const clic = fireEvent.click(corazon);
+    // El wrapper corta la propagación: el Link no recibe el clic (defaultPrevented)
+    expect(clic).toBe(false);
+  });
+
+  it("sin conFavorito no hay corazón", () => {
+    renderCard();
+    expect(
+      screen.queryByRole("button", { name: messages.ficha.favGuardar }),
+    ).not.toBeInTheDocument();
   });
 });

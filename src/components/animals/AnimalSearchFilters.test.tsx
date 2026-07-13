@@ -21,48 +21,52 @@ function renderFilters(params: Record<string, string> = {}) {
   );
 }
 
-describe("AnimalSearchFilters", () => {
+describe("AnimalSearchFilters — barra horizontal con aplicar", () => {
   beforeEach(() => {
     replaceMock.mockReset();
   });
 
-  it("elegir especie actualiza la URL y resetea la página", async () => {
-    renderFilters({ pagina: "3" });
-    await userEvent.click(screen.getByRole("button", { name: "Gato" }));
+  it("cambiar un filtro NO navega hasta pulsar Aplicar filtros", async () => {
+    renderFilters();
+    await userEvent.selectOptions(screen.getByLabelText(messages.busqueda.especie), "cat");
+    expect(replaceMock).not.toHaveBeenCalled();
+    await userEvent.click(screen.getByRole("button", { name: messages.busqueda.aplicar }));
     expect(replaceMock).toHaveBeenCalledWith("/animales?especie=cat", { scroll: false });
   });
 
-  it("los filtros activos se pueden quitar volviendo a pulsar el chip", async () => {
-    renderFilters({ especie: "dog" });
-    await userEvent.click(screen.getByRole("button", { name: "Perro" }));
-    expect(replaceMock).toHaveBeenCalledWith("/animales", { scroll: false });
-  });
-
-  it("el tamaño es combinable (multi-selección)", async () => {
-    renderFilters({ tamano: "small" });
-    await userEvent.click(screen.getByRole("button", { name: "Mediano" }));
-    expect(replaceMock).toHaveBeenCalledWith("/animales?tamano=small%2Cmedium", {
-      scroll: false,
-    });
-  });
-
-  it("'Más cercanos' está deshabilitado sin ubicación", () => {
+  it("Aplicar combina especie, tamaño, edad, sexo y convivencia", async () => {
     renderFilters();
-    expect(screen.getByRole("button", { name: /más cercanos/i })).toBeDisabled();
-  });
-
-  it("con ubicación, 'Más cercanos' ordena por cercanía", async () => {
-    renderFilters({ lat: "43.263", lng: "-2.935" });
-    const boton = screen.getByRole("button", { name: /más cercanos/i });
-    expect(boton).toBeEnabled();
-    await userEvent.click(boton);
+    await userEvent.selectOptions(screen.getByLabelText(messages.busqueda.especie), "dog");
+    await userEvent.selectOptions(screen.getByLabelText(messages.busqueda.tamano), "small");
+    await userEvent.selectOptions(screen.getByLabelText(messages.busqueda.edad), "cachorro");
+    await userEvent.selectOptions(screen.getByLabelText(messages.busqueda.sexo), "female");
+    await userEvent.click(screen.getByRole("checkbox", { name: messages.busqueda.compatNinos }));
+    await userEvent.click(screen.getByRole("button", { name: messages.busqueda.aplicar }));
     expect(replaceMock).toHaveBeenCalledWith(
-      "/animales?lat=43.263&lng=-2.935&orden=cercanos",
+      "/animales?especie=dog&tamano=small&sexo=female&edad=cachorro&ninos=si",
       { scroll: false },
     );
   });
 
-  it("'Usar mi ubicación' pide la geolocalización y la lleva a la URL", async () => {
+  it("los filtros de la URL llegan preseleccionados al borrador", () => {
+    renderFilters({ especie: "cat", tamano: "large", ninos: "si" });
+    expect(screen.getByLabelText(messages.busqueda.especie)).toHaveValue("cat");
+    expect(screen.getByLabelText(messages.busqueda.tamano)).toHaveValue("large");
+    expect(screen.getByRole("checkbox", { name: messages.busqueda.compatNinos })).toBeChecked();
+  });
+
+  it("Limpiar filtros navega a la ruta sin parámetros", async () => {
+    renderFilters({ especie: "dog", tamano: "small", ninos: "si" });
+    await userEvent.click(screen.getByRole("button", { name: messages.busqueda.limpiar }));
+    expect(replaceMock).toHaveBeenCalledWith("/animales", { scroll: false });
+  });
+
+  it("el slider de distancia está deshabilitado sin ubicación", () => {
+    renderFilters();
+    expect(screen.getByLabelText(messages.busqueda.distancia)).toBeDisabled();
+  });
+
+  it("'Usar mi ubicación' navega en el momento con las coordenadas", async () => {
     const getCurrentPosition = vi.fn((ok: PositionCallback) =>
       ok({ coords: { latitude: 43.2631, longitude: -2.9351 } } as GeolocationPosition),
     );
@@ -77,9 +81,17 @@ describe("AnimalSearchFilters", () => {
     vi.unstubAllGlobals();
   });
 
-  it("'Quitar filtros' limpia la búsqueda", async () => {
-    renderFilters({ especie: "dog", tamano: "small", ninos: "si" });
-    await userEvent.click(screen.getByRole("button", { name: /quitar filtros/i }));
-    expect(replaceMock).toHaveBeenCalledWith("/animales", { scroll: false });
+  it("con ubicación, aplicar conserva lat/lng y añade la distancia elegida", async () => {
+    renderFilters({ lat: "43.263", lng: "-2.935" });
+    const slider = screen.getByLabelText(messages.busqueda.distancia);
+    expect(slider).toBeEnabled();
+    // fireEvent de range: userEvent no soporta sliders; cambio directo
+    const { fireEvent } = await import("@testing-library/react");
+    fireEvent.change(slider, { target: { value: "50" } });
+    await userEvent.click(screen.getByRole("button", { name: messages.busqueda.aplicar }));
+    expect(replaceMock).toHaveBeenCalledWith(
+      "/animales?distancia=50&lat=43.263&lng=-2.935",
+      { scroll: false },
+    );
   });
 });

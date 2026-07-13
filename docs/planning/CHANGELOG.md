@@ -2,6 +2,12 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/es/) adaptado. Versionado 0.x hasta el MVP.
 
+## [0.0.40] — 2026-07-13
+
+### Cambiado
+
+- **IMPROVEMENT-019 — Rediseño del listado /animales**: los filtros pasan a una barra horizontal con combos (especie, tamaño, edad, sexo), slider de distancia y botón «Aplicar filtros» — ahora se editan en local y se aplican de golpe. Cabecera «Peludos cerca de ti (N resultados)» con «Ordenar por» a la derecha. Las tarjetas ganan corazón de favorito (sin pasar por la ficha; sin sesión lleva a login), badge «Recién llegado», icono de sexo junto al nombre en terracota, línea «edad · tamaño · distancia» y protectora con icono. Paginación numerada con elipsis y «Ver más resultados». Fuera de alcance (sin dato en el modelo): badge «Urgente» y filtro «Apto para piso».
+
 ## [0.0.39] — 2026-07-13
 
 ### Cambiado
