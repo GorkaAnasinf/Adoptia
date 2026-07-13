@@ -6,11 +6,11 @@
 ## 📍 ESTADO ACTUAL
 
 - **Hito activo:** 0.5 — post-MVP (mantenimiento y features detectadas en pruebas reales; hitos 0.2–0.4 cerrados).
-- **Progreso:** **IMPROVEMENT-016 hecho** — redirección post-login según rol (detectado probando: la protectora caía en la home): helper `destinoPostLogin`, aplicado en login con contraseña y callback OAuth; shelter → `/panel`, admin → `/admin`, adoptante → `/`, con `?redirect` interno respetado.
+- **Progreso:** **IMPROVEMENT-017 hecho** — rediseño del dashboard de protectora según mockup del usuario: tarjetas coral (solicitudes + delta semanal), teal (citas de hoy + próxima hora) y crema (perfiles activos con avatares), sección Próximas Citas con fecha/franja y botón «Publicar mascota».
 - **Siguiente:** nada en cola — lo que entre por la pasarela del analista o se detecte probando la plataforma.
 - **Bloqueos:** ninguno. Migraciones y secrets de crons aplicados (confirmado 2026-07-12).
-- **Follow-ups abiertos:** re-medir Lighthouse de ficha/listado en producción cuando haya contenido real (ver IMPROVEMENT-012).
-- **Última actualización:** 2026-07-13 (cierre de IMPROVEMENT-016 — redirección post-login por rol).
+- **Follow-ups abiertos:** re-medir Lighthouse de ficha/listado en producción cuando haya contenido real (ver IMPROVEMENT-012). Datos de prueba masivos (`@masivo.adoptia.es`, slugs `-msv`) cargados en local y en producción el 2026-07-13 — borrarlos al acabar las pruebas.
+- **Última actualización:** 2026-07-13 (cierre de IMPROVEMENT-017 — rediseño del dashboard de protectora).
 
 ## Items abiertos por estado
 
