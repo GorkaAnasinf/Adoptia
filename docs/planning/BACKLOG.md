@@ -18,5 +18,9 @@
 Los items `hecho`/`descartado` no aparecen aquí — su histórico vive en [CHANGELOG](CHANGELOG.md) y git.
 
 <!-- RENDER:START -->
-_No hay items abiertos._
+### ✅ Listo para desarrollo (1)
+
+| Item | Título | Prioridad | Hito |
+|------|--------|-----------|------|
+| [FEATURE-019](items/FEATURE-019.md) | Directorio público de protectoras (/protectoras) | alta | 0.5 |
 <!-- RENDER:END -->

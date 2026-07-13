@@ -78,4 +78,10 @@ Para centrar el desarrollo en un lado de la app cada vez, el 0.2 se aborda en do
 | [FEATURE-014](items/FEATURE-014.md) | Estadísticas para protectoras y difusión en redes | hecho | baja |
 | [FEATURE-015](items/FEATURE-015.md) | Contenido educativo sobre adopción responsable | hecho | baja |
 | [FEATURE-016](items/FEATURE-016.md) | Registro de casas de acogida | hecho | baja |
+
+### Hito 0.5 — 0% completado (0/1)
+
+| Item | Título | Estado | Prioridad |
+|------|--------|--------|-----------|
+| [FEATURE-019](items/FEATURE-019.md) | Directorio público de protectoras (/protectoras) | listo | alta |
 <!-- RENDER:END -->

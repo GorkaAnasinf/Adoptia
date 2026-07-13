@@ -82,5 +82,5 @@ _Nada en desarrollo en este momento._
 
 #### 🗓️ Previsto
 
-_Backlog vacío._
+- Directorio público de protectoras (/protectoras) — hito 0.5 ([FEATURE-019](../planning/items/FEATURE-019.md))
 <!-- RENDER:END -->
