@@ -26,6 +26,7 @@
 | [FEATURE-016](FEATURE-016.md) | Registro de casas de acogida | feature | hecho | 0.4 |
 | [FEATURE-017](FEATURE-017.md) | Despliegue inicial — Supabase cloud y Vercel enlazados | feature | hecho | 0.1 |
 | [FEATURE-018](FEATURE-018.md) | App shell autenticado — cabecera común, navegación por rol y breadcrumbs | feature | hecho | 0.2 |
+| [FEATURE-019](FEATURE-019.md) | Directorio público de protectoras (/protectoras) | feature | hecho | 0.5 |
 | [IMPROVEMENT-001](IMPROVEMENT-001.md) | De-duplicar el slug de protectora (nombres repetidos) | improvement | hecho | — |
 | [IMPROVEMENT-002](IMPROVEMENT-002.md) | Rediseño UX del wizard de alta de protectora (+ fix del mapa gris) | improvement | hecho | 0.2 |
 | [IMPROVEMENT-003](IMPROVEMENT-003.md) | Pulido del shell chrome (sidebar + cabecera) hacia el mockup de Stitch | improvement | hecho | 0.2 |
@@ -40,3 +41,4 @@
 | [IMPROVEMENT-012](IMPROVEMENT-012.md) | Recuperar el umbral de cobertura de funciones (deuda de tests) | improvement | hecho | — |
 | [IMPROVEMENT-013](IMPROVEMENT-013.md) | Vista "mis solicitudes" del adoptante | improvement | hecho | — |
 | [IMPROVEMENT-014](IMPROVEMENT-014.md) | Tests RLS ocasionalmente flaky por concurrencia entre ficheros | improvement | hecho | — |
+| [IMPROVEMENT-015](IMPROVEMENT-015.md) | README de calidad y manual de usuario (entrega TFM) | improvement | hecho | 0.4 |

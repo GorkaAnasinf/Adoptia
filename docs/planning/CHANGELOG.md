@@ -2,6 +2,18 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/es/) adaptado. Versionado 0.x hasta el MVP.
 
+## [0.0.36] — 2026-07-13
+
+### Añadido
+
+- **FEATURE-019 — Directorio público de protectoras**: nueva página `/protectoras` que arregla el 404 del enlace "Protectoras" de la cabecera. Lista las protectoras **verificadas** ordenadas por nombre, con logo, ubicación, extracto y el número de animales que tienen en adopción; cada tarjeta lleva a su perfil público y hay enlace al mapa. Estado vacío cuidado, textos en `es.json`, metadatos SEO y la ruta añadida al sitemap.
+
+## [0.0.35] — 2026-07-12
+
+### Añadido
+
+- **IMPROVEMENT-015 — README de calidad y manual de usuario (entrega TFM)**: nuevo **manual de usuario** (`docs/manual/MANUAL_USUARIO.md`, navegable en MkDocs) que explica toda la plataforma por perfiles —visitante/adoptante, protectora y administración— en formato "cómo hacer X" con pasos numerados, FAQ y glosario. El **README** se reescribe por completo como portada del repositorio: badges, funcionalidades por perfil, diagrama de arquitectura Mermaid, stack justificado pieza a pieza, puesta en marcha paso a paso verificada contra `package.json`, tabla de scripts, calidad/CI, despliegue, estructura del repo alineada con `src/` real y mapa de documentación. De paso corrige la referencia a Resend: los emails van por SMTP de Gmail con Nodemailer (Decisión #22).
+
 ## [0.0.34] — 2026-07-12
 
 ### Corregido
