@@ -2,6 +2,12 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/es/) adaptado. Versionado 0.x hasta el MVP.
 
+## [0.0.39] — 2026-07-13
+
+### Cambiado
+
+- **IMPROVEMENT-018 — Rediseño de la home pública**: el hero estrena buscador real — especie + ciudad/código postal (geocodificado) o «Usar mi ubicación» — que lleva al listado ordenado por cercanía. «Recién llegados» sube bajo el hero con badge «Recién llegado» (<14 días) y botón «Adoptar» en cada tarjeta; «¿Cómo funciona Adoptia?» pasa a tres tarjetas con el paso final «Concierta una cita»; las estadísticas reales se muestran en una banda teal y el bloque de protectoras gana overline, foto y CTA «Registrar mi protectora».
+
 ## [0.0.38] — 2026-07-13
 
 ### Cambiado
