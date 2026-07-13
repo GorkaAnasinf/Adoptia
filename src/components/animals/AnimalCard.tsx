@@ -28,7 +28,15 @@ export interface AnimalSearchResult {
 const CLAVE_ESPECIE = { dog: "speciesDog", cat: "speciesCat", other: "speciesOther" } as const;
 const CLAVE_SEXO = { male: "sexMale", female: "sexFemale", unknown: "sexUnknown" } as const;
 
-export function AnimalCard({ animal }: { animal: AnimalSearchResult }) {
+const DIAS_NUEVO = 14;
+
+function esRecienLlegado(publishedAt: string | null): boolean {
+  if (!publishedAt) return false;
+  const publicado = new Date(publishedAt).getTime();
+  return Number.isFinite(publicado) && Date.now() - publicado < DIAS_NUEVO * 86_400_000;
+}
+
+export function AnimalCard({ animal, conCta = false }: { animal: AnimalSearchResult; conCta?: boolean }) {
   const t = useTranslations("busqueda");
   const tAnimal = useTranslations("animales");
 
@@ -58,10 +66,17 @@ export function AnimalCard({ animal }: { animal: AnimalSearchResult }) {
             {t("sinFoto")}
           </div>
         )}
-        {animal.status !== "available" && (
+        {animal.status !== "available" ? (
           <div className="absolute left-2 top-2">
             <AnimalStatusBadge status={animal.status} />
           </div>
+        ) : (
+          conCta &&
+          esRecienLlegado(animal.published_at) && (
+            <span className="absolute left-2 top-2 rounded-full bg-white/90 px-2.5 py-1 text-xs font-semibold text-primary shadow-sm">
+              {t("badgeNuevo")}
+            </span>
+          )
         )}
       </div>
       <div className="flex flex-1 flex-col gap-1 p-3">
@@ -76,6 +91,14 @@ export function AnimalCard({ animal }: { animal: AnimalSearchResult }) {
               </span>
             )}
           </p>
+        )}
+        {conCta && (
+          <span
+            aria-hidden="true"
+            className="mt-2 rounded-full border border-primary px-4 py-1.5 text-center text-sm font-semibold text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground"
+          >
+            {t("ctaAdoptar")}
+          </span>
         )}
       </div>
     </Link>
