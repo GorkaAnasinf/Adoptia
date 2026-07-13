@@ -2,7 +2,7 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/es/) adaptado. Versionado 0.x hasta el MVP.
 
-## [0.0.41] — 2026-07-13
+## [0.0.42] — 2026-07-13
 
 ### Cambiado
 
