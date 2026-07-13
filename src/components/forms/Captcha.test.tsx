@@ -10,6 +10,13 @@ const signInMock = vi.fn();
 vi.mock("@/lib/supabase/client", () => ({
   createClient: vi.fn(() => ({
     auth: { signInWithPassword: signInMock },
+    from: vi.fn(() => ({
+      select: vi.fn(() => ({
+        eq: vi.fn(() => ({
+          single: vi.fn(async () => ({ data: { role: "adopter" } })),
+        })),
+      })),
+    })),
   })),
 }));
 

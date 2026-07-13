@@ -4,6 +4,9 @@ const exchangeMock = vi.fn();
 const verifyOtpMock = vi.fn();
 const getUserMock = vi.fn();
 
+// Rol devuelto por profiles para el usuario de la sesión
+let perfilRole: string | null = "adopter";
+
 vi.mock("@/lib/supabase/server", () => ({
   createClient: vi.fn(async () => ({
     auth: {
@@ -11,6 +14,13 @@ vi.mock("@/lib/supabase/server", () => ({
       verifyOtp: verifyOtpMock,
       getUser: getUserMock,
     },
+    from: vi.fn(() => ({
+      select: vi.fn(() => ({
+        eq: vi.fn(() => ({
+          single: vi.fn(async () => ({ data: perfilRole ? { role: perfilRole } : null })),
+        })),
+      })),
+    })),
   })),
 }));
 
@@ -23,6 +33,31 @@ describe("GET /auth/callback", () => {
     exchangeMock.mockReset().mockResolvedValue({ error: null });
     verifyOtpMock.mockReset().mockResolvedValue({ error: null });
     getUserMock.mockReset().mockResolvedValue({ data: { user: { id: "u1" } } });
+    perfilRole = "adopter";
+  });
+
+  it("protectora sin next aterriza en su panel", async () => {
+    perfilRole = "shelter";
+    const res = await GET(req("?code=abc123"));
+    expect(new URL(res.headers.get("location")!).pathname).toBe("/panel");
+  });
+
+  it("admin sin next aterriza en su área", async () => {
+    perfilRole = "admin";
+    const res = await GET(req("?code=abc123"));
+    expect(new URL(res.headers.get("location")!).pathname).toBe("/admin");
+  });
+
+  it("un next interno gana sobre el destino por rol", async () => {
+    perfilRole = "shelter";
+    const res = await GET(req("?code=abc&next=/correo-verificado"));
+    expect(new URL(res.headers.get("location")!).pathname).toBe("/correo-verificado");
+  });
+
+  it("usuario sin fila en profiles → home (sin crash)", async () => {
+    perfilRole = null;
+    const res = await GET(req("?code=abc123"));
+    expect(new URL(res.headers.get("location")!).pathname).toBe("/");
   });
 
   it("intercambia el código PKCE y, con sesión, redirige a la home", async () => {

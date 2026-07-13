@@ -12,6 +12,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Captcha, captchaHabilitado } from "./Captcha";
 import { PasswordField } from "./PasswordField";
+import { destinoPostLogin } from "@/lib/post-login";
 import { loginSchema, type LoginInput } from "@/lib/schemas/auth";
 import { createClient } from "@/lib/supabase/client";
 
@@ -31,7 +32,7 @@ export function LoginForm() {
   async function onSubmit(values: LoginInput) {
     setServerError(false);
     const supabase = createClient();
-    const { error } = await supabase.auth.signInWithPassword({
+    const { data, error } = await supabase.auth.signInWithPassword({
       ...values,
       ...(captchaToken ? { options: { captchaToken } } : {}),
     });
@@ -42,9 +43,19 @@ export function LoginForm() {
       setCaptchaToken("");
       return;
     }
-    // Solo rutas internas: evitar open redirect (?redirect=https://evil.com)
-    const destino = searchParams.get("redirect") ?? "/";
-    router.push(destino.startsWith("/") && !destino.startsWith("//") ? destino : "/");
+    // Destino por rol (protectora → panel, admin → admin); un ?redirect
+    // interno gana — el helper descarta open redirects.
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("role")
+      .eq("id", data?.user?.id ?? "")
+      .single();
+    router.push(
+      destinoPostLogin({
+        role: profile?.role,
+        redirect: searchParams.get("redirect"),
+      }),
+    );
     router.refresh();
   }
 
