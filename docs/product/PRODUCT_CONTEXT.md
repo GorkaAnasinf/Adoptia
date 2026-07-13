@@ -84,5 +84,5 @@ _Nada en desarrollo en este momento._
 
 #### 🗓️ Previsto
 
-_Backlog vacío._
+- Rediseño del dashboard de protectora (tarjetas de color y próximas citas) — hito 0.5 ([IMPROVEMENT-017](../planning/items/IMPROVEMENT-017.md))
 <!-- RENDER:END -->
