@@ -6,11 +6,11 @@
 ## 📍 ESTADO ACTUAL
 
 - **Hito activo:** 0.5 — post-MVP (mantenimiento y features detectadas en pruebas reales; hitos 0.2–0.4 cerrados).
-- **Progreso:** **IMPROVEMENT-019 hecho** — rediseño del listado /animales: filtros horizontales con «Aplicar», orden en cabecera, tarjetas con favorito/badge/sexo/protectora y paginación numerada. Antes: IMPROVEMENT-018 (home) e IMPROVEMENT-017 (dashboard de protectora).
+- **Progreso:** **IMPROVEMENT-020 hecho** — rediseño de la ficha /animales/[slug]: sidebar de acción sticky («¿Te has enamorado?» con CTA + «Guardar para luego» + contador real y anónimo de interesados), tarjeta verde «Proceso de adopción», rasgos inline con iconos, compatibilidad en pills de color y salud con checks. Nuevo RPC `contar_interesados`. Antes: IMPROVEMENT-019 (listado), 018 (home), 017 (dashboard).
 - **Siguiente:** nada en cola — lo que entre por la pasarela del analista o se detecte probando la plataforma.
-- **Bloqueos:** ninguno. Migraciones y secrets de crons aplicados (confirmado 2026-07-12).
+- **Bloqueos:** ninguno. **Pendiente de despliegue:** aplicar en producción la migración `20260713140000_improvement020_contar_interesados.sql` (`supabase db push`).
 - **Follow-ups abiertos:** re-medir Lighthouse de ficha/listado en producción cuando haya contenido real (ver IMPROVEMENT-012). Datos de prueba masivos (`@masivo.adoptia.es`, slugs `-msv`) cargados en local y en producción el 2026-07-13 — borrarlos al acabar las pruebas. Candidatos a item: badge «Urgente» (requiere campo en BD) y filtro «Apto para piso» en el RPC `animals_search` (mockup de IMPROVEMENT-019).
-- **Última actualización:** 2026-07-13 (cierre de IMPROVEMENT-019 — rediseño del listado /animales).
+- **Última actualización:** 2026-07-13 (cierre de IMPROVEMENT-020 — rediseño de la ficha de animal).
 
 ## Items abiertos por estado
 

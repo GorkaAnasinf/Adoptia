@@ -2,7 +2,7 @@
 id: IMPROVEMENT-020
 tipo: improvement
 titulo: Rediseño de la ficha pública de animal
-estado: desarrollo
+estado: hecho
 prioridad: alta
 hito: "0.5"
 duplicado_de: null
@@ -102,13 +102,13 @@ interesadas` / `1 persona interesada` / `Sé la primera persona en interesarte`)
 
 ## Criterios de aceptación
 
-- [ ] La ficha coincide con el mockup: sidebar sticky con card de acción + card de
+- [x] La ficha coincide con el mockup: sidebar sticky con card de acción + card de
       proceso; izquierda con rasgos inline, compatibilidad en pills de color y
       salud con checks verdes.
-- [ ] «N personas interesadas» muestra el conteo real y anónimo (0/1/N con plural
+- [x] «N personas interesadas» muestra el conteo real y anónimo (0/1/N con plural
       correcto).
-- [ ] «Publicado hace …» usa fecha relativa en español.
-- [ ] La barra sticky móvil sigue funcionando.
-- [ ] Sin textos hardcodeados (todo en `messages/es.json`).
-- [ ] RLS del RPC probada (público lee agregado; despublicado → 0; sin fuga de identidad).
-- [ ] `npm run lint`, `npx tsc --noEmit` y la suite (con `--coverage`) en verde.
+- [x] «Publicado hace …» usa fecha relativa en español.
+- [x] La barra sticky móvil sigue funcionando.
+- [x] Sin textos hardcodeados (todo en `messages/es.json`).
+- [x] RLS del RPC probada (público lee agregado; despublicado → 0; sin fuga de identidad).
+- [x] `npm run lint`, `npx tsc --noEmit` y la suite (con `--coverage`) en verde.

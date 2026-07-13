@@ -2,6 +2,16 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/es/) adaptado. Versionado 0.x hasta el MVP.
 
+## [0.0.41] — 2026-07-13
+
+### Cambiado
+
+- **IMPROVEMENT-020 — Rediseño de la ficha de animal** (`/animales/[slug]`): la ficha estrena una columna de acción sticky «¿Te has enamorado?» con el CTA «Me interesa adoptar», «Guardar para luego» y un contador real y anónimo de «N personas interesadas», más una tarjeta verde «Proceso de adopción» con los cuatro pasos. La columna de contenido reordena galería, estado + «Publicado hace …», rasgos inline con iconos, compatibilidad en pills de color (verde sí / rojo no) y salud con checks. Se conserva la barra de acción sticky en móvil.
+
+### Añadido
+
+- RPC `contar_interesados` (SECURITY DEFINER): expone de forma agregada y anónima cuántas personas se han interesado por un animal publicado, sin filtrar identidades ni permitir sondear borradores.
+
 ## [0.0.40] — 2026-07-13
 
 ### Cambiado
