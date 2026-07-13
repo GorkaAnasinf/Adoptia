@@ -1,6 +1,6 @@
 import { render, screen, within } from "@testing-library/react";
 import { NextIntlClientProvider } from "next-intl";
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { afterAll, beforeEach, describe, expect, it, vi } from "vitest";
 import messages from "../../../../messages/es.json";
 import PanelPage from "./page";
 
@@ -10,8 +10,11 @@ const state = vi.hoisted(() => ({
     | null,
   animals: [] as Array<Record<string, unknown>>,
   pendingCount: 0,
+  count7: 0, // solicitudes creadas en los últimos 7 días
+  countPrev7: 0, // solicitudes creadas entre hace 14 y hace 7 días
   requests: [] as Array<Record<string, unknown>>,
   citas: [] as Array<Record<string, unknown>>,
+  perfiles: [] as Array<Record<string, unknown>>,
 }));
 
 vi.mock("next-intl/server", () => ({
@@ -23,11 +26,40 @@ vi.mock("next-intl/server", () => ({
   }),
 }));
 
+vi.mock("@/lib/supabase/admin", () => ({
+  createAdminClient: vi.fn(() => ({
+    from: vi.fn(() => ({
+      select: () => ({ in: async () => ({ data: state.perfiles }) }),
+    })),
+  })),
+}));
+
 vi.mock("@/lib/supabase/server", () => {
-  const thenable = (payload: unknown) => {
+  // Builder encadenable que registra qué filtros se han aplicado para
+  // distinguir las tres consultas de recuento sobre adoption_requests.
+  const builder = (table: string) => {
+    const flags = { gte: false, lt: false, head: false };
     const b: Record<string, unknown> = {};
-    for (const m of ["select", "eq", "order", "limit", "in", "gte"]) b[m] = () => b;
-    b.then = (resolve: (v: unknown) => void) => resolve(payload);
+    for (const m of ["select", "eq", "order", "limit", "in"]) {
+      b[m] = (...args: unknown[]) => {
+        if (m === "select" && typeof args[1] === "object" && args[1] !== null) {
+          flags.head = Boolean((args[1] as { head?: boolean }).head);
+        }
+        return b;
+      };
+    }
+    b.gte = () => ((flags.gte = true), b);
+    b.lt = () => ((flags.lt = true), b);
+    b.then = (resolve: (v: unknown) => void) => {
+      if (table === "animals") return resolve({ data: state.animals });
+      if (table === "appointments") return resolve({ data: state.citas });
+      if (table === "adoption_requests" && flags.head) {
+        if (flags.lt) return resolve({ count: state.countPrev7 });
+        if (flags.gte) return resolve({ count: state.count7 });
+        return resolve({ count: state.pendingCount });
+      }
+      return resolve({ data: state.requests });
+    };
     return b;
   };
   return {
@@ -39,9 +71,7 @@ vi.mock("@/lib/supabase/server", () => {
             select: () => ({ eq: () => ({ maybeSingle: async () => ({ data: state.shelter }) }) }),
           };
         }
-        if (table === "animals") return thenable({ data: state.animals });
-        if (table === "appointments") return thenable({ data: state.citas });
-        return thenable({ count: state.pendingCount, data: state.requests });
+        return builder(table);
       }),
     })),
   };
@@ -55,49 +85,154 @@ function conIntl(ui: React.ReactElement) {
   );
 }
 
-describe("PanelPage — dashboard", () => {
+/** Cita futura hoy/mañana con animal y adoptante para las pruebas. */
+function cita(horasDesdeAhora: number, extra: Record<string, unknown> = {}) {
+  const inicio = new Date(Date.now() + horasDesdeAhora * 3_600_000);
+  const fin = new Date(inicio.getTime() + 45 * 60_000);
+  return {
+    id: `c${horasDesdeAhora}`,
+    starts_at: inicio.toISOString(),
+    ends_at: fin.toISOString(),
+    adopter_id: "adopter1",
+    adoption_requests: { animals: { name: "Luna", breed: "Podenco" } },
+    ...extra,
+  };
+}
+
+const animalPublicado = (n: number, extra: Record<string, unknown> = {}) => ({
+  id: `a${n}`,
+  name: `Animal${n}`,
+  slug: `animal${n}`,
+  status: "available",
+  published_at: new Date().toISOString(),
+  updated_at: new Date().toISOString(),
+  animal_media: [],
+  ...extra,
+});
+
+describe("PanelPage — dashboard rediseñado", () => {
+  // Hora fija a mediodía de Madrid: las citas relativas (+1h, +2h) caen
+  // siempre en "hoy" y las de +30h en otro día, sin flaquear a medianoche.
+  vi.setSystemTime(new Date("2026-07-15T10:00:00Z"));
+  afterAll(() => vi.useRealTimers());
+
   beforeEach(() => {
     state.shelter = { id: "s1", name: "Refugio Uno", status: "verified", verification_note: null, description: "x" };
     state.animals = [];
     state.pendingCount = 0;
+    state.count7 = 0;
+    state.countPrev7 = 0;
     state.requests = [];
     state.citas = [];
+    state.perfiles = [{ id: "adopter1", full_name: "Familia Martínez" }];
   });
 
-  it("protectora nueva (sin animales) ve los primeros pasos, no ceros", async () => {
+  it("protectora nueva (sin animales) ve los primeros pasos, no las tarjetas", async () => {
     conIntl(await PanelPage());
     expect(screen.getByText(messages.panel.firstStepsTitle)).toBeInTheDocument();
     expect(
       screen.getByRole("link", { name: messages.panel.addAnimal }),
     ).toHaveAttribute("href", "/panel/animales/nueva");
-    // No hay stat tiles todavía
-    expect(screen.queryByText(messages.panel.statPublished)).not.toBeInTheDocument();
+    expect(screen.queryByText(messages.panel.statPending)).not.toBeInTheDocument();
   });
 
-  it("con animales muestra los contadores correctos", async () => {
-    const now = new Date().toISOString();
-    state.animals = [
-      { id: "a1", name: "Luna", slug: "luna", status: "available", published_at: now, updated_at: now, animal_media: [] },
-      { id: "a2", name: "Rocky", slug: "rocky", status: "available", published_at: null, updated_at: now, animal_media: [] },
-      { id: "a3", name: "Toby", slug: "toby", status: "adopted", published_at: now, updated_at: now, animal_media: [] },
-    ];
-    state.pendingCount = 4;
+  it("la tarjeta de solicitudes muestra el número pendiente y la subida semanal", async () => {
+    state.animals = [animalPublicado(1)];
+    state.pendingCount = 24;
+    state.count7 = 28;
+    state.countPrev7 = 25; // (28-25)/25 = +12%
     conIntl(await PanelPage());
 
-    const publicados = screen.getByText(messages.panel.statPublished).closest("a, div")!;
-    expect(within(publicados as HTMLElement).getByText("2")).toBeInTheDocument(); // a1 + a3 publicados
+    const tarjeta = screen.getByText(messages.panel.statPending).closest("a")!;
+    expect(within(tarjeta).getByText("24")).toBeInTheDocument();
+    expect(within(tarjeta).getByText("+12% desde la última semana")).toBeInTheDocument();
+    expect(tarjeta).toHaveAttribute("href", "/panel/solicitudes");
+  });
 
-    const borradores = screen.getByText(messages.panel.statDrafts).closest("a, div")!;
-    expect(within(borradores as HTMLElement).getByText("1")).toBeInTheDocument();
+  it("la tarjeta de solicitudes muestra la bajada semanal", async () => {
+    state.animals = [animalPublicado(1)];
+    state.pendingCount = 3;
+    state.count7 = 4;
+    state.countPrev7 = 5; // (4-5)/5 = -20%
+    conIntl(await PanelPage());
+    expect(screen.getByText("-20% desde la última semana")).toBeInTheDocument();
+  });
 
-    const pendientes = screen.getByText(messages.panel.statPending).closest("a, div")!;
-    expect(within(pendientes as HTMLElement).getByText("4")).toBeInTheDocument();
+  it("sin histórico de la semana anterior no muestra delta", async () => {
+    state.animals = [animalPublicado(1)];
+    state.pendingCount = 2;
+    state.count7 = 2;
+    state.countPrev7 = 0;
+    conIntl(await PanelPage());
+    expect(screen.queryByText(/desde la última semana/)).not.toBeInTheDocument();
+  });
 
-    const adoptados = screen.getByText(messages.panel.statAdopted).closest("a, div")!;
-    expect(within(adoptados as HTMLElement).getByText("1")).toBeInTheDocument();
+  it("la tarjeta de citas de hoy cuenta solo las de hoy y anuncia la próxima hora", async () => {
+    state.animals = [animalPublicado(1)];
+    state.citas = [cita(1), cita(2), cita(30)]; // 2 hoy (aprox) + 1 otro día
+    conIntl(await PanelPage());
 
-    // Lista de animales recientes con enlace de edición
-    expect(screen.getByRole("link", { name: /Luna/ })).toHaveAttribute("href", "/panel/animales/a1");
+    const tarjeta = screen.getByText(messages.panel.statCitasHoy).closest("a")!;
+    // La próxima es la primera de hoy: su hora aparece en el subtítulo
+    const horaProxima = new Intl.DateTimeFormat("es-ES", {
+      hour: "2-digit",
+      minute: "2-digit",
+      timeZone: "Europe/Madrid",
+    }).format(new Date(state.citas[0].starts_at as string));
+    expect(within(tarjeta).getByText(`Próxima a las ${horaProxima}`)).toBeInTheDocument();
+    expect(tarjeta).toHaveAttribute("href", "/panel/citas");
+  });
+
+  it("sin citas hoy la tarjeta lo dice", async () => {
+    state.animals = [animalPublicado(1)];
+    state.citas = [cita(30)];
+    conIntl(await PanelPage());
+    expect(screen.getByText(messages.panel.statCitasNinguna)).toBeInTheDocument();
+  });
+
+  it("la tarjeta de perfiles activos cuenta publicados disponibles y apila avatares con +N", async () => {
+    state.animals = [
+      animalPublicado(1, { animal_media: [{ url: "https://x/f1.jpg", is_cover: true, sort_order: 0 }] }),
+      animalPublicado(2),
+      animalPublicado(3),
+      animalPublicado(4),
+      animalPublicado(5),
+      animalPublicado(6),
+      animalPublicado(7, { status: "adopted" }), // adoptado NO cuenta como activo
+      animalPublicado(8, { published_at: null }), // borrador NO cuenta
+    ];
+    conIntl(await PanelPage());
+
+    const tarjeta = screen.getByText(messages.panel.statActiveProfiles).closest("a")!;
+    expect(within(tarjeta).getByText("6")).toBeInTheDocument();
+    expect(within(tarjeta).getByText("+2")).toBeInTheDocument(); // 6 activos - 4 avatares
+    expect(tarjeta).toHaveAttribute("href", "/panel/animales");
+  });
+
+  it("Próximas Citas lista adoptante - animal (raza) con franja horaria y enlace al calendario", async () => {
+    state.animals = [animalPublicado(1)];
+    state.citas = [cita(1)];
+    conIntl(await PanelPage());
+
+    expect(screen.getByText("Familia Martínez - Luna (Podenco)")).toBeInTheDocument();
+    const fmt = new Intl.DateTimeFormat("es-ES", {
+      hour: "2-digit",
+      minute: "2-digit",
+      timeZone: "Europe/Madrid",
+    });
+    const franja = `${fmt.format(new Date(state.citas[0].starts_at as string))} - ${fmt.format(
+      new Date(state.citas[0].ends_at as string),
+    )}`;
+    expect(screen.getByText(franja)).toBeInTheDocument();
+    expect(
+      screen.getByRole("link", { name: messages.panel.viewCalendar }),
+    ).toHaveAttribute("href", "/panel/citas");
+  });
+
+  it("sin citas próximas muestra el estado vacío", async () => {
+    state.animals = [animalPublicado(1)];
+    conIntl(await PanelPage());
+    expect(screen.getByText(messages.citas.dashboardEmpty)).toBeInTheDocument();
   });
 
   it("en estado pending muestra el enlace para editar el alta", async () => {

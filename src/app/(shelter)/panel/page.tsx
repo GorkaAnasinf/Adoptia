@@ -1,10 +1,11 @@
-import { ArrowRight, CheckCircle2, FileText, PawPrint, Plus, Send, Sprout } from "lucide-react";
+import { ArrowRight, CalendarDays, CheckCircle2, ChevronRight, Clock, Heart, PawPrint, Plus, Sprout } from "lucide-react";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import { AnimalStatusBadge } from "@/components/animals/AnimalStatusBadge";
 import type { AnimalStatus } from "@/lib/schemas/animal";
+import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 import { cn } from "@/lib/utils";
 
@@ -31,8 +32,24 @@ type RequestRow = {
 type CitaRow = {
   id: string;
   starts_at: string;
-  adoption_requests: { animals: { name: string } | null } | null;
+  ends_at: string;
+  adopter_id: string;
+  adoption_requests: { animals: { name: string; breed: string | null } | null } | null;
 };
+
+const HORA_MADRID = new Intl.DateTimeFormat("es-ES", {
+  hour: "2-digit",
+  minute: "2-digit",
+  timeZone: "Europe/Madrid",
+});
+const DIA_MADRID = new Intl.DateTimeFormat("es-ES", {
+  year: "numeric",
+  month: "2-digit",
+  day: "2-digit",
+  timeZone: "Europe/Madrid",
+});
+const MES_CORTO_MADRID = new Intl.DateTimeFormat("es-ES", { month: "short", timeZone: "Europe/Madrid" });
+const DIA_NUM_MADRID = new Intl.DateTimeFormat("es-ES", { day: "numeric", timeZone: "Europe/Madrid" });
 
 function portada(media: MediaRow[]): string | null {
   if (media.length === 0) return null;
@@ -58,8 +75,10 @@ export default async function PanelPage() {
 
   let animals: AnimalRow[] = [];
   let pendingCount = 0;
+  let solicitudes7 = 0;
+  let solicitudesPrev7 = 0;
   let recentRequests: RequestRow[] = [];
-  let proximasCitas: CitaRow[] = [];
+  let proximasCitas: (CitaRow & { adopterName: string | null })[] = [];
 
   if (shelter) {
     const { data: a } = await supabase
@@ -75,6 +94,21 @@ export default async function PanelPage() {
       .eq("status", "pending");
     pendingCount = count ?? 0;
 
+    // Delta semanal: solicitudes recibidas en los últimos 7 días vs los 7 anteriores
+    const hace7 = new Date(Date.now() - 7 * 86_400_000).toISOString();
+    const hace14 = new Date(Date.now() - 14 * 86_400_000).toISOString();
+    const { count: c7 } = await supabase
+      .from("adoption_requests")
+      .select("id", { count: "exact", head: true })
+      .gte("created_at", hace7);
+    solicitudes7 = c7 ?? 0;
+    const { count: cPrev } = await supabase
+      .from("adoption_requests")
+      .select("id", { count: "exact", head: true })
+      .gte("created_at", hace14)
+      .lt("created_at", hace7);
+    solicitudesPrev7 = cPrev ?? 0;
+
     const { data: r } = await supabase
       .from("adoption_requests")
       .select("id,created_at,animal:animals(name,slug)")
@@ -85,21 +119,42 @@ export default async function PanelPage() {
 
     const { data: citas } = await supabase
       .from("appointments")
-      .select("id, starts_at, adoption_requests(animals(name))")
+      .select("id, starts_at, ends_at, adopter_id, adoption_requests(animals(name, breed))")
       .eq("shelter_id", shelter.id)
       .in("status", ["pending", "confirmed"])
       .gte("starts_at", new Date().toISOString())
       .order("starts_at", { ascending: true })
-      .limit(3);
-    proximasCitas = (citas as unknown as CitaRow[] | null) ?? [];
+      .limit(20);
+    const filas = (citas as unknown as CitaRow[] | null) ?? [];
+
+    // El nombre del adoptante vive en profiles (RLS: solo su dueño); mismo
+    // bypass acotado que en la agenda de citas.
+    const ids = [...new Set(filas.map((c) => c.adopter_id))];
+    const { data: perfiles } = ids.length
+      ? await createAdminClient().from("profiles").select("id, full_name").in("id", ids)
+      : { data: [] };
+    const nombres = new Map(
+      ((perfiles as { id: string; full_name: string | null }[] | null) ?? []).map((p) => [p.id, p.full_name]),
+    );
+    proximasCitas = filas.map((c) => ({ ...c, adopterName: nombres.get(c.adopter_id) ?? null }));
   }
 
-  const anyoActual = new Date().getFullYear();
-  const publicados = animals.filter((x) => x.published_at != null).length;
-  const borradores = animals.filter((x) => x.published_at == null).length;
-  const adoptados = animals.filter((x) => {
-    return x.status === "adopted" && new Date(x.updated_at).getFullYear() === anyoActual;
-  }).length;
+  const hoy = DIA_MADRID.format(new Date());
+  const citasHoy = proximasCitas.filter((c) => DIA_MADRID.format(new Date(c.starts_at)) === hoy);
+
+  const activos = animals.filter(
+    (x) => x.published_at != null && (x.status === "available" || x.status === "reserved"),
+  );
+  const avatares = activos.slice(0, 4);
+  const restantes = activos.length - avatares.length;
+
+  // Delta semanal en % (solo con histórico previo; con 0 no hay porcentaje que dar)
+  let deltaSemanal: string | null = null;
+  if (solicitudesPrev7 > 0) {
+    const pct = Math.round(((solicitudes7 - solicitudesPrev7) / solicitudesPrev7) * 100);
+    if (pct > 0) deltaSemanal = t("statDeltaUp", { pct });
+    else if (pct < 0) deltaSemanal = t("statDeltaDown", { pct: Math.abs(pct) });
+  }
 
   return (
     <section className="mx-auto max-w-6xl px-4 py-8">
@@ -128,14 +183,14 @@ export default async function PanelPage() {
 
       <header className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="font-heading text-3xl font-bold">
+          <h1 className="font-heading text-3xl font-bold text-primary">
             {shelter?.name ? t("greeting", { name: shelter.name }) : t("title")}
           </h1>
           <p className="mt-1 text-muted-foreground">{t("subtitle")}</p>
         </div>
         <Link
           href="/panel/animales/nueva"
-          className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+          className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
         >
           <Plus className="size-4" aria-hidden="true" />
           {t("addAnimal")}
@@ -143,49 +198,146 @@ export default async function PanelPage() {
       </header>
 
       {animals.length === 0 ? (
-        <PrimerosPasos
-          perfilListo={Boolean(shelter?.description)}
-          t={t}
-        />
+        <PrimerosPasos perfilListo={Boolean(shelter?.description)} t={t} />
       ) : (
         <>
-          {/* Stat tiles */}
-          <div className="mt-6 grid grid-cols-2 gap-3 lg:grid-cols-4">
-            <StatTile icon={PawPrint} valor={publicados} label={t("statPublished")} href="/panel/animales" />
-            <StatTile icon={FileText} valor={borradores} label={t("statDrafts")} href="/panel/animales" />
-            <StatTile icon={Send} valor={pendingCount} label={t("statPending")} href="/panel/solicitudes" />
-            <StatTile icon={CheckCircle2} valor={adoptados} label={t("statAdopted")} />
+          {/* Tarjetas de métricas */}
+          <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {/* Solicitudes pendientes — coral */}
+            <Link
+              href="/panel/solicitudes"
+              className="group relative overflow-hidden rounded-2xl bg-primary-container p-5 text-white shadow-sm transition-shadow hover:shadow-md"
+            >
+              <Heart
+                className="absolute -right-3 -top-3 size-24 rotate-12 text-white/20"
+                aria-hidden="true"
+                fill="currentColor"
+              />
+              <span className="block text-xs font-bold uppercase tracking-wider text-white/90">
+                {t("statPending")}
+              </span>
+              <span className="mt-2 block font-heading text-5xl font-bold tabular-nums">{pendingCount}</span>
+              {deltaSemanal && <span className="mt-2 block text-sm text-white/90">{deltaSemanal}</span>}
+            </Link>
+
+            {/* Citas hoy — teal */}
+            <Link
+              href="/panel/citas"
+              className="group relative overflow-hidden rounded-2xl bg-secondary p-5 text-secondary-foreground shadow-sm transition-shadow hover:shadow-md"
+            >
+              <CalendarDays className="absolute -right-3 -top-3 size-24 rotate-12 text-white/10" aria-hidden="true" />
+              <span className="block text-xs font-bold uppercase tracking-wider text-white/90">
+                {t("statCitasHoy")}
+              </span>
+              <span className="mt-2 block font-heading text-5xl font-bold tabular-nums">{citasHoy.length}</span>
+              <span className="mt-2 block text-sm text-white/90">
+                {citasHoy.length > 0
+                  ? t("statCitasProxima", { hora: HORA_MADRID.format(new Date(citasHoy[0].starts_at)) })
+                  : t("statCitasNinguna")}
+              </span>
+            </Link>
+
+            {/* Perfiles activos — crema */}
+            <Link
+              href="/panel/animales"
+              className="group rounded-2xl border border-border bg-card p-5 shadow-sm transition-shadow hover:shadow-md sm:col-span-2 lg:col-span-1"
+            >
+              <span className="block text-xs font-bold uppercase tracking-wider text-muted-foreground">
+                {t("statActiveProfiles")}
+              </span>
+              <span className="mt-2 block font-heading text-5xl font-bold tabular-nums text-primary">
+                {activos.length}
+              </span>
+              <span className="mt-2 flex items-center -space-x-2">
+                {avatares.map((a) => (
+                  <AvatarAnimal key={a.id} url={portada(a.animal_media)} alt={a.name} />
+                ))}
+                {restantes > 0 && (
+                  <span className="z-10 flex size-8 items-center justify-center rounded-full border-2 border-card bg-accent text-xs font-semibold text-accent-foreground">
+                    +{restantes}
+                  </span>
+                )}
+              </span>
+            </Link>
           </div>
 
           <div className="mt-6 grid gap-6 lg:grid-cols-[1fr_20rem]">
-            {/* Animales recientes */}
-            <div className="rounded-2xl border border-border bg-card p-5">
-              <div className="mb-4 flex items-center justify-between">
-                <h2 className="font-heading text-lg font-semibold">{t("recentAnimals")}</h2>
-                <Link href="/panel/animales" className="text-sm font-semibold text-tertiary hover:underline">
-                  {t("viewAll")}
-                </Link>
+            {/* Columna principal: próximas citas + animales */}
+            <div className="flex flex-col gap-6">
+              {/* Próximas Citas */}
+              <div className="rounded-2xl border border-border bg-card p-5">
+                <div className="mb-4 flex items-center justify-between">
+                  <h2 className="font-heading text-lg font-semibold">{tc("dashboardTitle")}</h2>
+                  <Link href="/panel/citas" className="text-sm font-semibold text-tertiary hover:underline">
+                    {t("viewCalendar")}
+                  </Link>
+                </div>
+                {proximasCitas.length === 0 ? (
+                  <p className="text-sm text-muted-foreground">{tc("dashboardEmpty")}</p>
+                ) : (
+                  <ul className="flex flex-col gap-3">
+                    {proximasCitas.slice(0, 4).map((c) => {
+                      const fecha = new Date(c.starts_at);
+                      const animal = c.adoption_requests?.animals;
+                      return (
+                        <li key={c.id}>
+                          <Link
+                            href="/panel/citas"
+                            className="flex items-center gap-4 rounded-xl border border-border bg-background/60 p-3 transition-colors hover:bg-accent/40"
+                          >
+                            <span className="flex w-12 shrink-0 flex-col items-center rounded-xl bg-accent py-1.5">
+                              <span className="text-[10px] font-bold uppercase tracking-wide text-primary">
+                                {MES_CORTO_MADRID.format(fecha).replace(".", "")}
+                              </span>
+                              <span className="font-heading text-lg font-bold leading-tight">
+                                {DIA_NUM_MADRID.format(fecha)}
+                              </span>
+                            </span>
+                            <span className="min-w-0 flex-1">
+                              <span className="block truncate font-semibold">
+                                {`${c.adopterName ?? "—"} - ${animal?.name ?? "—"}${animal?.breed ? ` (${animal.breed})` : ""}`}
+                              </span>
+                              <span className="mt-0.5 flex items-center gap-1 text-sm text-muted-foreground">
+                                <Clock className="size-3.5" aria-hidden="true" />
+                                {`${HORA_MADRID.format(fecha)} - ${HORA_MADRID.format(new Date(c.ends_at))}`}
+                              </span>
+                            </span>
+                            <ChevronRight className="size-4 shrink-0 text-muted-foreground" aria-hidden="true" />
+                          </Link>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                )}
               </div>
-              <ul className="flex flex-col divide-y divide-border">
-                {animals.slice(0, 5).map((a) => (
-                  <li key={a.id}>
-                    <Link
-                      href={`/panel/animales/${a.id}`}
-                      className="-mx-2 flex items-center gap-3 rounded-lg px-2 py-2.5 hover:bg-accent/40"
-                    >
-                      <Miniatura url={portada(a.animal_media)} alt={a.name} />
-                      <span className="min-w-0 flex-1 truncate font-medium">{a.name}</span>
-                      <AnimalStatusBadge status={a.status} />
-                    </Link>
-                  </li>
-                ))}
-              </ul>
+
+              {/* Animales recientes */}
+              <div className="rounded-2xl border border-border bg-card p-5">
+                <div className="mb-4 flex items-center justify-between">
+                  <h2 className="font-heading text-lg font-semibold">{t("recentAnimals")}</h2>
+                  <Link href="/panel/animales" className="text-sm font-semibold text-tertiary hover:underline">
+                    {t("viewAll")}
+                  </Link>
+                </div>
+                <ul className="flex flex-col divide-y divide-border">
+                  {animals.slice(0, 5).map((a) => (
+                    <li key={a.id}>
+                      <Link
+                        href={`/panel/animales/${a.id}`}
+                        className="-mx-2 flex items-center gap-3 rounded-lg px-2 py-2.5 hover:bg-accent/40"
+                      >
+                        <Miniatura url={portada(a.animal_media)} alt={a.name} />
+                        <span className="min-w-0 flex-1 truncate font-medium">{a.name}</span>
+                        <AnimalStatusBadge status={a.status} />
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
 
-            {/* Columna lateral: solicitudes recientes + próximas citas */}
-            <div className="flex flex-col gap-6">
-            {/* Solicitudes recientes */}
-            <div className="rounded-2xl border border-border bg-card p-5">
+            {/* Lateral: solicitudes recientes */}
+            <div className="h-fit rounded-2xl border border-border bg-card p-5">
               <div className="mb-4 flex items-center justify-between">
                 <h2 className="font-heading text-lg font-semibold">{t("recentRequests")}</h2>
                 {recentRequests.length > 0 && (
@@ -214,46 +366,6 @@ export default async function PanelPage() {
                 </ul>
               )}
             </div>
-
-            {/* Próximas citas (FEATURE-009) */}
-            <div className="rounded-2xl border border-border bg-card p-5">
-              <div className="mb-4 flex items-center justify-between">
-                <h2 className="font-heading text-lg font-semibold">{tc("dashboardTitle")}</h2>
-                {proximasCitas.length > 0 && (
-                  <Link href="/panel/citas" className="text-sm font-semibold text-tertiary hover:underline">
-                    {tc("dashboardVer")}
-                  </Link>
-                )}
-              </div>
-              {proximasCitas.length === 0 ? (
-                <p className="text-sm text-muted-foreground">{tc("dashboardEmpty")}</p>
-              ) : (
-                <ul className="flex flex-col divide-y divide-border">
-                  {proximasCitas.map((c) => (
-                    <li key={c.id}>
-                      <Link
-                        href="/panel/citas"
-                        className="flex items-center justify-between gap-2 py-2.5 text-sm hover:opacity-80"
-                      >
-                        <span className="min-w-0 truncate font-medium">
-                          {c.adoption_requests?.animals?.name ?? "—"}
-                        </span>
-                        <span className="shrink-0 text-xs text-muted-foreground">
-                          {new Intl.DateTimeFormat("es-ES", {
-                            day: "numeric",
-                            month: "short",
-                            hour: "2-digit",
-                            minute: "2-digit",
-                            timeZone: "Europe/Madrid",
-                          }).format(new Date(c.starts_at))}
-                        </span>
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </div>
-            </div>
           </div>
         </>
       )}
@@ -261,36 +373,22 @@ export default async function PanelPage() {
   );
 }
 
-function StatTile({
-  icon: Icon,
-  valor,
-  label,
-  href,
-}: {
-  icon: typeof PawPrint;
-  valor: number;
-  label: string;
-  href?: string;
-}) {
-  const contenido = (
-    <>
-      <span className="flex size-9 items-center justify-center rounded-lg bg-primary/10 text-primary">
-        <Icon className="size-5" aria-hidden="true" />
+function AvatarAnimal({ url, alt }: { url: string | null; alt: string }) {
+  if (!url) {
+    return (
+      <span className="flex size-8 items-center justify-center rounded-full border-2 border-card bg-muted text-muted-foreground">
+        <PawPrint className="size-4" aria-hidden="true" />
       </span>
-      <span className="mt-3 block font-heading text-3xl font-bold tabular-nums">{valor}</span>
-      <span className="mt-1 flex items-center gap-1 text-sm text-muted-foreground">
-        {label}
-        {href && <ArrowRight className="size-3.5 opacity-0 transition-opacity group-hover:opacity-100" aria-hidden="true" />}
-      </span>
-    </>
-  );
-  const clase = "group rounded-2xl border border-border bg-card p-4";
-  return href ? (
-    <Link href={href} className={cn(clase, "transition-colors hover:border-primary/40 hover:bg-accent/30")}>
-      {contenido}
-    </Link>
-  ) : (
-    <div className={clase}>{contenido}</div>
+    );
+  }
+  return (
+    <Image
+      src={url}
+      alt={alt}
+      width={32}
+      height={32}
+      className="size-8 rounded-full border-2 border-card object-cover"
+    />
   );
 }
 
