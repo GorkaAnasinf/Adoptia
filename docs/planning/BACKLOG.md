@@ -6,11 +6,11 @@
 ## 📍 ESTADO ACTUAL
 
 - **Hito activo:** 0.5 — post-MVP (mantenimiento y features detectadas en pruebas reales; hitos 0.2–0.4 cerrados).
-- **Progreso:** **FEATURE-019 hecho** — directorio público `/protectoras` (arregla el 404 del enlace "Protectoras" del Header detectado probando en producción): grid de protectoras verificadas con conteo de animales disponibles, estado vacío, SEO y sitemap.
+- **Progreso:** **IMPROVEMENT-016 hecho** — redirección post-login según rol (detectado probando: la protectora caía en la home): helper `destinoPostLogin`, aplicado en login con contraseña y callback OAuth; shelter → `/panel`, admin → `/admin`, adoptante → `/`, con `?redirect` interno respetado.
 - **Siguiente:** nada en cola — lo que entre por la pasarela del analista o se detecte probando la plataforma.
 - **Bloqueos:** ninguno. Migraciones y secrets de crons aplicados (confirmado 2026-07-12).
 - **Follow-ups abiertos:** re-medir Lighthouse de ficha/listado en producción cuando haya contenido real (ver IMPROVEMENT-012).
-- **Última actualización:** 2026-07-13 (cierre de FEATURE-019 — página `/protectoras`).
+- **Última actualización:** 2026-07-13 (cierre de IMPROVEMENT-016 — redirección post-login por rol).
 
 ## Items abiertos por estado
 

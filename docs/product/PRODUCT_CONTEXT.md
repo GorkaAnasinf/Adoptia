@@ -76,6 +76,7 @@ Estado de cada capacidad en lenguaje de usuario. Se regenera con `python scripts
 - Vista "mis solicitudes" del adoptante ([IMPROVEMENT-013](../planning/items/IMPROVEMENT-013.md))
 - Tests RLS ocasionalmente flaky por concurrencia entre ficheros ([IMPROVEMENT-014](../planning/items/IMPROVEMENT-014.md))
 - README de calidad y manual de usuario (entrega TFM) ([IMPROVEMENT-015](../planning/items/IMPROVEMENT-015.md))
+- Redirección post-login según rol (protectora al panel, admin a admin) ([IMPROVEMENT-016](../planning/items/IMPROVEMENT-016.md))
 
 #### 🚧 En camino (en desarrollo ahora)
 

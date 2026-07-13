@@ -2,6 +2,12 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/es/) adaptado. Versionado 0.x hasta el MVP.
 
+## [0.0.37] — 2026-07-13
+
+### Añadido
+
+- **IMPROVEMENT-016 — Redirección post-login según rol**: al iniciar sesión (contraseña o Google), cada perfil aterriza donde trabaja: la protectora en su panel (`/panel`), el administrador en `/admin` y el adoptante en la home. Si venías redirigido desde una página protegida, se respeta ese destino; los redirects externos (open redirect) se descartan siempre.
+
 ## [0.0.36] — 2026-07-13
 
 ### Añadido
