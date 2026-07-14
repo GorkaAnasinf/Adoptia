@@ -10,7 +10,10 @@
     "map": "Mapa",
     "lostFound": "Perdidos",
     "login": "Iniciar sesión",
-    "register": "Crear cuenta"
+    "register": "Crear cuenta",
+    "searchPlaceholder": "Buscar raza…",
+    "openMenu": "Abrir menú de navegación",
+    "closeMenu": "Cerrar menú de navegación"
   },
   "footer": {
     "rights": "Hecho con cariño por y para las protectoras.",
@@ -517,6 +520,12 @@
     "crumbAdmin": "Administración",
     "crumbProtectoras": "Protectoras",
     "crumbCuenta": "Mi cuenta",
+    "crumbAnimales": "Animales",
+    "crumbMapa": "Mapa",
+    "crumbPerdidos": "Perdidos y encontrados",
+    "crumbGuias": "Guías",
+    "crumbAcogida": "Acogida",
+    "crumbAlertas": "Alertas",
     "footerRights": "© {year} Adoptia. Hecho con cariño.",
     "footerHelp": "Ayuda",
     "footerTerms": "Términos",

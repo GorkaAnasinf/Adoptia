@@ -11,6 +11,7 @@ vi.mock("./UserMenu", () => ({
 }));
 vi.mock("@/lib/supabase/server", () => ({ createClient: vi.fn(async () => ({})) }));
 vi.mock("@/lib/user-role", () => ({ getUserRole: () => roleMock() }));
+vi.mock("next/navigation", () => ({ usePathname: () => "/" }));
 vi.mock("next-intl/server", () => ({
   getTranslations: async () => (key: string) =>
     key.split(".").reduce<unknown>((o, k) => (o as Record<string, unknown>)?.[k], messages) as string,

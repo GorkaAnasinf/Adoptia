@@ -1,7 +1,10 @@
+import { PawPrint } from "lucide-react";
 import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import { createClient } from "@/lib/supabase/server";
 import { getUserRole } from "@/lib/user-role";
+import { PublicBreadcrumbs } from "./PublicBreadcrumbs";
+import { PublicNav } from "./PublicNav";
 import { UserMenu } from "./UserMenu";
 
 export async function Header() {
@@ -10,33 +13,27 @@ export async function Header() {
   const role = await getUserRole(supabase);
 
   return (
-    <header className="sticky top-0 z-40 border-b border-border bg-background/95 backdrop-blur">
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
-        <Link
-          href="/"
-          className="font-heading text-xl font-bold text-primary"
-        >
-          {t("common.appName")}
-        </Link>
-        <nav className="flex items-center gap-4 text-sm">
-          <Link href="/animales" className="hidden text-foreground hover:text-primary sm:block">
-            {t("nav.animals")}
+    <header className="sticky top-0 z-40 bg-background/90 backdrop-blur">
+      <div className="border-b border-border">
+        <div className="mx-auto flex h-16 max-w-6xl items-center gap-4 px-4">
+          <Link href="/" className="flex items-center gap-2">
+            <span className="flex size-9 items-center justify-center rounded-xl bg-primary text-primary-foreground">
+              <PawPrint className="size-5" aria-hidden="true" />
+            </span>
+            <span className="font-heading text-xl font-bold text-primary">
+              {t("common.appName")}
+            </span>
           </Link>
-          <Link href="/protectoras" className="hidden text-foreground hover:text-primary sm:block">
-            {t("nav.shelters")}
-          </Link>
-          <Link href="/mapa" className="hidden text-foreground hover:text-primary sm:block">
-            {t("nav.map")}
-          </Link>
-          <Link
-            href="/perdidos-encontrados"
-            className="hidden text-foreground hover:text-primary sm:block"
-          >
-            {t("nav.lostFound")}
-          </Link>
-          <UserMenu role={role} />
-        </nav>
+
+          <PublicNav />
+
+          <div className="md:ml-auto">
+            <UserMenu role={role} />
+          </div>
+        </div>
       </div>
+
+      <PublicBreadcrumbs />
     </header>
   );
 }
