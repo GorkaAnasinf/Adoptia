@@ -25,12 +25,17 @@ vi.mock("next/navigation", () => ({
   useRouter: () => ({ push: vi.fn(), refresh: refreshMock }),
 }));
 
-function renderMenu() {
+function renderMenu(role?: "adopter" | "shelter" | "admin" | null) {
   return render(
     <NextIntlClientProvider locale="es" messages={messages}>
-      <UserMenu />
+      <UserMenu role={role} />
     </NextIntlClientProvider>,
   );
+}
+
+async function abrirMenu() {
+  const avatar = await screen.findByRole("button", { name: messages.shell.userMenu });
+  await userEvent.click(avatar);
 }
 
 describe("UserMenu", () => {
@@ -139,5 +144,61 @@ describe("UserMenu", () => {
     renderMenu();
     await screen.findByRole("button", { name: messages.shell.userMenu });
     expect(screen.queryByText("ana@example.com")).not.toBeInTheDocument();
+  });
+
+  it("protectora: el menú incluye acceso al panel de protectora", async () => {
+    getUserMock.mockResolvedValue({
+      data: { user: { id: "u1", email: "prot@example.com" } },
+      error: null,
+    });
+    renderMenu("shelter");
+    await abrirMenu();
+
+    expect(screen.getByRole("menuitem", { name: messages.shell.navShelterPanel })).toHaveAttribute(
+      "href",
+      "/panel",
+    );
+    // No mezcla accesos de adoptante
+    expect(
+      screen.queryByRole("menuitem", { name: messages.shell.navFavorites }),
+    ).not.toBeInTheDocument();
+  });
+
+  it("adoptante: el menú incluye favoritos, solicitudes y citas, sin panel de protectora", async () => {
+    getUserMock.mockResolvedValue({
+      data: { user: { id: "u1", email: "ana@example.com" } },
+      error: null,
+    });
+    renderMenu("adopter");
+    await abrirMenu();
+
+    expect(screen.getByRole("menuitem", { name: messages.shell.navFavorites })).toHaveAttribute(
+      "href",
+      "/mi-cuenta/favoritos",
+    );
+    expect(screen.getByRole("menuitem", { name: messages.shell.navMyRequests })).toHaveAttribute(
+      "href",
+      "/mi-cuenta/solicitudes",
+    );
+    expect(
+      screen.getByRole("menuitem", { name: messages.shell.navMyAppointments }),
+    ).toHaveAttribute("href", "/mi-cuenta/citas");
+    expect(
+      screen.queryByRole("menuitem", { name: messages.shell.navShelterPanel }),
+    ).not.toBeInTheDocument();
+  });
+
+  it("admin: el menú incluye acceso al panel de administración", async () => {
+    getUserMock.mockResolvedValue({
+      data: { user: { id: "u1", email: "admin@example.com" } },
+      error: null,
+    });
+    renderMenu("admin");
+    await abrirMenu();
+
+    expect(screen.getByRole("menuitem", { name: messages.shell.navAdminPanel })).toHaveAttribute(
+      "href",
+      "/admin/protectoras",
+    );
   });
 });
