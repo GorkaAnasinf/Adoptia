@@ -2,6 +2,12 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/es/) adaptado. Versionado 0.x hasta el MVP.
 
+## [0.0.50] — 2026-07-14
+
+### Añadido
+
+- **Búsqueda por texto (nombre o raza) en el listado de animales (IMPROVEMENT-021)**: el buscador de la cabecera deja de ser un simple enlace y ahora filtra de verdad — envía a `/animales?q=…` y el RPC `animals_search` gana el parámetro `p_query` (`ilike` sobre `name` y `breed`). El listado suma un campo de texto en los filtros; el término viaja en la URL (compartible) y se combina con el resto de filtros. El texto del usuario se acota a 60 caracteres y se escapan los metacaracteres de LIKE. Se mantiene SECURITY INVOKER: la RLS sigue mandando (un borrador no aparece aunque el término coincida). **Requiere `supabase db push` en producción** (migración `20260714150000`).
+
 ## [0.0.49] — 2026-07-14
 
 ### Rediseñado

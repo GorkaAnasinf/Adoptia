@@ -50,4 +50,4 @@
 | [IMPROVEMENT-018](IMPROVEMENT-018.md) | Rediseño de la home pública (hero con buscador, recién llegados, banda de stats y CTA) | improvement | hecho | 0.5 |
 | [IMPROVEMENT-019](IMPROVEMENT-019.md) | Rediseño del listado /animales (filtros horizontales, tarjetas con favorito y paginación numerada) | improvement | hecho | 0.5 |
 | [IMPROVEMENT-020](IMPROVEMENT-020.md) | Rediseño de la ficha pública de animal | improvement | hecho | 0.5 |
-| [IMPROVEMENT-021](IMPROVEMENT-021.md) | Búsqueda por texto/raza en el listado de animales | improvement | listo | 0.5 |
+| [IMPROVEMENT-021](IMPROVEMENT-021.md) | Búsqueda por texto/raza en el listado de animales | improvement | hecho | 0.5 |

@@ -2,7 +2,7 @@
 id: IMPROVEMENT-021
 tipo: improvement
 titulo: Búsqueda por texto/raza en el listado de animales
-estado: desarrollo
+estado: hecho
 prioridad: baja
 hito: "0.5"
 duplicado_de: null
