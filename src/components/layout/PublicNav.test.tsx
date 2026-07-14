@@ -6,7 +6,11 @@ import messages from "../../../messages/es.json";
 import { PublicNav } from "./PublicNav";
 
 const pathnameMock = vi.fn();
-vi.mock("next/navigation", () => ({ usePathname: () => pathnameMock() }));
+const pushMock = vi.fn();
+vi.mock("next/navigation", () => ({
+  usePathname: () => pathnameMock(),
+  useRouter: () => ({ push: pushMock }),
+}));
 
 function renderAt(pathname: string) {
   pathnameMock.mockReturnValue(pathname);
@@ -46,11 +50,20 @@ describe("PublicNav", () => {
     );
   });
 
-  it("el buscador lleva a la página de animales", () => {
+  it("el buscador envía el término a /animales?q=…", async () => {
+    pushMock.mockReset();
     renderAt("/");
-    expect(
-      screen.getByRole("link", { name: messages.nav.searchPlaceholder }),
-    ).toHaveAttribute("href", "/animales");
+    const inputs = screen.getAllByRole("searchbox", { name: messages.nav.searchPlaceholder });
+    await userEvent.type(inputs[0], "labrador{Enter}");
+    expect(pushMock).toHaveBeenCalledWith("/animales?q=labrador");
+  });
+
+  it("el buscador vacío lleva al listado sin filtro", async () => {
+    pushMock.mockReset();
+    renderAt("/");
+    const inputs = screen.getAllByRole("searchbox", { name: messages.nav.searchPlaceholder });
+    inputs[0].closest("form")!.requestSubmit();
+    expect(pushMock).toHaveBeenCalledWith("/animales");
   });
 
   it("el menú móvil abre y cierra el panel de navegación", async () => {
