@@ -81,4 +81,28 @@ describe("AnimalForm", () => {
     expect(screen.getByText(messages.animales.youtubeInvalid)).toBeInTheDocument();
     expect(upsertMock).not.toHaveBeenCalled();
   });
+
+  it("rechaza al guardar un vídeo de YouTube que no se puede incrustar", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async () => ({
+        ok: true,
+        json: async () => ({ data: { embeddable: false, reason: "not_embeddable" } }),
+      })),
+    );
+    conIntl(
+      <AnimalForm
+        shelterId="s1"
+        animalId={null}
+        initial={{ name: "Luna" }}
+        initialYoutube="https://youtu.be/dQw4w9WgXcQ"
+      />,
+    );
+
+    await userEvent.click(screen.getByRole("button", { name: messages.animales.saveDraft }));
+
+    expect(await screen.findByText(messages.animales.youtubeNotEmbeddable)).toBeInTheDocument();
+    expect(upsertMock).not.toHaveBeenCalled();
+    vi.unstubAllGlobals();
+  });
 });
