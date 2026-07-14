@@ -2,7 +2,7 @@
 id: FEATURE-021
 tipo: feature
 titulo: Rediseño de la cabecera superior con menú de usuario por rol
-estado: desarrollo
+estado: hecho
 prioridad: media
 hito: "0.5"
 duplicado_de: null
@@ -155,13 +155,23 @@ visual al planificar el frontend.
    y lo pasa a `UserMenu`.
 8. [x] **AppHeader coherente**: `role` hilado `AppShell → AppHeader → UserMenu`.
 
-**Fase 2 — rediseño visual del top bar público. PENDIENTE (espera mockups Stitch).**
+**Fase 2 — rediseño visual del top bar público. HECHA (con DESIGN.md, sin Stitch).**
 
-9. [ ] Rediseño de la barra pública (buscador "Buscar raza…", CTA pill,
-   restyle de nav con tokens de DESIGN) según mockups de Stitch.
-10. [ ] Fila de breadcrumbs bajo la barra pública (componente cliente con
-   `usePathname` + `crumbsFromPathname`, ampliar `ETIQUETAS`).
-11. [ ] Menú móvil (hamburguesa + drawer) y buscador colapsado a lupa.
+9. [x] Restyle de la barra pública con tokens de DESIGN: marca con huella,
+   enlaces con estado activo (terracota), buscador tipo pill. Nav extraída a
+   `PublicNav` (cliente).
+10. [x] Fila de breadcrumbs bajo la barra (`PublicBreadcrumbs` cliente con
+   `usePathname` + `crumbsFromPathname`; `ETIQUETAS` y claves i18n de crumbs
+   públicos ampliadas).
+11. [x] Menú móvil (hamburguesa + drawer con foco/Escape) y buscador dentro
+   del drawer.
+
+**Desviación consciente (buscador):** `animals_search` NO tiene búsqueda por
+texto/raza (solo filtros: especie/tamaño/sexo/edad). Un buscador de texto real
+exigiría un parámetro nuevo en el RPC = cambio de arquitectura fuera del plan.
+El buscador se implementa como **enlace** a `/animales` con la estética del
+mockup ("Buscar raza…"). El buscador de texto real queda como follow-up
+(nuevo item: parámetro de texto en `animals_search`).
 
 ### Dependencias
 

@@ -7,6 +7,12 @@ const ETIQUETAS: Record<string, string> = {
   admin: "crumbAdmin",
   protectoras: "crumbProtectoras",
   "mi-cuenta": "crumbCuenta",
+  animales: "crumbAnimales",
+  mapa: "crumbMapa",
+  "perdidos-encontrados": "crumbPerdidos",
+  guias: "crumbGuias",
+  acogida: "crumbAcogida",
+  alertas: "crumbAlertas",
 };
 
 /**

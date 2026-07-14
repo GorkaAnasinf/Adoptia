@@ -2,6 +2,12 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/es/) adaptado. Versionado 0.x hasta el MVP.
 
+## [0.0.49] — 2026-07-14
+
+### Rediseñado
+
+- **Cabecera pública (FEATURE-021, fase 2)**: la barra superior se rediseña con la identidad «Warm Earth & Tail» — marca con huella, enlaces de navegación con estado activo en terracota y un buscador tipo pill. Se añade una **fila de migas de pan** bajo la barra (oculta en la home) y un **menú móvil** en drawer (con gestión de foco y cierre con Escape). El buscador es de momento un enlace a la exploración de animales; la búsqueda por texto/raza real queda pendiente (IMPROVEMENT-021), porque `animals_search` aún no admite texto libre.
+
 ## [0.0.48] — 2026-07-14
 
 ### Añadido
