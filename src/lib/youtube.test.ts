@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { esYoutubeValido, parseYoutubeId, youtubeEmbedUrl } from "./youtube";
+import { esYoutubeValido, parseYoutubeId, youtubeEmbedUrl, youtubeThumb } from "./youtube";
 
 describe("parseYoutubeId", () => {
   it("acepta los formatos habituales de YouTube", () => {
@@ -25,6 +25,15 @@ describe("youtubeEmbedUrl", () => {
       "https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ",
     );
     expect(youtubeEmbedUrl("https://vimeo.com/1")).toBeNull();
+  });
+});
+
+describe("youtubeThumb", () => {
+  it("devuelve el póster del vídeo o null", () => {
+    expect(youtubeThumb("https://youtu.be/dQw4w9WgXcQ")).toBe(
+      "https://i.ytimg.com/vi/dQw4w9WgXcQ/hqdefault.jpg",
+    );
+    expect(youtubeThumb("basura")).toBeNull();
   });
 });
 

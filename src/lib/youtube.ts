@@ -44,6 +44,12 @@ export function youtubeEmbedUrl(input: string): string | null {
   return id ? `https://www.youtube-nocookie.com/embed/${id}` : null;
 }
 
+/** Póster (frame) del vídeo para usar como miniatura, o null si no es válido. */
+export function youtubeThumb(input: string): string | null {
+  const id = parseYoutubeId(input);
+  return id ? `https://i.ytimg.com/vi/${id}/hqdefault.jpg` : null;
+}
+
 export function esYoutubeValido(input: string): boolean {
   return parseYoutubeId(input) !== null;
 }
