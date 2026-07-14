@@ -2,6 +2,12 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/es/) adaptado. Versionado 0.x hasta el MVP.
 
+## [0.0.48] — 2026-07-14
+
+### Añadido
+
+- **Acceso al panel desde el menú del avatar (FEATURE-021, fase 1)**: el menú de usuario solo ofrecía «Mi cuenta» y «Cerrar sesión», así que una protectora no tenía forma visible de llegar a su panel de gestión. Ahora el menú se adapta al rol: una **protectora** ve «Panel de protectora» (→ `/panel`), un **adoptante** ve accesos directos a favoritos, solicitudes y citas, y un **admin** ve «Panel de administración». El rol se lee en servidor (`profiles.role`, solo el del propio usuario); la visibilidad del enlace es cosmética, el acceso real sigue protegido por el middleware. Queda pendiente la **fase 2** (rediseño visual del top bar público: buscador, breadcrumbs y menú móvil), a la espera de mockups.
+
 ## [0.0.47] — 2026-07-14
 
 ### Corregido

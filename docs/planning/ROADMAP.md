@@ -89,7 +89,7 @@ Para centrar el desarrollo en un lado de la app cada vez, el 0.2 se aborda en do
 | [IMPROVEMENT-016](items/IMPROVEMENT-016.md) | Redirección post-login según rol (protectora al panel, admin a admin) | hecho | alta |
 | [IMPROVEMENT-020](items/IMPROVEMENT-020.md) | Rediseño de la ficha pública de animal | hecho | alta |
 | [FEATURE-020](items/FEATURE-020.md) | Vídeos en la ficha del animal (YouTube + MP4) | hecho | media |
-| [FEATURE-021](items/FEATURE-021.md) | Rediseño de la cabecera superior con menú de usuario por rol | listo | media |
+| [FEATURE-021](items/FEATURE-021.md) | Rediseño de la cabecera superior con menú de usuario por rol | desarrollo | media |
 | [IMPROVEMENT-017](items/IMPROVEMENT-017.md) | Rediseño del dashboard de protectora (tarjetas de color y próximas citas) | hecho | media |
 | [IMPROVEMENT-018](items/IMPROVEMENT-018.md) | Rediseño de la home pública (hero con buscador, recién llegados, banda de stats y CTA) | hecho | media |
 | [IMPROVEMENT-019](items/IMPROVEMENT-019.md) | Rediseño del listado /animales (filtros horizontales, tarjetas con favorito y paginación numerada) | hecho | media |

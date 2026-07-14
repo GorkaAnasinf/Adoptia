@@ -86,9 +86,9 @@ Estado de cada capacidad en lenguaje de usuario. Se regenera con `python scripts
 
 #### 🚧 En camino (en desarrollo ahora)
 
-_Nada en desarrollo en este momento._
+- Rediseño de la cabecera superior con menú de usuario por rol ([FEATURE-021](../planning/items/FEATURE-021.md))
 
 #### 🗓️ Previsto
 
-- Rediseño de la cabecera superior con menú de usuario por rol — hito 0.5 ([FEATURE-021](../planning/items/FEATURE-021.md))
+_Backlog vacío._
 <!-- RENDER:END -->
