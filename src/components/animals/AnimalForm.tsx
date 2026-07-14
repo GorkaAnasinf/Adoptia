@@ -53,11 +53,43 @@ export function AnimalForm({
   const [media, setMedia] = useState<Media[]>(initialMedia);
   const [youtube, setYoutube] = useState(initialYoutube);
   const [ytError, setYtError] = useState<string>();
+  const [ytOk, setYtOk] = useState(false);
+  const [ytChecking, setYtChecking] = useState(false);
   const [error, setError] = useState<string>();
   const [guardando, setGuardando] = useState(false);
 
   function set<K extends keyof Form>(campo: K, valor: Form[K]) {
     setForm((f) => ({ ...f, [campo]: valor }));
+  }
+
+  // Comprueba en el servidor si el vídeo es embebible (público + inserción
+  // permitida). true/false, o null si no se pudo verificar (no bloquea).
+  async function comprobarEmbebible(url: string): Promise<boolean | null> {
+    try {
+      const res = await fetch(`/api/youtube?url=${encodeURIComponent(url)}`);
+      if (!res.ok) return null;
+      const body = await res.json();
+      return body?.data?.embeddable ?? null;
+    } catch {
+      return null;
+    }
+  }
+
+  // Validación en vivo del campo YouTube (al salir del input).
+  async function validarYoutubeCampo() {
+    setYtError(undefined);
+    setYtOk(false);
+    const v = youtube.trim();
+    if (!v) return;
+    if (!esYoutubeValido(v)) {
+      setYtError(t("youtubeInvalid"));
+      return;
+    }
+    setYtChecking(true);
+    const emb = await comprobarEmbebible(v);
+    setYtChecking(false);
+    if (emb === false) setYtError(t("youtubeNotEmbeddable"));
+    else if (emb === true) setYtOk(true);
   }
 
   async function sincronizarYoutube(id: string) {
@@ -74,9 +106,18 @@ export function AnimalForm({
     setError(undefined);
     setYtError(undefined);
 
-    if (youtube.trim() && !esYoutubeValido(youtube)) {
-      setYtError(t("youtubeInvalid"));
-      return;
+    if (youtube.trim()) {
+      if (!esYoutubeValido(youtube)) {
+        setYtError(t("youtubeInvalid"));
+        return;
+      }
+      // Bloquea solo si YouTube confirma que NO es embebible (null = no se
+      // pudo verificar → se deja pasar para no bloquear por un fallo de red).
+      const emb = await comprobarEmbebible(youtube);
+      if (emb === false) {
+        setYtError(t("youtubeNotEmbeddable"));
+        return;
+      }
     }
     if (publicar && !shelterVerified) {
       setError(t("notVerifiedPublish"));
@@ -295,8 +336,20 @@ export function AnimalForm({
       <Seccion titulo={t("secMedia")}>
         <AnimalMediaUploader shelterId={shelterId} animalId={currentId} media={media} onChange={setMedia} />
         <Campo id="youtube" label={t("youtube")}>
-          <Input id="youtube" value={youtube} onChange={(e) => setYoutube(e.target.value)} placeholder="https://youtu.be/…" />
+          <Input
+            id="youtube"
+            value={youtube}
+            onChange={(e) => {
+              setYoutube(e.target.value);
+              setYtError(undefined);
+              setYtOk(false);
+            }}
+            onBlur={validarYoutubeCampo}
+            placeholder="https://youtu.be/…"
+          />
+          {ytChecking && <p className="text-sm text-muted-foreground">{t("youtubeChecking")}</p>}
           {ytError && <p className="text-sm text-destructive">{ytError}</p>}
+          {ytOk && !ytError && <p className="text-sm text-emerald-600">{t("youtubeOk")}</p>}
         </Campo>
       </Seccion>
 

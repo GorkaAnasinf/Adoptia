@@ -2,6 +2,12 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/es/) adaptado. Versionado 0.x hasta el MVP.
 
+## [0.0.46] — 2026-07-14
+
+### Añadido
+
+- **Validación del enlace de YouTube en el alta del animal (FEATURE-020)**: al añadir un vídeo, además de comprobar que el enlace tiene forma válida, se verifica contra YouTube (endpoint oEmbed, vía nuevo Route Handler `GET /api/youtube`) que el vídeo es **público y embebible**. Un vídeo privado, borrado o con la inserción desactivada se marca en el campo («Vídeo válido» / mensaje de error) y bloquea el guardado, evitando el «vídeo no disponible» en la ficha. Si YouTube no responde, no se bloquea (se deja pasar).
+
 ## [0.0.45] — 2026-07-14
 
 ### Corregido
