@@ -2,6 +2,13 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/es/) adaptado. Versionado 0.x hasta el MVP.
 
+## [0.0.45] — 2026-07-14
+
+### Corregido
+
+- **CSP bloqueaba los vídeos de YouTube** en la ficha: la directiva `frame-src` no incluía el dominio del embed. Añadido `https://www.youtube-nocookie.com` a `frame-src` — ahora el reproductor carga.
+- **El carrusel automático se llevaba el vídeo**: al seleccionar o reproducir un vídeo el auto-avance ya no salta a la siguiente imagen. El auto-avance (cada 5 s) se detiene en cuanto la persona interactúa con la galería (navegar por miniaturas o reproducir).
+
 ## [0.0.44] — 2026-07-14
 
 ### Corregido

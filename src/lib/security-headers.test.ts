@@ -25,6 +25,12 @@ describe("Content-Security-Policy", () => {
     expect(csp).toContain("https://challenges.cloudflare.com");
   });
 
+  it("permite los embeds de YouTube (nocookie) en frame-src", () => {
+    const csp = buildCsp(true);
+    const frameSrc = csp.split(";").find((d) => d.trim().startsWith("frame-src"))!;
+    expect(frameSrc).toContain("https://www.youtube-nocookie.com");
+  });
+
   it("en producción no incluye los hosts del stack local", () => {
     expect(buildCsp(false)).not.toContain("127.0.0.1");
     expect(buildCsp(true)).toContain("127.0.0.1");

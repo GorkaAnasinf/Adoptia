@@ -16,7 +16,8 @@ export function buildCsp(isDev: boolean): string {
     // images.unsplash.com: fotos del seed de demo (FEATURE-008).
     "img-src 'self' data: blob: https://*.supabase.co https://*.tile.openstreetmap.org https://lh3.googleusercontent.com https://images.unsplash.com",
     "font-src 'self'",
-    "frame-src 'self' https://challenges.cloudflare.com",
+    // youtube-nocookie: embeds de vídeo de animales (FEATURE-020).
+    "frame-src 'self' https://challenges.cloudflare.com https://www.youtube-nocookie.com",
     `connect-src 'self' https://*.supabase.co wss://*.supabase.co${localSupabase}`,
     "frame-ancestors 'none'",
   ].join("; ");
