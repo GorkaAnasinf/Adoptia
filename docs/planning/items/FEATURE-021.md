@@ -2,7 +2,7 @@
 id: FEATURE-021
 tipo: feature
 titulo: Rediseño de la cabecera superior con menú de usuario por rol
-estado: desarrollo
+estado: hecho
 prioridad: media
 hito: "0.5"
 duplicado_de: null
