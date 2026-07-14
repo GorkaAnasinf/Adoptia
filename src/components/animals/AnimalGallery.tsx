@@ -43,21 +43,29 @@ export function AnimalGallery({ name, media }: { name: string; media: AnimalMedi
   const t = useTranslations("ficha");
   const fotos = ordenar(media);
   const [actual, setActual] = useState(0);
-  // Un vídeo se está reproduciendo → pausa el auto-avance y no lo interrumpe.
+  // Un vídeo se está reproduciendo → oculta la fachada y muestra el reproductor.
   const [reproduciendo, setReproduciendo] = useState(false);
+  // El auto-avance se detiene en cuanto la persona interactúa (navega o reproduce).
+  const [autoActivo, setAutoActivo] = useState(true);
 
-  // Auto-avance del carrusel (pausado si hay un vídeo en marcha o hay ≤1 medio).
+  // Auto-avance del carrusel (solo hasta la primera interacción; ≥2 medios).
   useEffect(() => {
-    if (fotos.length <= 1 || reproduciendo) return;
+    if (fotos.length <= 1 || !autoActivo || reproduciendo) return;
     const id = setInterval(() => {
       setActual((p) => (p + 1) % fotos.length);
     }, AUTO_MS);
     return () => clearInterval(id);
-  }, [fotos.length, reproduciendo]);
+  }, [fotos.length, autoActivo, reproduciendo]);
 
   function irA(i: number) {
+    setAutoActivo(false); // navegación manual: no seguir rotando
     setReproduciendo(false);
     setActual(i);
+  }
+
+  function reproducir() {
+    setAutoActivo(false);
+    setReproduciendo(true);
   }
 
   if (fotos.length === 0) {
@@ -87,7 +95,7 @@ export function AnimalGallery({ name, media }: { name: string; media: AnimalMedi
             // Fachada: póster real del vídeo; al pulsar carga el reproductor.
             <button
               type="button"
-              onClick={() => setReproduciendo(true)}
+              onClick={reproducir}
               aria-label={t("reproducirVideo")}
               className="group absolute inset-0 size-full"
             >
@@ -111,7 +119,7 @@ export function AnimalGallery({ name, media }: { name: string; media: AnimalMedi
             controls
             preload="metadata"
             aria-label={etiqueta}
-            onPlay={() => setReproduciendo(true)}
+            onPlay={reproducir}
             onPause={() => setReproduciendo(false)}
             onEnded={() => setReproduciendo(false)}
             className="absolute inset-0 size-full bg-black object-contain"
