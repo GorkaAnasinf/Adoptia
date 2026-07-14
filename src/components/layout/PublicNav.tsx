@@ -2,7 +2,7 @@
 
 import { Menu, Search, X } from "lucide-react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
@@ -13,6 +13,38 @@ const LINKS = [
   { key: "map", href: "/mapa" },
   { key: "lostFound", href: "/perdidos-encontrados" },
 ] as const;
+
+/**
+ * Buscador de la cabecera: envía a `/animales?q=<término>` (o al listado sin
+ * filtro si va vacío). El texto real lo resuelve el RPC `animals_search`.
+ */
+function Buscador({ className, onNavigate }: { className?: string; onNavigate?: () => void }) {
+  const t = useTranslations("nav");
+  const router = useRouter();
+  const [q, setQ] = useState("");
+
+  const enviar = (e: React.FormEvent) => {
+    e.preventDefault();
+    const termino = q.trim();
+    router.push(termino ? `/animales?q=${encodeURIComponent(termino)}` : "/animales");
+    onNavigate?.();
+  };
+
+  return (
+    <form onSubmit={enviar} role="search" className={className}>
+      <Search className="size-4 shrink-0 text-muted-foreground" aria-hidden="true" />
+      <input
+        type="search"
+        value={q}
+        onChange={(e) => setQ(e.target.value)}
+        aria-label={t("searchPlaceholder")}
+        placeholder={t("searchPlaceholder")}
+        maxLength={60}
+        className="w-full min-w-0 bg-transparent text-sm text-foreground outline-none placeholder:text-muted-foreground"
+      />
+    </form>
+  );
+}
 
 /**
  * Navegación de la cabecera pública: enlaces con estado activo, buscador
@@ -61,14 +93,8 @@ export function PublicNav() {
         ))}
       </nav>
 
-      {/* Buscador (desktop): entrada a la exploración de animales */}
-      <Link
-        href="/animales"
-        className="hidden min-w-50 items-center gap-2 rounded-full border border-input bg-card px-4 py-2 text-sm text-muted-foreground transition-colors hover:border-primary/40 lg:flex"
-      >
-        <Search className="size-4 shrink-0" aria-hidden="true" />
-        <span className="truncate">{t("searchPlaceholder")}</span>
-      </Link>
+      {/* Buscador (desktop) */}
+      <Buscador className="hidden min-w-50 items-center gap-2 rounded-full border border-input bg-card px-4 py-2 transition-colors focus-within:border-primary/40 hover:border-primary/40 lg:flex" />
 
       {/* Botón de menú (móvil) */}
       <button
@@ -107,13 +133,10 @@ export function PublicNav() {
               </button>
             </div>
 
-            <Link
-              href="/animales"
-              className="mb-2 flex items-center gap-2 rounded-full border border-input bg-card px-4 py-2.5 text-sm text-muted-foreground"
-            >
-              <Search className="size-4 shrink-0" aria-hidden="true" />
-              <span className="truncate">{t("searchPlaceholder")}</span>
-            </Link>
+            <Buscador
+              className="mb-2 flex items-center gap-2 rounded-full border border-input bg-card px-4 py-2.5"
+              onNavigate={() => setOpen(false)}
+            />
 
             {LINKS.map(({ key, href }) => (
               <Link

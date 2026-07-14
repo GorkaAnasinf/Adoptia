@@ -367,6 +367,8 @@
     "alertaLogin": "Inicia sesión para crear una alerta",
     "results": "{count, plural, =0 {Sin resultados} one {# animal} other {# animales}}",
     "filters": "Filtros",
+    "texto": "Buscar",
+    "textoPlaceholder": "Nombre o raza…",
     "especie": "Especie",
     "especieAll": "Todas",
     "tamano": "Tamaño",

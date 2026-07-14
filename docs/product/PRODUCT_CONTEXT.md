@@ -84,6 +84,7 @@ Estado de cada capacidad en lenguaje de usuario. Se regenera con `python scripts
 - Rediseño de la home pública (hero con buscador, recién llegados, banda de stats y CTA) ([IMPROVEMENT-018](../planning/items/IMPROVEMENT-018.md))
 - Rediseño del listado /animales (filtros horizontales, tarjetas con favorito y paginación numerada) ([IMPROVEMENT-019](../planning/items/IMPROVEMENT-019.md))
 - Rediseño de la ficha pública de animal ([IMPROVEMENT-020](../planning/items/IMPROVEMENT-020.md))
+- Búsqueda por texto/raza en el listado de animales ([IMPROVEMENT-021](../planning/items/IMPROVEMENT-021.md))
 
 #### 🚧 En camino (en desarrollo ahora)
 
@@ -91,5 +92,5 @@ _Nada en desarrollo en este momento._
 
 #### 🗓️ Previsto
 
-- Búsqueda por texto/raza en el listado de animales — hito sin asignar ([IMPROVEMENT-021](../planning/items/IMPROVEMENT-021.md))
+_Backlog vacío._
 <!-- RENDER:END -->
