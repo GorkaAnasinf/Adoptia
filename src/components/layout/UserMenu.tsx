@@ -1,13 +1,40 @@
 "use client";
 
 import type { User } from "@supabase/supabase-js";
-import { LogOut, UserRound } from "lucide-react";
+import {
+  BarChart3,
+  CalendarHeart,
+  FileText,
+  Heart,
+  LogOut,
+  type LucideIcon,
+  Store,
+  UserRound,
+} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { createClient } from "@/lib/supabase/client";
+
+export type UserRole = "adopter" | "shelter" | "admin";
+
+type MenuItem = { key: string; href: string; icon: LucideIcon };
+
+/**
+ * Accesos del menú del avatar por rol. La visibilidad es cosmética: el acceso
+ * real a cada área sigue protegido por el middleware (`src/middleware.ts`).
+ */
+const ACCESOS: Record<UserRole, MenuItem[]> = {
+  shelter: [{ key: "navShelterPanel", href: "/panel", icon: Store }],
+  admin: [{ key: "navAdminPanel", href: "/admin/protectoras", icon: BarChart3 }],
+  adopter: [
+    { key: "navFavorites", href: "/mi-cuenta/favoritos", icon: Heart },
+    { key: "navMyRequests", href: "/mi-cuenta/solicitudes", icon: FileText },
+    { key: "navMyAppointments", href: "/mi-cuenta/citas", icon: CalendarHeart },
+  ],
+};
 
 function iniciales(user: User): string {
   const nombre = (user.user_metadata?.full_name as string | undefined) ?? user.email ?? "";
@@ -17,7 +44,7 @@ function iniciales(user: User): string {
   return chars.toUpperCase() || "?";
 }
 
-export function UserMenu() {
+export function UserMenu({ role }: { role?: UserRole | null }) {
   const t = useTranslations();
   const router = useRouter();
   const [user, setUser] = useState<User | null>(null);
@@ -126,6 +153,20 @@ export function UserMenu() {
             <UserRound className="size-4" aria-hidden="true" />
             {t("shell.navAccount")}
           </Link>
+          {role &&
+            ACCESOS[role].map(({ key, href, icon: Icon }) => (
+              <Link
+                key={key}
+                href={href}
+                role="menuitem"
+                onClick={() => setAbierto(false)}
+                className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-foreground hover:bg-accent"
+              >
+                <Icon className="size-4" aria-hidden="true" />
+                {t(`shell.${key}`)}
+              </Link>
+            ))}
+          <div className="my-1 border-t border-border" aria-hidden="true" />
           <button
             type="button"
             role="menuitem"

@@ -140,6 +140,7 @@ export function AppShell({
       {/* Columna de contenido */}
       <div className="flex min-h-screen flex-col lg:pl-64">
         <AppHeader
+          role={role}
           shelterName={shelterName}
           status={status}
           crumbs={crumbs}

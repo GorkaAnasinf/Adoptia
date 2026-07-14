@@ -1,9 +1,13 @@
 import Link from "next/link";
-import { useTranslations } from "next-intl";
+import { getTranslations } from "next-intl/server";
+import { createClient } from "@/lib/supabase/server";
+import { getUserRole } from "@/lib/user-role";
 import { UserMenu } from "./UserMenu";
 
-export function Header() {
-  const t = useTranslations();
+export async function Header() {
+  const t = await getTranslations();
+  const supabase = await createClient();
+  const role = await getUserRole(supabase);
 
   return (
     <header className="sticky top-0 z-40 border-b border-border bg-background/95 backdrop-blur">
@@ -30,7 +34,7 @@ export function Header() {
           >
             {t("nav.lostFound")}
           </Link>
-          <UserMenu />
+          <UserMenu role={role} />
         </nav>
       </div>
     </header>

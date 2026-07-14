@@ -5,9 +5,10 @@ import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { Breadcrumbs, type Crumb } from "./Breadcrumbs";
 import { StatusBadge, type ShelterStatus } from "./StatusBadge";
-import { UserMenu } from "./UserMenu";
+import { UserMenu, type UserRole } from "./UserMenu";
 
 type Props = {
+  role?: UserRole | null;
   shelterName?: string | null;
   status: ShelterStatus | null;
   crumbs: Crumb[];
@@ -19,7 +20,7 @@ type Props = {
   hasNotifications?: boolean;
 };
 
-export function AppHeader({ shelterName, status, crumbs, onMenuClick }: Props) {
+export function AppHeader({ role, shelterName, status, crumbs, onMenuClick }: Props) {
   const t = useTranslations("shell");
   const tc = useTranslations("common");
 
@@ -59,7 +60,7 @@ export function AppHeader({ shelterName, status, crumbs, onMenuClick }: Props) {
         <StatusBadge status={status} />
         {/* Ayuda y notificaciones se retiran hasta tener feature; el prop
             `hasNotifications` queda latente para reactivar la campana. */}
-        <UserMenu />
+        <UserMenu role={role} />
       </div>
     </header>
   );

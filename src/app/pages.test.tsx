@@ -51,6 +51,9 @@ vi.mock("@/components/forms/RecoverForm", () => ({
 vi.mock("@/components/forms/NewPasswordForm", () => ({
   NewPasswordForm: () => <div data-testid="new-password-form" />,
 }));
+vi.mock("@/components/layout/Header", () => ({
+  Header: () => <header data-testid="header" />,
+}));
 vi.mock("@/components/layout/UserMenu", () => ({
   UserMenu: () => <div data-testid="user-menu" />,
 }));
