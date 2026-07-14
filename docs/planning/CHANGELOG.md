@@ -2,6 +2,20 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/es/) adaptado. Versionado 0.x hasta el MVP.
 
+## [0.0.43] — 2026-07-14
+
+### Añadido
+
+- **FEATURE-020 — Vídeos en la ficha del animal**: las protectoras pueden añadir vídeo por dos vías. **YouTube** (pegar el enlace en el alta) ya se guardaba pero la ficha lo pintaba como imagen rota; ahora el carrusel lo muestra como embed `youtube-nocookie`. **MP4 subido** (≤ 25 MB) desde el gestor de fotos, con validación de tipo/tamaño y reproductor nativo en la ficha. Las miniaturas de vídeo llevan overlay ▶.
+
+### Cambiado
+
+- La **miniatura** de un animal (tarjetas del listado, `og:image`, imagen social y schema.org) es ahora **siempre una foto**, nunca la URL de un vídeo: `animals_search` y las rutas OG filtran `type='photo'`. El mínimo para publicar sigue exigiendo al menos una foto (un vídeo no basta).
+
+### Seguridad
+
+- El enlace de YouTube nunca se renderiza crudo: solo se pinta el embed derivado de un `videoId` validado (sin XSS). Nueva restricción en BD: la portada (`is_cover`) solo puede ser una foto. Tope de tamaño del bucket `animal-media` a 25 MB (`file_size_limit`).
+
 ## [0.0.42] — 2026-07-13
 
 ### Cambiado

@@ -9,7 +9,7 @@ type Params = Promise<{ slug: string }>;
 const ANCHO = 1200;
 const ALTO = 630;
 
-type Media = { url: string; is_cover: boolean; sort_order: number };
+type Media = { url: string; is_cover: boolean; sort_order: number; type?: string };
 
 /**
  * og:image de la ficha pública de un animal (1200×630): foto de portada,
@@ -21,7 +21,7 @@ export async function GET(_req: Request, { params }: { params: Params }) {
   const supabase = await createClient();
   const { data } = await supabase
     .from("animals")
-    .select("name, species, status, animal_media (url, is_cover, sort_order), shelters (name, status)")
+    .select("name, species, status, animal_media (url, is_cover, sort_order, type), shelters (name, status)")
     .eq("slug", slug)
     .maybeSingle();
 
@@ -30,7 +30,7 @@ export async function GET(_req: Request, { params }: { params: Params }) {
   }
 
   const media = ((data.animal_media as Media[] | null) ?? [])
-    .slice()
+    .filter((m) => (m.type ?? "photo") === "photo")
     .sort((a, b) => Number(b.is_cover) - Number(a.is_cover) || a.sort_order - b.sort_order);
   const portada = media[0]?.url ?? null;
   const shelter = data.shelters as unknown as { name: string } | null;

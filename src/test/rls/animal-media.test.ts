@@ -118,4 +118,32 @@ describe.skipIf(!rlsDisponible)("FEATURE-003 media de animales", () => {
       .insert({ animal_id: animalAId, type: "photo", url: "b.jpg", is_cover: true });
     expect(e2).not.toBeNull(); // viola el índice único de portada
   });
+
+  // FEATURE-020 — un vídeo nunca puede ser la portada (miniatura solo-foto).
+  it("no admite marcar un vídeo de YouTube como portada (constraint)", async () => {
+    const admin = adminClient();
+    await admin.from("animal_media").delete().eq("animal_id", animalAId);
+    const { error } = await admin.from("animal_media").insert({
+      animal_id: animalAId,
+      type: "youtube",
+      url: "https://youtu.be/dQw4w9WgXcQ",
+      is_cover: true,
+    });
+    expect(error).not.toBeNull(); // check animal_media_cover_is_photo
+  });
+
+  it("animals_search devuelve una foto como cover_url aunque el vídeo tenga sort_order menor", async () => {
+    const admin = adminClient();
+    await admin.from("animals").update({ published_at: new Date().toISOString() }).eq("id", animalAId);
+    await admin.from("animal_media").delete().eq("animal_id", animalAId);
+    await admin.from("animal_media").insert([
+      { animal_id: animalAId, type: "youtube", url: "https://youtu.be/dQw4w9WgXcQ", sort_order: 0 },
+      { animal_id: animalAId, type: "photo", url: "portada.jpg", sort_order: 1, is_cover: true },
+    ]);
+
+    const anon = anonClient();
+    const { data } = await anon.rpc("animals_search", { p_limit: 50 });
+    const fila = (data ?? []).find((r: { id: string }) => r.id === animalAId);
+    expect(fila?.cover_url).toBe("portada.jpg"); // nunca la URL de YouTube
+  });
 });

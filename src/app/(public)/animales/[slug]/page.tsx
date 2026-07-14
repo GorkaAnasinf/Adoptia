@@ -15,7 +15,7 @@ const CAMPOS = `id, name, slug, species, breed, sex, size, birth_date_approx, we
   status, description, good_with_kids, good_with_dogs, good_with_cats, apartment_suitable,
   energy_level, special_needs, vaccinated, sterilized, microchipped, health_notes,
   adoption_fee, published_at, sponsorable, sponsor_link, sponsor_note,
-  animal_media (url, is_cover, sort_order),
+  animal_media (url, is_cover, sort_order, type),
   shelters (name, slug, city, province, logo_url, location, status)`;
 
 async function cargarAnimal(slug: string): Promise<PublicAnimalFull | null> {
@@ -83,7 +83,9 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
 
 /** JSON-LD (schema.org) de la ficha: el animal como Product ofrecido por la protectora. */
 function jsonLdAnimal(animal: PublicAnimalFull, url: string) {
-  const portada = animal.media.find((m) => m.is_cover) ?? animal.media[0];
+  // La imagen social/schema es siempre una foto: nunca la URL de un vídeo.
+  const fotos = animal.media.filter((m) => (m.type ?? "photo") === "photo");
+  const portada = fotos.find((m) => m.is_cover) ?? fotos[0];
   return {
     "@context": "https://schema.org",
     "@type": "Product",

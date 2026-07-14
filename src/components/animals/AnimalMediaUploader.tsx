@@ -1,14 +1,26 @@
 "use client";
 
-import { ArrowDown, ArrowUp, ImagePlus, Star, Trash2 } from "lucide-react";
+import { ArrowDown, ArrowUp, ImagePlus, Star, Trash2, Video } from "lucide-react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { useRef, useState } from "react";
 import { comprimirFoto, esImagen, rutaFoto } from "@/lib/image";
 import { createClient } from "@/lib/supabase/client";
 import { cn } from "@/lib/utils";
+import { esVideoMp4, excedeTamanoVideo, rutaVideo } from "@/lib/video";
 
-export type Media = { id: string; url: string; is_cover: boolean; sort_order: number };
+export type MediaType = "photo" | "video";
+export type Media = {
+  id: string;
+  url: string;
+  is_cover: boolean;
+  sort_order: number;
+  type?: MediaType;
+};
+
+function esVideo(m: Media): boolean {
+  return m.type === "video";
+}
 
 const BUCKET = "animal-media";
 
@@ -35,6 +47,7 @@ export function AnimalMediaUploader({
   const [error, setError] = useState<string>();
   const [subiendo, setSubiendo] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
+  const videoInputRef = useRef<HTMLInputElement>(null);
 
   const bloqueado = !shelterId || !animalId;
 
@@ -75,7 +88,7 @@ export function AnimalMediaUploader({
             is_cover: esPrimera,
             sort_order: orden,
           })
-          .select("id,url,is_cover,sort_order")
+          .select("id,url,is_cover,sort_order,type")
           .single();
         if (insErr || !fila) {
           await supabase.storage.from(BUCKET).remove([ruta]); // limpia el huérfano
@@ -86,6 +99,55 @@ export function AnimalMediaUploader({
         orden += 1;
       }
       if (nuevos.length) onChange([...media, ...nuevos]);
+    } finally {
+      setSubiendo(false);
+    }
+  }
+
+  async function onSelectVideo(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    e.target.value = "";
+    if (!file || !shelterId || !animalId) return;
+    setError(undefined);
+    if (!esVideoMp4(file)) {
+      setError(t("errNotVideo"));
+      return;
+    }
+    if (excedeTamanoVideo(file)) {
+      setError(t("errVideoTooBig"));
+      return;
+    }
+    setSubiendo(true);
+    const supabase = createClient();
+    try {
+      const ruta = rutaVideo(shelterId, animalId);
+      // Sin comprimir (el MP4 va tal cual); el tope de tamaño y el
+      // file_size_limit del bucket protegen el Storage.
+      const { error: upErr } = await supabase.storage
+        .from(BUCKET)
+        .upload(ruta, file, { contentType: "video/mp4" });
+      if (upErr) {
+        setError(t("errUpload"));
+        return;
+      }
+      const { data: pub } = supabase.storage.from(BUCKET).getPublicUrl(ruta);
+      const { data: fila, error: insErr } = await supabase
+        .from("animal_media")
+        .insert({
+          animal_id: animalId,
+          type: "video",
+          url: pub.publicUrl,
+          is_cover: false, // un vídeo nunca es portada (constraint en BD)
+          sort_order: media.length,
+        })
+        .select("id,url,is_cover,sort_order,type")
+        .single();
+      if (insErr || !fila) {
+        await supabase.storage.from(BUCKET).remove([ruta]); // limpia el huérfano
+        setError(t("errUpload"));
+        return;
+      }
+      onChange([...media, fila as Media]);
     } finally {
       setSubiendo(false);
     }
@@ -131,17 +193,28 @@ export function AnimalMediaUploader({
 
   return (
     <div className="flex flex-col gap-3">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-wrap items-center justify-between gap-2">
         <span className="text-sm font-medium">{t("photos")}</span>
-        <button
-          type="button"
-          onClick={() => inputRef.current?.click()}
-          disabled={bloqueado || subiendo}
-          className="inline-flex items-center gap-2 rounded-lg border border-border px-3 py-1.5 text-sm font-medium hover:bg-accent disabled:opacity-50"
-        >
-          <ImagePlus className="size-4" aria-hidden="true" />
-          {subiendo ? t("uploading") : t("addPhotos")}
-        </button>
+        <div className="flex gap-2">
+          <button
+            type="button"
+            onClick={() => inputRef.current?.click()}
+            disabled={bloqueado || subiendo}
+            className="inline-flex items-center gap-2 rounded-lg border border-border px-3 py-1.5 text-sm font-medium hover:bg-accent disabled:opacity-50"
+          >
+            <ImagePlus className="size-4" aria-hidden="true" />
+            {subiendo ? t("uploading") : t("addPhotos")}
+          </button>
+          <button
+            type="button"
+            onClick={() => videoInputRef.current?.click()}
+            disabled={bloqueado || subiendo}
+            className="inline-flex items-center gap-2 rounded-lg border border-border px-3 py-1.5 text-sm font-medium hover:bg-accent disabled:opacity-50"
+          >
+            <Video className="size-4" aria-hidden="true" />
+            {t("addVideo")}
+          </button>
+        </div>
         <input
           ref={inputRef}
           type="file"
@@ -149,6 +222,13 @@ export function AnimalMediaUploader({
           multiple
           className="sr-only"
           onChange={onSelect}
+        />
+        <input
+          ref={videoInputRef}
+          type="file"
+          accept="video/mp4"
+          className="sr-only"
+          onChange={onSelectVideo}
         />
       </div>
 
@@ -159,13 +239,18 @@ export function AnimalMediaUploader({
         <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3">
           {media.map((m, i) => (
             <li key={m.id} className="group relative overflow-hidden rounded-xl border border-border">
-              <Image
-                src={m.url}
-                alt=""
-                width={200}
-                height={150}
-                className="aspect-[4/3] w-full object-cover"
-              />
+              {esVideo(m) ? (
+                // biome-ignore lint/a11y/useMediaCaption: vídeo del animal sin subtítulos.
+                <video src={m.url} className="aspect-[4/3] w-full bg-black object-contain" muted preload="metadata" />
+              ) : (
+                <Image
+                  src={m.url}
+                  alt=""
+                  width={200}
+                  height={150}
+                  className="aspect-[4/3] w-full object-cover"
+                />
+              )}
               {m.is_cover && (
                 <span className="absolute left-2 top-2 inline-flex items-center gap-1 rounded-full bg-tertiary px-2 py-0.5 text-xs font-semibold text-tertiary-foreground">
                   <Star className="size-3 fill-current" aria-hidden="true" />
@@ -182,7 +267,7 @@ export function AnimalMediaUploader({
                   </IconBtn>
                 </div>
                 <div className="flex gap-1">
-                  <IconBtn label={t("makeCover")} onClick={() => marcarPortada(m.id)} disabled={m.is_cover}>
+                  <IconBtn label={t("makeCover")} onClick={() => marcarPortada(m.id)} disabled={m.is_cover || esVideo(m)}>
                     <Star className="size-4" />
                   </IconBtn>
                   <IconBtn label={t("deletePhoto")} onClick={() => borrar(m)} destructivo>
