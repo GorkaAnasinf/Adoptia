@@ -30,4 +30,11 @@ describe("crumbsFromPathname", () => {
     const c = crumbsFromPathname("/panel/xyz", t);
     expect(c[1]).toEqual({ label: "xyz" });
   });
+
+  it("mapea segmentos públicos (animales, mapa, perdidos-encontrados, guias)", () => {
+    expect(crumbsFromPathname("/animales", t)).toEqual([{ label: "crumbAnimales" }]);
+    expect(crumbsFromPathname("/mapa", t)).toEqual([{ label: "crumbMapa" }]);
+    expect(crumbsFromPathname("/perdidos-encontrados", t)).toEqual([{ label: "crumbPerdidos" }]);
+    expect(crumbsFromPathname("/guias", t)).toEqual([{ label: "crumbGuias" }]);
+  });
 });

@@ -63,6 +63,7 @@ Estado de cada capacidad en lenguaje de usuario. Se regenera con `python scripts
 - App shell autenticado — cabecera común, navegación por rol y breadcrumbs ([FEATURE-018](../planning/items/FEATURE-018.md))
 - Directorio público de protectoras (/protectoras) ([FEATURE-019](../planning/items/FEATURE-019.md))
 - Vídeos en la ficha del animal (YouTube + MP4) ([FEATURE-020](../planning/items/FEATURE-020.md))
+- Rediseño de la cabecera superior con menú de usuario por rol ([FEATURE-021](../planning/items/FEATURE-021.md))
 - De-duplicar el slug de protectora (nombres repetidos) ([IMPROVEMENT-001](../planning/items/IMPROVEMENT-001.md))
 - Rediseño UX del wizard de alta de protectora (+ fix del mapa gris) ([IMPROVEMENT-002](../planning/items/IMPROVEMENT-002.md))
 - Pulido del shell chrome (sidebar + cabecera) hacia el mockup de Stitch ([IMPROVEMENT-003](../planning/items/IMPROVEMENT-003.md))
@@ -86,9 +87,9 @@ Estado de cada capacidad en lenguaje de usuario. Se regenera con `python scripts
 
 #### 🚧 En camino (en desarrollo ahora)
 
-- Rediseño de la cabecera superior con menú de usuario por rol ([FEATURE-021](../planning/items/FEATURE-021.md))
+_Nada en desarrollo en este momento._
 
 #### 🗓️ Previsto
 
-_Backlog vacío._
+- Búsqueda por texto/raza en el listado de animales — hito sin asignar ([IMPROVEMENT-021](../planning/items/IMPROVEMENT-021.md))
 <!-- RENDER:END -->

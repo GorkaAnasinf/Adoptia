@@ -6,20 +6,20 @@
 ## 📍 ESTADO ACTUAL
 
 - **Hito activo:** 0.5 — post-MVP (mantenimiento y features detectadas en pruebas reales; hitos 0.2–0.4 cerrados).
-- **Progreso:** **FEATURE-021 fase 1 hecha** (item aún en desarrollo) — el menú del avatar ahora se adapta al rol: la protectora ve «Panel de protectora» (→ `/panel`), el adoptante sus accesos (favoritos/solicitudes/citas) y el admin su panel. Rol leído en servidor (`profiles.role`); acceso real sigue en el middleware. Antes: BUG-004 hecho («Reservar cita» ya no da 404) + rediseño del cuestionario de alta.
-- **Siguiente:** **FEATURE-021 fase 2** — rediseño visual del top bar público (buscador «Buscar raza…», fila de breadcrumbs, menú móvil), a la espera de mockups de Stitch.
-- **Bloqueos:** ninguno. **Pendiente de despliegue:** nada — sin migraciones nuevas en FEATURE-021 (cambio solo de frontend/lectura). Todas las migraciones hasta `20260714140000_bug004` aplicadas en producción el 2026-07-14 (`supabase db push`).
+- **Progreso:** **FEATURE-021 hecha (fases 1 y 2)** — menú del avatar adaptado al rol (protectora → «Panel de protectora», adoptante → favoritos/solicitudes/citas, admin → su panel; rol leído en servidor, acceso real en el middleware) **y** rediseño de la cabecera pública (marca con huella, nav con estado activo, buscador pill, fila de breadcrumbs y menú móvil en drawer). Antes: BUG-004 hecho + rediseño del cuestionario de alta.
+- **Siguiente:** nada en cola. Candidato listo: **IMPROVEMENT-021** — buscador de texto/raza real en `animals_search` (hoy el buscador de la cabecera solo enlaza a `/animales`).
+- **Bloqueos:** ninguno. **Pendiente de despliegue:** nada — FEATURE-021 es solo frontend/lectura, sin migraciones. Todas las migraciones hasta `20260714140000_bug004` aplicadas en producción el 2026-07-14 (`supabase db push`).
 - **Follow-ups abiertos:** re-medir Lighthouse de ficha/listado en producción cuando haya contenido real (ver IMPROVEMENT-012). Datos de prueba masivos (`@masivo.adoptia.es`, slugs `-msv`) cargados en local y en producción el 2026-07-13 — borrarlos al acabar las pruebas. Candidatos a item: badge «Urgente» (requiere campo en BD) y filtro «Apto para piso» en el RPC `animals_search` (mockup de IMPROVEMENT-019).
-- **Última actualización:** 2026-07-14 (FEATURE-021 fase 1 — acceso al panel por rol desde el menú del avatar; item sigue abierto para la fase 2 de rediseño visual).
+- **Última actualización:** 2026-07-14 (FEATURE-021 cerrada — menú por rol + rediseño de la cabecera pública; abierto follow-up IMPROVEMENT-021 para el buscador de texto real).
 
 ## Items abiertos por estado
 
 Los items `hecho`/`descartado` no aparecen aquí — su histórico vive en [CHANGELOG](CHANGELOG.md) y git.
 
 <!-- RENDER:START -->
-### 🔨 En desarrollo (1)
+### 📥 Recibido (1)
 
 | Item | Título | Prioridad | Hito |
 |------|--------|-----------|------|
-| [FEATURE-021](items/FEATURE-021.md) | Rediseño de la cabecera superior con menú de usuario por rol | media | 0.5 |
+| [IMPROVEMENT-021](items/IMPROVEMENT-021.md) | Búsqueda por texto/raza en el listado de animales | baja | — |
 <!-- RENDER:END -->
