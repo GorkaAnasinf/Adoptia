@@ -24,6 +24,8 @@ const nextConfig: NextConfig = {
       { protocol: "https", hostname: "lh3.googleusercontent.com" },
       // Fotos del seed de demo (FEATURE-008).
       { protocol: "https", hostname: "images.unsplash.com" },
+      // Pósters (miniaturas) de vídeos de YouTube (FEATURE-020).
+      { protocol: "https", hostname: "i.ytimg.com" },
       // Supabase Storage (buckets logos, animal-media).
       ...(supabasePattern ? [supabasePattern] : []),
     ],

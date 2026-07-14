@@ -443,6 +443,7 @@
     "verFoto": "Ver foto {n}",
     "video": "Vídeo {n} de {total}",
     "verVideo": "Ver vídeo {n}",
+    "reproducirVideo": "Reproducir vídeo",
     "adoptedNotice": "¡{nombre} ya ha encontrado hogar! 🎉",
     "reservedNotice": "{nombre} está reservado. Echa un vistazo a otros animales parecidos.",
     "metaTitle": "{nombre}, en adopción",

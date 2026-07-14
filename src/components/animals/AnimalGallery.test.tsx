@@ -43,20 +43,27 @@ describe("AnimalGallery", () => {
     expect(screen.queryByRole("img")).not.toBeInTheDocument();
   });
 
-  it("un vídeo de YouTube se pinta como embed nocookie, no como imagen rota", async () => {
+  it("un vídeo de YouTube muestra el póster y carga el embed nocookie al pulsar play", async () => {
     renderGallery([
       { url: "https://example.com/0.jpg", is_cover: true, sort_order: 0, type: "photo" },
       { url: "https://youtu.be/dQw4w9WgXcQ", is_cover: false, sort_order: 1, type: "youtube" },
     ]);
     // La foto de portada nunca se sustituye por la URL de YouTube.
     expect(screen.queryByRole("img", { name: /youtu\.be/ })).not.toBeInTheDocument();
-    // Al activar la miniatura del vídeo aparece el iframe de embed nocookie.
+    // Miniatura del vídeo → póster real de YouTube (no iframe todavía).
     await userEvent.click(screen.getByRole("button", { name: "Ver vídeo 2" }));
+    expect(document.querySelector("iframe")).toBeNull();
+    const poster = screen.getByRole("img", { name: "Vídeo 2 de 2" });
+    // next/image codifica la URL de origen; comprobamos host e id del póster.
+    expect(decodeURIComponent(poster.getAttribute("src") ?? "")).toContain(
+      "i.ytimg.com/vi/dQw4w9WgXcQ",
+    );
+    // Pulsar el póster carga el reproductor con autoplay.
+    await userEvent.click(screen.getByRole("button", { name: "Reproducir vídeo" }));
     const iframe = document.querySelector("iframe");
     expect(iframe).not.toBeNull();
-    expect(iframe).toHaveAttribute(
-      "src",
-      "https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ",
+    expect(iframe?.getAttribute("src")).toBe(
+      "https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ?autoplay=1&rel=0",
     );
   });
 
