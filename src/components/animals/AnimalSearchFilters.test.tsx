@@ -55,6 +55,18 @@ describe("AnimalSearchFilters — barra horizontal con aplicar", () => {
     expect(screen.getByRole("checkbox", { name: messages.busqueda.compatNinos })).toBeChecked();
   });
 
+  it("el texto de búsqueda se aplica como parámetro q", async () => {
+    renderFilters();
+    await userEvent.type(screen.getByLabelText(messages.busqueda.texto), "labrador");
+    await userEvent.click(screen.getByRole("button", { name: messages.busqueda.aplicar }));
+    expect(replaceMock).toHaveBeenCalledWith("/animales?q=labrador", { scroll: false });
+  });
+
+  it("el término de la URL llega preseleccionado al campo de texto", () => {
+    renderFilters({ q: "gato" });
+    expect(screen.getByLabelText(messages.busqueda.texto)).toHaveValue("gato");
+  });
+
   it("Limpiar filtros navega a la ruta sin parámetros", async () => {
     renderFilters({ especie: "dog", tamano: "small", ninos: "si" });
     await userEvent.click(screen.getByRole("button", { name: messages.busqueda.limpiar }));

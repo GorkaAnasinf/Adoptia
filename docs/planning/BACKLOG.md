@@ -17,9 +17,9 @@
 Los items `hecho`/`descartado` no aparecen aquí — su histórico vive en [CHANGELOG](CHANGELOG.md) y git.
 
 <!-- RENDER:START -->
-### 📥 Recibido (1)
+### ✅ Listo para desarrollo (1)
 
 | Item | Título | Prioridad | Hito |
 |------|--------|-----------|------|
-| [IMPROVEMENT-021](items/IMPROVEMENT-021.md) | Búsqueda por texto/raza en el listado de animales | baja | — |
+| [IMPROVEMENT-021](items/IMPROVEMENT-021.md) | Búsqueda por texto/raza en el listado de animales | baja | 0.5 |
 <!-- RENDER:END -->

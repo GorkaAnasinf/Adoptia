@@ -80,7 +80,7 @@ Para centrar el desarrollo en un lado de la app cada vez, el 0.2 se aborda en do
 | [FEATURE-015](items/FEATURE-015.md) | Contenido educativo sobre adopción responsable | hecho | baja |
 | [FEATURE-016](items/FEATURE-016.md) | Registro de casas de acogida | hecho | baja |
 
-### Hito 0.5 — 100% completado (9/9)
+### Hito 0.5 — 90% completado (9/10)
 
 | Item | Título | Estado | Prioridad |
 |------|--------|--------|-----------|
@@ -93,10 +93,5 @@ Para centrar el desarrollo en un lado de la app cada vez, el 0.2 se aborda en do
 | [IMPROVEMENT-017](items/IMPROVEMENT-017.md) | Rediseño del dashboard de protectora (tarjetas de color y próximas citas) | hecho | media |
 | [IMPROVEMENT-018](items/IMPROVEMENT-018.md) | Rediseño de la home pública (hero con buscador, recién llegados, banda de stats y CTA) | hecho | media |
 | [IMPROVEMENT-019](items/IMPROVEMENT-019.md) | Rediseño del listado /animales (filtros horizontales, tarjetas con favorito y paginación numerada) | hecho | media |
-
-### Sin hito asignado (1)
-
-_Capturas pendientes de promover — no forman parte del roadmap todavía._
-
-- [IMPROVEMENT-021](items/IMPROVEMENT-021.md) — Búsqueda por texto/raza en el listado de animales (recibido)
+| [IMPROVEMENT-021](items/IMPROVEMENT-021.md) | Búsqueda por texto/raza en el listado de animales | listo | baja |
 <!-- RENDER:END -->

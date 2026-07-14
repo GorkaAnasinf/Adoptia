@@ -62,6 +62,7 @@ describe.skipIf(!rlsDisponible)("RPC animals_search", () => {
         species: "dog",
         sex: "female",
         size: "small",
+        breed: "Labrador",
         birth_date_approx: "2024-06-01",
         good_with_kids: true,
         status: "available",
@@ -202,5 +203,26 @@ describe.skipIf(!rlsDisponible)("RPC animals_search", () => {
     expect(pagina).toHaveLength(1);
     // total_count cuenta el conjunto completo, no la página
     expect(Number(pagina[0].total_count)).toBeGreaterThanOrEqual(3);
+  });
+
+  it("busca por nombre (ilike parcial)", async () => {
+    const filas = await buscar({ p_query: "%pip%" });
+    expect(filas.map((f) => f.slug)).toEqual(["busq-pipa"]);
+  });
+
+  it("busca por raza (breed)", async () => {
+    const filas = await buscar({ p_query: "%labra%" });
+    expect(filas.map((f) => f.slug)).toEqual(["busq-pipa"]);
+  });
+
+  it("p_query null no filtra por texto (comportamiento previo)", async () => {
+    const filas = await buscar({ p_query: null });
+    expect(filas.map((f) => f.slug).sort()).toEqual(["busq-golfo", "busq-misi", "busq-pipa"]);
+  });
+
+  it("un término que casaría un borrador NO lo expone (RLS sigue mandando)", async () => {
+    // "Sin publicar" es un borrador (published_at null) → invisible aunque case
+    const filas = await buscar({ p_query: "%sin publicar%" });
+    expect(filas).toHaveLength(0);
   });
 });

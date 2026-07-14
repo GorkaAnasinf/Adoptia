@@ -16,7 +16,11 @@ const SEXOS_FILTRABLES = SEXOS.filter((s) => s !== "unknown");
 const DISTANCIA_MIN_KM = 1;
 const DISTANCIA_MAX_KM = 500;
 
+/** Longitud máxima del término de búsqueda de texto. */
+export const QUERY_MAX = 60;
+
 export interface AnimalSearch {
+  q: string | undefined;
   especie: (typeof ESPECIES)[number] | undefined;
   tamanos: (typeof TAMANOS)[number][];
   sexos: (typeof SEXOS)[number][];
@@ -68,7 +72,10 @@ export function parseAnimalSearch(params: RawParams): AnimalSearch {
   const flag = (v: string | string[] | undefined): true | undefined =>
     primero(v) === "si" ? true : undefined;
 
+  const qBruto = primero(params.q)?.trim().slice(0, QUERY_MAX);
+
   return {
+    q: qBruto ? qBruto : undefined,
     especie: enumValido(ESPECIES, primero(params.especie)),
     tamanos: listaValida(TAMANOS, primero(params.tamano)),
     sexos: listaValida(SEXOS_FILTRABLES, primero(params.sexo)),
@@ -101,7 +108,16 @@ function fechaHaceAnios(hoy: Date, anios: number): string {
   return d.toISOString().slice(0, 10);
 }
 
+/**
+ * Escapa los metacaracteres de LIKE (`\`, `%`, `_`) para que el texto del
+ * usuario se interprete literal y no como comodín. El `\` va primero.
+ */
+function escaparLike(texto: string): string {
+  return texto.replace(/\\/g, "\\\\").replace(/%/g, "\\%").replace(/_/g, "\\_");
+}
+
 export interface AnimalsSearchRpcArgs {
+  p_query: string | null;
   p_species: string | null;
   p_sizes: string[] | null;
   p_sexes: string[] | null;
@@ -123,6 +139,7 @@ export function searchToRpcArgs(s: AnimalSearch, hoy: Date = new Date()): Animal
   const conUbicacion = s.lat !== undefined && s.lng !== undefined;
 
   return {
+    p_query: s.q ? `%${escaparLike(s.q)}%` : null,
     p_species: s.especie ?? null,
     p_sizes: s.tamanos.length ? s.tamanos : null,
     p_sexes: s.sexos.length ? s.sexos : null,
@@ -146,6 +163,7 @@ export function searchToRpcArgs(s: AnimalSearch, hoy: Date = new Date()): Animal
 /** Serializa la búsqueda a query string omitiendo los valores por defecto. */
 export function buildQueryString(s: AnimalSearch): string {
   const qs = new URLSearchParams();
+  if (s.q) qs.set("q", s.q);
   if (s.especie) qs.set("especie", s.especie);
   if (s.tamanos.length) qs.set("tamano", s.tamanos.join(","));
   if (s.sexos.length) qs.set("sexo", s.sexos.join(","));

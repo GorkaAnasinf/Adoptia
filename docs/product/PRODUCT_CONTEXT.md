@@ -91,5 +91,5 @@ _Nada en desarrollo en este momento._
 
 #### 🗓️ Previsto
 
-- Búsqueda por texto/raza en el listado de animales — hito sin asignar ([IMPROVEMENT-021](../planning/items/IMPROVEMENT-021.md))
+- Búsqueda por texto/raza en el listado de animales — hito 0.5 ([IMPROVEMENT-021](../planning/items/IMPROVEMENT-021.md))
 <!-- RENDER:END -->

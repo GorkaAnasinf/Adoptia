@@ -23,6 +23,7 @@ const CLAVE_EDAD: Record<EdadBucket, string> = {
 
 /** Borrador editable de los filtros (se aplica al pulsar «Aplicar filtros»). */
 type Borrador = {
+  texto: string;
   especie: string;
   tamano: string;
   edad: string;
@@ -63,6 +64,7 @@ export function AnimalSearchFilters({ search }: { search: AnimalSearch }) {
   const id = useId();
   const [errorUbicacion, setErrorUbicacion] = useState(false);
   const [borrador, setBorrador] = useState<Borrador>({
+    texto: search.q ?? "",
     especie: search.especie ?? "",
     tamano: search.tamanos[0] ?? "",
     edad: search.edad ?? "",
@@ -86,6 +88,7 @@ export function AnimalSearchFilters({ search }: { search: AnimalSearch }) {
     navegar({
       ...search,
       pagina: 1,
+      q: borrador.texto.trim() || undefined,
       especie: (borrador.especie || undefined) as AnimalSearch["especie"],
       tamanos: (borrador.tamano ? [borrador.tamano] : []) as AnimalSearch["tamanos"],
       edad: (borrador.edad || undefined) as AnimalSearch["edad"],
@@ -112,6 +115,18 @@ export function AnimalSearchFilters({ search }: { search: AnimalSearch }) {
   return (
     <form onSubmit={aplicar} className="space-y-3">
       <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-end">
+        <Campo etiqueta={t("texto")} htmlFor={`${id}-texto`}>
+          <input
+            id={`${id}-texto`}
+            type="search"
+            value={borrador.texto}
+            onChange={(e) => editar({ texto: e.target.value })}
+            placeholder={t("textoPlaceholder")}
+            maxLength={60}
+            className={CLASE_SELECT}
+          />
+        </Campo>
+
         <Campo etiqueta={t("especie")} htmlFor={`${id}-especie`}>
           <select
             id={`${id}-especie`}

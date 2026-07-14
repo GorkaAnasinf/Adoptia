@@ -15,6 +15,7 @@ describe("parseAnimalSearch", () => {
   it("sin parámetros devuelve los valores por defecto (recientes, página 1)", () => {
     const s = parseAnimalSearch({});
     expect(s).toEqual({
+      q: undefined,
       especie: undefined,
       tamanos: [],
       sexos: [],
@@ -85,6 +86,46 @@ describe("parseAnimalSearch", () => {
   it("acepta arrays de Next (param repetido) usando el primer valor", () => {
     const s = parseAnimalSearch({ especie: ["cat", "dog"] });
     expect(s.especie).toBe("cat");
+  });
+});
+
+describe("parseAnimalSearch · texto (q)", () => {
+  it("recorta espacios del término", () => {
+    expect(parseAnimalSearch({ q: "  labrador  " }).q).toBe("labrador");
+  });
+
+  it("término vacío o solo espacios → undefined", () => {
+    expect(parseAnimalSearch({ q: "" }).q).toBeUndefined();
+    expect(parseAnimalSearch({ q: "   " }).q).toBeUndefined();
+    expect(parseAnimalSearch({}).q).toBeUndefined();
+  });
+
+  it("acota la longitud del término a 60 caracteres", () => {
+    const largo = "a".repeat(200);
+    expect(parseAnimalSearch({ q: largo }).q).toHaveLength(60);
+  });
+});
+
+describe("searchToRpcArgs · texto (q)", () => {
+  it("monta el patrón %término% cuando hay texto", () => {
+    const args = searchToRpcArgs(parseAnimalSearch({ q: "labrador" }), HOY);
+    expect(args.p_query).toBe("%labrador%");
+  });
+
+  it("sin texto → p_query null", () => {
+    expect(searchToRpcArgs(parseAnimalSearch({}), HOY).p_query).toBeNull();
+  });
+
+  it("escapa los metacaracteres LIKE del usuario (%, _, \\)", () => {
+    const args = searchToRpcArgs(parseAnimalSearch({ q: "50%_a\\b" }), HOY);
+    expect(args.p_query).toBe("%50\\%\\_a\\\\b%");
+  });
+});
+
+describe("buildQueryString · texto (q)", () => {
+  it("incluye q cuando hay término y lo omite si no", () => {
+    expect(buildQueryString(parseAnimalSearch({ q: "gato" }))).toContain("q=gato");
+    expect(buildQueryString(parseAnimalSearch({}))).not.toContain("q=");
   });
 });
 
