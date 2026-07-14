@@ -2,6 +2,16 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/es/) adaptado. Versionado 0.x hasta el MVP.
 
+## [0.0.44] — 2026-07-14
+
+### Corregido
+
+- **Vídeo de YouTube en la ficha (FEATURE-020)**: la miniatura mostraba una caja gris con el icono ▶ sin frame, y al pulsar el vídeo el `iframe` podía quedarse en blanco. Ahora el carrusel usa el **póster real** del vídeo (`i.ytimg.com`) como miniatura y como portada del reproductor; al pulsar, carga el embed `youtube-nocookie` con autoplay (patrón fachada, mejor rendimiento y play explícito).
+
+### Añadido
+
+- **Carrusel automático** en la galería de la ficha: las imágenes avanzan solas cada 5 s. Se pausa mientras un vídeo se está reproduciendo y al navegar manualmente por las miniaturas.
+
 ## [0.0.43] — 2026-07-14
 
 ### Añadido
