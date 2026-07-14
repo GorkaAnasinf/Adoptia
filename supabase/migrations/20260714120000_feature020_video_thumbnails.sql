@@ -111,6 +111,10 @@ comment on function public.animals_search is
   'Listado público de animales con filtros combinables, orden por distancia y paginación (FEATURE-005). Miniatura solo-foto (FEATURE-020). Security invoker: RLS aplica.';
 
 -- ---------- 2. La portada solo puede ser una foto ----------
+-- Idempotente: en producción el constraint ya existía por un despliegue
+-- parcial previo, y `add constraint` no admite `if not exists`.
+alter table public.animal_media
+  drop constraint if exists animal_media_cover_is_photo;
 alter table public.animal_media
   add constraint animal_media_cover_is_photo
   check (not is_cover or type = 'photo');
