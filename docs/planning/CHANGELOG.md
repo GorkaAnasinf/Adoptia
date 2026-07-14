@@ -2,6 +2,16 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/es/) adaptado. Versionado 0.x hasta el MVP.
 
+## [0.0.47] — 2026-07-14
+
+### Corregido
+
+- **«Reservar cita» llevaba a un 404 (BUG-004)**: tras aprobar una solicitud el animal pasa a `reserved` y la protectora suele despublicarlo; la RLS `animals_public_read` (solo `published_at is not null`) dejaba de mostrárselo al adoptante, así que la página de reserva no encontraba el animal y hacía `notFound()`. Nueva policy RLS: el adoptante puede leer el animal (y su media) mientras tenga una solicitud viva (`pending|approved|completed`) sobre él, aunque esté despublicado — mediante la función `security definer` `adopter_has_request_for()` (evita la recursión `animals`↔`adoption_requests`). La lista de solicitudes vuelve a mostrar nombre y foto del animal. **Requiere `supabase db push` en producción.**
+
+### Rediseñado
+
+- **Vista de alta de adopción (cuestionario de pre-adopción)**: cabecera con avatar del animal, barra de progreso «Paso X de 4» y paso 1 con tarjetas de tipo de vivienda, selector de régimen y toggle para «¿permite mascotas tu casero?». Nuevo primitivo `Switch`.
+
 ## [0.0.46] — 2026-07-14
 
 ### Añadido
