@@ -26,8 +26,8 @@ function renderWizard() {
 
 async function irAPaso2(user: ReturnType<typeof userEvent.setup>) {
   await user.click(screen.getByLabelText(/piso/i));
-  await user.click(screen.getByLabelText(/^propiedad/i));
-  await user.click(screen.getByRole("button", { name: /siguiente/i }));
+  await user.selectOptions(screen.getByLabelText(/régimen/i), "propiedad");
+  await user.click(screen.getByRole("button", { name: /continuar/i }));
 }
 
 describe("SolicitudWizard", () => {
@@ -44,7 +44,7 @@ describe("SolicitudWizard", () => {
   it("no avanza del paso 1 sin elegir régimen/vivienda", async () => {
     const user = userEvent.setup();
     renderWizard();
-    await user.click(screen.getByRole("button", { name: /siguiente/i }));
+    await user.click(screen.getByRole("button", { name: /continuar/i }));
     expect(screen.getByLabelText(/piso/i)).toBeInTheDocument();
   });
 
@@ -52,8 +52,8 @@ describe("SolicitudWizard", () => {
     const user = userEvent.setup();
     renderWizard();
     await user.click(screen.getByLabelText(/piso/i));
-    await user.click(screen.getByLabelText(/^alquiler/i));
-    await user.click(screen.getByRole("button", { name: /siguiente/i }));
+    await user.selectOptions(screen.getByLabelText(/régimen/i), "alquiler");
+    await user.click(screen.getByRole("button", { name: /continuar/i }));
     expect(screen.getByText(/indica si el casero permite/i)).toBeInTheDocument();
   });
 
@@ -74,11 +74,11 @@ describe("SolicitudWizard", () => {
 
     await irAPaso2(user);
     await user.type(screen.getByLabelText(/personas que conviven/i), "2");
-    await user.click(screen.getByRole("button", { name: /siguiente/i }));
+    await user.click(screen.getByRole("button", { name: /continuar/i }));
 
     await user.type(screen.getByLabelText(/horas que el animal/i), "3");
     await user.click(screen.getByLabelText(/de acuerdo/i));
-    await user.click(screen.getByRole("button", { name: /siguiente/i }));
+    await user.click(screen.getByRole("button", { name: /continuar/i }));
 
     await user.type(screen.getByLabelText(/cuéntale a la protectora/i), "Quiero mucho a los animales");
     await user.click(screen.getByLabelText(/acepto que mis datos/i));
@@ -105,11 +105,11 @@ describe("SolicitudWizard", () => {
 
     await irAPaso2(user);
     await user.type(screen.getByLabelText(/personas que conviven/i), "1");
-    await user.click(screen.getByRole("button", { name: /siguiente/i }));
+    await user.click(screen.getByRole("button", { name: /continuar/i }));
 
     await user.type(screen.getByLabelText(/horas que el animal/i), "2");
     await user.click(screen.getByLabelText(/de acuerdo/i));
-    await user.click(screen.getByRole("button", { name: /siguiente/i }));
+    await user.click(screen.getByRole("button", { name: /continuar/i }));
 
     await user.click(screen.getByLabelText(/acepto que mis datos/i));
     await user.click(screen.getByRole("button", { name: /enviar solicitud/i }));

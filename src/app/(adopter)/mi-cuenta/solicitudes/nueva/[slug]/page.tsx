@@ -19,13 +19,16 @@ export default async function NuevaSolicitudPage({ params }: { params: Params })
   const supabase = await createClient();
   const { data: animal } = await supabase
     .from("animals")
-    .select("id, name, status")
+    .select("id, name, status, animal_media (url, is_cover, sort_order, type)")
     .eq("slug", slug)
     .maybeSingle();
 
   if (!animal) {
     notFound();
   }
+
+  const fotos = (animal.animal_media ?? []).filter((m) => (m.type ?? "photo") === "photo");
+  const portada = fotos.find((m) => m.is_cover) ?? fotos[0];
 
   if (animal.status !== "available") {
     return (
@@ -42,5 +45,12 @@ export default async function NuevaSolicitudPage({ params }: { params: Params })
     );
   }
 
-  return <SolicitudWizard animalId={animal.id} animalSlug={slug} animalName={animal.name} />;
+  return (
+    <SolicitudWizard
+      animalId={animal.id}
+      animalSlug={slug}
+      animalName={animal.name}
+      animalPhoto={portada?.url ?? null}
+    />
+  );
 }
