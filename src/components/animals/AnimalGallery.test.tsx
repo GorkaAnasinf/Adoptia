@@ -60,6 +60,18 @@ describe("AnimalGallery", () => {
     );
   });
 
+  it("un vídeo MP4 subido se pinta con controles nativos", async () => {
+    renderGallery([
+      { url: "https://example.com/0.jpg", is_cover: true, sort_order: 0, type: "photo" },
+      { url: "https://example.com/clip.mp4", is_cover: false, sort_order: 1, type: "video" },
+    ]);
+    await userEvent.click(screen.getByRole("button", { name: "Ver vídeo 2" }));
+    const video = document.querySelector("video");
+    expect(video).not.toBeNull();
+    expect(video).toHaveAttribute("controls");
+    expect(video?.querySelector("source")).toHaveAttribute("src", "https://example.com/clip.mp4");
+  });
+
   it("descarta un enlace de YouTube inválido en lugar de romper el carrusel", () => {
     renderGallery([
       { url: "https://example.com/0.jpg", is_cover: true, sort_order: 0, type: "photo" },

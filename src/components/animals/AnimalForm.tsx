@@ -83,7 +83,9 @@ export function AnimalForm({
       return;
     }
     if (publicar) {
-      const res = validarPublicacion(form, media.length);
+      // Solo las fotos cuentan para el mínimo de publicación (un vídeo no basta).
+      const numFotos = media.filter((m) => (m.type ?? "photo") === "photo").length;
+      const res = validarPublicacion(form, numFotos);
       if (!res.ok) {
         setError(t("publishErrors"));
         return;

@@ -65,10 +65,17 @@ export default async function EditarFichaPage({
   if (!animal) notFound();
   const a = animal as AnimalRow;
 
+  // Fotos y vídeos MP4 se gestionan juntos en el uploader; YouTube va aparte.
   const fotos: Media[] = a.animal_media
-    .filter((m) => m.type === "photo")
+    .filter((m) => m.type === "photo" || m.type === "video")
     .sort((x, y) => x.sort_order - y.sort_order)
-    .map((m) => ({ id: m.id, url: m.url, is_cover: m.is_cover, sort_order: m.sort_order }));
+    .map((m) => ({
+      id: m.id,
+      url: m.url,
+      is_cover: m.is_cover,
+      sort_order: m.sort_order,
+      type: m.type === "video" ? "video" : "photo",
+    }));
   const youtubeRow = a.animal_media.find((m) => {
     return m.type === "youtube";
   });

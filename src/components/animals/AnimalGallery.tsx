@@ -20,7 +20,11 @@ function tipo(m: AnimalMedia): MediaType {
   return m.type ?? "photo";
 }
 
-/** Un medio es renderizable si es foto con URL válida o YouTube con enlace válido. */
+function esVideoTipo(m: AnimalMedia): boolean {
+  return tipo(m) === "youtube" || tipo(m) === "video";
+}
+
+/** Un medio es renderizable si es foto/vídeo con URL válida o YouTube con enlace válido. */
 function esValido(m: AnimalMedia): boolean {
   return tipo(m) === "youtube" ? youtubeEmbedUrl(m.url) !== null : esImagenValida(m.url);
 }
@@ -58,6 +62,15 @@ export function AnimalGallery({ name, media }: { name: string; media: AnimalMedi
             allowFullScreen
             className="absolute inset-0 size-full border-0"
           />
+        ) : tipo(activo) === "video" ? (
+          // biome-ignore lint/a11y/useMediaCaption: vídeo del animal sin pista de subtítulos.
+          <video
+            controls
+            aria-label={t("video", { n: actual + 1, total: fotos.length })}
+            className="absolute inset-0 size-full bg-black object-contain"
+          >
+            <source src={activo.url} type="video/mp4" />
+          </video>
         ) : (
           <Image
             src={activo.url}
@@ -72,7 +85,7 @@ export function AnimalGallery({ name, media }: { name: string; media: AnimalMedi
       {fotos.length > 1 && (
         <div className="mt-3 flex gap-2 overflow-x-auto pb-1" role="group" aria-label={name}>
           {fotos.map((foto, i) => {
-            const esVideo = tipo(foto) === "youtube";
+            const esVideo = esVideoTipo(foto);
             return (
               <button
                 key={foto.url}

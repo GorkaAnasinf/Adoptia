@@ -6,20 +6,16 @@
 ## 📍 ESTADO ACTUAL
 
 - **Hito activo:** 0.5 — post-MVP (mantenimiento y features detectadas en pruebas reales; hitos 0.2–0.4 cerrados).
-- **Progreso:** **IMPROVEMENT-020 hecho** — rediseño de la ficha /animales/[slug]: sidebar de acción sticky («¿Te has enamorado?» con CTA + «Guardar para luego» + contador real y anónimo de interesados), tarjeta verde «Proceso de adopción», rasgos inline con iconos, compatibilidad en pills de color y salud con checks. Nuevo RPC `contar_interesados`. Antes: IMPROVEMENT-019 (listado), 018 (home), 017 (dashboard).
+- **Progreso:** **FEATURE-020 hecho** — vídeos en la ficha del animal: YouTube (embed `youtube-nocookie` en el carrusel, antes se pintaba roto) + MP4 subido (≤ 25 MB) con reproductor nativo; miniaturas de vídeo con ▶; la miniatura de tarjeta/OG/schema es siempre foto (`animals_search`/OG filtran `type='photo'`); constraint `is_cover ⇒ type='photo'` y `file_size_limit` del bucket. Antes: IMPROVEMENT-020 (ficha), 019 (listado), 018 (home).
 - **Siguiente:** nada en cola — lo que entre por la pasarela del analista o se detecte probando la plataforma.
-- **Bloqueos:** ninguno. **Pendiente de despliegue:** aplicar en producción la migración `20260713140000_improvement020_contar_interesados.sql` (`supabase db push`).
+- **Bloqueos:** ninguno. **Pendiente de despliegue:** aplicar en producción las migraciones `20260713140000_improvement020_contar_interesados.sql`, `20260714120000_feature020_video_thumbnails.sql` y `20260714130000_feature020_video_bucket_limit.sql` (`supabase db push`).
 - **Follow-ups abiertos:** re-medir Lighthouse de ficha/listado en producción cuando haya contenido real (ver IMPROVEMENT-012). Datos de prueba masivos (`@masivo.adoptia.es`, slugs `-msv`) cargados en local y en producción el 2026-07-13 — borrarlos al acabar las pruebas. Candidatos a item: badge «Urgente» (requiere campo en BD) y filtro «Apto para piso» en el RPC `animals_search` (mockup de IMPROVEMENT-019).
-- **Última actualización:** 2026-07-13 (cierre de IMPROVEMENT-020 — rediseño de la ficha de animal).
+- **Última actualización:** 2026-07-14 (cierre de FEATURE-020 — vídeos en la ficha del animal).
 
 ## Items abiertos por estado
 
 Los items `hecho`/`descartado` no aparecen aquí — su histórico vive en [CHANGELOG](CHANGELOG.md) y git.
 
 <!-- RENDER:START -->
-### 🔨 En desarrollo (1)
-
-| Item | Título | Prioridad | Hito |
-|------|--------|-----------|------|
-| [FEATURE-020](items/FEATURE-020.md) | Vídeos en la ficha del animal (YouTube + MP4) | media | 0.5 |
+_No hay items abiertos._
 <!-- RENDER:END -->

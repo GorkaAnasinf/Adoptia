@@ -2,7 +2,7 @@
 id: FEATURE-020
 tipo: feature
 titulo: Vídeos en la ficha del animal (YouTube + MP4)
-estado: desarrollo
+estado: hecho
 prioridad: media
 hito: "0.5"
 duplicado_de: null
@@ -137,18 +137,21 @@ Migración nueva `..._feature020_animal_video.sql`:
   vídeo). Arreglado: `AnimalGallery` distingue por `type` y pinta embed
   `-nocookie`; la ficha/OG/`animals_search` traen `type` y garantizan
   miniatura solo-foto; constraint BD `is_cover ⇒ type='photo'`.
-- **Fase B (MP4 subido) — PENDIENTE.** Uploader `accept="video/mp4"`, cap de
-  tamaño + `file_size_limit` del bucket, render `<video controls>`, tareas TDD 2/4/6/8.
+- **Fase B (MP4 subido) — HECHA.** `AnimalMediaUploader` con botón "Subir vídeo
+  (MP4)", validación `esVideoMp4` + cap 25 MB (`lib/video.ts`) + `file_size_limit`
+  del bucket; `<video controls>` en el carrusel y preview en la lista de gestión;
+  "portada" deshabilitada en vídeos; la edición carga fotos+vídeos y el mínimo de
+  publicación cuenta solo fotos.
 
 ## Criterios de aceptación / Casuística a cubrir
 
-- [x] Alta/edición: la protectora puede añadir un vídeo de YouTube pegando la URL. *(Fase A)*
-- [ ] Alta/edición: la protectora puede subir vídeo MP4 (≤ tope); mime/tamaño inválidos se rechazan con mensaje claro y sin dejar fila ni fichero huérfano. *(Fase B)*
-- [x] Ficha: el carrusel muestra fotos y vídeo de YouTube mezclados; YouTube como embed `-nocookie`; miniaturas de vídeo con overlay ▶. *(Fase A; MP4 `<video>` en Fase B)*
-- [x] La **portada** (tarjetas, OG, schema.org, `animals_search`) es **siempre una foto**, nunca un vídeo, aunque el vídeo tenga menor `sort_order`. *(Fase A)*
-- [x] Intentar marcar un vídeo como portada está rechazado por la BD (constraint). *(Fase A)*
-- [x] Estado vacío (0 media) y solo-vídeo (0 fotos): la ficha no rompe; portada/OG caen a placeholder de pata. *(Fase A)*
-- [x] Seguridad: URL de YouTube no se inyecta cruda; solo se renderiza el embed derivado de un `videoId` validado. Sin XSS. *(Fase A)*
-- [ ] RLS Storage: solo la protectora dueña sube/borra sus vídeos MP4 (misma política de carpeta que fotos); lectura pública igual que fotos. *(Fase B)*
-- [x] Sin textos hardcodeados: todo en `messages/es.json`. *(Fase A)*
-- [ ] Borrar un vídeo MP4 elimina fichero y fila; borrar la portada asciende la siguiente **foto**. *(Fase B)*
+- [x] Alta/edición: la protectora puede añadir un vídeo de YouTube pegando la URL.
+- [x] Alta/edición: la protectora puede subir vídeo MP4 (≤ 25 MB); mime/tamaño inválidos se rechazan con mensaje claro y sin dejar fila ni fichero huérfano.
+- [x] Ficha: el carrusel muestra fotos y vídeos mezclados; YouTube como embed `-nocookie`, MP4 con controles nativos; miniaturas de vídeo con overlay ▶.
+- [x] La **portada** (tarjetas, OG, schema.org, `animals_search`) es **siempre una foto**, nunca un vídeo, aunque el vídeo tenga menor `sort_order`.
+- [x] Intentar marcar un vídeo como portada está bloqueado en UI y rechazado por la BD (constraint).
+- [x] Estado vacío (0 media) y solo-vídeo (0 fotos): la ficha no rompe; portada/OG caen a placeholder de pata.
+- [x] Seguridad: URL de YouTube no se inyecta cruda; solo se renderiza el embed derivado de un `videoId` validado. Sin XSS.
+- [x] RLS Storage: solo la protectora dueña sube/borra sus vídeos MP4 (misma política de carpeta que fotos, ya probada en FEATURE-003); lectura pública igual que fotos.
+- [x] Sin textos hardcodeados: todo en `messages/es.json`.
+- [x] Borrar un vídeo MP4 elimina fichero y fila; borrar la portada asciende la siguiente **foto**.
