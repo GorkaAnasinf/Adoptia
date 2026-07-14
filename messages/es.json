@@ -438,6 +438,8 @@
     "edad": "Edad",
     "foto": "Foto {n} de {total}",
     "verFoto": "Ver foto {n}",
+    "video": "Vídeo {n} de {total}",
+    "verVideo": "Ver vídeo {n}",
     "adoptedNotice": "¡{nombre} ya ha encontrado hogar! 🎉",
     "reservedNotice": "{nombre} está reservado. Echa un vistazo a otros animales parecidos.",
     "metaTitle": "{nombre}, en adopción",

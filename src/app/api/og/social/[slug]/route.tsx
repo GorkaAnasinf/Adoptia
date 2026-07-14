@@ -5,7 +5,7 @@ import { createClient } from "@/lib/supabase/server";
 export const runtime = "nodejs";
 
 type Params = Promise<{ slug: string }>;
-type Media = { url: string; is_cover: boolean; sort_order: number };
+type Media = { url: string; is_cover: boolean; sort_order: number; type?: string };
 
 /**
  * Imagen social lista para compartir (FEATURE-014): cuadrada 1080×1080 por
@@ -21,13 +21,13 @@ export async function GET(req: Request, { params }: { params: Params }) {
   const supabase = await createClient();
   const { data } = await supabase
     .from("animals")
-    .select("id, name, species, status, animal_media (url, is_cover, sort_order), shelters (name, status)")
+    .select("id, name, species, status, animal_media (url, is_cover, sort_order, type), shelters (name, status)")
     .eq("slug", slug)
     .maybeSingle();
   if (!data) return new Response("Not found", { status: 404 });
 
   const media = ((data.animal_media as Media[] | null) ?? [])
-    .slice()
+    .filter((m) => (m.type ?? "photo") === "photo")
     .sort((a, b) => Number(b.is_cover) - Number(a.is_cover) || a.sort_order - b.sort_order);
   const portada = media[0]?.url ?? null;
   const shelter = data.shelters as unknown as { name: string } | null;

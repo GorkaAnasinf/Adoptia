@@ -84,7 +84,7 @@ Estado de cada capacidad en lenguaje de usuario. Se regenera con `python scripts
 
 #### 🚧 En camino (en desarrollo ahora)
 
-_Nada en desarrollo en este momento._
+- Vídeos en la ficha del animal (YouTube + MP4) ([FEATURE-020](../planning/items/FEATURE-020.md))
 
 #### 🗓️ Previsto
 

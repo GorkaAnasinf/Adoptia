@@ -3,15 +3,15 @@ import userEvent from "@testing-library/user-event";
 import { NextIntlClientProvider } from "next-intl";
 import { describe, expect, it } from "vitest";
 import messages from "../../../messages/es.json";
-import { AnimalGallery } from "./AnimalGallery";
+import { AnimalGallery, type AnimalMedia } from "./AnimalGallery";
 
-const FOTOS = [
+const FOTOS: AnimalMedia[] = [
   { url: "https://example.com/1.jpg", is_cover: false, sort_order: 1 },
   { url: "https://example.com/0.jpg", is_cover: true, sort_order: 0 },
   { url: "https://example.com/2.jpg", is_cover: false, sort_order: 2 },
 ];
 
-function renderGallery(media = FOTOS) {
+function renderGallery(media: AnimalMedia[] = FOTOS) {
   return render(
     <NextIntlClientProvider locale="es" messages={messages}>
       <AnimalGallery name="Pipa" media={media} />
@@ -41,5 +41,31 @@ describe("AnimalGallery", () => {
   it("sin fotos muestra placeholder sin romper", () => {
     renderGallery([]);
     expect(screen.queryByRole("img")).not.toBeInTheDocument();
+  });
+
+  it("un vídeo de YouTube se pinta como embed nocookie, no como imagen rota", async () => {
+    renderGallery([
+      { url: "https://example.com/0.jpg", is_cover: true, sort_order: 0, type: "photo" },
+      { url: "https://youtu.be/dQw4w9WgXcQ", is_cover: false, sort_order: 1, type: "youtube" },
+    ]);
+    // La foto de portada nunca se sustituye por la URL de YouTube.
+    expect(screen.queryByRole("img", { name: /youtu\.be/ })).not.toBeInTheDocument();
+    // Al activar la miniatura del vídeo aparece el iframe de embed nocookie.
+    await userEvent.click(screen.getByRole("button", { name: "Ver vídeo 2" }));
+    const iframe = document.querySelector("iframe");
+    expect(iframe).not.toBeNull();
+    expect(iframe).toHaveAttribute(
+      "src",
+      "https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ",
+    );
+  });
+
+  it("descarta un enlace de YouTube inválido en lugar de romper el carrusel", () => {
+    renderGallery([
+      { url: "https://example.com/0.jpg", is_cover: true, sort_order: 0, type: "photo" },
+      { url: "https://vimeo.com/12345", is_cover: false, sort_order: 1, type: "youtube" },
+    ]);
+    // Solo la foto queda: sin miniaturas (un único medio válido).
+    expect(screen.queryByRole("button")).not.toBeInTheDocument();
   });
 });
