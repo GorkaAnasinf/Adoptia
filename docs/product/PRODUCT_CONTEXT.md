@@ -95,5 +95,6 @@ _Nada en desarrollo en este momento._
 
 #### 🗓️ Previsto
 
+- CI no ejecuta ni un solo test de RLS — 122 tests se saltan en silencio en cada push — hito 0.5 ([BUG-007](../planning/items/BUG-007.md))
 - Avisos de perdidos — ficha identificativa completa, galería y filtros — hito 0.5 ([FEATURE-023](../planning/items/FEATURE-023.md))
 <!-- RENDER:END -->
