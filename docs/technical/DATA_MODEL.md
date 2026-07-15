@@ -15,7 +15,7 @@ profiles ──< shelters ──< animals ──< animal_media
    │             └──< availability_slots                (fase 2)
    ├──< favorites >── animals                           (fase 2)
    ├──< saved_searches                                  (fase 2)
-   └──< lost_found_posts                                (fase 3)
+   └──< lost_found_posts ──< lost_found_sightings       (fase 3)
 ```
 
 ## Entidades núcleo (fase 1)
@@ -29,7 +29,23 @@ profiles ──< shelters ──< animals ──< animal_media
 | `adoption_requests` | Solicitud "Me interesa" | `questionnaire jsonb`; **unique(animal_id, adopter_id)**; estados `pending/approved/rejected/withdrawn/completed` |
 
 Fase 2: `availability_slots`, `appointments`, `favorites`, `saved_searches`, `notifications`.
-Fase 3: `sponsorships`, `lost_found_posts`.
+Fase 3: `sponsorships`, `lost_found_posts`, `lost_found_sightings`.
+
+### Avisos de perdidos y sus pistas (FEATURE-012 + FEATURE-022)
+
+| Tabla | Qué es | Claves de diseño |
+|-------|--------|------------------|
+| `lost_found_posts` | Aviso de perdido/encontrado | `type lost/found`, `status open/resolved/archived`, `location geography(Point)` **redondeada a ~200 m por trigger antes de guardar**; `contact_phone` (opt-in, check de formato) y `allow_contact` (FEATURE-022); `last_activity_at` alimenta el cron de caducidad a 60 días |
+| `lost_found_sightings` | "He visto a este animal": pista de un vecino | `post_id → lost_found_posts` (`on delete cascade`), `seen_at` con check de no-futuro, `location` con **el mismo trigger de redondeo** que el aviso; trigger `after insert` que refresca `last_activity_at` del aviso |
+
+**Redondeo de privacidad**: `public.round_lost_found_location()` hace snap a una rejilla de 0.002° (~200 m) en un `BEFORE INSERT/UPDATE`. La coordenada exacta **nunca llega a existir en BD**, así que no puede filtrarse por ninguna vía (ni un dump, ni un `select` con `service_role`). La misma función la reusan `lost_found_posts`, `lost_found_sightings` y `foster_homes`.
+
+**Minimización en las pistas**: el RPC público `lost_found_sightings_list(post_id)` devuelve fecha, nota, foto y lat/lng redondeados — **no `user_id`**: quién reporta no es asunto público. Borrar la cuenta borra sus avistamientos en cascada.
+
+| Tabla | Lectura | Escritura |
+|-------|---------|-----------|
+| `lost_found_posts` | Pública si `status in (open, resolved)`; `archived` solo autor/admin | Solo el autor (`user_id = auth.uid()`) |
+| `lost_found_sightings` | Pública **solo si el aviso padre es público** (se archivan con él) | Inserta el propio usuario y solo sobre avisos `open`; borran el que reportó, **el autor del aviso** (spam en su ficha) y admin |
 
 ## Reglas RLS (pilar de seguridad)
 

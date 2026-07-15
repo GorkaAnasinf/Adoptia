@@ -3,7 +3,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { getFormatter, getTranslations } from "next-intl/server";
 import { MiniMapa } from "@/components/map/MiniMapa";
+import { AvistamientosTimeline } from "@/components/perdidos/AvistamientosTimeline";
+import { ContactarAvisoDialog } from "@/components/perdidos/ContactarAvisoDialog";
+import { NuevoAvistamientoForm } from "@/components/perdidos/NuevoAvistamientoForm";
 import { ResolverAvisoButton } from "@/components/perdidos/ResolverAvisoButton";
+import type { Avistamiento } from "@/components/perdidos/tipos";
 import { esImagenValida } from "@/lib/animal-search";
 import { parsePoint } from "@/lib/shelter-mapping";
 import { createClient } from "@/lib/supabase/server";
@@ -29,6 +33,8 @@ type Aviso = {
   resolution_story: string | null;
   location: unknown;
   created_at: string;
+  contact_phone: string | null;
+  allow_contact: boolean;
 };
 
 /** Detalle de un aviso: ubicación ya redondeada en BD (privacidad). */
@@ -39,17 +45,19 @@ export default async function AvisoPage({ params }: { params: Params }) {
   const format = await getFormatter();
 
   const supabase = await createClient();
-  const [{ data }, { data: auth }] = await Promise.all([
+  const [{ data }, { data: auth }, { data: vistos }] = await Promise.all([
     supabase
       .from("lost_found_posts")
       .select(
-        "id, user_id, type, species, name, description, photo_url, city, status, resolution_story, location, created_at",
+        "id, user_id, type, species, name, description, photo_url, city, status, resolution_story, location, created_at, contact_phone, allow_contact",
       )
       .eq("id", id)
       .maybeSingle(),
     supabase.auth.getUser(),
+    supabase.rpc("lost_found_sightings_list", { p_post_id: id }),
   ]);
   const aviso = data as Aviso | null;
+  const avistamientos = (vistos ?? []) as Avistamiento[];
 
   if (!aviso) {
     return (
@@ -67,6 +75,11 @@ export default async function AvisoPage({ params }: { params: Params }) {
 
   const punto = parsePoint(aviso.location);
   const esAutor = auth.user?.id === aviso.user_id;
+  const abierto = aviso.status === "open";
+  // Ayudar exige cuenta (anti-spam) y solo tiene sentido en avisos vivos; el
+  // autor no se escribe a sí mismo.
+  const puedeAyudar = abierto && Boolean(auth.user) && !esAutor;
+  const invitarALogin = abierto && !auth.user;
   const ESPECIE: Record<string, string> = {
     dog: tAnimales("speciesDog"),
     cat: tAnimales("speciesCat"),
@@ -120,11 +133,55 @@ export default async function AvisoPage({ params }: { params: Params }) {
         <div className="mt-6">
           <h2 className="font-heading text-lg font-semibold">{t("zona")}</h2>
           <p className="mb-2 text-xs text-muted-foreground">{t("avisoPrivacidad")}</p>
-          <MiniMapa lat={punto.lat} lng={punto.lng} />
+          <MiniMapa
+            lat={punto.lat}
+            lng={punto.lng}
+            extras={avistamientos.map((a) => ({
+              id: a.id,
+              lat: a.lat,
+              lng: a.lng,
+              etiqueta: a.note ?? undefined,
+            }))}
+          />
         </div>
       )}
 
-      {esAutor && aviso.status === "open" && (
+      {(puedeAyudar || invitarALogin) && (
+        <div className="mt-8 rounded-2xl bg-muted/40 px-5 py-5">
+          <h2 className="font-heading text-lg font-semibold">{t("contactoTitulo")}</h2>
+          <p className="mt-1 text-sm text-muted-foreground">{t("contactoSubtitulo")}</p>
+
+          {aviso.contact_phone && (
+            <div className="mt-4">
+              <p className="font-medium">{t("telefonoAutor", { telefono: aviso.contact_phone })}</p>
+              <p className="mt-1 text-xs text-muted-foreground">{t("telefonoAvisoEstafa")}</p>
+            </div>
+          )}
+
+          {puedeAyudar ? (
+            <div className="mt-4 flex flex-col gap-3">
+              <NuevoAvistamientoForm avisoId={aviso.id} userId={auth.user!.id} />
+              {aviso.allow_contact && <ContactarAvisoDialog avisoId={aviso.id} />}
+            </div>
+          ) : (
+            <Link
+              href={`/login?redirect=${encodeURIComponent(`/perdidos-encontrados/${aviso.id}`)}`}
+              className="mt-4 inline-block rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground hover:opacity-90"
+            >
+              {t("entrarParaAyudar")}
+            </Link>
+          )}
+        </div>
+      )}
+
+      <div className="mt-8">
+        <h2 className="font-heading text-lg font-semibold">{t("avistamientosTitulo")}</h2>
+        <div className="mt-3">
+          <AvistamientosTimeline avistamientos={avistamientos} puedeBorrar={esAutor} />
+        </div>
+      </div>
+
+      {esAutor && abierto && (
         <div className="mt-8">
           <ResolverAvisoButton avisoId={aviso.id} />
         </div>

@@ -3,7 +3,7 @@
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { useEffect } from "react";
-import { MapContainer, Marker, TileLayer, useMap } from "react-leaflet";
+import { CircleMarker, MapContainer, Marker, TileLayer, Tooltip, useMap } from "react-leaflet";
 
 const icon = L.icon({
   iconUrl: "/leaflet/marker-icon.png",
@@ -25,15 +25,27 @@ function AjustarTamano() {
   return null;
 }
 
-export default function MiniMapaInner({ lat, lng }: { lat: number; lng: number }) {
+export type PuntoExtra = { id: string; lat: number; lng: number; etiqueta?: string };
+
+export default function MiniMapaInner({
+  lat,
+  lng,
+  extras = [],
+}: {
+  lat: number;
+  lng: number;
+  extras?: PuntoExtra[];
+}) {
+  // Con avistamientos el mapa deja de ser decorativo: hay que poder moverlo.
+  const interactivo = extras.length > 0;
   return (
     <MapContainer
       center={[lat, lng]}
       zoom={13}
-      className="isolate h-44 w-full overflow-hidden rounded-xl"
+      className={`isolate w-full overflow-hidden rounded-xl ${interactivo ? "h-64" : "h-44"}`}
       scrollWheelZoom={false}
-      dragging={false}
-      zoomControl={false}
+      dragging={interactivo}
+      zoomControl={interactivo}
     >
       <TileLayer
         attribution={`&copy; <a href="https://www.openstreetmap.org/copyright">${"OpenStreetMap"}</a>`}
@@ -41,6 +53,16 @@ export default function MiniMapaInner({ lat, lng }: { lat: number; lng: number }
       />
       <AjustarTamano />
       <Marker icon={icon} position={[lat, lng]} interactive={false} />
+      {extras.map((p) => (
+        <CircleMarker
+          key={p.id}
+          center={[p.lat, p.lng]}
+          radius={8}
+          pathOptions={{ color: "#396662", fillColor: "#7fb5a6", fillOpacity: 0.8, weight: 2 }}
+        >
+          {p.etiqueta && <Tooltip>{p.etiqueta}</Tooltip>}
+        </CircleMarker>
+      ))}
     </MapContainer>
   );
 }

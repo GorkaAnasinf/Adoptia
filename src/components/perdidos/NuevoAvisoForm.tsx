@@ -10,6 +10,9 @@ import { createClient } from "@/lib/supabase/client";
 
 const ESPECIES = ["dog", "cat", "other"] as const;
 
+/** Mismo formato que el check de BD (FEATURE-022). */
+const TELEFONO_RE = /^[+0-9][0-9 ]{5,19}$/;
+
 /** Alta de aviso de perdido/encontrado: pensado para completarse en <2 min desde el móvil. */
 export function NuevoAvisoForm({ userId }: { userId: string }) {
   const t = useTranslations("perdidos");
@@ -22,6 +25,8 @@ export function NuevoAvisoForm({ userId }: { userId: string }) {
   const [nombre, setNombre] = useState("");
   const [descripcion, setDescripcion] = useState("");
   const [ciudad, setCiudad] = useState("");
+  const [telefono, setTelefono] = useState("");
+  const [permitirContacto, setPermitirContacto] = useState(true);
   const [foto, setFoto] = useState<File | null>(null);
   const [pin, setPin] = useState<{ lat: number; lng: number } | null>(null);
   const [estado, setEstado] = useState<"idle" | "enviando" | "ok">("idle");
@@ -41,6 +46,10 @@ export function NuevoAvisoForm({ userId }: { userId: string }) {
     }
     if (!pin) {
       setError(t("fFaltaPin"));
+      return;
+    }
+    if (telefono.trim() && !TELEFONO_RE.test(telefono.trim())) {
+      setError(t("fTelefonoInvalido"));
       return;
     }
     setError(undefined);
@@ -67,6 +76,8 @@ export function NuevoAvisoForm({ userId }: { userId: string }) {
         description: descripcion.trim(),
         photo_url: photoUrl,
         city: ciudad.trim() || null,
+        contact_phone: telefono.trim() || null,
+        allow_contact: permitirContacto,
         location: `POINT(${pin.lng} ${pin.lat})`,
       });
       if (insErr) throw insErr;
@@ -190,6 +201,51 @@ export function NuevoAvisoForm({ userId }: { userId: string }) {
           />
         </div>
       </div>
+
+      <fieldset className="flex flex-col gap-3 rounded-2xl border border-border p-4">
+        <legend className="px-1 text-sm font-medium">{t("contactoTitulo")}</legend>
+
+        <div className="flex flex-col gap-1">
+          <label className="text-sm font-medium" htmlFor="aviso-telefono">
+            {t("fTelefono")}
+          </label>
+          <input
+            id="aviso-telefono"
+            type="tel"
+            value={telefono}
+            onChange={(e) => setTelefono(e.target.value)}
+            maxLength={20}
+            aria-describedby="aviso-telefono-help"
+            className="rounded-lg border border-input bg-white px-3 py-2"
+          />
+          <p id="aviso-telefono-help" className="text-xs text-muted-foreground">
+            {t("fTelefonoHelp")}
+          </p>
+        </div>
+
+        <p className="rounded-lg bg-amber-50 px-3 py-2 text-xs text-amber-900">
+          {t("fTelefonoAviso")}
+        </p>
+
+        <div className="flex items-start gap-2">
+          <input
+            id="aviso-permitir-contacto"
+            type="checkbox"
+            checked={permitirContacto}
+            onChange={(e) => setPermitirContacto(e.target.checked)}
+            aria-describedby="aviso-permitir-help"
+            className="mt-1"
+          />
+          <div>
+            <label className="text-sm font-medium" htmlFor="aviso-permitir-contacto">
+              {t("fPermitirContacto")}
+            </label>
+            <p id="aviso-permitir-help" className="text-xs text-muted-foreground">
+              {t("fPermitirContactoHelp")}
+            </p>
+          </div>
+        </div>
+      </fieldset>
 
       <div className="flex flex-col gap-2">
         <p className="text-sm font-medium">{t("fPin")}</p>

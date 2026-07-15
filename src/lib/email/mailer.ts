@@ -9,6 +9,8 @@ export type EmailPayload = {
   to: string;
   subject: string;
   html: string;
+  /** Permite responder a un tercero que cedió su correo (FEATURE-022). */
+  replyTo?: string;
 };
 
 function getTransport() {
@@ -27,8 +29,8 @@ function getTransport() {
   });
 }
 
-export async function enviarEmail({ to, subject, html }: EmailPayload) {
+export async function enviarEmail({ to, subject, html, replyTo }: EmailPayload) {
   const from = process.env.MAIL_FROM || "Adoptia <no-reply@adoptia.example>";
   const transport = getTransport();
-  await transport.sendMail({ from, to, subject, html });
+  await transport.sendMail({ from, to, subject, html, replyTo });
 }

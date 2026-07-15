@@ -20,6 +20,11 @@ const PASS = "Secreta-123-E2E";
 const NOMBRE = `Rocky E2E ${sello}`;
 let avisoId = "";
 
+// FEATURE-022: aviso aparte para el avistamiento — el de arriba acaba resuelto.
+const VECINO_EMAIL = `e2e-vecino-${sello}@test.com`;
+const NOMBRE_KIRA = `Kira E2E ${sello}`;
+let avisoKiraId = "";
+
 test.beforeAll(async () => {
   const admin = createClient(URL, SERVICE_KEY, {
     auth: { autoRefreshToken: false, persistSession: false },
@@ -48,6 +53,31 @@ test.beforeAll(async () => {
     .single();
   if (ea) throw ea;
   avisoId = aviso.id;
+
+  // --- FEATURE-022 ---
+  const { error: ev } = await admin.auth.admin.createUser({
+    email: VECINO_EMAIL,
+    password: PASS,
+    email_confirm: true,
+    user_metadata: { role: "adopter", full_name: "Vecino E2E" },
+  });
+  if (ev) throw ev;
+
+  const { data: kira, error: ek } = await admin
+    .from("lost_found_posts")
+    .insert({
+      user_id: creado.user.id,
+      type: "lost",
+      species: "dog",
+      name: NOMBRE_KIRA,
+      description: "Podenca canela (E2E FEATURE-022).",
+      location: "POINT(-2.9346 43.2631)",
+      city: "Bilbao",
+    })
+    .select()
+    .single();
+  if (ek) throw ek;
+  avisoKiraId = kira.id;
 });
 
 test("el aviso aparece en el listado y su autor lo resuelve con historia", async ({ page }) => {
@@ -75,4 +105,36 @@ test("el aviso aparece en el listado y su autor lo resuelve con historia", async
   // Resuelto: fuera del listado de abiertos
   await page.goto("/perdidos-encontrados");
   await expect(page.getByRole("link", { name: NOMBRE })).toHaveCount(0);
+});
+
+test("un vecino reporta un avistamiento y el autor lo ve en su ficha", async ({ page }) => {
+  // Sin sesión no se puede ayudar: la ficha invita a entrar.
+  await page.goto(`/perdidos-encontrados/${avisoKiraId}`);
+  await expect(page.getByRole("link", { name: t.entrarParaAyudar })).toBeVisible();
+  await expect(page.getByText(t.avistamientosVacio)).toBeVisible();
+
+  // El vecino entra y reporta dónde lo vio.
+  await page.goto("/login");
+  await page.getByLabel(messages.auth.email).fill(VECINO_EMAIL);
+  await page.getByLabel(messages.auth.password, { exact: true }).fill(PASS);
+  await page.getByRole("button", { name: messages.auth.submitLogin }).click();
+  await expect(page).toHaveURL("/");
+
+  await page.goto(`/perdidos-encontrados/${avisoKiraId}`);
+  await page.getByRole("button", { name: t.avistamiento }).click();
+  await page.getByLabel(t.avistamientoNota).fill("Bebiendo en la fuente del parque");
+  // El pin: un clic en el mapa del picker.
+  await page.locator(".leaflet-container").last().click({ position: { x: 120, y: 90 } });
+  await page.getByRole("button", { name: t.avistamientoEnviar }).click();
+  await expect(page.getByText(t.avistamientoOk)).toBeVisible();
+
+  // El autor lo encuentra en el timeline de su aviso.
+  await page.goto("/login");
+  await page.getByLabel(messages.auth.email).fill(AUTOR_EMAIL);
+  await page.getByLabel(messages.auth.password, { exact: true }).fill(PASS);
+  await page.getByRole("button", { name: messages.auth.submitLogin }).click();
+
+  await page.goto(`/perdidos-encontrados/${avisoKiraId}`);
+  await expect(page.getByText(/Bebiendo en la fuente/)).toBeVisible();
+  await expect(page.getByRole("button", { name: t.avistamientoBorrar })).toBeVisible();
 });
