@@ -92,5 +92,6 @@ _Nada en desarrollo en este momento._
 
 #### 🗓️ Previsto
 
-_Backlog vacío._
+- Avisos de perdidos — contacto sin exponer datos y avistamientos ciudadanos — hito 0.5 ([FEATURE-022](../planning/items/FEATURE-022.md))
+- Avisos de perdidos — ficha identificativa completa, galería y filtros — hito 0.5 ([FEATURE-023](../planning/items/FEATURE-023.md))
 <!-- RENDER:END -->
