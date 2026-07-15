@@ -10,6 +10,7 @@
 | [BUG-004](BUG-004.md) | Reservar cita" lleva a una página 404 | bug | hecho | 0.5 |
 | [BUG-005](BUG-005.md) | npm run test -- --coverage revienta al parsear globals.css y las guías .md | bug | hecho | 0.5 |
 | [BUG-006](BUG-006.md) | El listado sirve la URL de YouTube como imagen de portada cuando el animal no tiene foto de portada | bug | hecho | 0.5 |
+| [BUG-007](BUG-007.md) | CI no ejecuta ni un solo test de RLS — 122 tests se saltan en silencio en cada push | bug | hecho | 0.5 |
 | [FEATURE-000](FEATURE-000.md) | Inicialización y andamiaje del proyecto | feature | hecho | 0.1 |
 | [FEATURE-001](FEATURE-001.md) | Registro y login de adoptantes y protectoras | feature | hecho | 0.2 |
 | [FEATURE-002](FEATURE-002.md) | Onboarding de protectoras y verificación por admin | feature | hecho | 0.2 |
@@ -55,3 +56,5 @@
 | [IMPROVEMENT-019](IMPROVEMENT-019.md) | Rediseño del listado /animales (filtros horizontales, tarjetas con favorito y paginación numerada) | improvement | hecho | 0.5 |
 | [IMPROVEMENT-020](IMPROVEMENT-020.md) | Rediseño de la ficha pública de animal | improvement | hecho | 0.5 |
 | [IMPROVEMENT-021](IMPROVEMENT-021.md) | Búsqueda por texto/raza en el listado de animales | improvement | hecho | 0.5 |
+| [IMPROVEMENT-022](IMPROVEMENT-022.md) | Ejecutar los E2E de Playwright en CI, aprovechando el stack que ya levanta el job de RLS | improvement | recibido | 0.5 |
+| [IMPROVEMENT-023](IMPROVEMENT-023.md) | Subir CI y el runtime a Node 22+ (hoy el job de la app va en Node 20, ya deprecado) | improvement | recibido | 0.5 |

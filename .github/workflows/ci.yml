@@ -38,9 +38,11 @@ jobs:
         if: steps.app.outputs.exists == 'true'
         run: npx tsc --noEmit
 
+      # Solo el proyecto `unit`: los tests de RLS necesitan el stack de Supabase
+      # y corren en el job `rls`, en paralelo (BUG-007).
       - name: Tests con cobertura (mínimo 70%)
         if: steps.app.outputs.exists == 'true'
-        run: npm run test -- --coverage
+        run: npm run test -- --coverage --project=unit
 
       - name: Build
         if: steps.app.outputs.exists == 'true'
@@ -52,6 +54,52 @@ jobs:
       - name: Auditoría de dependencias
         if: steps.app.outputs.exists == 'true'
         run: npm audit --audit-level=high
+
+  # BUG-007: hasta 2026-07-15 los 122 tests de RLS se saltaban en verde en cada
+  # push (sin stack no hay variables, y `describe.skipIf` no hace ruido). "RLS
+  # es el pilar de seguridad" del proyecto, así que aquí se ejecutan de verdad
+  # contra un Postgres real. Job aparte para no alargar el camino rápido.
+  rls:
+    name: Tests de RLS (Supabase local)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Node 22, no 20: supabase-js necesita WebSocket nativo (llega en 22) y
+      # con 20 los 18 ficheros revientan con "native WebSocket not found".
+      # El job de la app sigue en 20 — subirlo es otra decisión (ver el item).
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      # El CLI de Supabase es devDependency (Decisión #17) y el runner ya trae
+      # Docker: no hace falta ninguna action extra.
+      - name: Levantar el stack local
+        run: npx supabase start
+
+      # Las claves del stack local son las de demo del CLI, iguales en cualquier
+      # máquina: NO son secretos y por eso se leen del propio `status`.
+      - name: Exportar variables del stack
+        run: |
+          eval "$(npx supabase status -o env)"
+          {
+            echo "SUPABASE_TEST_URL=$API_URL"
+            echo "SUPABASE_TEST_ANON_KEY=$ANON_KEY"
+            echo "SUPABASE_TEST_SERVICE_ROLE_KEY=$SERVICE_ROLE_KEY"
+          } >> "$GITHUB_ENV"
+
+      # Si las variables faltasen, `src/test/rls/helpers.ts` aborta con CI=true
+      # en vez de saltarse los tests: un skip silencioso aquí es un agujero.
+      - name: Tests de RLS
+        run: npx vitest run --project=rls
+
+      - name: Parar el stack
+        if: always()
+        run: npx supabase stop --no-backup
 
   planning:
     name: Render de planificación coherente

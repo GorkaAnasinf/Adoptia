@@ -2,11 +2,17 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/es/) adaptado. Versionado 0.x hasta el MVP.
 
+## [0.0.54] — 2026-07-15
+
+### Corregido
+
+- **CI ejecuta por fin los tests de RLS (BUG-007)**: `ci.yml` no levantaba el stack de Supabase ni definía las variables `SUPABASE_TEST_*`, así que los **123 tests de RLS se saltaban en verde en cada push** desde que existen — un `skipIf` silencioso se ve igual que un test que pasa. Como "RLS es el pilar de seguridad" del proyecto, eso dejaba sin vigilar que un borrador no sea legible por `anon`, que una protectora no toque los animales de otra, o que la coordenada exacta nunca llegue a existir en BD. Ahora hay un job `rls` que levanta un Postgres real y los corre de verdad, y **el salto deja de ser silencioso**: con `CI=true` y sin variables, la suite falla en vez de saltarse. Comprobado abriendo una política a propósito: CI se pone en rojo. Este era el agujero por el que BUG-006 llegó a producción. El job va en Node 22 porque `supabase-js` necesita el WebSocket nativo: con el Node 20 del resto de CI, los tests ni arrancan (queda IMPROVEMENT-023 para alinear versiones).
+
 ## [0.0.53] — 2026-07-15
 
 ### Corregido
 
-- **La tarjeta de un animal ya no intenta mostrar un vídeo como foto (BUG-006)**: un animal con vídeo de YouTube y sin foto marcada como portada mostraba una imagen rota en el listado, porque el RPC `animals_search` devolvía la URL del vídeo (`https://youtu.be/…`) como `cover_url`. FEATURE-020 filtraba explícitamente por fotos; IMPROVEMENT-021, al reescribir la función para añadir la búsqueda por texto, perdió ese filtro. Se restaura: sin foto, la tarjeta cae al placeholder. **Requiere `supabase db push`** (migración `20260715160000`). De paso se arregla el test que debía haberlo cazado y que nunca ejercitó el escenario: su `insert` masivo pasaba objetos con claves distintas, PostgREST lo rechazaba entero y el test no miraba el error.
+- **La tarjeta de un animal ya no intenta mostrar un vídeo como foto (BUG-006)**: un animal con vídeo de YouTube y sin foto marcada como portada mostraba una imagen rota en el listado, porque el RPC `animals_search` devolvía la URL del vídeo (`https://youtu.be/…`) como `cover_url`. FEATURE-020 filtraba explícitamente por fotos; IMPROVEMENT-021, al reescribir la función para añadir la búsqueda por texto, perdió ese filtro. Se restaura: sin foto, la tarjeta cae al placeholder. Migración `20260715160000` **aplicada en producción el 2026-07-15**, verificada antes en local. De paso se arregla el test que debía haberlo cazado y que nunca ejercitó el escenario: su `insert` masivo pasaba objetos con claves distintas, PostgREST lo rechazaba entero y el test no miraba el error.
 
 ## [0.0.52] — 2026-07-15
 
