@@ -55,6 +55,14 @@ const AVISO = {
   created_at: "2026-07-10T10:00:00Z",
   contact_phone: null,
   allow_contact: true,
+  breed: null,
+  sex: null,
+  size: null,
+  color: null,
+  has_collar: null,
+  collar_description: null,
+  has_microchip: null,
+  occurred_on: "2026-07-10",
 };
 
 const AVISTAMIENTO = {
@@ -173,6 +181,55 @@ describe("Detalle de aviso de perdidos", () => {
   it("un aviso abierto sin avistamientos lo dice en vez de mostrar una lista vacía", async () => {
     await renderPagina();
     expect(screen.getByText(messages.perdidos.avistamientosVacio)).toBeInTheDocument();
+  });
+
+  // FEATURE-023
+  it("muestra las señas que se conocen y omite las que no", async () => {
+    maybeSingleMock.mockResolvedValue({
+      data: {
+        ...AVISO,
+        breed: "Podenco",
+        color: "Canela",
+        sex: "female",
+        size: null, // no lo sé
+        has_collar: true,
+        collar_description: "Rojo con placa",
+        has_microchip: null, // no lo sé
+      },
+      error: null,
+    });
+    await renderPagina();
+    expect(screen.getByText("Podenco")).toBeInTheDocument();
+    expect(screen.getByText("Canela")).toBeInTheDocument();
+    expect(screen.getByText(messages.animales.sexFemale)).toBeInTheDocument();
+    expect(screen.getByText(/Rojo con placa/)).toBeInTheDocument();
+    // Lo desconocido no ocupa sitio: ni etiqueta ni «no lo sé».
+    expect(screen.queryByText(messages.perdidos.datoTamano)).not.toBeInTheDocument();
+    expect(screen.queryByText(messages.perdidos.datoMicrochip)).not.toBeInTheDocument();
+  });
+
+  it("un aviso sin ninguna seña no muestra el bloque vacío", async () => {
+    await renderPagina();
+    expect(screen.queryByText(messages.perdidos.datosTitulo)).not.toBeInTheDocument();
+  });
+
+  it("distingue cuándo ocurrió de cuándo se publicó", async () => {
+    maybeSingleMock.mockResolvedValue({
+      data: { ...AVISO, occurred_on: "2026-07-07", created_at: "2026-07-10T10:00:00Z" },
+      error: null,
+    });
+    await renderPagina();
+    expect(screen.getByText(/7 de julio/)).toBeInTheDocument(); // ocurrió
+    expect(screen.getByText(/10 de julio/)).toBeInTheDocument(); // se publicó
+  });
+
+  it("no muestra la fecha de publicación si coincide con la del suceso", async () => {
+    maybeSingleMock.mockResolvedValue({
+      data: { ...AVISO, occurred_on: "2026-07-10", created_at: "2026-07-10T10:00:00Z" },
+      error: null,
+    });
+    await renderPagina();
+    expect(screen.getAllByText(/10 de julio/)).toHaveLength(1);
   });
 
   it("un aviso inexistente ofrece volver al mapa", async () => {

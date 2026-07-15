@@ -9,9 +9,22 @@ import { comprimirFoto, esImagen } from "@/lib/image";
 import { createClient } from "@/lib/supabase/client";
 
 const ESPECIES = ["dog", "cat", "other"] as const;
+const SEXOS = ["male", "female", "unknown"] as const;
+const TAMANOS = ["small", "medium", "large"] as const;
 
 /** Mismo formato que el check de BD (FEATURE-022). */
 const TELEFONO_RE = /^[+0-9][0-9 ]{5,19}$/;
+
+/** Tri-estado de la UI → `boolean | null` de BD, donde null = «no lo sé». */
+type Terna = "si" | "no" | "nose";
+const ternaABool = (v: Terna): boolean | null => (v === "nose" ? null : v === "si");
+
+/** Fecha de hoy en formato `yyyy-mm-dd`, en hora local. */
+function hoyLocal(): string {
+  const d = new Date();
+  d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
+  return d.toISOString().slice(0, 10);
+}
 
 /** Alta de aviso de perdido/encontrado: pensado para completarse en <2 min desde el móvil. */
 export function NuevoAvisoForm({ userId }: { userId: string }) {
@@ -27,15 +40,36 @@ export function NuevoAvisoForm({ userId }: { userId: string }) {
   const [ciudad, setCiudad] = useState("");
   const [telefono, setTelefono] = useState("");
   const [permitirContacto, setPermitirContacto] = useState(true);
+  // Datos identificativos (FEATURE-023): todos opcionales, «no lo sé» por
+  // defecto — el alta tiene que seguir cabiendo en <2 min desde el móvil.
+  const [raza, setRaza] = useState("");
+  const [color, setColor] = useState("");
+  const [sexo, setSexo] = useState<"" | (typeof SEXOS)[number]>("");
+  const [tamano, setTamano] = useState<"" | (typeof TAMANOS)[number]>("");
+  const [collar, setCollar] = useState<Terna>("nose");
+  const [collarDesc, setCollarDesc] = useState("");
+  const [microchip, setMicrochip] = useState<Terna>("nose");
+  const [fecha, setFecha] = useState(hoyLocal());
   const [foto, setFoto] = useState<File | null>(null);
   const [pin, setPin] = useState<{ lat: number; lng: number } | null>(null);
   const [estado, setEstado] = useState<"idle" | "enviando" | "ok">("idle");
   const [error, setError] = useState<string>();
 
+  // Etiquetas ya existentes en `animales.*`: no se duplican en `perdidos.*`.
   const ESPECIE_LABEL: Record<string, string> = {
     dog: tAnimales("speciesDog"),
     cat: tAnimales("speciesCat"),
     other: tAnimales("speciesOther"),
+  };
+  const SEXO_LABEL: Record<string, string> = {
+    male: tAnimales("sexMale"),
+    female: tAnimales("sexFemale"),
+    unknown: tAnimales("sexUnknown"),
+  };
+  const TAMANO_LABEL: Record<string, string> = {
+    small: tAnimales("sizeSmall"),
+    medium: tAnimales("sizeMedium"),
+    large: tAnimales("sizeLarge"),
   };
 
   async function publicar(e: React.FormEvent) {
@@ -50,6 +84,14 @@ export function NuevoAvisoForm({ userId }: { userId: string }) {
     }
     if (telefono.trim() && !TELEFONO_RE.test(telefono.trim())) {
       setError(t("fTelefonoInvalido"));
+      return;
+    }
+    if (!fecha) {
+      setError(t("fFechaFalta"));
+      return;
+    }
+    if (fecha > hoyLocal()) {
+      setError(t("fFechaFutura"));
       return;
     }
     setError(undefined);
@@ -78,6 +120,15 @@ export function NuevoAvisoForm({ userId }: { userId: string }) {
         city: ciudad.trim() || null,
         contact_phone: telefono.trim() || null,
         allow_contact: permitirContacto,
+        breed: raza.trim() || null,
+        color: color.trim() || null,
+        sex: sexo || null,
+        size: tamano || null,
+        has_collar: ternaABool(collar),
+        // Sin collar (o sin saberlo), una descripción de collar es basura.
+        collar_description: collar === "si" ? collarDesc.trim() || null : null,
+        has_microchip: ternaABool(microchip),
+        occurred_on: fecha,
         location: `POINT(${pin.lng} ${pin.lat})`,
       });
       if (insErr) throw insErr;
@@ -201,6 +252,153 @@ export function NuevoAvisoForm({ userId }: { userId: string }) {
           />
         </div>
       </div>
+
+      <div className="flex flex-col gap-1">
+        <label className="text-sm font-medium" htmlFor="aviso-fecha">
+          {t("fFecha")}
+        </label>
+        {/* Sin `max`: el bloqueo nativo corta el submit con un aviso sin
+            traducir (lección de FEATURE-022). Validamos aquí y en BD. */}
+        <input
+          id="aviso-fecha"
+          type="date"
+          value={fecha}
+          onChange={(e) => setFecha(e.target.value)}
+          aria-describedby="aviso-fecha-help"
+          className="rounded-lg border border-input bg-white px-3 py-2"
+        />
+        <p id="aviso-fecha-help" className="text-xs text-muted-foreground">
+          {t(tipo === "lost" ? "fFechaHelpLost" : "fFechaHelpFound")}
+        </p>
+      </div>
+
+      <fieldset className="flex flex-col gap-3 rounded-2xl border border-border p-4">
+        <legend className="px-1 text-sm font-medium">{t("comoEs")}</legend>
+        <p className="text-xs text-muted-foreground">{t("comoEsHelp")}</p>
+
+        <div className="grid gap-4 sm:grid-cols-2">
+          <div className="flex flex-col gap-1">
+            <label className="text-sm font-medium" htmlFor="aviso-raza">
+              {t("fRaza")}
+            </label>
+            <input
+              id="aviso-raza"
+              value={raza}
+              onChange={(e) => setRaza(e.target.value)}
+              maxLength={80}
+              placeholder={t("fRazaHelp")}
+              className="rounded-lg border border-input bg-white px-3 py-2"
+            />
+          </div>
+          <div className="flex flex-col gap-1">
+            <label className="text-sm font-medium" htmlFor="aviso-color">
+              {t("fColor")}
+            </label>
+            <input
+              id="aviso-color"
+              value={color}
+              onChange={(e) => setColor(e.target.value)}
+              maxLength={80}
+              placeholder={t("fColorHelp")}
+              className="rounded-lg border border-input bg-white px-3 py-2"
+            />
+          </div>
+        </div>
+
+        <div className="grid gap-4 sm:grid-cols-2">
+          <div className="flex flex-col gap-1">
+            <label className="text-sm font-medium" htmlFor="aviso-sexo">
+              {t("fSexo")}
+            </label>
+            <select
+              id="aviso-sexo"
+              value={sexo}
+              onChange={(e) => setSexo(e.target.value as typeof sexo)}
+              className="rounded-lg border border-input bg-white px-3 py-2"
+            >
+              <option value="">{t("fNoSe")}</option>
+              {SEXOS.map((s) => (
+                <option key={s} value={s}>
+                  {SEXO_LABEL[s]}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="flex flex-col gap-1">
+            <label className="text-sm font-medium" htmlFor="aviso-tamano">
+              {t("fTamano")}
+            </label>
+            <select
+              id="aviso-tamano"
+              value={tamano}
+              onChange={(e) => setTamano(e.target.value as typeof tamano)}
+              className="rounded-lg border border-input bg-white px-3 py-2"
+            >
+              <option value="">{t("fNoSe")}</option>
+              {TAMANOS.map((s) => (
+                <option key={s} value={s}>
+                  {TAMANO_LABEL[s]}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+
+        <div className="grid gap-4 sm:grid-cols-2">
+          <div className="flex flex-col gap-1">
+            <label className="text-sm font-medium" htmlFor="aviso-collar">
+              {t("fCollar")}
+            </label>
+            <select
+              id="aviso-collar"
+              value={collar}
+              onChange={(e) => setCollar(e.target.value as Terna)}
+              className="rounded-lg border border-input bg-white px-3 py-2"
+            >
+              <option value="nose">{t("fNoSe")}</option>
+              <option value="si">{t("fSi")}</option>
+              <option value="no">{t("fNo")}</option>
+            </select>
+          </div>
+          <div className="flex flex-col gap-1">
+            <label className="text-sm font-medium" htmlFor="aviso-microchip">
+              {t("fMicrochip")}
+            </label>
+            <select
+              id="aviso-microchip"
+              value={microchip}
+              onChange={(e) => setMicrochip(e.target.value as Terna)}
+              aria-describedby="aviso-microchip-help"
+              className="rounded-lg border border-input bg-white px-3 py-2"
+            >
+              <option value="nose">{t("fNoSe")}</option>
+              <option value="si">{t("fSi")}</option>
+              <option value="no">{t("fNo")}</option>
+            </select>
+            {/* El número de chip identifica al dueño en el registro
+                autonómico: no se pide, y se explica por qué. */}
+            <p id="aviso-microchip-help" className="text-xs text-muted-foreground">
+              {t("fMicrochipHelp")}
+            </p>
+          </div>
+        </div>
+
+        {collar === "si" && (
+          <div className="flex flex-col gap-1">
+            <label className="text-sm font-medium" htmlFor="aviso-collar-desc">
+              {t("fCollarDescripcion")}
+            </label>
+            <input
+              id="aviso-collar-desc"
+              value={collarDesc}
+              onChange={(e) => setCollarDesc(e.target.value)}
+              maxLength={120}
+              placeholder={t("fCollarDescripcionHelp")}
+              className="rounded-lg border border-input bg-white px-3 py-2"
+            />
+          </div>
+        )}
+      </fieldset>
 
       <fieldset className="flex flex-col gap-3 rounded-2xl border border-border p-4">
         <legend className="px-1 text-sm font-medium">{t("contactoTitulo")}</legend>

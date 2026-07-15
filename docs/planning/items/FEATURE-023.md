@@ -2,7 +2,7 @@
 id: FEATURE-023
 tipo: feature
 titulo: Avisos de perdidos — datos identificativos, fecha real del suceso y filtros
-estado: desarrollo
+estado: hecho
 prioridad: media
 hito: "0.5"
 duplicado_de: null
@@ -107,14 +107,23 @@ alter table public.lost_found_posts
 
 ## Criterios de aceptación / Casuística a cubrir
 
-- [ ] El alta sigue completándose en <2 min desde el móvil: **ningún campo nuevo es obligatorio** y todos los «sí/no/no lo sé» empiezan en «no lo sé».
-- [ ] `occurred_on` es obligatoria y por defecto hoy; no admite fecha futura (validado en cliente **y** con check en BD).
-- [ ] Los avisos anteriores a la migración conservan una fecha coherente (`created_at::date`) y nada se rompe al aplicar `not null`.
-- [ ] La ficha muestra solo los datos conocidos; lo que se dejó en «no lo sé» no ocupa sitio.
-- [ ] La ficha distingue cuándo ocurrió de cuándo se publicó, y enseña ambas si difieren.
-- [ ] `collar_description` no se guarda si `has_collar` no es `true` (no quedan descripciones huérfanas de un collar que no existe).
-- [ ] **No existe ningún campo para el número de microchip**, ni en BD, ni en el formulario, ni en la ficha.
-- [ ] Filtros de especie, tamaño y fecha combinables con el de perdido/encontrado; el mapa y el listado muestran siempre lo mismo.
-- [ ] El filtro de fecha usa la fecha del suceso, no la de publicación.
-- [ ] Estado vacío: ninguna combinación de filtros deja una lista vacía sin mensaje.
-- [ ] Los campos nuevos son públicos en avisos `open`/`resolved` y siguen ocultos en `archived` ajenos.
+- [x] El alta sigue completándose en <2 min desde el móvil: **ningún campo nuevo es obligatorio** y todos los «sí/no/no lo sé» empiezan en «no lo sé».
+- [x] `occurred_on` es obligatoria y por defecto hoy; no admite fecha futura (validado en cliente **y** con check en BD).
+- [x] Los avisos anteriores a la migración conservan una fecha coherente (`created_at::date`) y nada se rompe al aplicar `not null`.
+- [x] La ficha muestra solo los datos conocidos; lo que se dejó en «no lo sé» no ocupa sitio.
+- [x] La ficha distingue cuándo ocurrió de cuándo se publicó, y enseña ambas si difieren.
+- [x] `collar_description` no se guarda si `has_collar` no es `true` (no quedan descripciones huérfanas de un collar que no existe).
+- [x] **No existe ningún campo para el número de microchip**, ni en BD, ni en el formulario, ni en la ficha.
+- [x] Filtros de especie, tamaño y fecha combinables con el de perdido/encontrado; el mapa y el listado muestran siempre lo mismo.
+- [x] El filtro de fecha usa la fecha del suceso, no la de publicación.
+- [x] Estado vacío: ninguna combinación de filtros deja una lista vacía sin mensaje (se distingue «no hay avisos» de «tus filtros no dejan ver ninguno»).
+- [x] Los campos nuevos son públicos en avisos `open`/`resolved` y siguen ocultos en `archived` ajenos.
+
+## Cierre (2026-07-15)
+
+- **BD**: migración `20260715180000`. `lost_found_posts` gana `breed`, `sex`, `size`, `color`, `has_collar` + `collar_description`, `has_microchip` y `occurred_on`. `lost_found_list` se recrea con los campos nuevos (`drop` + `create`: `create or replace` no puede cambiar el tipo de retorno, igual que le pasó a IMPROVEMENT-021). Decisión #36 aplicada: los 130 tests de RLS en verde tras la reescritura.
+- **El error que cazaron los tests**: `occurred_on not null` **sin default** rompía todos los inserts que no conocían el campo — el formulario de FEATURE-012, el seed y sus tests. Lo destapó la suite de FEATURE-012 al instante. El propio criterio de aceptación ya decía «obligatoria **y por defecto hoy**»: faltaba el `default current_date`.
+- **UI**: bloque «¿Cómo es?» en el alta (todo opcional, «no lo sé» por defecto), fecha del suceso, señas en la ficha omitiendo lo desconocido, y filtros de especie/tamaño/fecha en el listado. Las tarjetas y la ficha muestran ahora **cuándo ocurrió**, no cuándo se publicó.
+- **Tests**: 6 de RLS (incluido uno que vigila que nadie añada una columna con el número de chip), 12 del formulario, 16 de la ficha y 9 de la vista. Suite: **903 verdes** (venía de 882).
+- **Recorte consciente**: el **E2E de los filtros se retiró**. Se escribió, se intentó estabilizar y no fue posible: los avisos sembrados se duplican entre ejecuciones y proyectos, y los selectores por nombre dejan de ser únicos — **BUG-008**, donde ya está anotado como el caso a añadir cuando la suite esté sana. El comportamiento queda cubierto por los tests de componente y de RLS. Se dejó `test.describe.configure({ mode: "serial" })` en `perdidos.spec.ts`: los tres tests comparten los avisos del `beforeAll` y con `fullyParallel` cada worker los duplicaba.
+- **Sigue fuera, y para siempre**: el número de microchip. Hay un test que lo vigila.

@@ -13,6 +13,12 @@ const URL = TEST_URL;
 
 test.skip(!e2eDisponible, MOTIVO_SALTO);
 
+// En serie: los tres tests comparten los avisos que siembra el `beforeAll`, y
+// con `fullyParallel` cada worker lo ejecutaba por su cuenta, duplicando los
+// avisos y rompiendo los selectores por nombre. El saneado general de la suite
+// es BUG-008; aquí basta con no pisarse dentro del fichero.
+test.describe.configure({ mode: "serial" });
+
 const t = messages.perdidos;
 const sello = Date.now();
 const AUTOR_EMAIL = `e2e-perdidos-${sello}@test.com`;
@@ -73,6 +79,14 @@ test.beforeAll(async () => {
       description: "Podenca canela (E2E FEATURE-022).",
       location: "POINT(-2.9346 43.2631)",
       city: "Bilbao",
+      // Señas de FEATURE-023: el aviso tiene que ser filtrable e identificable.
+      breed: "Podenco",
+      color: "Canela con el pecho blanco",
+      sex: "female",
+      size: "large",
+      has_collar: true,
+      collar_description: "Rojo con placa",
+      has_microchip: true,
     })
     .select()
     .single();
@@ -106,6 +120,14 @@ test("el aviso aparece en el listado y su autor lo resuelve con historia", async
   await page.goto("/perdidos-encontrados");
   await expect(page.getByRole("link", { name: NOMBRE })).toHaveCount(0);
 });
+
+// FEATURE-023: el E2E de los filtros (especie/tamaño/fecha) NO se escribe aquí
+// todavía. Se intentó y resultó imposible de estabilizar contra la suite tal y
+// como está: los avisos sembrados se duplican entre ejecuciones y proyectos y
+// los selectores por nombre dejan de ser únicos. Es **BUG-008**, y ahí queda
+// anotado como caso a añadir cuando la suite esté sana. Mientras tanto el
+// comportamiento está cubierto por los tests de componente de `PerdidosView` y
+// por los de RLS de `perdidos-datos`.
 
 test("un vecino reporta un avistamiento y el autor lo ve en su ficha", async ({ page, isMobile }) => {
   // El pin exige arrastrar el marcador de Leaflet. En el proyecto móvil (Pixel 7,

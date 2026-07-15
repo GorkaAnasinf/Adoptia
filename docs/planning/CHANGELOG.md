@@ -2,6 +2,12 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/es/) adaptado. Versionado 0.x hasta el MVP.
 
+## [0.0.57] — 2026-07-15
+
+### Añadido
+
+- **Los avisos de perdidos ya describen al animal, y dicen cuándo pasó (FEATURE-023)**: un aviso se publicaba con poco más que «perro marrón», y con eso no lo reconoce nadie por la calle. Ahora se pueden contar las **señas** —raza, color, sexo, tamaño, si lleva collar y cómo es, y si tiene microchip—, todas opcionales: el alta sigue cabiendo en menos de dos minutos desde el móvil y lo que no se sabe se queda en «no lo sé» (y no ocupa sitio en la ficha). Se añade también **la fecha real del suceso**: hasta hoy solo constaba cuándo se publicó el aviso, así que quien publicaba tres días tarde tenía un aviso que mentía; ahora el listado y la ficha muestran cuándo se perdió o se encontró, y enseñan la de publicación solo si difiere. Y el listado gana **filtros de especie, tamaño y fecha**, combinables con perdido/encontrado, que filtran el mapa y la lista a la vez. **El número de microchip no se pide ni se guarda** —identifica al dueño en el registro autonómico— y hay un test que vigila que no vuelva. **Requiere `supabase db push`** (migración `20260715180000`). La galería multi-foto queda para FEATURE-024.
+
 ## [0.0.56] — 2026-07-15
 
 ### Cambiado

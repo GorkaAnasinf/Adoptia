@@ -17,8 +17,20 @@ vi.mock("./MapaAvisos", () => ({
 import { PerdidosView } from "./PerdidosView";
 import type { AvisoMapa } from "./tipos";
 
+const hace = (dias: number) => new Date(Date.now() - dias * 86_400_000).toISOString().slice(0, 10);
+
+const SIN_DATOS = {
+  breed: null,
+  color: null,
+  sex: null,
+  has_collar: null,
+  collar_description: null,
+  has_microchip: null,
+};
+
 const AVISOS: AvisoMapa[] = [
   {
+    ...SIN_DATOS,
     id: "p1",
     type: "lost",
     species: "dog",
@@ -27,11 +39,14 @@ const AVISOS: AvisoMapa[] = [
     photo_url: null,
     city: "Bilbao",
     status: "open",
+    size: "large",
+    occurred_on: hace(2),
     lat: 43.264,
     lng: -2.934,
     created_at: "2026-07-01T00:00:00Z",
   },
   {
+    ...SIN_DATOS,
     id: "p2",
     type: "found",
     species: "cat",
@@ -40,6 +55,8 @@ const AVISOS: AvisoMapa[] = [
     photo_url: null,
     city: "Getxo",
     status: "open",
+    size: "small",
+    occurred_on: hace(20),
     lat: 43.35,
     lng: -3.01,
     created_at: "2026-07-02T00:00:00Z",
@@ -84,5 +101,60 @@ describe("PerdidosView", () => {
   it("muestra el aviso de privacidad de la ubicación", () => {
     renderVista();
     expect(screen.getByText(messages.perdidos.avisoPrivacidad)).toBeInTheDocument();
+  });
+
+  // FEATURE-023 — filtros
+  it("filtra por especie (mapa y lista a la vez)", async () => {
+    const user = userEvent.setup();
+    renderVista();
+    await user.selectOptions(
+      screen.getByLabelText(messages.perdidos.filtroEspecie),
+      "cat",
+    );
+    expect(screen.getByTestId("mapa-avisos")).toHaveAttribute("data-count", "1");
+    expect(screen.getByText("Getxo")).toBeInTheDocument();
+    expect(screen.queryByText("Rocky")).not.toBeInTheDocument();
+  });
+
+  it("filtra por tamaño", async () => {
+    const user = userEvent.setup();
+    renderVista();
+    await user.selectOptions(screen.getByLabelText(messages.perdidos.filtroTamano), "large");
+    expect(screen.getByText("Rocky")).toBeInTheDocument();
+    expect(screen.queryByText("Getxo")).not.toBeInTheDocument();
+  });
+
+  it("filtra por fecha del suceso, no por la de publicación", async () => {
+    const user = userEvent.setup();
+    renderVista();
+    // p1 ocurrió hace 2 días, p2 hace 20 — pero ambos se publicaron en julio.
+    await user.selectOptions(screen.getByLabelText(messages.perdidos.filtroFecha), "7");
+    expect(screen.getByTestId("mapa-avisos")).toHaveAttribute("data-count", "1");
+    expect(screen.getByText("Rocky")).toBeInTheDocument();
+    expect(screen.queryByText("Getxo")).not.toBeInTheDocument();
+  });
+
+  it("combina los filtros con el de perdido/encontrado", async () => {
+    const user = userEvent.setup();
+    renderVista();
+    await user.click(screen.getByRole("button", { name: messages.perdidos.filtroLost }));
+    await user.selectOptions(screen.getByLabelText(messages.perdidos.filtroEspecie), "cat");
+    // Perdido + gato: no hay ninguno.
+    expect(screen.getByTestId("mapa-avisos")).toHaveAttribute("data-count", "0");
+    expect(screen.getByText(messages.perdidos.vacioFiltros)).toBeInTheDocument();
+  });
+
+  it("distingue 'no hay avisos' de 'ninguno encaja con los filtros'", async () => {
+    const user = userEvent.setup();
+    const { rerender } = renderVista();
+    await user.selectOptions(screen.getByLabelText(messages.perdidos.filtroTamano), "medium");
+    expect(screen.getByText(messages.perdidos.vacioFiltros)).toBeInTheDocument();
+
+    rerender(
+      <NextIntlClientProvider locale="es" messages={messages}>
+        <PerdidosView avisos={[]} />
+      </NextIntlClientProvider>,
+    );
+    expect(screen.getByText(messages.perdidos.vacio)).toBeInTheDocument();
   });
 });
