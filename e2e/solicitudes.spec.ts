@@ -2,6 +2,7 @@ import { expect, test } from "@playwright/test";
 import { createClient } from "@supabase/supabase-js";
 import messages from "../messages/es.json";
 import { MOTIVO_SALTO, SERVICE_KEY, TEST_URL, e2eDisponible } from "./entorno";
+import { asegurarUsuario, sembrarPorSlug } from "./fixtures";
 
 /**
  * E2E de FEATURE-007: flujo completo "Me interesa" → cuestionario → bandeja
@@ -29,53 +30,30 @@ test.beforeAll(async () => {
     auth: { autoRefreshToken: false, persistSession: false },
   });
 
-  const { data: creado, error } = await admin.auth.admin.createUser({
-    email: SHELTER_EMAIL,
-    password: SHELTER_PASS,
-    email_confirm: true,
-    user_metadata: { role: "shelter" },
+  const ownerId = await asegurarUsuario(admin, SHELTER_EMAIL, SHELTER_PASS, { role: "shelter" });
+
+  const shelter = (await sembrarPorSlug(admin, "shelters", {
+    owner_id: ownerId,
+    name: `Protectora E2E Solicitudes ${sello}`,
+    slug: `protectora-e2e-solic-${sello}`,
+    status: "verified",
+    submitted_at: new Date().toISOString(),
+    city: "Bilbao",
+    province: "Bizkaia",
+    location: "POINT(-2.94 43.26)",
+  })) as { id: string };
+
+  await sembrarPorSlug(admin, "animals", {
+    shelter_id: shelter.id,
+    name: ANIMAL.name,
+    slug: ANIMAL.slug,
+    species: "dog",
+    sex: "female",
+    size: "medium",
+    description: "Pipa espera una familia (E2E FEATURE-007).",
+    status: "available",
+    published_at: new Date().toISOString(),
   });
-  let ownerId = creado?.user?.id;
-  if (error) {
-    const { data: lista } = await admin.auth.admin.listUsers({ page: 1, perPage: 200 });
-    ownerId = lista.users.find((u) => u.email === SHELTER_EMAIL)?.id;
-  }
-  if (!ownerId) throw new Error("No se pudo crear la protectora del seed");
-
-  const { data: shelter, error: es } = await admin
-    .from("shelters")
-    .upsert(
-      {
-        owner_id: ownerId,
-        name: `Protectora E2E Solicitudes ${sello}`,
-        slug: `protectora-e2e-solic-${sello}`,
-        status: "verified",
-        submitted_at: new Date().toISOString(),
-        city: "Bilbao",
-        province: "Bizkaia",
-        location: "POINT(-2.94 43.26)",
-      },
-      { onConflict: "slug" },
-    )
-    .select()
-    .single();
-  if (es) throw es;
-
-  const { error: ea } = await admin.from("animals").upsert(
-    {
-      shelter_id: shelter.id,
-      name: ANIMAL.name,
-      slug: ANIMAL.slug,
-      species: "dog",
-      sex: "female",
-      size: "medium",
-      description: "Pipa espera una familia (E2E FEATURE-007).",
-      status: "available",
-      published_at: new Date().toISOString(),
-    },
-    { onConflict: "slug" },
-  );
-  if (ea) throw ea;
 });
 
 test("me interesa → cuestionario → bandeja de la protectora → aprobar", async ({ page }) => {

@@ -2,6 +2,7 @@ import { expect, test } from "@playwright/test";
 import { createClient } from "@supabase/supabase-js";
 import messages from "../messages/es.json";
 import { MOTIVO_SALTO, SERVICE_KEY, TEST_URL, e2eDisponible } from "./entorno";
+import { asegurarUsuario, sembrarPorSlug } from "./fixtures";
 
 /**
  * E2E de FEATURE-005: home → filtrar → ficha → volver conservando filtros.
@@ -20,37 +21,17 @@ test.beforeAll(async () => {
     auth: { autoRefreshToken: false, persistSession: false },
   });
 
-  // Usuario dueño (idempotente)
-  let ownerId: string | undefined;
-  const { data: creado, error } = await admin.auth.admin.createUser({
-    email: "e2e-publica@test.com",
-    password: "password-de-test-123",
-    email_confirm: true,
-  });
-  if (!error) ownerId = creado.user.id;
-  else {
-    const { data: lista } = await admin.auth.admin.listUsers({ page: 1, perPage: 200 });
-    ownerId = lista.users.find((u) => u.email === "e2e-publica@test.com")?.id;
-  }
-  if (!ownerId) throw new Error("No se pudo crear el usuario del seed");
+  const ownerId = await asegurarUsuario(admin, "e2e-publica@test.com", "password-de-test-123");
 
-  const { data: shelter, error: es } = await admin
-    .from("shelters")
-    .upsert(
-      {
-        owner_id: ownerId,
-        name: "Protectora E2E Pública",
-        slug: "protectora-e2e-publica",
-        status: "verified",
-        city: "Bilbao",
-        province: "Bizkaia",
-        location: "POINT(-2.94 43.26)",
-      },
-      { onConflict: "slug" },
-    )
-    .select()
-    .single();
-  if (es) throw es;
+  const shelter = (await sembrarPorSlug(admin, "shelters", {
+    owner_id: ownerId,
+    name: "Protectora E2E Pública",
+    slug: "protectora-e2e-publica",
+    status: "verified",
+    city: "Bilbao",
+    province: "Bizkaia",
+    location: "POINT(-2.94 43.26)",
+  })) as { id: string };
 
   const publicado = new Date().toISOString();
   for (const animal of [
@@ -77,8 +58,7 @@ test.beforeAll(async () => {
       published_at: publicado,
     },
   ]) {
-    const { error: ea } = await admin.from("animals").upsert(animal, { onConflict: "slug" });
-    if (ea) throw ea;
+    await sembrarPorSlug(admin, "animals", animal);
   }
 });
 

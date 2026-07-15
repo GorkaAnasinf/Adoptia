@@ -146,8 +146,10 @@ jobs:
             echo "NEXT_PUBLIC_SUPABASE_ANON_KEY=$ANON_KEY"
             echo "SUPABASE_SERVICE_ROLE_KEY=$SERVICE_ROLE_KEY"
             echo "NEXT_PUBLIC_SITE_URL=http://localhost:3000"
-            echo "NEXT_PUBLIC_TURNSTILE_SITE_KEY=1x00000000000000000000AA"
           } >> "$GITHUB_ENV"
+        # Nota: NO se define NEXT_PUBLIC_TURNSTILE_SITE_KEY a propósito — sin
+        # ella el captcha no se renderiza. `playwright.config.ts` la vacía
+        # también en local (ver el comentario de `webServer.env`).
 
       # Si faltasen las variables, `e2e/entorno.ts` aborta con CI=true en vez
       # de saltarse los tests en verde.

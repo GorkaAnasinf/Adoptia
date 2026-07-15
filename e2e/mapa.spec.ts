@@ -1,6 +1,7 @@
 import { expect, test } from "@playwright/test";
 import { createClient } from "@supabase/supabase-js";
 import { MOTIVO_SALTO, SERVICE_KEY, TEST_URL, e2eDisponible } from "./entorno";
+import { asegurarUsuario, sembrarPorSlug } from "./fixtures";
 
 /**
  * E2E de FEATURE-006: permitir ubicación → protectora en la lista →
@@ -24,51 +25,28 @@ test.beforeAll(async () => {
     auth: { autoRefreshToken: false, persistSession: false },
   });
 
-  let ownerId: string | undefined;
-  const { data: creado, error } = await admin.auth.admin.createUser({
-    email: "e2e-mapa@test.com",
-    password: "password-de-test-123",
-    email_confirm: true,
+  const ownerId = await asegurarUsuario(admin, "e2e-mapa@test.com", "password-de-test-123");
+
+  const shelter = await sembrarPorSlug(admin, "shelters", {
+    owner_id: ownerId,
+    name: PROTECTORA.name,
+    slug: PROTECTORA.slug,
+    status: "verified",
+    city: "Bilbao",
+    province: "Bizkaia",
+    location: `POINT(${BILBAO.lng} ${BILBAO.lat})`,
   });
-  if (!error) ownerId = creado.user.id;
-  else {
-    const { data: lista } = await admin.auth.admin.listUsers({ page: 1, perPage: 200 });
-    ownerId = lista.users.find((u) => u.email === "e2e-mapa@test.com")?.id;
-  }
-  if (!ownerId) throw new Error("No se pudo crear el usuario del seed");
 
-  const { data: shelter, error: es } = await admin
-    .from("shelters")
-    .upsert(
-      {
-        owner_id: ownerId,
-        name: PROTECTORA.name,
-        slug: PROTECTORA.slug,
-        status: "verified",
-        city: "Bilbao",
-        province: "Bizkaia",
-        location: `POINT(${BILBAO.lng} ${BILBAO.lat})`,
-      },
-      { onConflict: "slug" },
-    )
-    .select()
-    .single();
-  if (es) throw es;
-
-  const { error: ea } = await admin.from("animals").upsert(
-    {
-      shelter_id: shelter.id,
-      name: "Perro E2E Mapa",
-      slug: "perro-e2e-mapa",
-      species: "dog",
-      sex: "male",
-      size: "medium",
-      status: "available",
-      published_at: new Date().toISOString(),
-    },
-    { onConflict: "slug" },
-  );
-  if (ea) throw ea;
+  await sembrarPorSlug(admin, "animals", {
+    shelter_id: (shelter as { id: string }).id,
+    name: "Perro E2E Mapa",
+    slug: "perro-e2e-mapa",
+    species: "dog",
+    sex: "male",
+    size: "medium",
+    status: "available",
+    published_at: new Date().toISOString(),
+  });
 });
 
 test.beforeEach(async ({ context }, testInfo) => {
