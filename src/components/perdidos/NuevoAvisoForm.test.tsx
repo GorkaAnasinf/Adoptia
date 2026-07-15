@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { NextIntlClientProvider } from "next-intl";
 import { beforeEach, describe, expect, it, vi } from "vitest";
@@ -129,6 +129,90 @@ describe("NuevoAvisoForm", () => {
 
     await waitFor(() => expect(insertMock).toHaveBeenCalledOnce());
     expect(insertMock.mock.calls[0][0].allow_contact).toBe(false);
+  });
+
+  // FEATURE-023 — datos identificativos
+  it("publica sin tocar ningún campo identificativo: todos opcionales y en «no lo sé»", async () => {
+    const user = userEvent.setup();
+    renderForm();
+    await user.type(screen.getByLabelText(messages.perdidos.fDescripcion), "Perro perdido");
+    await user.click(screen.getByTestId("pin"));
+    await user.click(screen.getByRole("button", { name: messages.perdidos.fEnviar }));
+
+    await waitFor(() => expect(insertMock).toHaveBeenCalledOnce());
+    const fila = insertMock.mock.calls[0][0];
+    expect(fila.breed).toBeNull();
+    expect(fila.sex).toBeNull();
+    expect(fila.size).toBeNull();
+    expect(fila.color).toBeNull();
+    expect(fila.has_collar).toBeNull();
+    expect(fila.has_microchip).toBeNull();
+    // La fecha sí va: por defecto, hoy.
+    expect(fila.occurred_on).toBe(new Date().toISOString().slice(0, 10));
+  });
+
+  it("guarda los datos identificativos que se rellenan", async () => {
+    const user = userEvent.setup();
+    renderForm();
+    await user.type(screen.getByLabelText(messages.perdidos.fDescripcion), "Podenca canela");
+    await user.type(screen.getByLabelText(messages.perdidos.fRaza), "Podenco");
+    await user.type(screen.getByLabelText(messages.perdidos.fColor), "Canela");
+    await user.selectOptions(screen.getByLabelText(messages.perdidos.fSexo), "female");
+    await user.selectOptions(screen.getByLabelText(messages.perdidos.fTamano), "medium");
+    await user.selectOptions(screen.getByLabelText(messages.perdidos.fMicrochip), "si");
+    await user.click(screen.getByTestId("pin"));
+    await user.click(screen.getByRole("button", { name: messages.perdidos.fEnviar }));
+
+    await waitFor(() => expect(insertMock).toHaveBeenCalledOnce());
+    const fila = insertMock.mock.calls[0][0];
+    expect(fila.breed).toBe("Podenco");
+    expect(fila.color).toBe("Canela");
+    expect(fila.sex).toBe("female");
+    expect(fila.size).toBe("medium");
+    expect(fila.has_microchip).toBe(true);
+  });
+
+  it("la descripción del collar solo aparece —y solo se guarda— si lleva collar", async () => {
+    const user = userEvent.setup();
+    renderForm();
+    expect(screen.queryByLabelText(messages.perdidos.fCollarDescripcion)).not.toBeInTheDocument();
+
+    await user.selectOptions(screen.getByLabelText(messages.perdidos.fCollar), "si");
+    await user.type(
+      await screen.findByLabelText(messages.perdidos.fCollarDescripcion),
+      "Rojo con placa",
+    );
+
+    // Si se vuelve atrás a "no lo sé", la descripción no debe viajar.
+    await user.selectOptions(screen.getByLabelText(messages.perdidos.fCollar), "nose");
+    await user.type(screen.getByLabelText(messages.perdidos.fDescripcion), "Perro perdido");
+    await user.click(screen.getByTestId("pin"));
+    await user.click(screen.getByRole("button", { name: messages.perdidos.fEnviar }));
+
+    await waitFor(() => expect(insertMock).toHaveBeenCalledOnce());
+    const fila = insertMock.mock.calls[0][0];
+    expect(fila.has_collar).toBeNull();
+    expect(fila.collar_description).toBeNull();
+  });
+
+  it("no publica con una fecha de suceso futura", async () => {
+    const user = userEvent.setup();
+    renderForm();
+    await user.type(screen.getByLabelText(messages.perdidos.fDescripcion), "Perro perdido");
+    const manana = new Date(Date.now() + 86_400_000).toISOString().slice(0, 10);
+    fireEvent.change(screen.getByLabelText(messages.perdidos.fFecha), { target: { value: manana } });
+    await user.click(screen.getByTestId("pin"));
+    await user.click(screen.getByRole("button", { name: messages.perdidos.fEnviar }));
+
+    expect(await screen.findByText(messages.perdidos.fFechaFutura)).toBeInTheDocument();
+    expect(insertMock).not.toHaveBeenCalled();
+  });
+
+  it("no ofrece ningún campo para el número de microchip", async () => {
+    renderForm();
+    const textos = screen.getAllByRole("textbox").map((i) => i.getAttribute("id") ?? "");
+    expect(textos.some((id) => /chip/i.test(id))).toBe(false);
+    expect(screen.getByText(messages.perdidos.fMicrochipHelp)).toBeInTheDocument();
   });
 
   it("si la BD falla muestra el error y permite reintentar", async () => {

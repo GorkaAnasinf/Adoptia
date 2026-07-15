@@ -35,10 +35,14 @@ Fase 3: `sponsorships`, `lost_found_posts`, `lost_found_sightings`.
 
 | Tabla | Qué es | Claves de diseño |
 |-------|--------|------------------|
-| `lost_found_posts` | Aviso de perdido/encontrado | `type lost/found`, `status open/resolved/archived`, `location geography(Point)` **redondeada a ~200 m por trigger antes de guardar**; `contact_phone` (opt-in, check de formato) y `allow_contact` (FEATURE-022); `last_activity_at` alimenta el cron de caducidad a 60 días |
+| `lost_found_posts` | Aviso de perdido/encontrado | `type lost/found`, `status open/resolved/archived`, `location geography(Point)` **redondeada a ~200 m por trigger antes de guardar**; `contact_phone` (opt-in, check de formato) y `allow_contact` (FEATURE-022); señas `breed/sex/size/color/has_collar/collar_description/has_microchip` y `occurred_on` (FEATURE-023); `last_activity_at` alimenta el cron de caducidad a 60 días |
 | `lost_found_sightings` | "He visto a este animal": pista de un vecino | `post_id → lost_found_posts` (`on delete cascade`), `seen_at` con check de no-futuro, `location` con **el mismo trigger de redondeo** que el aviso; trigger `after insert` que refresca `last_activity_at` del aviso |
 
 **Redondeo de privacidad**: `public.round_lost_found_location()` hace snap a una rejilla de 0.002° (~200 m) en un `BEFORE INSERT/UPDATE`. La coordenada exacta **nunca llega a existir en BD**, así que no puede filtrarse por ninguna vía (ni un dump, ni un `select` con `service_role`). La misma función la reusan `lost_found_posts`, `lost_found_sightings` y `foster_homes`.
+
+**Nada de número de microchip** (FEATURE-023): `has_microchip` es un `boolean` nullable (null = «no lo sé»), como las compatibilidades de `animals`. El número identifica al dueño en el registro autonómico, así que es un dato personal indirecto disfrazado de dato del animal. Hay un test de RLS que vigila que no aparezca ninguna columna que lo contenga.
+
+**`occurred_on` no es `created_at`**: la primera es cuándo se perdió o se encontró el animal; la segunda, cuándo se publicó el aviso. Los filtros y las tarjetas usan `occurred_on` — publicar tarde no debe hacer que un aviso viejo parezca fresco. Se llama así, y no `lost_at`, porque la tabla sirve para `lost` y para `found`.
 
 **Minimización en las pistas**: el RPC público `lost_found_sightings_list(post_id)` devuelve fecha, nota, foto y lat/lng redondeados — **no `user_id`**: quién reporta no es asunto público. Borrar la cuenta borra sus avistamientos en cascada.
 

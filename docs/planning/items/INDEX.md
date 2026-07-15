@@ -35,7 +35,8 @@
 | [FEATURE-020](FEATURE-020.md) | Vídeos en la ficha del animal (YouTube + MP4) | feature | hecho | 0.5 |
 | [FEATURE-021](FEATURE-021.md) | Rediseño de la cabecera superior con menú de usuario por rol | feature | hecho | 0.5 |
 | [FEATURE-022](FEATURE-022.md) | Avisos de perdidos — contacto sin exponer datos y avistamientos ciudadanos | feature | hecho | 0.5 |
-| [FEATURE-023](FEATURE-023.md) | Avisos de perdidos — ficha identificativa completa, galería y filtros | feature | recibido | 0.5 |
+| [FEATURE-023](FEATURE-023.md) | Avisos de perdidos — datos identificativos, fecha real del suceso y filtros | feature | hecho | 0.5 |
+| [FEATURE-024](FEATURE-024.md) | Galería de fotos en los avisos de perdidos (hoy solo cabe una) | feature | recibido | 0.5 |
 | [IMPROVEMENT-001](IMPROVEMENT-001.md) | De-duplicar el slug de protectora (nombres repetidos) | improvement | hecho | — |
 | [IMPROVEMENT-002](IMPROVEMENT-002.md) | Rediseño UX del wizard de alta de protectora (+ fix del mapa gris) | improvement | hecho | 0.2 |
 | [IMPROVEMENT-003](IMPROVEMENT-003.md) | Pulido del shell chrome (sidebar + cabecera) hacia el mockup de Stitch | improvement | hecho | 0.2 |
