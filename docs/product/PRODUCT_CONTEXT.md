@@ -44,6 +44,7 @@ Estado de cada capacidad en lenguaje de usuario. Se regenera con `python scripts
 - Reservar cita" lleva a una página 404 ([BUG-004](../planning/items/BUG-004.md))
 - npm run test -- --coverage revienta al parsear globals.css y las guías .md ([BUG-005](../planning/items/BUG-005.md))
 - El listado sirve la URL de YouTube como imagen de portada cuando el animal no tiene foto de portada ([BUG-006](../planning/items/BUG-006.md))
+- CI no ejecuta ni un solo test de RLS — 122 tests se saltan en silencio en cada push ([BUG-007](../planning/items/BUG-007.md))
 - Inicialización y andamiaje del proyecto ([FEATURE-000](../planning/items/FEATURE-000.md))
 - Registro y login de adoptantes y protectoras ([FEATURE-001](../planning/items/FEATURE-001.md))
 - Onboarding de protectoras y verificación por admin ([FEATURE-002](../planning/items/FEATURE-002.md))
@@ -95,6 +96,7 @@ _Nada en desarrollo en este momento._
 
 #### 🗓️ Previsto
 
-- CI no ejecuta ni un solo test de RLS — 122 tests se saltan en silencio en cada push — hito 0.5 ([BUG-007](../planning/items/BUG-007.md))
 - Avisos de perdidos — ficha identificativa completa, galería y filtros — hito 0.5 ([FEATURE-023](../planning/items/FEATURE-023.md))
+- Ejecutar los E2E de Playwright en CI, aprovechando el stack que ya levanta el job de RLS — hito 0.5 ([IMPROVEMENT-022](../planning/items/IMPROVEMENT-022.md))
+- Subir CI y el runtime a Node 22+ (hoy el job de la app va en Node 20, ya deprecado) — hito 0.5 ([IMPROVEMENT-023](../planning/items/IMPROVEMENT-023.md))
 <!-- RENDER:END -->
