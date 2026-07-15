@@ -136,14 +136,40 @@ describe.skipIf(!rlsDisponible)("FEATURE-003 media de animales", () => {
     const admin = adminClient();
     await admin.from("animals").update({ published_at: new Date().toISOString() }).eq("id", animalAId);
     await admin.from("animal_media").delete().eq("animal_id", animalAId);
-    await admin.from("animal_media").insert([
-      { animal_id: animalAId, type: "youtube", url: "https://youtu.be/dQw4w9WgXcQ", sort_order: 0 },
+    // OJO: PostgREST exige las MISMAS claves en todas las filas de un insert
+    // masivo. Con claves desiguales rechaza el lote entero, y si no se mira
+    // `error` el test acaba aseverando sobre una tabla vacía (BUG-006).
+    const { error } = await admin.from("animal_media").insert([
+      { animal_id: animalAId, type: "youtube", url: "https://youtu.be/dQw4w9WgXcQ", sort_order: 0, is_cover: false },
       { animal_id: animalAId, type: "photo", url: "portada.jpg", sort_order: 1, is_cover: true },
     ]);
+    expect(error).toBeNull();
 
     const anon = anonClient();
     const { data } = await anon.rpc("animals_search", { p_limit: 50 });
     const fila = (data ?? []).find((r: { id: string }) => r.id === animalAId);
     expect(fila?.cover_url).toBe("portada.jpg"); // nunca la URL de YouTube
+  });
+
+  // BUG-006 — el caso que de verdad se rompía: sin foto, la portada NO puede
+  // ser la URL del vídeo (acabaría en el src de un <Image>).
+  it("animals_search no devuelve un vídeo como cover_url cuando el animal no tiene foto", async () => {
+    const admin = adminClient();
+    await admin.from("animals").update({ published_at: new Date().toISOString() }).eq("id", animalAId);
+    await admin.from("animal_media").delete().eq("animal_id", animalAId);
+    const { error } = await admin.from("animal_media").insert({
+      animal_id: animalAId,
+      type: "youtube",
+      url: "https://youtu.be/dQw4w9WgXcQ",
+      sort_order: 0,
+      is_cover: false,
+    });
+    expect(error).toBeNull();
+
+    const anon = anonClient();
+    const { data } = await anon.rpc("animals_search", { p_limit: 50 });
+    const fila = (data ?? []).find((r: { id: string }) => r.id === animalAId);
+    expect(fila).toBeDefined(); // el animal sigue en el listado…
+    expect(fila!.cover_url).toBeNull(); // …pero sin portada: la tarjeta usa el placeholder
   });
 });
