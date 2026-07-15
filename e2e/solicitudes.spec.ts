@@ -1,6 +1,7 @@
 import { expect, test } from "@playwright/test";
 import { createClient } from "@supabase/supabase-js";
 import messages from "../messages/es.json";
+import { MOTIVO_SALTO, SERVICE_KEY, TEST_URL, e2eDisponible } from "./entorno";
 
 /**
  * E2E de FEATURE-007: flujo completo "Me interesa" → cuestionario → bandeja
@@ -9,10 +10,9 @@ import messages from "../messages/es.json";
  * inician sesión por la UI real. Se salta sin `npx supabase start` +
  * variables SUPABASE_TEST_*.
  */
-const URL = process.env.SUPABASE_TEST_URL ?? "";
-const SERVICE_KEY = process.env.SUPABASE_TEST_SERVICE_ROLE_KEY ?? "";
+const URL = TEST_URL;
 
-test.skip(!URL || !SERVICE_KEY, "Requiere npx supabase start + variables SUPABASE_TEST_*");
+test.skip(!e2eDisponible, MOTIVO_SALTO);
 
 const t = messages.solicitud;
 const tp = messages.solicitudesPanel;

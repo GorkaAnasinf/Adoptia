@@ -101,6 +101,73 @@ jobs:
         if: always()
         run: npx supabase stop --no-backup
 
+  # IMPROVEMENT-022: los E2E caían en la misma trampa que los RLS (BUG-007) —
+  # se saltaban solos sin stack, invisibles. Job propio: Playwright arranca su
+  # `next dev`, así que no cabe en el de RLS sin alargarlo de más.
+  #
+  # ⚠️ De momento SOLO a mano (`workflow_dispatch`). Al ejecutar la suite entera
+  # por primera vez aparecieron 14 fallos: no está rota la app, están podridos
+  # los tests (se pisan los datos entre proyectos, redirecciones de login,
+  # timeouts). Activarlo en cada push dejaría CI en rojo crónico, que es peor
+  # que el silencio de ahora: se acaba ignorando. Se sanea en **BUG-008** y
+  # entonces se quita este `if` — ese es el único cambio que hará falta.
+  e2e:
+    name: E2E (Playwright + Supabase local)
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Instalar navegador
+        run: npx playwright install --with-deps chromium
+
+      - name: Levantar el stack local
+        run: npx supabase start
+
+      # El `next dev` que arranca Playwright necesita apuntar al stack local,
+      # no a producción: en local eso sale de .env.local, que aquí no existe.
+      # SMTP se deja fuera a propósito — el envío de email debe ser
+      # best-effort y los flujos no pueden depender de que salga el correo.
+      - name: Exportar variables del stack
+        run: |
+          eval "$(npx supabase status -o env)"
+          {
+            echo "SUPABASE_TEST_URL=$API_URL"
+            echo "SUPABASE_TEST_SERVICE_ROLE_KEY=$SERVICE_ROLE_KEY"
+            echo "NEXT_PUBLIC_SUPABASE_URL=$API_URL"
+            echo "NEXT_PUBLIC_SUPABASE_ANON_KEY=$ANON_KEY"
+            echo "SUPABASE_SERVICE_ROLE_KEY=$SERVICE_ROLE_KEY"
+            echo "NEXT_PUBLIC_SITE_URL=http://localhost:3000"
+            echo "NEXT_PUBLIC_TURNSTILE_SITE_KEY=1x00000000000000000000AA"
+          } >> "$GITHUB_ENV"
+
+      # Si faltasen las variables, `e2e/entorno.ts` aborta con CI=true en vez
+      # de saltarse los tests en verde.
+      - name: E2E
+        run: npx playwright test
+
+      - name: Guardar el informe si algo falla
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 7
+
+      - name: Parar el stack
+        if: always()
+        run: npx supabase stop --no-backup
+
   planning:
     name: Render de planificación coherente
     runs-on: ubuntu-latest

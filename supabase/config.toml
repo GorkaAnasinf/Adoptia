@@ -204,7 +204,12 @@ anonymous_users = 30
 # Number of sessions that can be refreshed in a 5 minute interval per IP address.
 token_refresh = 150
 # Number of sign up and sign-in requests that can be made in a 5 minute interval per IP address (excludes anonymous users).
-sign_in_sign_ups = 30
+# Subido para los E2E (IMPROVEMENT-022): la suite corre en paralelo y cada spec
+# siembra usuarios e inicia sesión, así que con 30 se agota en segundos y los
+# tests fallan con "AuthRetryableFetchError". Esto es SOLO el stack local (un
+# fixture de test): el rate limit de producción se configura en el dashboard de
+# Supabase y no lo toca este fichero.
+sign_in_sign_ups = 1000
 # Number of OTP / Magic link verifications that can be made in a 5 minute interval per IP address.
 token_verifications = 30
 # Number of Web3 logins that can be made in a 5 minute interval per IP address.
