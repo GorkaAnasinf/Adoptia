@@ -20,10 +20,13 @@ jobs:
         run: |
           if [ -f package.json ]; then echo "exists=true" >> "$GITHUB_OUTPUT"; else echo "exists=false" >> "$GITHUB_OUTPUT"; fi
 
+      # La versión sale de .nvmrc, que es la misma que usa Vercel (24.x):
+      # antes CI iba en Node 20, dos majors por detrás de producción
+      # (IMPROVEMENT-023). Una sola fuente de verdad para local, CI y Vercel.
       - uses: actions/setup-node@v4
         if: steps.app.outputs.exists == 'true'
         with:
-          node-version: 20
+          node-version-file: .nvmrc
           cache: npm
 
       - name: Instalar dependencias
@@ -65,12 +68,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # Node 22, no 20: supabase-js necesita WebSocket nativo (llega en 22) y
-      # con 20 los 18 ficheros revientan con "native WebSocket not found".
-      # El job de la app sigue en 20 — subirlo es otra decisión (ver el item).
       - uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version-file: .nvmrc
           cache: npm
 
       - name: Instalar dependencias
