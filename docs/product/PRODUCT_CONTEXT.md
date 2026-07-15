@@ -98,4 +98,5 @@ _Nada en desarrollo en este momento._
 
 - Avisos de perdidos — ficha identificativa completa, galería y filtros — hito 0.5 ([FEATURE-023](../planning/items/FEATURE-023.md))
 - Ejecutar los E2E de Playwright en CI, aprovechando el stack que ya levanta el job de RLS — hito 0.5 ([IMPROVEMENT-022](../planning/items/IMPROVEMENT-022.md))
+- Subir CI y el runtime a Node 22+ (hoy el job de la app va en Node 20, ya deprecado) — hito 0.5 ([IMPROVEMENT-023](../planning/items/IMPROVEMENT-023.md))
 <!-- RENDER:END -->
