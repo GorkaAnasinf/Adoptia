@@ -89,6 +89,8 @@ Estado de cada capacidad en lenguaje de usuario. Se regenera con `python scripts
 - Rediseño del listado /animales (filtros horizontales, tarjetas con favorito y paginación numerada) ([IMPROVEMENT-019](../planning/items/IMPROVEMENT-019.md))
 - Rediseño de la ficha pública de animal ([IMPROVEMENT-020](../planning/items/IMPROVEMENT-020.md))
 - Búsqueda por texto/raza en el listado de animales ([IMPROVEMENT-021](../planning/items/IMPROVEMENT-021.md))
+- Ejecutar los E2E de Playwright en CI, aprovechando el stack que ya levanta el job de RLS ([IMPROVEMENT-022](../planning/items/IMPROVEMENT-022.md))
+- Subir CI y el runtime a Node 22+ (hoy el job de la app va en Node 20, ya deprecado) ([IMPROVEMENT-023](../planning/items/IMPROVEMENT-023.md))
 
 #### 🚧 En camino (en desarrollo ahora)
 
@@ -96,7 +98,6 @@ _Nada en desarrollo en este momento._
 
 #### 🗓️ Previsto
 
+- La suite E2E está podrida — 14 de 26 fallan al ejecutarla entera — hito 0.5 ([BUG-008](../planning/items/BUG-008.md))
 - Avisos de perdidos — ficha identificativa completa, galería y filtros — hito 0.5 ([FEATURE-023](../planning/items/FEATURE-023.md))
-- Ejecutar los E2E de Playwright en CI, aprovechando el stack que ya levanta el job de RLS — hito 0.5 ([IMPROVEMENT-022](../planning/items/IMPROVEMENT-022.md))
-- Subir CI y el runtime a Node 22+ (hoy el job de la app va en Node 20, ya deprecado) — hito 0.5 ([IMPROVEMENT-023](../planning/items/IMPROVEMENT-023.md))
 <!-- RENDER:END -->

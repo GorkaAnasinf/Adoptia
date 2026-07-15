@@ -1,5 +1,6 @@
 import { expect, test } from "@playwright/test";
 import { createClient } from "@supabase/supabase-js";
+import { MOTIVO_SALTO, SERVICE_KEY, TEST_URL, e2eDisponible } from "./entorno";
 
 /**
  * E2E de FEATURE-006: permitir ubicación → protectora en la lista →
@@ -11,13 +12,12 @@ import { createClient } from "@supabase/supabase-js";
  * vive en el bottom sheet y duplica el texto en el DOM, así que este
  * spec se centra en el layout de escritorio.
  */
-const URL = process.env.SUPABASE_TEST_URL ?? "";
-const SERVICE_KEY = process.env.SUPABASE_TEST_SERVICE_ROLE_KEY ?? "";
+const URL = TEST_URL;
 
 const BILBAO = { lat: 43.263, lng: -2.935 };
 const PROTECTORA = { name: "Protectora E2E Mapa", slug: "protectora-e2e-mapa" };
 
-test.skip(!URL || !SERVICE_KEY, "Requiere npx supabase start + variables SUPABASE_TEST_*");
+test.skip(!e2eDisponible, MOTIVO_SALTO);
 
 test.beforeAll(async () => {
   const admin = createClient(URL, SERVICE_KEY, {

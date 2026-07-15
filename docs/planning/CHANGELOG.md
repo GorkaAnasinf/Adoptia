@@ -2,6 +2,18 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/es/) adaptado. Versionado 0.x hasta el MVP.
 
+## [0.0.56] — 2026-07-15
+
+### Cambiado
+
+- **Los E2E dejan de poder saltarse en silencio, y hay job de CI listo para ellos (IMPROVEMENT-022)**: como los tests de RLS antes de BUG-007, los E2E se saltaban solos cuando faltaba el stack — invisibles y verdes. Ahora el entorno vive en un módulo compartido (`e2e/entorno.ts`) que **aborta en CI** si faltan las variables, en vez de saltar. Se añade el job `e2e` (Playwright + Supabase local), de momento **solo lanzable a mano**: al ejecutar la suite entera por primera vez aparecieron 14 fallos de 26 — no está rota la app, están podridos los tests, y activarlo en cada push dejaría CI en rojo crónico. El saneado es **BUG-008**. De paso se corrige el rate limit del Auth del stack local (`sign_in_sign_ups`: 30 → 1000 en 5 min), que la suite en paralelo agotaba en segundos.
+
+## [0.0.55] — 2026-07-15
+
+### Cambiado
+
+- **CI corre en la misma versión de Node que producción (IMPROVEMENT-023)**: había tres versiones distintas conviviendo —Vercel en 24.x, CI en 20 y el desarrollo en 22.19—, y precisamente la que decide si algo se despliega era la más alejada de producción. Con Node 20 los tests de RLS ni arrancaban (`supabase-js` necesita el WebSocket nativo de Node 22+), lo que había obligado a parchear ese job a 22. Ahora la versión vive en un único `.nvmrc` (24, la de Vercel) que ambos jobs leen con `node-version-file`, así que no pueden volver a separarse en silencio; `engines` documenta el suelo real (>=22). De paso desaparecen los avisos de deprecación de `supabase-js` en cada run.
+
 ## [0.0.54] — 2026-07-15
 
 ### Corregido
