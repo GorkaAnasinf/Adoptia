@@ -68,6 +68,7 @@ Estado de cada capacidad en lenguaje de usuario. Se regenera con `python scripts
 - Vídeos en la ficha del animal (YouTube + MP4) ([FEATURE-020](../planning/items/FEATURE-020.md))
 - Rediseño de la cabecera superior con menú de usuario por rol ([FEATURE-021](../planning/items/FEATURE-021.md))
 - Avisos de perdidos — contacto sin exponer datos y avistamientos ciudadanos ([FEATURE-022](../planning/items/FEATURE-022.md))
+- Avisos de perdidos — datos identificativos, fecha real del suceso y filtros ([FEATURE-023](../planning/items/FEATURE-023.md))
 - De-duplicar el slug de protectora (nombres repetidos) ([IMPROVEMENT-001](../planning/items/IMPROVEMENT-001.md))
 - Rediseño UX del wizard de alta de protectora (+ fix del mapa gris) ([IMPROVEMENT-002](../planning/items/IMPROVEMENT-002.md))
 - Pulido del shell chrome (sidebar + cabecera) hacia el mockup de Stitch ([IMPROVEMENT-003](../planning/items/IMPROVEMENT-003.md))
@@ -99,5 +100,5 @@ _Nada en desarrollo en este momento._
 #### 🗓️ Previsto
 
 - La suite E2E está podrida — 14 de 26 fallan al ejecutarla entera — hito 0.5 ([BUG-008](../planning/items/BUG-008.md))
-- Avisos de perdidos — ficha identificativa completa, galería y filtros — hito 0.5 ([FEATURE-023](../planning/items/FEATURE-023.md))
+- Galería de fotos en los avisos de perdidos (hoy solo cabe una) — hito 0.5 ([FEATURE-024](../planning/items/FEATURE-024.md))
 <!-- RENDER:END -->

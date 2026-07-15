@@ -35,6 +35,14 @@ type Aviso = {
   created_at: string;
   contact_phone: string | null;
   allow_contact: boolean;
+  breed: string | null;
+  sex: "male" | "female" | "unknown" | null;
+  size: "small" | "medium" | "large" | null;
+  color: string | null;
+  has_collar: boolean | null;
+  collar_description: string | null;
+  has_microchip: boolean | null;
+  occurred_on: string;
 };
 
 /** Detalle de un aviso: ubicación ya redondeada en BD (privacidad). */
@@ -49,7 +57,7 @@ export default async function AvisoPage({ params }: { params: Params }) {
     supabase
       .from("lost_found_posts")
       .select(
-        "id, user_id, type, species, name, description, photo_url, city, status, resolution_story, location, created_at, contact_phone, allow_contact",
+        "id, user_id, type, species, name, description, photo_url, city, status, resolution_story, location, created_at, contact_phone, allow_contact, breed, sex, size, color, has_collar, collar_description, has_microchip, occurred_on",
       )
       .eq("id", id)
       .maybeSingle(),
@@ -85,6 +93,45 @@ export default async function AvisoPage({ params }: { params: Params }) {
     cat: tAnimales("speciesCat"),
     other: tAnimales("speciesOther"),
   };
+  const SEXO: Record<string, string> = {
+    male: tAnimales("sexMale"),
+    female: tAnimales("sexFemale"),
+    unknown: tAnimales("sexUnknown"),
+  };
+  const TAMANO: Record<string, string> = {
+    small: tAnimales("sizeSmall"),
+    medium: tAnimales("sizeMedium"),
+    large: tAnimales("sizeLarge"),
+  };
+
+  const fechaLarga = (v: string | Date) =>
+    format.dateTime(new Date(v), { day: "numeric", month: "long", year: "numeric" });
+
+  // Solo lo que se sabe: un «no lo sé» en pantalla es ruido, no información.
+  const senas: { etiqueta: string; valor: string }[] = [
+    aviso.breed && { etiqueta: t("datoRaza"), valor: aviso.breed },
+    aviso.color && { etiqueta: t("datoColor"), valor: aviso.color },
+    aviso.sex && { etiqueta: t("datoSexo"), valor: SEXO[aviso.sex] },
+    aviso.size && { etiqueta: t("datoTamano"), valor: TAMANO[aviso.size] },
+    aviso.has_collar !== null && {
+      etiqueta: t("datoCollar"),
+      valor: aviso.has_collar
+        ? aviso.collar_description
+          ? `${t("datoCollarSi")} — ${aviso.collar_description}`
+          : t("datoCollarSi")
+        : t("datoCollarNo"),
+    },
+    aviso.has_microchip !== null && {
+      etiqueta: t("datoMicrochip"),
+      valor: aviso.has_microchip ? t("datoMicrochipSi") : t("datoMicrochipNo"),
+    },
+  ].filter(Boolean) as { etiqueta: string; valor: string }[];
+
+  // `occurred_on` es la fecha del suceso; `created_at`, la de publicación. Solo
+  // se enseñan las dos cuando difieren: es justo el desfase que este item vino
+  // a hacer visible.
+  const publicadoEnOtraFecha =
+    aviso.occurred_on !== new Date(aviso.created_at).toISOString().slice(0, 10);
 
   return (
     <section className="mx-auto max-w-3xl px-4 py-10">
@@ -107,12 +154,17 @@ export default async function AvisoPage({ params }: { params: Params }) {
       <h1 className="mt-3 font-heading text-3xl font-bold">
         {aviso.name ?? t(aviso.type === "lost" ? "tipoLost" : "tipoFound")}
       </h1>
-      <p className="mt-1 text-sm text-muted-foreground">
-        {t("publicadoEl", {
-          fecha: format.dateTime(new Date(aviso.created_at), { day: "numeric", month: "long", year: "numeric" }),
+      <p className="mt-1 text-sm font-medium">
+        {t(aviso.type === "lost" ? "ocurrioEl" : "encontradoEl", {
+          fecha: fechaLarga(aviso.occurred_on),
         })}
         {aviso.city ? ` · ${aviso.city}` : ""}
       </p>
+      {publicadoEnOtraFecha && (
+        <p className="mt-0.5 text-sm text-muted-foreground">
+          {t("publicadoEl", { fecha: fechaLarga(aviso.created_at) })}
+        </p>
+      )}
 
       {esImagenValida(aviso.photo_url) && (
         <div className="relative mt-6 aspect-4/3 w-full overflow-hidden rounded-2xl bg-muted">
@@ -121,6 +173,20 @@ export default async function AvisoPage({ params }: { params: Params }) {
       )}
 
       <p className="mt-6 whitespace-pre-line leading-relaxed">{aviso.description}</p>
+
+      {senas.length > 0 && (
+        <div className="mt-6">
+          <h2 className="font-heading text-lg font-semibold">{t("datosTitulo")}</h2>
+          <dl className="mt-2 grid gap-x-6 gap-y-2 sm:grid-cols-2">
+            {senas.map((s) => (
+              <div key={s.etiqueta} className="flex gap-2 text-sm">
+                <dt className="shrink-0 text-muted-foreground">{s.etiqueta}:</dt>
+                <dd className="font-medium">{s.valor}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+      )}
 
       {aviso.status === "resolved" && aviso.resolution_story && (
         <div className="mt-6 rounded-2xl bg-sky-50 px-5 py-4">
