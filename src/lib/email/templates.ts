@@ -3,6 +3,19 @@
  * para poder enviarse desde cualquier handler de servidor.
  */
 
+/**
+ * Escapa texto libre de un usuario antes de meterlo en el HTML del email
+ * (FEATURE-022: el mensaje de contacto y la nota del avistamiento los teclea
+ * un desconocido).
+ */
+const esc = (v: string) =>
+  v
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+
 const BASE = (contenido: string) => `
 <div style="font-family:'Open Sans',Arial,sans-serif;max-width:560px;margin:0 auto;padding:24px;color:#1d1b17;background:#fef8f0;border-radius:16px">
   <h1 style="font-family:Montserrat,Arial,sans-serif;color:#9f402d;font-size:22px;margin:0 0 16px">Adoptia</h1>
@@ -349,6 +362,73 @@ export function plantillaContactoAcogida({
       <p>Tus datos de contacto <strong>no</strong> se han compartido: eres tú quien decide responder.
       Si ahora no puedes acoger, puedes pausar tu disponibilidad desde
       <a href="https://adoptia-eight.vercel.app/acogida" style="color:#396662">tu registro de acogida</a>.</p>
+    `),
+  };
+}
+
+// ---------- FEATURE-022: contacto y avistamientos en avisos ----------
+
+const AVISO_URL = (avisoId: string) =>
+  `https://adoptia-eight.vercel.app/perdidos-encontrados/${avisoId}`;
+
+/**
+ * Alguien escribe al autor de un aviso. El correo del autor no se comparte con
+ * el remitente: es el `replyTo` del envío el que permite la conversación, y
+ * solo porque el remitente cede el suyo conscientemente.
+ */
+export function plantillaContactoAviso({
+  avisoId,
+  avisoTitulo,
+  autorNombre,
+  remitenteNombre,
+  mensaje,
+}: {
+  avisoId: string;
+  avisoTitulo: string;
+  autorNombre: string | null;
+  remitenteNombre: string | null;
+  mensaje: string;
+}) {
+  const quien = remitenteNombre ? esc(remitenteNombre) : "Alguien";
+  return {
+    subject: `Tienes un mensaje sobre tu aviso de ${esc(avisoTitulo)}`,
+    html: BASE(`
+      <p>Hola ${autorNombre ? esc(autorNombre) : ""},</p>
+      <p><strong>${quien}</strong> te escribe por tu aviso de
+      <strong>${esc(avisoTitulo)}</strong>:</p>
+      <blockquote style="margin:12px 0;padding:12px 16px;background:#fff;border-left:3px solid #396662;border-radius:8px;white-space:pre-line">${esc(mensaje)}</blockquote>
+      <p>Puedes <strong>responder a este correo</strong> para hablar directamente.</p>
+      <p><a href="${AVISO_URL(avisoId)}" style="color:#396662">Ver mi aviso</a></p>
+      <p style="font-size:12px;color:#6b6b6b">Ojo con las estafas: nadie que haya encontrado
+      a tu animal necesita un pago por adelantado para devolvértelo.</p>
+    `),
+  };
+}
+
+/** Un vecino reporta que ha visto al animal. */
+export function plantillaAvistamiento({
+  avisoId,
+  avisoTitulo,
+  autorNombre,
+  cuando,
+  nota,
+}: {
+  avisoId: string;
+  avisoTitulo: string;
+  autorNombre: string | null;
+  cuando: string;
+  nota: string | null;
+}) {
+  return {
+    subject: `¡Alguien ha visto a ${esc(avisoTitulo)}!`,
+    html: BASE(`
+      <p>Hola ${autorNombre ? esc(autorNombre) : ""},</p>
+      <p>Han reportado un <strong>avistamiento</strong> en tu aviso de
+      <strong>${esc(avisoTitulo)}</strong>.</p>
+      <p><strong>Cuándo:</strong> ${esc(cuando)}</p>
+      ${nota ? `<blockquote style="margin:12px 0;padding:12px 16px;background:#fff;border-left:3px solid #396662;border-radius:8px;white-space:pre-line">${esc(nota)}</blockquote>` : ""}
+      <p>La zona aproximada está marcada en el mapa de tu aviso:</p>
+      <p><a href="${AVISO_URL(avisoId)}" style="color:#396662">Ver el avistamiento en el mapa</a></p>
     `),
   };
 }
