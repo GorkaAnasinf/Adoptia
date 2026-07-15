@@ -19,10 +19,16 @@
 Los items `hecho`/`descartado` no aparecen aquí — su histórico vive en [CHANGELOG](CHANGELOG.md) y git.
 
 <!-- RENDER:START -->
+### ✅ Listo para desarrollo (1)
+
+| Item | Título | Prioridad | Hito |
+|------|--------|-----------|------|
+| [FEATURE-023](items/FEATURE-023.md) | Avisos de perdidos — datos identificativos, fecha real del suceso y filtros | media | 0.5 |
+
 ### 📥 Recibido (2)
 
 | Item | Título | Prioridad | Hito |
 |------|--------|-----------|------|
 | [BUG-008](items/BUG-008.md) | La suite E2E está podrida — 14 de 26 fallan al ejecutarla entera | alta | 0.5 |
-| [FEATURE-023](items/FEATURE-023.md) | Avisos de perdidos — ficha identificativa completa, galería y filtros | media | 0.5 |
+| [FEATURE-024](items/FEATURE-024.md) | Galería de fotos en los avisos de perdidos (hoy solo cabe una) | media | 0.5 |
 <!-- RENDER:END -->
