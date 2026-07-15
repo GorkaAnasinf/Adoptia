@@ -2,11 +2,17 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/es/) adaptado. Versionado 0.x hasta el MVP.
 
+## [0.0.52] — 2026-07-15
+
+### Corregido
+
+- **El informe de cobertura vuelve a generarse (BUG-005)**: `npm run test -- --coverage` —el comando que corre CI— terminaba en error desde hacía tiempo. `coverage.include` era `src/**`, así que el proveedor v8 intentaba parsear como JavaScript ficheros que no lo son (`globals.css`, las guías `.md` de `src/content/guias/`) al listar los no cubiertos, y rolldown abortaba el informe entero. Ahora se restringe a `src/**/*.{ts,tsx}`. Buena noticia de paso: no había deuda escondida — con el informe visible, los umbrales se cumplen sin tocar un solo test (80,85% de sentencias, `src/lib` al 96,6%).
+
 ## [0.0.51] — 2026-07-15
 
 ### Añadido
 
-- **Contacto y avistamientos en los avisos de perdidos (FEATURE-022)**: hasta ahora publicar que habías perdido a tu animal era gritar a una pared — no había forma de que nadie te diera una pista. Ahora la ficha de un aviso abierto ofrece dos cosas a quien tenga cuenta: **escribir al autor** (el mensaje viaja por la plataforma; ninguna de las dos partes ve el correo de la otra, y quien escribe cede el suyo para que puedan responderle) y **"He visto a este animal"**, marcando dónde y cuándo, con nota y foto opcionales. Los avistamientos se pintan en el mapa de la ficha, se listan en un timeline y avisan al dueño por correo. El autor puede además publicar un **teléfono opcional** (con aviso de la estafa del rescate a la vista) o cerrar los mensajes del todo. El pin de un avistamiento pasa por **el mismo redondeo de ~200 m** que el del aviso: ni la ubicación de quien reporta ni la del animal se publican exactas. Una pista fresca cuenta como actividad, así que el aviso deja de archivarse a los 60 días mientras la gente lo alimente. **Requiere `supabase db push` en producción** (migración `20260715120000`) — y antes, verificar la migración en local (ver el bloqueo en el item).
+- **Contacto y avistamientos en los avisos de perdidos (FEATURE-022)**: hasta ahora publicar que habías perdido a tu animal era gritar a una pared — no había forma de que nadie te diera una pista. Ahora la ficha de un aviso abierto ofrece dos cosas a quien tenga cuenta: **escribir al autor** (el mensaje viaja por la plataforma; ninguna de las dos partes ve el correo de la otra, y quien escribe cede el suyo para que puedan responderle) y **"He visto a este animal"**, marcando dónde y cuándo, con nota y foto opcionales. Los avistamientos se pintan en el mapa de la ficha, se listan en un timeline y avisan al dueño por correo. El autor puede además publicar un **teléfono opcional** (con aviso de la estafa del rescate a la vista) o cerrar los mensajes del todo. El pin de un avistamiento pasa por **el mismo redondeo de ~200 m** que el del aviso: ni la ubicación de quien reporta ni la del animal se publican exactas. Una pista fresca cuenta como actividad, así que el aviso deja de archivarse a los 60 días mientras la gente lo alimente. Migración `20260715120000` **aplicada en producción el 2026-07-15**, sin verificación previa en local (Docker no disponible): los tests RLS y E2E que respaldan el redondeo del pin y las políticas de acceso siguen sin ejecutarse — ver la deuda de verificación en el item.
 
 ## [0.0.50] — 2026-07-14
 
