@@ -8,6 +8,7 @@
 | [BUG-001](BUG-001.md) | Tras confirmar el correo, la protectora no entra al onboarding; falta pantalla de "correo verificado | bug | hecho | 0.2 |
 | [BUG-003](BUG-003.md) | El mapa del alta se ve en gris (la CSP bloquea las tiles de OpenStreetMap) | bug | hecho | 0.2 |
 | [BUG-004](BUG-004.md) | Reservar cita" lleva a una página 404 | bug | hecho | 0.5 |
+| [BUG-005](BUG-005.md) | npm run test -- --coverage revienta al parsear globals.css y las guías .md | bug | recibido | — |
 | [FEATURE-000](FEATURE-000.md) | Inicialización y andamiaje del proyecto | feature | hecho | 0.1 |
 | [FEATURE-001](FEATURE-001.md) | Registro y login de adoptantes y protectoras | feature | hecho | 0.2 |
 | [FEATURE-002](FEATURE-002.md) | Onboarding de protectoras y verificación por admin | feature | hecho | 0.2 |
@@ -30,6 +31,8 @@
 | [FEATURE-019](FEATURE-019.md) | Directorio público de protectoras (/protectoras) | feature | hecho | 0.5 |
 | [FEATURE-020](FEATURE-020.md) | Vídeos en la ficha del animal (YouTube + MP4) | feature | hecho | 0.5 |
 | [FEATURE-021](FEATURE-021.md) | Rediseño de la cabecera superior con menú de usuario por rol | feature | hecho | 0.5 |
+| [FEATURE-022](FEATURE-022.md) | Avisos de perdidos — contacto sin exponer datos y avistamientos ciudadanos | feature | hecho | 0.5 |
+| [FEATURE-023](FEATURE-023.md) | Avisos de perdidos — ficha identificativa completa, galería y filtros | feature | recibido | 0.5 |
 | [IMPROVEMENT-001](IMPROVEMENT-001.md) | De-duplicar el slug de protectora (nombres repetidos) | improvement | hecho | — |
 | [IMPROVEMENT-002](IMPROVEMENT-002.md) | Rediseño UX del wizard de alta de protectora (+ fix del mapa gris) | improvement | hecho | 0.2 |
 | [IMPROVEMENT-003](IMPROVEMENT-003.md) | Pulido del shell chrome (sidebar + cabecera) hacia el mockup de Stitch | improvement | hecho | 0.2 |
