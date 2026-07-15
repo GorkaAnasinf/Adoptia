@@ -107,7 +107,14 @@ test("el aviso aparece en el listado y su autor lo resuelve con historia", async
   await expect(page.getByRole("link", { name: NOMBRE })).toHaveCount(0);
 });
 
-test("un vecino reporta un avistamiento y el autor lo ve en su ficha", async ({ page }) => {
+test("un vecino reporta un avistamiento y el autor lo ve en su ficha", async ({ page, isMobile }) => {
+  // El pin exige arrastrar el marcador de Leaflet. En el proyecto móvil (Pixel 7,
+  // táctil) Leaflet escucha eventos touch y no hay forma fiable de sintetizar el
+  // arrastre desde Playwright — limitación del arnés, no del producto. El flujo
+  // en móvil queda cubierto por el E2E de FEATURE-012 y por los tests de
+  // componente del formulario.
+  test.skip(isMobile, "No se puede sintetizar el arrastre táctil del marcador de Leaflet");
+
   // Sin sesión no se puede ayudar: la ficha invita a entrar.
   await page.goto(`/perdidos-encontrados/${avisoKiraId}`);
   await expect(page.getByRole("link", { name: t.entrarParaAyudar })).toBeVisible();
@@ -123,16 +130,29 @@ test("un vecino reporta un avistamiento y el autor lo ve en su ficha", async ({ 
   await page.goto(`/perdidos-encontrados/${avisoKiraId}`);
   await page.getByRole("button", { name: t.avistamiento }).click();
   await page.getByLabel(t.avistamientoNota).fill("Bebiendo en la fuente del parque");
-  // El pin: un clic en el mapa del picker.
-  await page.locator(".leaflet-container").last().click({ position: { x: 120, y: 90 } });
+
+  // El pin se marca ARRASTRANDO el marcador: MapPinPicker solo emite en
+  // `dragend`, un clic en el mapa no hace nada. Leaflet exige varios mousemove
+  // para arrancar el arrastre, así que se mueve paso a paso.
+  const marcador = page.locator(".leaflet-container").last().getByRole("button", { name: "Marker" });
+  const caja = await marcador.boundingBox();
+  if (!caja) throw new Error("No se encontró el marcador del picker");
+  await page.mouse.move(caja.x + caja.width / 2, caja.y + caja.height / 2);
+  await page.mouse.down();
+  await page.mouse.move(caja.x + caja.width / 2 + 40, caja.y + caja.height / 2 + 25, { steps: 10 });
+  await page.mouse.up();
+
   await page.getByRole("button", { name: t.avistamientoEnviar }).click();
   await expect(page.getByText(t.avistamientoOk)).toBeVisible();
 
-  // El autor lo encuentra en el timeline de su aviso.
+  // El autor lo encuentra en el timeline de su aviso. Hay que cerrar la sesión
+  // del vecino primero: con sesión viva, /login no vuelve a autenticar.
+  await page.context().clearCookies();
   await page.goto("/login");
   await page.getByLabel(messages.auth.email).fill(AUTOR_EMAIL);
   await page.getByLabel(messages.auth.password, { exact: true }).fill(PASS);
   await page.getByRole("button", { name: messages.auth.submitLogin }).click();
+  await expect(page).toHaveURL("/");
 
   await page.goto(`/perdidos-encontrados/${avisoKiraId}`);
   await expect(page.getByText(/Bebiendo en la fuente/)).toBeVisible();

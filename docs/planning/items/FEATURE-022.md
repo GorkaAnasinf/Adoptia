@@ -119,22 +119,22 @@ create index lost_found_sightings_location_idx on public.lost_found_sightings us
 
 ## Criterios de aceptación / Casuística a cubrir
 
-Marcados `[x]` los cubiertos por test **ejecutado**; `[~]` los que tienen test escrito pero pendiente de ejecutar (ver Bloqueo abajo).
+Todos verificados contra el stack local el 2026-07-15 (`db reset` + 9 tests RLS + 3 E2E en verde). Ver «Verificación» al final.
 
 - [x] Desde la ficha de un aviso abierto, un usuario con cuenta escribe al autor sin ver su correo, y el autor recibe el mensaje con `Reply-To` del remitente.
 - [x] El correo del autor no aparece en ninguna respuesta HTTP, ni en el RPC del listado, ni en el HTML de la ficha.
 - [x] El autor puede publicar un teléfono opcional; si no lo hace, la ficha no muestra ningún teléfono. El campo se muestra siempre junto al aviso de la estafa del rescate.
 - [x] El autor puede desactivar que le escriban (`allow_contact=false`) y el endpoint responde 409.
 - [x] Un avistamiento exige cuenta, pin y fecha; la fecha no puede ser futura ni de hace más de 90 días.
-- [~] La coordenada exacta de un avistamiento **nunca llega a existir en BD**: el trigger la redondea a ~200 m antes de guardar (mismo criterio que el aviso).
+- [x] La coordenada exacta de un avistamiento **nunca llega a existir en BD**: el trigger la redondea a ~200 m antes de guardar (mismo criterio que el aviso).
 - [x] Los avistamientos se ven en el timeline y en el mini-mapa con icono propio, ordenados del más reciente al más antiguo.
-- [~] Un avistamiento refresca `last_activity_at` del aviso: el cron de 60 días no lo archiva.
-- [~] El autor del aviso puede borrar un avistamiento de su ficha (spam); un tercero no puede. *(La UI del borrado sí está probada; la política RLS que lo respalda, no.)*
+- [x] Un avistamiento refresca `last_activity_at` del aviso: el cron de 60 días no lo archiva.
+- [x] El autor del aviso puede borrar un avistamiento de su ficha (spam); un tercero no puede.
 - [x] Estado vacío: aviso abierto sin avistamientos muestra el bloque "¿Lo has visto?" y un mensaje claro, no una lista vacía.
 - [x] Aviso `resolved` o `archived`: sin botones de contacto ni de avistamiento; el timeline existente se sigue leyendo si el aviso es público.
 - [x] Sin sesión: los botones llevan a login y devuelven a la ficha tras entrar.
 - [x] Rate limit: 5 contactos/hora y 3 avistamientos/hora por usuario → 429.
-- [~] RGPD: quien reporta cede su nota y zona aproximada, no su identidad — el RPC público no devuelve `user_id`. Al borrar una cuenta, sus avistamientos caen por `on delete cascade`.
+- [x] RGPD: quien reporta cede su nota y zona aproximada, no su identidad — el RPC público no devuelve `user_id`. Al borrar una cuenta, sus avistamientos caen por `on delete cascade`.
 
 ## Cierre (2026-07-15)
 
@@ -143,13 +143,25 @@ Marcados `[x]` los cubiertos por test **ejecutado**; `[~]` los que tienen test e
 - **Emails**: `enviarEmail` acepta `replyTo`; `templates.ts` gana `esc()` — primer texto libre de un desconocido que entra en el HTML de un correo — y dos plantillas.
 - **UI**: bloque "¿Lo has visto?" en la ficha (contacto + avistamiento, solo con cuenta, solo en avisos abiertos, nunca al propio autor), teléfono con aviso de estafa, timeline con borrado por el autor, pines de avistamiento en el mini-mapa (`MiniMapa` acepta `extras` y se vuelve navegable). Alta con teléfono y checkbox de contacto.
 - **Decisiones sobre la marcha**: (1) el `<input type="datetime-local">` va **sin `max`** — el bloqueo nativo del navegador corta el submit con un aviso sin traducir; validamos en cliente y en servidor. (2) La foto del avistamiento que no sube **corta el envío con aviso** en vez de mandar la pista sin ella en silencio (hallazgo de Scooby).
-- **Tests**: 15 de API (8 de contacto + 7 de avistamientos), 29 de componentes de perdidos (form de avistamiento, diálogo de contacto, timeline, alta) y 12 de la ficha. Suite: **759 verdes** (venía de 746). + 10 RLS y 2 E2E escritos pero **sin ejecutar**.
-## Despliegue (2026-07-15) — ⚠️ sin verificación previa
+- **Tests**: 15 de API (8 de contacto + 7 de avistamientos), 29 de componentes de perdidos (form de avistamiento, diálogo de contacto, timeline, alta) y 12 de la ficha. Suite: **880 verdes** con RLS incluida. Los tests RLS de este item son **9**, no 10 (error de conteo en el cierre inicial).
 
-- Migración `20260715120000` **aplicada en producción el 2026-07-15** (`supabase db push`; confirmada con `migration list --linked`). `develop` y `main` subidas a origin (release 0.0.51).
-- **La migración se desplegó sin haberse ejecutado nunca antes** — ni en local ni en preview. Docker estaba parado; se advirtió del riesgo y se decidió desplegar igualmente. Producción fue el primer entorno donde corrió este SQL.
-- **Deuda de verificación abierta.** Siguen sin ejecutarse los 10 tests RLS de `perdidos-avistamientos` y los 2 E2E, así que los 5 criterios `[~]` de arriba **no tienen evidencia**. En concreto, nadie ha comprobado todavía que:
-  1. El trigger de redondeo engancha en `lost_found_sightings`. Si no lo hace, se guardan coordenadas exactas de quien reporta y **las filas ya escritas no se pueden deshacer** — el diseño de FEATURE-012 se apoya en que la coordenada exacta nunca llegue a existir en BD.
-  2. La policy de `select` oculta las pistas de avisos archivados.
-  3. `bump_lost_found_activity()` (`security definer`) actualiza `last_activity_at` sin efectos colaterales.
-- **Qué hacer en cuanto haya Docker**, prioritario y antes de que entren avistamientos reales: `npx supabase start` → `supabase db reset` → `npm run test` → `npx playwright test perdidos`. Si algo sale rojo, revisar además si producción ya guardó filas afectadas.
+## Despliegue y verificación
+
+**Despliegue (2026-07-15)**: migración `20260715120000` aplicada en producción con `supabase db push` (confirmada con `migration list --linked`); `develop` y `main` subidas (release 0.0.51). Se desplegó **sin haberse ejecutado nunca antes**, ni en local ni en preview: Docker estaba parado, se advirtió del riesgo y se decidió seguir. Producción fue el primer entorno donde corrió este SQL.
+
+**Verificación (2026-07-15, mismo día, con Docker ya disponible)** — la deuda queda saldada:
+
+- `supabase db reset` aplica la migración **limpia** (exit 0): sin errores de sintaxis.
+- **9/9 tests RLS en verde**, incluidos los tres que sostienen el diseño de privacidad:
+  - *«el pin queda redondeado (~200 m): la coordenada exacta nunca se guarda»* → el trigger engancha en `lost_found_sightings`. **Lo que hay en producción no está guardando ubicaciones exactas.**
+  - *«los avistamientos de un aviso archivado dejan de ser públicos»* → la policy de `select` funciona.
+  - *«un avistamiento refresca la actividad del aviso: el cron ya no lo archiva»* → `bump_lost_found_activity()` hace lo suyo y nada más.
+- **3/3 E2E en verde** (1 saltado en móvil, ver abajo). El log del servidor durante el E2E confirma de paso el diseño *best-effort*: `No se pudo avisar al autor del avistamiento: Faltan variables SMTP` y aun así el avistamiento se guarda y devuelve 201.
+- Suite completa: **880 verdes / 1 rojo**, y ese rojo es **BUG-006**, ajeno a este item (regresión de IMPROVEMENT-021 en `animals_search`, descubierta precisamente al correr por fin la suite RLS).
+
+**Dos fallos propios que la verificación destapó** (arreglados, ambos solo en el E2E):
+
+1. El E2E marcaba el pin con un clic en el mapa, pero `MapPinPicker` solo emite en el `dragend` del marcador — un clic no hace nada. Ahora arrastra el marcador con `mouse.down/move/up` por pasos (Leaflet exige varios `mousemove` para arrancar). Los tests de componente no lo cazaron porque mockean el picker.
+2. El segundo login (vecino → autor) no prendía: con sesión viva, `/login` no vuelve a autenticar. Ahora `context().clearCookies()` primero.
+
+**Limitación conocida**: el E2E del avistamiento se salta en el proyecto móvil (Pixel 7). Leaflet escucha eventos táctiles cuando hay pantalla táctil y no hay forma fiable de sintetizar el arrastre del marcador desde Playwright — limitación del arnés, no del producto. El flujo móvil queda cubierto por el E2E de FEATURE-012 y por los tests de componente.

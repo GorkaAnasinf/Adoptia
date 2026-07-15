@@ -43,6 +43,7 @@ Estado de cada capacidad en lenguaje de usuario. Se regenera con `python scripts
 - El mapa del alta se ve en gris (la CSP bloquea las tiles de OpenStreetMap) ([BUG-003](../planning/items/BUG-003.md))
 - Reservar cita" lleva a una página 404 ([BUG-004](../planning/items/BUG-004.md))
 - npm run test -- --coverage revienta al parsear globals.css y las guías .md ([BUG-005](../planning/items/BUG-005.md))
+- El listado sirve la URL de YouTube como imagen de portada cuando el animal no tiene foto de portada ([BUG-006](../planning/items/BUG-006.md))
 - Inicialización y andamiaje del proyecto ([FEATURE-000](../planning/items/FEATURE-000.md))
 - Registro y login de adoptantes y protectoras ([FEATURE-001](../planning/items/FEATURE-001.md))
 - Onboarding de protectoras y verificación por admin ([FEATURE-002](../planning/items/FEATURE-002.md))
