@@ -1,19 +1,19 @@
 import { expect, test } from "@playwright/test";
 import { createClient } from "@supabase/supabase-js";
 import messages from "../messages/es.json";
+import { MOTIVO_SALTO, SERVICE_KEY, TEST_URL, e2eDisponible } from "./entorno";
 
 /**
  * E2E de FEATURE-005: home → filtrar → ficha → volver conservando filtros.
  * Siembra datos con service_role contra el stack local; se salta sin
  * variables SUPABASE_TEST_* (igual que los tests de RLS).
  */
-const URL = process.env.SUPABASE_TEST_URL ?? "";
-const SERVICE_KEY = process.env.SUPABASE_TEST_SERVICE_ROLE_KEY ?? "";
+const URL = TEST_URL;
 
 const PERRO = { name: "Bombón E2E", slug: "bombon-e2e-publica" };
 const GATO = { name: "Michi E2E", slug: "michi-e2e-publica" };
 
-test.skip(!URL || !SERVICE_KEY, "Requiere npx supabase start + variables SUPABASE_TEST_*");
+test.skip(!e2eDisponible, MOTIVO_SALTO);
 
 test.beforeAll(async () => {
   const admin = createClient(URL, SERVICE_KEY, {

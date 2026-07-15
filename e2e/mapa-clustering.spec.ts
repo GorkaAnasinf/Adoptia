@@ -1,5 +1,6 @@
 import { expect, test } from "@playwright/test";
 import { createClient } from "@supabase/supabase-js";
+import { MOTIVO_SALTO, SERVICE_KEY, TEST_URL, e2eDisponible } from "./entorno";
 
 /**
  * E2E de FEATURE-006: clustering con volumen real (200+ protectoras).
@@ -7,14 +8,13 @@ import { createClient } from "@supabase/supabase-js";
  * el clustering agrupa los puntos cercanos en vez de pintar 200+ pines sueltos.
  * Se salta sin variables SUPABASE_TEST_* (igual que el resto de E2E).
  */
-const URL = process.env.SUPABASE_TEST_URL ?? "";
-const SERVICE_KEY = process.env.SUPABASE_TEST_SERVICE_ROLE_KEY ?? "";
+const URL = TEST_URL;
 
 const TOTAL_PROTECTORAS = 220;
 // Todas muy cerca entre sí (Madrid ± ~0.05º) para forzar un cluster grande.
 const MADRID = { lat: 40.4165, lng: -3.7026 };
 
-test.skip(!URL || !SERVICE_KEY, "Requiere npx supabase start + variables SUPABASE_TEST_*");
+test.skip(!e2eDisponible, MOTIVO_SALTO);
 
 test.beforeAll(async () => {
   const admin = createClient(URL, SERVICE_KEY, {

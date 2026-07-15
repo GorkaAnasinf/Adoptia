@@ -80,13 +80,14 @@ Para centrar el desarrollo en un lado de la app cada vez, el 0.2 se aborda en do
 | [FEATURE-015](items/FEATURE-015.md) | Contenido educativo sobre adopción responsable | hecho | baja |
 | [FEATURE-016](items/FEATURE-016.md) | Registro de casas de acogida | hecho | baja |
 
-### Hito 0.5 — 88% completado (15/17)
+### Hito 0.5 — 89% completado (16/18)
 
 | Item | Título | Estado | Prioridad |
 |------|--------|--------|-----------|
 | [BUG-004](items/BUG-004.md) | Reservar cita" lleva a una página 404 | hecho | alta |
 | [BUG-006](items/BUG-006.md) | El listado sirve la URL de YouTube como imagen de portada cuando el animal no tiene foto de portada | hecho | alta |
 | [BUG-007](items/BUG-007.md) | CI no ejecuta ni un solo test de RLS — 122 tests se saltan en silencio en cada push | hecho | alta |
+| [BUG-008](items/BUG-008.md) | La suite E2E está podrida — 14 de 26 fallan al ejecutarla entera | recibido | alta |
 | [FEATURE-019](items/FEATURE-019.md) | Directorio público de protectoras (/protectoras) | hecho | alta |
 | [FEATURE-022](items/FEATURE-022.md) | Avisos de perdidos — contacto sin exponer datos y avistamientos ciudadanos | hecho | alta |
 | [IMPROVEMENT-016](items/IMPROVEMENT-016.md) | Redirección post-login según rol (protectora al panel, admin a admin) | hecho | alta |
@@ -98,7 +99,7 @@ Para centrar el desarrollo en un lado de la app cada vez, el 0.2 se aborda en do
 | [IMPROVEMENT-017](items/IMPROVEMENT-017.md) | Rediseño del dashboard de protectora (tarjetas de color y próximas citas) | hecho | media |
 | [IMPROVEMENT-018](items/IMPROVEMENT-018.md) | Rediseño de la home pública (hero con buscador, recién llegados, banda de stats y CTA) | hecho | media |
 | [IMPROVEMENT-019](items/IMPROVEMENT-019.md) | Rediseño del listado /animales (filtros horizontales, tarjetas con favorito y paginación numerada) | hecho | media |
-| [IMPROVEMENT-022](items/IMPROVEMENT-022.md) | Ejecutar los E2E de Playwright en CI, aprovechando el stack que ya levanta el job de RLS | recibido | media |
+| [IMPROVEMENT-022](items/IMPROVEMENT-022.md) | Ejecutar los E2E de Playwright en CI, aprovechando el stack que ya levanta el job de RLS | hecho | media |
 | [IMPROVEMENT-023](items/IMPROVEMENT-023.md) | Subir CI y el runtime a Node 22+ (hoy el job de la app va en Node 20, ya deprecado) | hecho | media |
 | [IMPROVEMENT-021](items/IMPROVEMENT-021.md) | Búsqueda por texto/raza en el listado de animales | hecho | baja |
 <!-- RENDER:END -->
