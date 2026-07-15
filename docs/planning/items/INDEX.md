@@ -9,6 +9,7 @@
 | [BUG-003](BUG-003.md) | El mapa del alta se ve en gris (la CSP bloquea las tiles de OpenStreetMap) | bug | hecho | 0.2 |
 | [BUG-004](BUG-004.md) | Reservar cita" lleva a una página 404 | bug | hecho | 0.5 |
 | [BUG-005](BUG-005.md) | npm run test -- --coverage revienta al parsear globals.css y las guías .md | bug | hecho | 0.5 |
+| [BUG-006](BUG-006.md) | El listado sirve la URL de YouTube como imagen de portada cuando el animal no tiene foto de portada | bug | recibido | 0.5 |
 | [FEATURE-000](FEATURE-000.md) | Inicialización y andamiaje del proyecto | feature | hecho | 0.1 |
 | [FEATURE-001](FEATURE-001.md) | Registro y login de adoptantes y protectoras | feature | hecho | 0.2 |
 | [FEATURE-002](FEATURE-002.md) | Onboarding de protectoras y verificación por admin | feature | hecho | 0.2 |

@@ -94,5 +94,6 @@ _Nada en desarrollo en este momento._
 
 #### 🗓️ Previsto
 
+- El listado sirve la URL de YouTube como imagen de portada cuando el animal no tiene foto de portada — hito 0.5 ([BUG-006](../planning/items/BUG-006.md))
 - Avisos de perdidos — ficha identificativa completa, galería y filtros — hito 0.5 ([FEATURE-023](../planning/items/FEATURE-023.md))
 <!-- RENDER:END -->
