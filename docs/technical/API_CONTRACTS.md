@@ -147,4 +147,41 @@ Auth: admin (rol comprobado en el handler + RLS como red). Cambia el `status` de
 // 404 → { "error": { "code": "not_found" } }
 ```
 
+## Contrato — POST /api/perdidos/[id]/contactar  *(FEATURE-022)*
+
+Auth: cualquier usuario con sesión (anti-spam) sobre un aviso `open` cuyo autor no haya cerrado el contacto. **Relay puro**: el email va AL AUTOR y su dirección nunca se devuelve al llamante — vive en `auth.users` y solo la resuelve el servidor con `service_role`. El `Reply-To` lleva el correo del remitente, que lo cede conscientemente al escribir (avisado en el formulario). El mensaje se escapa antes de entrar en el HTML del email. Rate limit: 5/hora por usuario.
+
+```jsonc
+// Request
+{ "mensaje": "Creo que he visto a tu perra cerca del río esta mañana" }
+// 200 → { "data": { "ok": true } }
+// 401 → { "error": { "code": "unauthorized" } }
+// 404 → { "error": { "code": "not_found" } }         // no existe o RLS lo oculta
+// 409 → { "error": { "code": "aviso_cerrado" } }     // resolved / archived
+// 409 → { "error": { "code": "contacto_cerrado" } }  // allow_contact = false
+// 422 → { "error": { "code": "validation" } }        // mensaje < 10 o > 1000
+// 429 → { "error": { "code": "rate_limited" } }
+// 502 → { "error": { "code": "email_error" } }
+```
+
+## Contrato — POST /api/perdidos/[id]/avistamientos  *(FEATURE-022)*
+
+Auth: usuario con sesión, sobre un aviso `open`. Guarda la pista (la coordenada la **redondea BD a ~200 m** antes de escribirla, igual que la del aviso) y notifica al autor. La notificación es *best-effort*: si el email falla, el avistamiento se guarda igual y la respuesta sigue siendo 201 — perder la pista sería peor que no avisar. `seen_at` no puede ser futura ni anterior a 90 días. Rate limit: 3/hora por usuario.
+
+```jsonc
+// Request
+{
+  "lat": 43.2673891, "lng": -2.9401237,
+  "seen_at": "2026-07-15T08:30:00.000Z",
+  "nota": "Bebiendo en la fuente del parque",   // opcional, ≤500
+  "photo_url": "https://…/lost-found/…jpg"      // opcional
+}
+// 201 → { "data": { "id": "uuid" } }
+// 401 → { "error": { "code": "unauthorized" } }
+// 404 → { "error": { "code": "not_found" } }
+// 409 → { "error": { "code": "aviso_cerrado" } }
+// 422 → { "error": { "code": "validation" } }   // pin fuera de rango o fecha imposible
+// 429 → { "error": { "code": "rate_limited" } }
+```
+
 Este documento se amplía por item: cada FEATURE que añada endpoints los documenta aquí al cerrarse (lo verifica Hachiko).

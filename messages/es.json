@@ -869,6 +869,7 @@
     "avistamientoCancelar": "Cancelar",
     "avistamientoOk": "¡Gracias! Hemos avisado a quien busca al animal.",
     "avistamientoError": "No se pudo enviar el avistamiento. Inténtalo de nuevo.",
+    "avistamientoFotoError": "No se pudo subir la foto. Quítala y envía el avistamiento, o inténtalo de nuevo.",
     "avistamientoFaltaPin": "Marca en el mapa dónde lo viste.",
     "avistamientoFaltaFecha": "Dinos cuándo lo viste.",
     "avistamientoFechaFutura": "Esa fecha aún no ha llegado.",

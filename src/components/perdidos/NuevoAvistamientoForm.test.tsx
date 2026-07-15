@@ -9,6 +9,23 @@ const { onChangePin } = vi.hoisted(() => ({ onChangePin: { fn: null as unknown }
 vi.mock("next/navigation", () => ({ useRouter: () => ({ refresh: vi.fn() }) }));
 
 // El picker real monta Leaflet: lo sustituimos por un botón que emite un pin.
+vi.mock("@/lib/image", () => ({
+  esImagen: vi.fn(() => true),
+  comprimirFoto: vi.fn(async (f: File) => f),
+}));
+
+const uploadMock = vi.fn();
+vi.mock("@/lib/supabase/client", () => ({
+  createClient: vi.fn(() => ({
+    storage: {
+      from: vi.fn(() => ({
+        upload: uploadMock,
+        getPublicUrl: vi.fn(() => ({ data: { publicUrl: "https://cdn.test/visto.jpg" } })),
+      })),
+    },
+  })),
+}));
+
 vi.mock("@/components/shelters/MapPinPicker", () => ({
   MapPinPicker: ({ onChange }: { onChange: (c: { lat: number; lng: number }) => void }) => {
     onChangePin.fn = onChange;
@@ -22,10 +39,10 @@ vi.mock("@/components/shelters/MapPinPicker", () => ({
 
 import { NuevoAvistamientoForm } from "./NuevoAvistamientoForm";
 
-function renderForm() {
+function renderForm(userId = "u1") {
   return render(
     <NextIntlClientProvider locale="es" messages={messages}>
-      <NuevoAvistamientoForm avisoId="p1" />
+      <NuevoAvistamientoForm avisoId="p1" userId={userId} />
     </NextIntlClientProvider>,
   );
 }
@@ -37,6 +54,7 @@ async function abrir(user: ReturnType<typeof userEvent.setup>) {
 describe("NuevoAvistamientoForm", () => {
   beforeEach(() => {
     onChangePin.fn = null;
+    uploadMock.mockReset().mockResolvedValue({ error: null });
     vi.stubGlobal("fetch", vi.fn(async () => new Response(JSON.stringify({ data: { id: "s1" } }), { status: 201 })));
   });
 
@@ -91,6 +109,36 @@ describe("NuevoAvistamientoForm", () => {
     expect(campo.value).toBe(manana);
     await user.click(screen.getByRole("button", { name: messages.perdidos.avistamientoEnviar }));
     expect(await screen.findByText(messages.perdidos.avistamientoFechaFutura)).toBeInTheDocument();
+    expect(fetch).not.toHaveBeenCalled();
+  });
+
+  it("adjunta la foto subida al avistamiento", async () => {
+    const user = userEvent.setup();
+    renderForm();
+    await abrir(user);
+    await user.click(screen.getByRole("button", { name: "pin-falso" }));
+    const input = document.querySelector('input[type="file"]') as HTMLInputElement;
+    await user.upload(input, new File(["x"], "visto.jpg", { type: "image/jpeg" }));
+    await user.click(screen.getByRole("button", { name: messages.perdidos.avistamientoEnviar }));
+
+    await waitFor(() => expect(fetch).toHaveBeenCalledOnce());
+    const [, init] = (fetch as unknown as ReturnType<typeof vi.fn>).mock.calls[0];
+    expect(JSON.parse((init as RequestInit).body as string).photo_url).toBe(
+      "https://cdn.test/visto.jpg",
+    );
+  });
+
+  it("si la foto no sube, avisa en vez de enviar la pista sin ella en silencio", async () => {
+    uploadMock.mockResolvedValue({ error: { message: "storage caído" } });
+    const user = userEvent.setup();
+    renderForm();
+    await abrir(user);
+    await user.click(screen.getByRole("button", { name: "pin-falso" }));
+    const input = document.querySelector('input[type="file"]') as HTMLInputElement;
+    await user.upload(input, new File(["x"], "visto.jpg", { type: "image/jpeg" }));
+    await user.click(screen.getByRole("button", { name: messages.perdidos.avistamientoEnviar }));
+
+    expect(await screen.findByText(messages.perdidos.avistamientoFotoError)).toBeInTheDocument();
     expect(fetch).not.toHaveBeenCalled();
   });
 

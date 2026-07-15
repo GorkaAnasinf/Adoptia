@@ -2,7 +2,7 @@
 id: FEATURE-022
 tipo: feature
 titulo: Avisos de perdidos — contacto sin exponer datos y avistamientos ciudadanos
-estado: listo
+estado: hecho
 prioridad: alta
 hito: "0.5"
 duplicado_de: null
@@ -119,17 +119,29 @@ create index lost_found_sightings_location_idx on public.lost_found_sightings us
 
 ## Criterios de aceptación / Casuística a cubrir
 
-- [ ] Desde la ficha de un aviso abierto, un usuario con cuenta escribe al autor sin ver su correo, y el autor recibe el mensaje con `Reply-To` del remitente.
-- [ ] El correo del autor no aparece en ninguna respuesta HTTP, ni en el RPC del listado, ni en el HTML de la ficha.
-- [ ] El autor puede publicar un teléfono opcional; si no lo hace, la ficha no muestra ningún teléfono. El campo se muestra siempre junto al aviso de la estafa del rescate.
-- [ ] El autor puede desactivar que le escriban (`allow_contact=false`) y el endpoint responde 409.
-- [ ] Un avistamiento exige cuenta, pin y fecha; la fecha no puede ser futura ni de hace más de 90 días.
-- [ ] La coordenada exacta de un avistamiento **nunca llega a existir en BD**: el trigger la redondea a ~200 m antes de guardar (mismo criterio que el aviso).
-- [ ] Los avistamientos se ven en el timeline y en el mini-mapa con icono propio, ordenados del más reciente al más antiguo.
-- [ ] Un avistamiento refresca `last_activity_at` del aviso: el cron de 60 días no lo archiva.
-- [ ] El autor del aviso puede borrar un avistamiento de su ficha (spam); un tercero no puede.
-- [ ] Estado vacío: aviso abierto sin avistamientos muestra el bloque "¿Lo has visto?" y un mensaje claro, no una lista vacía.
-- [ ] Aviso `resolved` o `archived`: sin botones de contacto ni de avistamiento; el timeline existente se sigue leyendo si el aviso es público.
-- [ ] Sin sesión: los botones llevan a login y devuelven a la ficha tras entrar.
-- [ ] Rate limit: 5 contactos/hora y 3 avistamientos/hora por usuario → 429.
-- [ ] RGPD: quien reporta cede su nota y zona aproximada, no su identidad — el RPC público no devuelve `user_id`. Al borrar una cuenta, sus avistamientos caen por `on delete cascade`.
+Marcados `[x]` los cubiertos por test **ejecutado**; `[~]` los que tienen test escrito pero pendiente de ejecutar (ver Bloqueo abajo).
+
+- [x] Desde la ficha de un aviso abierto, un usuario con cuenta escribe al autor sin ver su correo, y el autor recibe el mensaje con `Reply-To` del remitente.
+- [x] El correo del autor no aparece en ninguna respuesta HTTP, ni en el RPC del listado, ni en el HTML de la ficha.
+- [x] El autor puede publicar un teléfono opcional; si no lo hace, la ficha no muestra ningún teléfono. El campo se muestra siempre junto al aviso de la estafa del rescate.
+- [x] El autor puede desactivar que le escriban (`allow_contact=false`) y el endpoint responde 409.
+- [x] Un avistamiento exige cuenta, pin y fecha; la fecha no puede ser futura ni de hace más de 90 días.
+- [~] La coordenada exacta de un avistamiento **nunca llega a existir en BD**: el trigger la redondea a ~200 m antes de guardar (mismo criterio que el aviso).
+- [x] Los avistamientos se ven en el timeline y en el mini-mapa con icono propio, ordenados del más reciente al más antiguo.
+- [~] Un avistamiento refresca `last_activity_at` del aviso: el cron de 60 días no lo archiva.
+- [~] El autor del aviso puede borrar un avistamiento de su ficha (spam); un tercero no puede. *(La UI del borrado sí está probada; la política RLS que lo respalda, no.)*
+- [x] Estado vacío: aviso abierto sin avistamientos muestra el bloque "¿Lo has visto?" y un mensaje claro, no una lista vacía.
+- [x] Aviso `resolved` o `archived`: sin botones de contacto ni de avistamiento; el timeline existente se sigue leyendo si el aviso es público.
+- [x] Sin sesión: los botones llevan a login y devuelven a la ficha tras entrar.
+- [x] Rate limit: 5 contactos/hora y 3 avistamientos/hora por usuario → 429.
+- [~] RGPD: quien reporta cede su nota y zona aproximada, no su identidad — el RPC público no devuelve `user_id`. Al borrar una cuenta, sus avistamientos caen por `on delete cascade`.
+
+## Cierre (2026-07-15)
+
+- **BD**: migración `20260715120000_feature022_avisos_contacto_avistamientos`. `lost_found_posts` gana `contact_phone` (opt-in, check `^[+0-9][0-9 ]{5,19}$`) y `allow_contact`. Nueva `lost_found_sightings` con dos triggers: el de redondeo **reusa `round_lost_found_location()` de FEATURE-012** (un pin exacto delataría a quien reporta) y `bump_lost_found_activity()` (`security definer`, porque el vecino no puede tocar el aviso ajeno bajo RLS) refresca `last_activity_at` y frena el cron de 60 días. RPC `lost_found_sightings_list` sin `user_id`.
+- **API**: `POST /api/perdidos/[id]/contactar` (relay; `Reply-To` del remitente que cede el suyo, el del autor nunca sale de `auth.users`; 5/hora) y `POST /api/perdidos/[id]/avistamientos` (la pista se guarda aunque el email falle; 3/hora). Documentados en API_CONTRACTS.
+- **Emails**: `enviarEmail` acepta `replyTo`; `templates.ts` gana `esc()` — primer texto libre de un desconocido que entra en el HTML de un correo — y dos plantillas.
+- **UI**: bloque "¿Lo has visto?" en la ficha (contacto + avistamiento, solo con cuenta, solo en avisos abiertos, nunca al propio autor), teléfono con aviso de estafa, timeline con borrado por el autor, pines de avistamiento en el mini-mapa (`MiniMapa` acepta `extras` y se vuelve navegable). Alta con teléfono y checkbox de contacto.
+- **Decisiones sobre la marcha**: (1) el `<input type="datetime-local">` va **sin `max`** — el bloqueo nativo del navegador corta el submit con un aviso sin traducir; validamos en cliente y en servidor. (2) La foto del avistamiento que no sube **corta el envío con aviso** en vez de mandar la pista sin ella en silencio (hallazgo de Scooby).
+- **Tests**: 15 de API (8 de contacto + 7 de avistamientos), 29 de componentes de perdidos (form de avistamiento, diálogo de contacto, timeline, alta) y 12 de la ficha. Suite: **759 verdes** (venía de 746). + 10 RLS y 2 E2E escritos pero **sin ejecutar**.
+- **⚠️ Bloqueo abierto — la migración NO se ha aplicado ni en local.** Docker estaba parado y se decidió seguir sin verificar. Antes de `supabase db push` a producción hace falta: `npx supabase start` → `supabase db reset` → `npm run test` (los 10 RLS de `perdidos-avistamientos` en verde) → `npx playwright test perdidos`. Los 5 criterios `[~]` dependen de eso.

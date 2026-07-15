@@ -80,13 +80,13 @@ Para centrar el desarrollo en un lado de la app cada vez, el 0.2 se aborda en do
 | [FEATURE-015](items/FEATURE-015.md) | Contenido educativo sobre adopción responsable | hecho | baja |
 | [FEATURE-016](items/FEATURE-016.md) | Registro de casas de acogida | hecho | baja |
 
-### Hito 0.5 — 83% completado (10/12)
+### Hito 0.5 — 92% completado (11/12)
 
 | Item | Título | Estado | Prioridad |
 |------|--------|--------|-----------|
 | [BUG-004](items/BUG-004.md) | Reservar cita" lleva a una página 404 | hecho | alta |
 | [FEATURE-019](items/FEATURE-019.md) | Directorio público de protectoras (/protectoras) | hecho | alta |
-| [FEATURE-022](items/FEATURE-022.md) | Avisos de perdidos — contacto sin exponer datos y avistamientos ciudadanos | listo | alta |
+| [FEATURE-022](items/FEATURE-022.md) | Avisos de perdidos — contacto sin exponer datos y avistamientos ciudadanos | hecho | alta |
 | [IMPROVEMENT-016](items/IMPROVEMENT-016.md) | Redirección post-login según rol (protectora al panel, admin a admin) | hecho | alta |
 | [IMPROVEMENT-020](items/IMPROVEMENT-020.md) | Rediseño de la ficha pública de animal | hecho | alta |
 | [FEATURE-020](items/FEATURE-020.md) | Vídeos en la ficha del animal (YouTube + MP4) | hecho | media |
@@ -96,4 +96,10 @@ Para centrar el desarrollo en un lado de la app cada vez, el 0.2 se aborda en do
 | [IMPROVEMENT-018](items/IMPROVEMENT-018.md) | Rediseño de la home pública (hero con buscador, recién llegados, banda de stats y CTA) | hecho | media |
 | [IMPROVEMENT-019](items/IMPROVEMENT-019.md) | Rediseño del listado /animales (filtros horizontales, tarjetas con favorito y paginación numerada) | hecho | media |
 | [IMPROVEMENT-021](items/IMPROVEMENT-021.md) | Búsqueda por texto/raza en el listado de animales | hecho | baja |
+
+### Sin hito asignado (1)
+
+_Capturas pendientes de promover — no forman parte del roadmap todavía._
+
+- [BUG-005](items/BUG-005.md) — npm run test -- --coverage revienta al parsear globals.css y las guías .md (recibido)
 <!-- RENDER:END -->

@@ -33,6 +33,7 @@ export function NuevoAvistamientoForm({ avisoId, userId }: { avisoId: string; us
   const [estado, setEstado] = useState<"idle" | "enviando" | "ok">("idle");
   const [error, setError] = useState<string>();
 
+  /** Lanza si la foto no sube: enviar la pista sin ella en silencio engaña. */
   async function subirFoto(): Promise<string | null> {
     if (!foto || !esImagen(foto) || !userId) return null;
     const comprimido = await comprimirFoto(foto);
@@ -41,7 +42,7 @@ export function NuevoAvistamientoForm({ avisoId, userId }: { avisoId: string; us
     const { error: upErr } = await supabase.storage
       .from("lost-found")
       .upload(ruta, comprimido, { contentType: comprimido.type || "image/jpeg" });
-    if (upErr) return null;
+    if (upErr) throw new Error("foto");
     return supabase.storage.from("lost-found").getPublicUrl(ruta).data.publicUrl;
   }
 
@@ -83,8 +84,12 @@ export function NuevoAvistamientoForm({ avisoId, userId }: { avisoId: string; us
       }
       setEstado("ok");
       router.refresh();
-    } catch {
-      setError(t("avistamientoError"));
+    } catch (err) {
+      setError(
+        err instanceof Error && err.message === "foto"
+          ? t("avistamientoFotoError")
+          : t("avistamientoError"),
+      );
       setEstado("idle");
     }
   }
