@@ -57,4 +57,4 @@
 | [IMPROVEMENT-020](IMPROVEMENT-020.md) | Rediseño de la ficha pública de animal | improvement | hecho | 0.5 |
 | [IMPROVEMENT-021](IMPROVEMENT-021.md) | Búsqueda por texto/raza en el listado de animales | improvement | hecho | 0.5 |
 | [IMPROVEMENT-022](IMPROVEMENT-022.md) | Ejecutar los E2E de Playwright en CI, aprovechando el stack que ya levanta el job de RLS | improvement | recibido | 0.5 |
-| [IMPROVEMENT-023](IMPROVEMENT-023.md) | Subir CI y el runtime a Node 22+ (hoy el job de la app va en Node 20, ya deprecado) | improvement | recibido | 0.5 |
+| [IMPROVEMENT-023](IMPROVEMENT-023.md) | Subir CI y el runtime a Node 22+ (hoy el job de la app va en Node 20, ya deprecado) | improvement | hecho | 0.5 |

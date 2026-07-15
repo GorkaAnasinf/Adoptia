@@ -2,6 +2,12 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/es/) adaptado. Versionado 0.x hasta el MVP.
 
+## [0.0.55] — 2026-07-15
+
+### Cambiado
+
+- **CI corre en la misma versión de Node que producción (IMPROVEMENT-023)**: había tres versiones distintas conviviendo —Vercel en 24.x, CI en 20 y el desarrollo en 22.19—, y precisamente la que decide si algo se despliega era la más alejada de producción. Con Node 20 los tests de RLS ni arrancaban (`supabase-js` necesita el WebSocket nativo de Node 22+), lo que había obligado a parchear ese job a 22. Ahora la versión vive en un único `.nvmrc` (24, la de Vercel) que ambos jobs leen con `node-version-file`, así que no pueden volver a separarse en silencio; `engines` documenta el suelo real (>=22). De paso desaparecen los avisos de deprecación de `supabase-js` en cada run.
+
 ## [0.0.54] — 2026-07-15
 
 ### Corregido
