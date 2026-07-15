@@ -10,6 +10,18 @@ export const SERVICE_KEY = process.env.SUPABASE_TEST_SERVICE_ROLE_KEY ?? "";
 
 export const rlsDisponible = Boolean(TEST_URL && ANON_KEY && SERVICE_KEY);
 
+// En CI saltarse estos tests NO es aceptable: un `skipIf` silencioso se ve
+// igual de verde que un test que pasa, y por ese agujero llegó BUG-006 a
+// producción (su test existía, estaba roto, y en CI nunca corrió). En local
+// el salto sigue siendo lo correcto: suite unitaria rápida sin Docker.
+if (process.env.CI && !rlsDisponible) {
+  throw new Error(
+    "Los tests de RLS no pueden saltarse en CI: faltan SUPABASE_TEST_URL / " +
+      "SUPABASE_TEST_ANON_KEY / SUPABASE_TEST_SERVICE_ROLE_KEY. Levanta el stack " +
+      "(`npx supabase start`) y expórtalas desde `npx supabase status -o env`.",
+  );
+}
+
 export function anonClient(): SupabaseClient {
   return createClient(TEST_URL, ANON_KEY);
 }

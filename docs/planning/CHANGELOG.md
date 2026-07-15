@@ -2,6 +2,12 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/es/) adaptado. Versionado 0.x hasta el MVP.
 
+## [0.0.54] — 2026-07-15
+
+### Corregido
+
+- **CI ejecuta por fin los tests de RLS (BUG-007)**: `ci.yml` no levantaba el stack de Supabase ni definía las variables `SUPABASE_TEST_*`, así que los **123 tests de RLS se saltaban en verde en cada push** desde que existen — un `skipIf` silencioso se ve igual que un test que pasa. Como "RLS es el pilar de seguridad" del proyecto, eso dejaba sin vigilar que un borrador no sea legible por `anon`, que una protectora no toque los animales de otra, o que la coordenada exacta nunca llegue a existir en BD. Ahora hay un job `rls` que levanta un Postgres real y los corre de verdad, y **el salto deja de ser silencioso**: con `CI=true` y sin variables, la suite falla en vez de saltarse. Comprobado abriendo una política a propósito: CI se pone en rojo. Este era el agujero por el que BUG-006 llegó a producción.
+
 ## [0.0.53] — 2026-07-15
 
 ### Corregido
