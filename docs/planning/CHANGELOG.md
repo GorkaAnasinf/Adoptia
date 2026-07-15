@@ -2,6 +2,12 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/es/) adaptado. Versionado 0.x hasta el MVP.
 
+## [0.0.52] — 2026-07-15
+
+### Corregido
+
+- **El informe de cobertura vuelve a generarse (BUG-005)**: `npm run test -- --coverage` —el comando que corre CI— terminaba en error desde hacía tiempo. `coverage.include` era `src/**`, así que el proveedor v8 intentaba parsear como JavaScript ficheros que no lo son (`globals.css`, las guías `.md` de `src/content/guias/`) al listar los no cubiertos, y rolldown abortaba el informe entero. Ahora se restringe a `src/**/*.{ts,tsx}`. Buena noticia de paso: no había deuda escondida — con el informe visible, los umbrales se cumplen sin tocar un solo test (80,85% de sentencias, `src/lib` al 96,6%).
+
 ## [0.0.51] — 2026-07-15
 
 ### Añadido

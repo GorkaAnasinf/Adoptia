@@ -40,7 +40,10 @@ export default defineConfig({
     ],
     coverage: {
       provider: "v8",
-      include: ["src/**"],
+      // Solo código: con `src/**` el proveedor intenta parsear como JS los
+      // ficheros que nunca ejecuta un test (globals.css, las guías .md) y
+      // rolldown aborta el informe entero (BUG-005).
+      include: ["src/**/*.{ts,tsx}"],
       exclude: [
         "src/test/**",
         "src/**/*.test.{ts,tsx}",

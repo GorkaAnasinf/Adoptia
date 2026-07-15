@@ -42,6 +42,7 @@ Estado de cada capacidad en lenguaje de usuario. Se regenera con `python scripts
 - Tras confirmar el correo, la protectora no entra al onboarding; falta pantalla de "correo verificado ([BUG-001](../planning/items/BUG-001.md))
 - El mapa del alta se ve en gris (la CSP bloquea las tiles de OpenStreetMap) ([BUG-003](../planning/items/BUG-003.md))
 - Reservar cita" lleva a una página 404 ([BUG-004](../planning/items/BUG-004.md))
+- npm run test -- --coverage revienta al parsear globals.css y las guías .md ([BUG-005](../planning/items/BUG-005.md))
 - Inicialización y andamiaje del proyecto ([FEATURE-000](../planning/items/FEATURE-000.md))
 - Registro y login de adoptantes y protectoras ([FEATURE-001](../planning/items/FEATURE-001.md))
 - Onboarding de protectoras y verificación por admin ([FEATURE-002](../planning/items/FEATURE-002.md))
@@ -94,5 +95,4 @@ _Nada en desarrollo en este momento._
 #### 🗓️ Previsto
 
 - Avisos de perdidos — ficha identificativa completa, galería y filtros — hito 0.5 ([FEATURE-023](../planning/items/FEATURE-023.md))
-- npm run test -- --coverage revienta al parsear globals.css y las guías .md — hito sin asignar ([BUG-005](../planning/items/BUG-005.md))
 <!-- RENDER:END -->
