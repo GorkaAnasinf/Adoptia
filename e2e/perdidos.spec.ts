@@ -92,6 +92,13 @@ test.beforeAll(async () => {
     .single();
   if (ek) throw ek;
   avisoKiraId = kira.id;
+
+  // --- FEATURE-024: galería. Dos fotos, la de perfil marcada como portada. ---
+  const { error: em } = await admin.from("lost_found_media").insert([
+    { post_id: kira.id, url: "https://images.unsplash.com/photo-perfil?e2e", is_cover: true, sort_order: 0 },
+    { post_id: kira.id, url: "https://images.unsplash.com/photo-lomo?e2e", is_cover: false, sort_order: 1 },
+  ]);
+  if (em) throw em;
 });
 
 test("el aviso aparece en el listado y su autor lo resuelve con historia", async ({ page }) => {
@@ -119,6 +126,22 @@ test("el aviso aparece en el listado y su autor lo resuelve con historia", async
   // Resuelto: fuera del listado de abiertos
   await page.goto("/perdidos-encontrados");
   await expect(page.getByRole("link", { name: NOMBRE })).toHaveCount(0);
+});
+
+// FEATURE-024: la ficha muestra la galería y se puede cambiar de foto. El alta
+// multi-foto por UI va cubierta por los tests de componente (aquí evitamos otro
+// arrastre de pin, la fuente de flaky de BUG-008).
+test("la ficha de un aviso con varias fotos muestra la galería navegable", async ({ page }) => {
+  await page.goto(`/perdidos-encontrados/${avisoKiraId}`);
+
+  const principal = page.getByTestId("galeria-principal");
+  await expect(principal).toBeVisible();
+  // La portada (perfil) es la principal al abrir.
+  await expect(principal).toHaveAttribute("src", /photo-perfil/);
+
+  // Pulsar la 2ª miniatura cambia la foto principal.
+  await page.getByRole("button", { name: t.galeriaFoto.replace("{n}", "2") }).click();
+  await expect(principal).toHaveAttribute("src", /photo-lomo/);
 });
 
 // FEATURE-023. Este caso se intentó durante aquel item y hubo que retirarlo:

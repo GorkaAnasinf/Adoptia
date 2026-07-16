@@ -13,6 +13,14 @@ export type Sexo = "male" | "female" | "unknown";
 export type Tamano = "small" | "medium" | "large";
 export type Especie = "dog" | "cat" | "other";
 
+/** Fila del RPC `lost_found_media_list`: una foto de la galería (FEATURE-024). */
+export type FotoAviso = {
+  id: string;
+  url: string;
+  is_cover: boolean;
+  sort_order: number;
+};
+
 /** Datos identificativos (FEATURE-023). `null` = «no lo sé». */
 export type DatosIdentificativos = {
   breed: string | null;
@@ -32,7 +40,8 @@ export type AvisoMapa = DatosIdentificativos & {
   species: Especie;
   name: string | null;
   description: string;
-  photo_url: string | null;
+  /** Portada del aviso (FEATURE-024): la foto `is_cover` de `lost_found_media`. */
+  cover_url: string | null;
   city: string | null;
   status: "open" | "resolved" | "archived";
   lat: number;
