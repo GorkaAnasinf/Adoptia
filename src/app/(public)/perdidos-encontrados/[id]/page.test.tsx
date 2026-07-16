@@ -3,11 +3,20 @@ import { NextIntlClientProvider } from "next-intl";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import messages from "../../../../../messages/es.json";
 
-const { maybeSingleMock, getUserMock, rpcMock } = vi.hoisted(() => ({
-  maybeSingleMock: vi.fn(),
-  getUserMock: vi.fn(),
-  rpcMock: vi.fn(),
-}));
+const { maybeSingleMock, getUserMock, rpcMock, sightingsMock, mediaMock } = vi.hoisted(() => {
+  const sightingsMock = vi.fn();
+  const mediaMock = vi.fn();
+  return {
+    maybeSingleMock: vi.fn(),
+    getUserMock: vi.fn(),
+    sightingsMock,
+    mediaMock,
+    // Despacha por nombre del RPC: la ficha llama a los dos.
+    rpcMock: vi.fn((name: string) =>
+      name === "lost_found_media_list" ? mediaMock() : sightingsMock(),
+    ),
+  };
+});
 
 vi.mock("next/navigation", () => ({
   useRouter: () => ({ refresh: vi.fn() }),
@@ -47,7 +56,6 @@ const AVISO = {
   species: "dog",
   name: "Rocky",
   description: "Se perdió en el parque",
-  photo_url: null,
   city: "Bilbao",
   status: "open",
   resolution_story: null,
@@ -87,7 +95,10 @@ describe("Detalle de aviso de perdidos", () => {
   beforeEach(() => {
     maybeSingleMock.mockReset().mockResolvedValue({ data: AVISO, error: null });
     getUserMock.mockReset().mockResolvedValue({ data: { user: { id: "autor1" } } });
-    rpcMock.mockReset().mockResolvedValue({ data: [], error: null });
+    // `mockClear` (no `mockReset`) en rpcMock: conserva el despachador por nombre.
+    rpcMock.mockClear();
+    sightingsMock.mockReset().mockResolvedValue({ data: [], error: null });
+    mediaMock.mockReset().mockResolvedValue({ data: [], error: null });
   });
 
   it("el autor de un aviso abierto puede resolverlo", async () => {
@@ -164,7 +175,7 @@ describe("Detalle de aviso de perdidos", () => {
   it("un aviso resuelto no ofrece ayudar, pero conserva los avistamientos", async () => {
     getUserMock.mockResolvedValue({ data: { user: { id: "vecino1" } } });
     maybeSingleMock.mockResolvedValue({ data: { ...AVISO, status: "resolved" }, error: null });
-    rpcMock.mockResolvedValue({ data: [AVISTAMIENTO], error: null });
+    sightingsMock.mockResolvedValue({ data: [AVISTAMIENTO], error: null });
     await renderPagina();
     expect(screen.queryByRole("button", { name: messages.perdidos.avistamiento })).not.toBeInTheDocument();
     expect(screen.queryByRole("button", { name: messages.perdidos.contactar })).not.toBeInTheDocument();
@@ -172,7 +183,7 @@ describe("Detalle de aviso de perdidos", () => {
   });
 
   it("lista los avistamientos y deja al autor borrarlos", async () => {
-    rpcMock.mockResolvedValue({ data: [AVISTAMIENTO], error: null });
+    sightingsMock.mockResolvedValue({ data: [AVISTAMIENTO], error: null });
     await renderPagina(); // sesión = autor del aviso
     expect(screen.getByText(/Bebiendo en la fuente/)).toBeInTheDocument();
     expect(screen.getByRole("button", { name: messages.perdidos.avistamientoBorrar })).toBeInTheDocument();
@@ -230,6 +241,27 @@ describe("Detalle de aviso de perdidos", () => {
     });
     await renderPagina();
     expect(screen.getAllByText(/10 de julio/)).toHaveLength(1);
+  });
+
+  // FEATURE-024
+  it("muestra la galería de fotos del aviso", async () => {
+    mediaMock.mockResolvedValue({
+      data: [
+        { id: "m1", url: "https://cdn.test/frente.jpg", is_cover: true, sort_order: 0 },
+        { id: "m2", url: "https://cdn.test/perfil.jpg", is_cover: false, sort_order: 1 },
+      ],
+      error: null,
+    });
+    await renderPagina();
+    expect(screen.getByTestId("galeria-principal")).toHaveAttribute(
+      "src",
+      expect.stringContaining("frente.jpg"),
+    );
+  });
+
+  it("un aviso sin fotos no deja hueco de galería", async () => {
+    await renderPagina();
+    expect(screen.queryByTestId("galeria-principal")).not.toBeInTheDocument();
   });
 
   it("un aviso inexistente ofrece volver al mapa", async () => {

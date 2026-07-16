@@ -19,15 +19,30 @@ vi.mock("@/lib/image", () => ({
   comprimirFoto: vi.fn(async (f: File) => f),
 }));
 
-const insertMock = vi.fn();
+// Insert de `lost_found_posts`: devuelve el builder con .select().single().
+const postInsertMock = vi.fn();
+// Insert de `lost_found_media`: devuelve { error }.
+const mediaInsertMock = vi.fn();
 const uploadMock = vi.fn();
+let subidas = 0;
 vi.mock("@/lib/supabase/client", () => ({
   createClient: vi.fn(() => ({
-    from: vi.fn(() => ({ insert: insertMock })),
+    from: vi.fn((tabla: string) => ({
+      insert: (payload: unknown) => {
+        if (tabla === "lost_found_media") return mediaInsertMock(payload);
+        // lost_found_posts
+        return {
+          select: () => ({ single: () => postInsertMock(payload) }),
+        };
+      },
+    })),
     storage: {
       from: vi.fn(() => ({
         upload: uploadMock,
-        getPublicUrl: vi.fn(() => ({ data: { publicUrl: "https://cdn.test/foto.jpg" } })),
+        // Una URL distinta por subida, para poder comprobar el orden/portada.
+        getPublicUrl: vi.fn(() => ({
+          data: { publicUrl: `https://cdn.test/foto-${subidas++}.jpg` },
+        })),
       })),
     },
   })),
@@ -45,7 +60,9 @@ function renderForm() {
 
 describe("NuevoAvisoForm", () => {
   beforeEach(() => {
-    insertMock.mockReset().mockResolvedValue({ error: null });
+    subidas = 0;
+    postInsertMock.mockReset().mockResolvedValue({ data: { id: "post-1" }, error: null });
+    mediaInsertMock.mockReset().mockResolvedValue({ error: null });
     uploadMock.mockReset().mockResolvedValue({ error: null });
   });
 
@@ -58,7 +75,7 @@ describe("NuevoAvisoForm", () => {
     await user.type(screen.getByLabelText(messages.perdidos.fDescripcion), "Perro perdido en el parque");
     await user.click(screen.getByRole("button", { name: messages.perdidos.fEnviar }));
     expect(screen.getByText(messages.perdidos.fFaltaPin)).toBeInTheDocument();
-    expect(insertMock).not.toHaveBeenCalled();
+    expect(postInsertMock).not.toHaveBeenCalled();
   });
 
   it("publica un aviso de encontrado con foto y ubicación", async () => {
@@ -72,13 +89,72 @@ describe("NuevoAvisoForm", () => {
     await user.click(screen.getByTestId("pin"));
     await user.click(screen.getByRole("button", { name: messages.perdidos.fEnviar }));
 
-    await waitFor(() => expect(insertMock).toHaveBeenCalledOnce());
-    const fila = insertMock.mock.calls[0][0];
+    await waitFor(() => expect(postInsertMock).toHaveBeenCalledOnce());
+    const fila = postInsertMock.mock.calls[0][0];
     expect(fila.type).toBe("found");
     expect(fila.location).toBe("POINT(-2.94 43.26)");
-    expect(fila.photo_url).toBe("https://cdn.test/foto.jpg");
+    // La foto ya no vive en la fila del aviso: va a lost_found_media.
+    expect(fila.photo_url).toBeUndefined();
     expect(uploadMock).toHaveBeenCalledOnce();
+    const media = mediaInsertMock.mock.calls[0][0];
+    expect(media).toHaveLength(1);
+    expect(media[0]).toMatchObject({ post_id: "post-1", is_cover: true, sort_order: 0 });
     expect(await screen.findByText(messages.perdidos.okTitle)).toBeInTheDocument();
+  });
+
+  it("publica varias fotos: N filas de media, la marcada es portada", async () => {
+    const user = userEvent.setup();
+    renderForm();
+    await user.type(screen.getByLabelText(messages.perdidos.fDescripcion), "Perro con tres fotos");
+    const input = document.querySelector('input[type="file"]') as HTMLInputElement;
+    await user.upload(input, [
+      new File(["a"], "frente.jpg", { type: "image/jpeg" }),
+      new File(["b"], "perfil.jpg", { type: "image/jpeg" }),
+      new File(["c"], "lomo.jpg", { type: "image/jpeg" }),
+    ]);
+    // Marcar la 2ª como portada.
+    await user.click(screen.getAllByRole("button", { name: messages.perdidos.fFotoMarcarPortada })[1]);
+    await user.click(screen.getByTestId("pin"));
+    await user.click(screen.getByRole("button", { name: messages.perdidos.fEnviar }));
+
+    await waitFor(() => expect(mediaInsertMock).toHaveBeenCalledOnce());
+    const media = mediaInsertMock.mock.calls[0][0] as { is_cover: boolean; sort_order: number }[];
+    expect(media).toHaveLength(3);
+    // Exactamente una portada, y es la de sort_order 0 (se sube primera).
+    expect(media.filter((m) => m.is_cover)).toHaveLength(1);
+    expect(media.find((m) => m.is_cover)?.sort_order).toBe(0);
+    expect(uploadMock).toHaveBeenCalledTimes(3);
+  });
+
+  it("quitar una foto antes de enviar la excluye", async () => {
+    const user = userEvent.setup();
+    renderForm();
+    await user.type(screen.getByLabelText(messages.perdidos.fDescripcion), "Perro");
+    const input = document.querySelector('input[type="file"]') as HTMLInputElement;
+    await user.upload(input, [
+      new File(["a"], "a.jpg", { type: "image/jpeg" }),
+      new File(["b"], "b.jpg", { type: "image/jpeg" }),
+    ]);
+    await user.click(screen.getAllByRole("button", { name: messages.perdidos.fFotoQuitar })[0]);
+    await user.click(screen.getByTestId("pin"));
+    await user.click(screen.getByRole("button", { name: messages.perdidos.fEnviar }));
+
+    await waitFor(() => expect(mediaInsertMock).toHaveBeenCalledOnce());
+    expect(mediaInsertMock.mock.calls[0][0]).toHaveLength(1);
+  });
+
+  it("si una foto no sube, no se publica a medias y avisa", async () => {
+    uploadMock.mockResolvedValue({ error: { message: "storage caído" } });
+    const user = userEvent.setup();
+    renderForm();
+    await user.type(screen.getByLabelText(messages.perdidos.fDescripcion), "Perro");
+    const input = document.querySelector('input[type="file"]') as HTMLInputElement;
+    await user.upload(input, new File(["a"], "a.jpg", { type: "image/jpeg" }));
+    await user.click(screen.getByTestId("pin"));
+    await user.click(screen.getByRole("button", { name: messages.perdidos.fEnviar }));
+
+    expect(await screen.findByText(messages.perdidos.fFotoError)).toBeInTheDocument();
+    expect(postInsertMock).not.toHaveBeenCalled();
   });
 
   // FEATURE-022
@@ -89,8 +165,8 @@ describe("NuevoAvisoForm", () => {
     await user.click(screen.getByTestId("pin"));
     await user.click(screen.getByRole("button", { name: messages.perdidos.fEnviar }));
 
-    await waitFor(() => expect(insertMock).toHaveBeenCalledOnce());
-    const fila = insertMock.mock.calls[0][0];
+    await waitFor(() => expect(postInsertMock).toHaveBeenCalledOnce());
+    const fila = postInsertMock.mock.calls[0][0];
     expect(fila.contact_phone).toBeNull();
     expect(fila.allow_contact).toBe(true);
   });
@@ -104,8 +180,8 @@ describe("NuevoAvisoForm", () => {
     await user.click(screen.getByTestId("pin"));
     await user.click(screen.getByRole("button", { name: messages.perdidos.fEnviar }));
 
-    await waitFor(() => expect(insertMock).toHaveBeenCalledOnce());
-    expect(insertMock.mock.calls[0][0].contact_phone).toBe("600111222");
+    await waitFor(() => expect(postInsertMock).toHaveBeenCalledOnce());
+    expect(postInsertMock.mock.calls[0][0].contact_phone).toBe("600111222");
   });
 
   it("rechaza un teléfono con formato imposible antes de llamar a BD", async () => {
@@ -116,7 +192,7 @@ describe("NuevoAvisoForm", () => {
     await user.click(screen.getByTestId("pin"));
     await user.click(screen.getByRole("button", { name: messages.perdidos.fEnviar }));
     expect(await screen.findByText(messages.perdidos.fTelefonoInvalido)).toBeInTheDocument();
-    expect(insertMock).not.toHaveBeenCalled();
+    expect(postInsertMock).not.toHaveBeenCalled();
   });
 
   it("el autor puede cerrar los mensajes por la plataforma", async () => {
@@ -127,8 +203,8 @@ describe("NuevoAvisoForm", () => {
     await user.click(screen.getByTestId("pin"));
     await user.click(screen.getByRole("button", { name: messages.perdidos.fEnviar }));
 
-    await waitFor(() => expect(insertMock).toHaveBeenCalledOnce());
-    expect(insertMock.mock.calls[0][0].allow_contact).toBe(false);
+    await waitFor(() => expect(postInsertMock).toHaveBeenCalledOnce());
+    expect(postInsertMock.mock.calls[0][0].allow_contact).toBe(false);
   });
 
   // FEATURE-023 — datos identificativos
@@ -139,8 +215,8 @@ describe("NuevoAvisoForm", () => {
     await user.click(screen.getByTestId("pin"));
     await user.click(screen.getByRole("button", { name: messages.perdidos.fEnviar }));
 
-    await waitFor(() => expect(insertMock).toHaveBeenCalledOnce());
-    const fila = insertMock.mock.calls[0][0];
+    await waitFor(() => expect(postInsertMock).toHaveBeenCalledOnce());
+    const fila = postInsertMock.mock.calls[0][0];
     expect(fila.breed).toBeNull();
     expect(fila.sex).toBeNull();
     expect(fila.size).toBeNull();
@@ -163,8 +239,8 @@ describe("NuevoAvisoForm", () => {
     await user.click(screen.getByTestId("pin"));
     await user.click(screen.getByRole("button", { name: messages.perdidos.fEnviar }));
 
-    await waitFor(() => expect(insertMock).toHaveBeenCalledOnce());
-    const fila = insertMock.mock.calls[0][0];
+    await waitFor(() => expect(postInsertMock).toHaveBeenCalledOnce());
+    const fila = postInsertMock.mock.calls[0][0];
     expect(fila.breed).toBe("Podenco");
     expect(fila.color).toBe("Canela");
     expect(fila.sex).toBe("female");
@@ -189,8 +265,8 @@ describe("NuevoAvisoForm", () => {
     await user.click(screen.getByTestId("pin"));
     await user.click(screen.getByRole("button", { name: messages.perdidos.fEnviar }));
 
-    await waitFor(() => expect(insertMock).toHaveBeenCalledOnce());
-    const fila = insertMock.mock.calls[0][0];
+    await waitFor(() => expect(postInsertMock).toHaveBeenCalledOnce());
+    const fila = postInsertMock.mock.calls[0][0];
     expect(fila.has_collar).toBeNull();
     expect(fila.collar_description).toBeNull();
   });
@@ -205,7 +281,7 @@ describe("NuevoAvisoForm", () => {
     await user.click(screen.getByRole("button", { name: messages.perdidos.fEnviar }));
 
     expect(await screen.findByText(messages.perdidos.fFechaFutura)).toBeInTheDocument();
-    expect(insertMock).not.toHaveBeenCalled();
+    expect(postInsertMock).not.toHaveBeenCalled();
   });
 
   it("no ofrece ningún campo para el número de microchip", async () => {
@@ -216,7 +292,7 @@ describe("NuevoAvisoForm", () => {
   });
 
   it("si la BD falla muestra el error y permite reintentar", async () => {
-    insertMock.mockResolvedValue({ error: { message: "boom" } });
+    postInsertMock.mockResolvedValue({ data: null, error: { message: "boom" } });
     const user = userEvent.setup();
     renderForm();
     await user.type(screen.getByLabelText(messages.perdidos.fDescripcion), "Texto suficiente");

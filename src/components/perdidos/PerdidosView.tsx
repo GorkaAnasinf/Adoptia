@@ -140,8 +140,8 @@ export function PerdidosView({ avisos }: { avisos: AvisoMapa[] }) {
           {visibles.map((a) => (
             <li key={a.id} className="flex gap-4 rounded-2xl border border-border bg-card p-4">
               <div className="relative size-20 shrink-0 overflow-hidden rounded-xl bg-muted">
-                {esImagenValida(a.photo_url) ? (
-                  <Image src={a.photo_url!} alt="" fill sizes="80px" className="object-cover" />
+                {esImagenValida(a.cover_url) ? (
+                  <Image src={a.cover_url!} alt="" fill sizes="80px" className="object-cover" />
                 ) : (
                   <span aria-hidden className="flex h-full items-center justify-center text-3xl">
                     🐾

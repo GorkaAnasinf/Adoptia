@@ -31,12 +31,13 @@ profiles ──< shelters ──< animals ──< animal_media
 Fase 2: `availability_slots`, `appointments`, `favorites`, `saved_searches`, `notifications`.
 Fase 3: `sponsorships`, `lost_found_posts`, `lost_found_sightings`.
 
-### Avisos de perdidos y sus pistas (FEATURE-012 + FEATURE-022)
+### Avisos de perdidos y sus pistas (FEATURE-012 + FEATURE-022 + FEATURE-024)
 
 | Tabla | Qué es | Claves de diseño |
 |-------|--------|------------------|
-| `lost_found_posts` | Aviso de perdido/encontrado | `type lost/found`, `status open/resolved/archived`, `location geography(Point)` **redondeada a ~200 m por trigger antes de guardar**; `contact_phone` (opt-in, check de formato) y `allow_contact` (FEATURE-022); señas `breed/sex/size/color/has_collar/collar_description/has_microchip` y `occurred_on` (FEATURE-023); `last_activity_at` alimenta el cron de caducidad a 60 días |
+| `lost_found_posts` | Aviso de perdido/encontrado | `type lost/found`, `status open/resolved/archived`, `location geography(Point)` **redondeada a ~200 m por trigger antes de guardar**; `contact_phone` (opt-in, check de formato) y `allow_contact` (FEATURE-022); señas `breed/sex/size/color/has_collar/collar_description/has_microchip` y `occurred_on` (FEATURE-023); `last_activity_at` alimenta el cron de caducidad a 60 días. **Ya NO tiene `photo_url`**: la portada sale de `lost_found_media` (FEATURE-024) |
 | `lost_found_sightings` | "He visto a este animal": pista de un vecino | `post_id → lost_found_posts` (`on delete cascade`), `seen_at` con check de no-futuro, `location` con **el mismo trigger de redondeo** que el aviso; trigger `after insert` que refresca `last_activity_at` del aviso |
+| `lost_found_media` | Galería del aviso (FEATURE-024) | Espejo de `animal_media`: `post_id` (`on delete cascade`), `url`, `is_cover`, `sort_order`; **índice único parcial de una sola portada** por aviso. `lost_found_list` devuelve `cover_url` (portada) y el RPC `lost_found_media_list` la galería. La subconsulta de portada va blindada por un test que muerde (lección de BUG-006) |
 
 **Redondeo de privacidad**: `public.round_lost_found_location()` hace snap a una rejilla de 0.002° (~200 m) en un `BEFORE INSERT/UPDATE`. La coordenada exacta **nunca llega a existir en BD**, así que no puede filtrarse por ninguna vía (ni un dump, ni un `select` con `service_role`). La misma función la reusan `lost_found_posts`, `lost_found_sightings` y `foster_homes`.
 

@@ -1,14 +1,13 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { getFormatter, getTranslations } from "next-intl/server";
 import { MiniMapa } from "@/components/map/MiniMapa";
 import { AvistamientosTimeline } from "@/components/perdidos/AvistamientosTimeline";
 import { ContactarAvisoDialog } from "@/components/perdidos/ContactarAvisoDialog";
+import { GaleriaAviso } from "@/components/perdidos/GaleriaAviso";
 import { NuevoAvistamientoForm } from "@/components/perdidos/NuevoAvistamientoForm";
 import { ResolverAvisoButton } from "@/components/perdidos/ResolverAvisoButton";
-import type { Avistamiento } from "@/components/perdidos/tipos";
-import { esImagenValida } from "@/lib/animal-search";
+import type { Avistamiento, FotoAviso } from "@/components/perdidos/tipos";
 import { parsePoint } from "@/lib/shelter-mapping";
 import { createClient } from "@/lib/supabase/server";
 
@@ -27,7 +26,6 @@ type Aviso = {
   species: "dog" | "cat" | "other";
   name: string | null;
   description: string;
-  photo_url: string | null;
   city: string | null;
   status: "open" | "resolved" | "archived";
   resolution_story: string | null;
@@ -53,19 +51,21 @@ export default async function AvisoPage({ params }: { params: Params }) {
   const format = await getFormatter();
 
   const supabase = await createClient();
-  const [{ data }, { data: auth }, { data: vistos }] = await Promise.all([
+  const [{ data }, { data: auth }, { data: vistos }, { data: fotosData }] = await Promise.all([
     supabase
       .from("lost_found_posts")
       .select(
-        "id, user_id, type, species, name, description, photo_url, city, status, resolution_story, location, created_at, contact_phone, allow_contact, breed, sex, size, color, has_collar, collar_description, has_microchip, occurred_on",
+        "id, user_id, type, species, name, description, city, status, resolution_story, location, created_at, contact_phone, allow_contact, breed, sex, size, color, has_collar, collar_description, has_microchip, occurred_on",
       )
       .eq("id", id)
       .maybeSingle(),
     supabase.auth.getUser(),
     supabase.rpc("lost_found_sightings_list", { p_post_id: id }),
+    supabase.rpc("lost_found_media_list", { p_post_id: id }),
   ]);
   const aviso = data as Aviso | null;
   const avistamientos = (vistos ?? []) as Avistamiento[];
+  const fotos = (fotosData ?? []) as FotoAviso[];
 
   if (!aviso) {
     return (
@@ -166,11 +166,7 @@ export default async function AvisoPage({ params }: { params: Params }) {
         </p>
       )}
 
-      {esImagenValida(aviso.photo_url) && (
-        <div className="relative mt-6 aspect-4/3 w-full overflow-hidden rounded-2xl bg-muted">
-          <Image src={aviso.photo_url!} alt="" fill sizes="(max-width: 768px) 100vw, 768px" className="object-cover" />
-        </div>
-      )}
+      <GaleriaAviso fotos={fotos} alt={aviso.name ?? t(aviso.type === "lost" ? "tipoLost" : "tipoFound")} />
 
       <p className="mt-6 whitespace-pre-line leading-relaxed">{aviso.description}</p>
 
