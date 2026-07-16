@@ -11,7 +11,7 @@
 | [BUG-005](BUG-005.md) | npm run test -- --coverage revienta al parsear globals.css y las guías .md | bug | hecho | 0.5 |
 | [BUG-006](BUG-006.md) | El listado sirve la URL de YouTube como imagen de portada cuando el animal no tiene foto de portada | bug | hecho | 0.5 |
 | [BUG-007](BUG-007.md) | CI no ejecuta ni un solo test de RLS — 122 tests se saltan en silencio en cada push | bug | hecho | 0.5 |
-| [BUG-008](BUG-008.md) | La suite E2E está podrida — 14 de 26 fallan al ejecutarla entera | bug | recibido | 0.5 |
+| [BUG-008](BUG-008.md) | La suite E2E está podrida — 14 de 26 fallan al ejecutarla entera | bug | hecho | 0.5 |
 | [FEATURE-000](FEATURE-000.md) | Inicialización y andamiaje del proyecto | feature | hecho | 0.1 |
 | [FEATURE-001](FEATURE-001.md) | Registro y login de adoptantes y protectoras | feature | hecho | 0.2 |
 | [FEATURE-002](FEATURE-002.md) | Onboarding de protectoras y verificación por admin | feature | hecho | 0.2 |

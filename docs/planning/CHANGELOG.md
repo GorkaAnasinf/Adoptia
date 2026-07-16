@@ -2,6 +2,13 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/es/) adaptado. Versionado 0.x hasta el MVP.
 
+## [0.0.58] — 2026-07-16
+
+### Corregido
+
+- **La suite E2E vuelve a funcionar y CI la ejecuta en cada push (BUG-008)**: de **8 tests verdes de 28 a 28**. No estaba rota la aplicación: estaban podridos los tests, porque nadie los ejecutaba (BUG-007) y la interfaz siguió cambiando sin ellos — «Salir» se mudó al menú de usuario, la home pasó de enlaces por especie a un buscador, el cuestionario se convirtió en wizard, la protectora empezó a aterrizar en su panel al entrar, y el mapa estrenó clustering. Ahora el job de E2E está **activo en cada push**, así que la próxima vez se ve al momento.
+- **El mapa: seleccionar una protectora en la lista ya la muestra siempre (BUG-008)**: si su marcador estaba agrupado en un cluster —basta con que haya otra protectora cerca— pinchar en la lista no hacía absolutamente nada. Tampoco si el mapa aún no había terminado de cargar. Ambos casos los encontró la suite E2E al sanearla, que es justo para lo que existe.
+
 ## [0.0.57] — 2026-07-15
 
 ### Añadido

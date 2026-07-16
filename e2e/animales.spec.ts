@@ -73,7 +73,10 @@ test("una protectora da de alta un animal con 3 fotos + portada (borrador)", asy
 
   // --- Nueva ficha ---
   await page.goto("/panel/animales/nueva");
-  await page.getByLabel(ta.fName).fill("Luna E2E");
+  // Nombre único por ejecución: con "Luna E2E" fijo, cada pasada dejaba otra
+  // Luna en el panel y el selector acababa encontrando varias (BUG-008).
+  const nombreAnimal = `Luna E2E ${sello}`;
+  await page.getByLabel(ta.fName).fill(nombreAnimal);
   await page.getByLabel(ta.fSpecies).selectOption("dog");
   await page.getByLabel(ta.fSex).selectOption("female");
   await page.getByLabel(ta.fSize).selectOption("medium");
@@ -82,19 +85,25 @@ test("una protectora da de alta un animal con 3 fotos + portada (borrador)", asy
   // Guardar borrador para que exista la fila y se habilite el uploader.
   await page.getByRole("button", { name: ta.saveDraft }).click();
 
-  // Subir 3 fotos por el input oculto.
-  await page.locator('input[type="file"]').setInputFiles([
+  // Subir 3 fotos por el input oculto. Se distingue por `accept`: desde
+  // FEATURE-020 hay DOS inputs de fichero (fotos y vídeo MP4) y el selector
+  // genérico encontraba los dos (BUG-008).
+  await page.locator('input[accept="image/*"]').setInputFiles([
     { name: "foto1.png", mimeType: "image/png", buffer: PNG_1x1 },
     { name: "foto2.png", mimeType: "image/png", buffer: PNG_1x1 },
     { name: "foto3.png", mimeType: "image/png", buffer: PNG_1x1 },
   ]);
 
   // Aparecen 3 miniaturas y la primera es portada.
-  await expect(page.getByRole("listitem").filter({ has: page.locator("img") })).toHaveCount(3);
+  const miniaturas = page.getByRole("listitem").filter({ has: page.locator("img") });
+  await expect(miniaturas).toHaveCount(3);
   await expect(page.getByText(ta.cover)).toBeVisible();
 
-  // Marcar la segunda como portada.
-  await page.getByRole("button", { name: ta.makeCover }).first().click();
+  // Marcar la SEGUNDA como portada, apuntando a su miniatura. Antes usaba
+  // `.first()`, que agarra el botón de la primera foto — y ese está
+  // deshabilitado justamente por ser ya la portada, así que el clic esperaba a
+  // que se habilitara hasta agotar el timeout (BUG-008).
+  await miniaturas.nth(1).getByRole("button", { name: ta.makeCover }).click();
 
   // Publicar está bloqueado: la protectora aún no está verificada (FEATURE-002).
   await expect(page.getByRole("button", { name: ta.publish })).toBeDisabled();
@@ -104,6 +113,9 @@ test("una protectora da de alta un animal con 3 fotos + portada (borrador)", asy
 
   // La ficha aparece en el listado como borrador.
   await page.goto("/panel/animales");
-  await expect(page.getByText("Luna E2E")).toBeVisible();
-  await expect(page.getByText(ta.draft).first()).toBeVisible();
+  // El panel pinta a la vez la tabla (escritorio) y las tarjetas (móvil): el
+  // nombre está dos veces en el DOM y una de ellas siempre oculta por CSS. Se
+  // filtra por la visible, que es la que ve una persona.
+  await expect(page.getByText(nombreAnimal).filter({ visible: true })).toBeVisible();
+  await expect(page.getByText(ta.draft).filter({ visible: true }).first()).toBeVisible();
 });
