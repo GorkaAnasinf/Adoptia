@@ -930,7 +930,11 @@
     "filtroFecha7": "Últimos 7 días",
     "filtroFecha30": "Últimos 30 días",
     "filtroCualquiera": "Cualquiera",
-    "vacioFiltros": "Ningún aviso encaja con estos filtros. Prueba a quitar alguno."
+    "vacioFiltros": "Ningún aviso encaja con estos filtros. Prueba a quitar alguno.",
+    "masFiltros": "Más filtros",
+    "recientesTitulo": "Avisos recientes",
+    "verTodosAvisos": "Ver todos",
+    "verDetalles": "Ver detalles"
   },
   "moderacion": {
     "reportar": "Reportar esta ficha",
