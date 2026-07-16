@@ -101,5 +101,7 @@ _Nada en desarrollo en este momento._
 
 #### 🗓️ Previsto
 
-_Backlog vacío._
+- Rediseño del listado/mapa de Perdidos y encontrados (mockup nuevo) — hito 0.5 ([FEATURE-025](../planning/items/FEATURE-025.md))
+- Rediseño de la ficha del aviso a dos columnas (mockup nuevo) — hito 0.5 ([FEATURE-026](../planning/items/FEATURE-026.md))
+- Rediseño del alta de aviso en tarjetas de sección (mockup nuevo) — hito 0.5 ([FEATURE-027](../planning/items/FEATURE-027.md))
 <!-- RENDER:END -->

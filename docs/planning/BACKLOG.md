@@ -19,5 +19,11 @@
 Los items `hecho`/`descartado` no aparecen aquí — su histórico vive en [CHANGELOG](CHANGELOG.md) y git.
 
 <!-- RENDER:START -->
-_No hay items abiertos._
+### ✅ Listo para desarrollo (3)
+
+| Item | Título | Prioridad | Hito |
+|------|--------|-----------|------|
+| [FEATURE-025](items/FEATURE-025.md) | Rediseño del listado/mapa de Perdidos y encontrados (mockup nuevo) | alta | 0.5 |
+| [FEATURE-026](items/FEATURE-026.md) | Rediseño de la ficha del aviso a dos columnas (mockup nuevo) | alta | 0.5 |
+| [FEATURE-027](items/FEATURE-027.md) | Rediseño del alta de aviso en tarjetas de sección (mockup nuevo) | alta | 0.5 |
 <!-- RENDER:END -->
