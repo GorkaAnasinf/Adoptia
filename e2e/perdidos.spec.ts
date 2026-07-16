@@ -101,9 +101,20 @@ test.beforeAll(async () => {
   if (em) throw em;
 });
 
+/**
+ * FEATURE-025: el listado enseña 8 tarjetas y esconde el resto tras «Ver
+ * todos». En una BD con avisos acumulados el sembrado puede caer fuera de las
+ * 8 primeras, así que se despliega todo antes de buscar por nombre.
+ */
+async function desplegarTodos(page: import("@playwright/test").Page) {
+  const verTodos = page.getByRole("button", { name: t.verTodosAvisos });
+  if (await verTodos.isVisible()) await verTodos.click();
+}
+
 test("el aviso aparece en el listado y su autor lo resuelve con historia", async ({ page }) => {
   // Visible públicamente (sin sesión)
   await page.goto("/perdidos-encontrados");
+  await desplegarTodos(page);
   await expect(page.getByRole("link", { name: NOMBRE })).toBeVisible();
 
   // El autor entra y resuelve desde el detalle
@@ -164,8 +175,12 @@ test.afterAll(async () => {
 
 test("un aviso con señas se encuentra filtrando por especie y tamaño", async ({ page }) => {
   await page.goto("/perdidos-encontrados");
+  await desplegarTodos(page);
   const kira = page.getByRole("link", { name: NOMBRE_KIRA });
   await expect(kira).toBeVisible();
+
+  // FEATURE-025: los selects viven tras «Más filtros».
+  await page.getByRole("button", { name: t.masFiltros }).click();
 
   // Kira es perro grande: filtrar por gato la deja fuera…
   await page.getByLabel(t.filtroEspecie).selectOption("cat");
@@ -176,6 +191,7 @@ test("un aviso con señas se encuentra filtrando por especie y tamaño", async (
   // repiten en los avisos de ejecuciones anteriores.
   await page.getByLabel(t.filtroEspecie).selectOption("dog");
   await page.getByLabel(t.filtroTamano).selectOption("large");
+  await desplegarTodos(page);
   await expect(kira).toBeVisible();
   const tarjeta = page.getByRole("listitem").filter({ hasText: NOMBRE_KIRA });
   await expect(tarjeta.getByText("Podenco · Canela con el pecho blanco")).toBeVisible();

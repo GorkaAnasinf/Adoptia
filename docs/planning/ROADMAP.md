@@ -80,7 +80,7 @@ Para centrar el desarrollo en un lado de la app cada vez, el 0.2 se aborda en do
 | [FEATURE-015](items/FEATURE-015.md) | Contenido educativo sobre adopción responsable | hecho | baja |
 | [FEATURE-016](items/FEATURE-016.md) | Registro de casas de acogida | hecho | baja |
 
-### Hito 0.5 — 100% completado (19/19)
+### Hito 0.5 — 100% completado (22/22)
 
 | Item | Título | Estado | Prioridad |
 |------|--------|--------|-----------|
@@ -90,6 +90,9 @@ Para centrar el desarrollo en un lado de la app cada vez, el 0.2 se aborda en do
 | [BUG-008](items/BUG-008.md) | La suite E2E está podrida — 14 de 26 fallan al ejecutarla entera | hecho | alta |
 | [FEATURE-019](items/FEATURE-019.md) | Directorio público de protectoras (/protectoras) | hecho | alta |
 | [FEATURE-022](items/FEATURE-022.md) | Avisos de perdidos — contacto sin exponer datos y avistamientos ciudadanos | hecho | alta |
+| [FEATURE-025](items/FEATURE-025.md) | Rediseño del listado/mapa de Perdidos y encontrados (mockup nuevo) | hecho | alta |
+| [FEATURE-026](items/FEATURE-026.md) | Rediseño de la ficha del aviso a dos columnas (mockup nuevo) | hecho | alta |
+| [FEATURE-027](items/FEATURE-027.md) | Rediseño del alta de aviso en tarjetas de sección (mockup nuevo) | hecho | alta |
 | [IMPROVEMENT-016](items/IMPROVEMENT-016.md) | Redirección post-login según rol (protectora al panel, admin a admin) | hecho | alta |
 | [IMPROVEMENT-020](items/IMPROVEMENT-020.md) | Rediseño de la ficha pública de animal | hecho | alta |
 | [BUG-005](items/BUG-005.md) | npm run test -- --coverage revienta al parsear globals.css y las guías .md | hecho | media |
