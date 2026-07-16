@@ -291,6 +291,46 @@ describe("NuevoAvisoForm", () => {
     expect(screen.getByText(messages.perdidos.fMicrochipHelp)).toBeInTheDocument();
   });
 
+  // FEATURE-027 — rediseño en tarjetas de sección
+  it("la dropzone acepta fotos arrastradas, ignora no-imágenes y respeta el límite", async () => {
+    const { esImagen } = await import("@/lib/image");
+    vi.mocked(esImagen).mockImplementation((f: File) => f.type.startsWith("image/"));
+    renderForm();
+
+    const zona = screen.getByRole("button", { name: messages.perdidos.fFotosArrastra });
+    const ficheros = [
+      ...Array.from({ length: 7 }, (_, i) => new File(["x"], `f${i}.jpg`, { type: "image/jpeg" })),
+      new File(["x"], "papeles.pdf", { type: "application/pdf" }),
+    ];
+    fireEvent.drop(zona, { dataTransfer: { files: ficheros } });
+
+    // 7 imágenes + 1 pdf → el pdf fuera y el límite de 6 se respeta.
+    await waitFor(() =>
+      expect(screen.getAllByRole("button", { name: messages.perdidos.fFotoQuitar })).toHaveLength(6),
+    );
+    vi.mocked(esImagen).mockImplementation(() => true);
+  });
+
+  it("ofrece cancelar y volver al listado sin publicar", () => {
+    renderForm();
+    expect(screen.getByRole("link", { name: messages.perdidos.fCancelar })).toHaveAttribute(
+      "href",
+      "/perdidos-encontrados",
+    );
+    expect(postInsertMock).not.toHaveBeenCalled();
+  });
+
+  it("las tarjetas de tipo siguen siendo radios accesibles", async () => {
+    const user = userEvent.setup();
+    renderForm();
+    const lost = screen.getByRole("radio", { name: messages.perdidos.fTipoLost });
+    const found = screen.getByRole("radio", { name: messages.perdidos.fTipoFound });
+    expect(lost).toBeChecked();
+    await user.click(found);
+    expect(found).toBeChecked();
+    expect(lost).not.toBeChecked();
+  });
+
   it("si la BD falla muestra el error y permite reintentar", async () => {
     postInsertMock.mockResolvedValue({ data: null, error: { message: "boom" } });
     const user = userEvent.setup();
