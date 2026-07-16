@@ -121,13 +121,46 @@ test("el aviso aparece en el listado y su autor lo resuelve con historia", async
   await expect(page.getByRole("link", { name: NOMBRE })).toHaveCount(0);
 });
 
-// FEATURE-023: el E2E de los filtros (especie/tamaño/fecha) NO se escribe aquí
-// todavía. Se intentó y resultó imposible de estabilizar contra la suite tal y
-// como está: los avisos sembrados se duplican entre ejecuciones y proyectos y
-// los selectores por nombre dejan de ser únicos. Es **BUG-008**, y ahí queda
-// anotado como caso a añadir cuando la suite esté sana. Mientras tanto el
-// comportamiento está cubierto por los tests de componente de `PerdidosView` y
-// por los de RLS de `perdidos-datos`.
+// FEATURE-023. Este caso se intentó durante aquel item y hubo que retirarlo:
+// era imposible de estabilizar con los avisos duplicándose entre ejecuciones.
+// Vuelve con la suite ya saneada (BUG-008) — es la prueba de que volvió a ser
+// fiable.
+// Cada ejecución siembra avisos nuevos (el sello los hace únicos). Sin esto se
+// acumulan y ensucian los listados de las siguientes: el propio test de filtros
+// llegó a encontrar tres «Podenco · Canela» de pasadas anteriores (BUG-008).
+test.afterAll(async () => {
+  const admin = createClient(URL, SERVICE_KEY, {
+    auth: { autoRefreshToken: false, persistSession: false },
+  });
+  const { data } = await admin.auth.admin.listUsers({ page: 1, perPage: 200 });
+  const mios = data.users
+    .filter((u) => u.email === AUTOR_EMAIL || u.email === VECINO_EMAIL)
+    .map((u) => u.id);
+  if (mios.length > 0) await admin.from("lost_found_posts").delete().in("user_id", mios);
+});
+
+test("un aviso con señas se encuentra filtrando por especie y tamaño", async ({ page }) => {
+  await page.goto("/perdidos-encontrados");
+  const kira = page.getByRole("link", { name: NOMBRE_KIRA });
+  await expect(kira).toBeVisible();
+
+  // Kira es perro grande: filtrar por gato la deja fuera…
+  await page.getByLabel(t.filtroEspecie).selectOption("cat");
+  await expect(kira).toHaveCount(0);
+
+  // …y por perro + grande la deja dentro, con sus señas en SU tarjeta. Se acota
+  // a la tarjeta: el nombre lleva sello y es único, pero la raza y el color se
+  // repiten en los avisos de ejecuciones anteriores.
+  await page.getByLabel(t.filtroEspecie).selectOption("dog");
+  await page.getByLabel(t.filtroTamano).selectOption("large");
+  await expect(kira).toBeVisible();
+  const tarjeta = page.getByRole("listitem").filter({ hasText: NOMBRE_KIRA });
+  await expect(tarjeta.getByText("Podenco · Canela con el pecho blanco")).toBeVisible();
+
+  // Un tamaño que no es el suyo la deja fuera: el filtro filtra de verdad.
+  await page.getByLabel(t.filtroTamano).selectOption("small");
+  await expect(kira).toHaveCount(0);
+});
 
 test("un vecino reporta un avistamiento y el autor lo ve en su ficha", async ({ page, isMobile }) => {
   // El pin exige arrastrar el marcador de Leaflet. En el proyecto móvil (Pixel 7,
@@ -156,13 +189,31 @@ test("un vecino reporta un avistamiento y el autor lo ve en su ficha", async ({ 
   // El pin se marca ARRASTRANDO el marcador: MapPinPicker solo emite en
   // `dragend`, un clic en el mapa no hace nada. Leaflet exige varios mousemove
   // para arrancar el arrastre, así que se mueve paso a paso.
-  const marcador = page.locator(".leaflet-container").last().getByRole("button", { name: "Marker" });
+  //
+  // Hay que DESPLAZARSE hasta el marcador antes de medirlo: `page.mouse` usa
+  // coordenadas del viewport, y el picker cae por debajo del pliegue (la ficha
+  // creció con las señas de FEATURE-023). Sin esto se arrastraba el vacío en
+  // una posición fuera de pantalla y el pin nunca se marcaba (BUG-008).
+  // Después, un respiro: el picker entra por `dynamic import` y su
+  // `invalidateSize()` recoloca el marcador justo al montar.
+  const picker = page.locator(".leaflet-container").last();
+  await expect(picker).toBeVisible();
+  const marcador = picker.getByRole("button", { name: "Marker" });
+  await expect(marcador).toBeVisible();
+  await marcador.scrollIntoViewIfNeeded();
+  await page.waitForTimeout(500);
+
   const caja = await marcador.boundingBox();
   if (!caja) throw new Error("No se encontró el marcador del picker");
-  await page.mouse.move(caja.x + caja.width / 2, caja.y + caja.height / 2);
+  const desdeX = caja.x + caja.width / 2;
+  const desdeY = caja.y + caja.height / 2;
+  await page.mouse.move(desdeX, desdeY);
   await page.mouse.down();
-  await page.mouse.move(caja.x + caja.width / 2 + 40, caja.y + caja.height / 2 + 25, { steps: 10 });
+  await page.mouse.move(desdeX + 40, desdeY + 25, { steps: 10 });
   await page.mouse.up();
+
+  // El pin quedó marcado: si no, el formulario se queja y no llega a enviarse.
+  await expect(page.getByText(t.avistamientoFaltaPin)).toHaveCount(0);
 
   await page.getByRole("button", { name: t.avistamientoEnviar }).click();
   await expect(page.getByText(t.avistamientoOk)).toBeVisible();

@@ -20,12 +20,25 @@ export async function esperarSinSesion(page: Page) {
   await expect(page.getByRole("link", { name: messages.nav.login })).toBeVisible();
 }
 
-export async function iniciarSesion(page: Page, email: string, password: string) {
+/**
+ * Inicia sesión por la UI real.
+ *
+ * `destino` NO es cosmético: `destinoPostLogin` manda a la protectora a
+ * `/panel` y al admin a `/admin`; solo el adoptante acaba en `/`. Varios specs
+ * daban por hecho que todo el mundo iba a `/` y fallaban con la protectora
+ * (BUG-008).
+ */
+export async function iniciarSesion(
+  page: Page,
+  email: string,
+  password: string,
+  destino: string | RegExp = "/",
+) {
   await page.goto("/login");
   await page.getByLabel(messages.auth.email).fill(email);
   await page.getByLabel(messages.auth.password, { exact: true }).fill(password);
   await page.getByRole("button", { name: messages.auth.submitLogin }).click();
-  await expect(page).toHaveURL("/");
+  await expect(page).toHaveURL(destino);
   await esperarSesion(page);
 }
 

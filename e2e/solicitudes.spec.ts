@@ -3,6 +3,7 @@ import { createClient } from "@supabase/supabase-js";
 import messages from "../messages/es.json";
 import { MOTIVO_SALTO, SERVICE_KEY, TEST_URL, e2eDisponible } from "./entorno";
 import { asegurarUsuario, sembrarPorSlug } from "./fixtures";
+import { cerrarSesion, iniciarSesion } from "./sesion";
 
 /**
  * E2E de FEATURE-007: flujo completo "Me interesa" → cuestionario → bandeja
@@ -70,9 +71,13 @@ test("me interesa → cuestionario → bandeja de la protectora → aprobar", as
   await page.getByRole("button", { name: messages.ficha.interesa }).first().click();
   await expect(page).toHaveURL(new RegExp(`/mi-cuenta/solicitudes/nueva/${ANIMAL.slug}`));
 
-  // Paso 1: vivienda
-  await page.getByLabel(t.viviendaPiso).check();
-  await page.getByLabel(t.regimenPropiedad, { exact: true }).check();
+  // Paso 1: vivienda. El radio es `sr-only` dentro de una tarjeta-label, así
+  // que `check()` sobre el input se queda esperando a que sea "visible" para
+  // siempre: se pulsa la tarjeta, que es lo que hace una persona (BUG-008).
+  await page.locator("label").filter({ hasText: t.viviendaPiso }).click();
+  // El régimen pasó de radios a un `select`: «Propiedad» es una opción, no una
+  // etiqueta que marcar (BUG-008).
+  await page.getByLabel(t.regimen).selectOption("propiedad");
   await page.getByRole("button", { name: t.next }).click();
 
   // Paso 2: hogar
@@ -92,16 +97,9 @@ test("me interesa → cuestionario → bandeja de la protectora → aprobar", as
   await expect(page.getByRole("heading", { name: t.successTitle })).toBeVisible();
 
   // --- Protectora: revisa la bandeja y aprueba ---
-  // El botón "Salir" vive dentro del menú de usuario (UserMenu): hay que
-  // abrirlo primero (bug pre-existente en e2e/auth.spec.ts, ya reportado
-  // aparte, que asume el botón visible sin abrir el menú).
-  await page.getByRole("button", { name: messages.shell.userMenu }).click();
-  await page.getByRole("menuitem", { name: messages.auth.logout }).click();
-  await page.goto("/login");
-  await page.getByLabel(messages.auth.email).fill(SHELTER_EMAIL);
-  await page.getByLabel(messages.auth.password, { exact: true }).fill(SHELTER_PASS);
-  await page.getByRole("button", { name: messages.auth.submitLogin }).click();
-  await expect(page).toHaveURL("/");
+  await cerrarSesion(page);
+  // A la protectora `destinoPostLogin` la lleva al panel, no a la home.
+  await iniciarSesion(page, SHELTER_EMAIL, SHELTER_PASS, /\/panel/);
 
   await page.goto("/panel/solicitudes");
   await expect(page.getByText("Marta E2E")).toBeVisible();
