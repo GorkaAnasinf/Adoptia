@@ -53,6 +53,9 @@ export function PerdidosView({ avisos }: { avisos: AvisoMapa[] }) {
 
   const hayFiltros = filtro !== "all" || especie !== "all" || tamano !== "all" || fecha !== "all";
   const tarjetas = verTodos ? visibles : visibles.slice(0, RECIENTES);
+  // Fuera del JSX: el `>` de la comparación confunde al linter de i18n (la
+  // misma lección de FEATURE-024).
+  const hayMasAvisos = !verTodos && visibles.length > RECIENTES;
 
   const chips: { key: Filtro; etiqueta: string }[] = [
     { key: "all", etiqueta: t("filtroTodos") },
@@ -213,7 +216,7 @@ export function PerdidosView({ avisos }: { avisos: AvisoMapa[] }) {
                     )}
                     <Link
                       href={`/perdidos-encontrados/${a.id}`}
-                      className="mt-auto rounded-full border border-border px-4 py-2 text-center text-sm font-medium hover:border-primary/50"
+                      className="mt-auto rounded-full border border-border px-4 py-2.5 text-center text-sm font-medium hover:border-primary/50"
                     >
                       {t("verDetalles")}
                     </Link>
@@ -222,7 +225,7 @@ export function PerdidosView({ avisos }: { avisos: AvisoMapa[] }) {
               );
             })}
           </ul>
-          {!verTodos && visibles.length > RECIENTES && (
+          {hayMasAvisos && (
             <button
               type="button"
               onClick={() => setVerTodos(true)}
