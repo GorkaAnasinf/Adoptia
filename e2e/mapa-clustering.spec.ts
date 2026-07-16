@@ -1,6 +1,7 @@
 import { expect, test } from "@playwright/test";
 import { createClient } from "@supabase/supabase-js";
 import { MOTIVO_SALTO, SERVICE_KEY, TEST_URL, e2eDisponible } from "./entorno";
+import { asegurarUsuario } from "./fixtures";
 
 /**
  * E2E de FEATURE-006: clustering con volumen real (200+ protectoras).
@@ -21,18 +22,18 @@ test.beforeAll(async () => {
     auth: { autoRefreshToken: false, persistSession: false },
   });
 
-  let ownerId: string | undefined;
-  const { data: creado, error } = await admin.auth.admin.createUser({
-    email: "e2e-mapa-clustering@test.com",
-    password: "password-de-test-123",
-    email_confirm: true,
-  });
-  if (!error) ownerId = creado.user.id;
-  else {
-    const { data: lista } = await admin.auth.admin.listUsers({ page: 1, perPage: 200 });
-    ownerId = lista.users.find((u) => u.email === "e2e-mapa-clustering@test.com")?.id;
-  }
-  if (!ownerId) throw new Error("No se pudo crear el usuario del seed");
+  const ownerId = await asegurarUsuario(
+    admin,
+    "e2e-mapa-clustering@test.com",
+    "password-de-test-123",
+  );
+
+  // Borrar antes de sembrar. `upsert(onConflict: "slug")` NO vale: el trigger
+  // de de-duplicación (IMPROVEMENT-001) reescribe el slug antes del conflicto,
+  // así que cada ejecución metía otras 220 protectoras (`-2`, `-3`…). Con 220
+  // filas, ir una a una con `sembrarPorSlug` sería lentísimo: aquí compensa
+  // limpiar por prefijo e insertar en bloque (BUG-008).
+  await admin.from("shelters").delete().eq("owner_id", ownerId);
 
   const filas = Array.from({ length: TOTAL_PROTECTORAS }, (_, i) => ({
     owner_id: ownerId,
@@ -43,8 +44,19 @@ test.beforeAll(async () => {
     location: `POINT(${MADRID.lng + (i % 20) * 0.002} ${MADRID.lat + Math.floor(i / 20) * 0.002})`,
   }));
 
-  const { error: es } = await admin.from("shelters").upsert(filas, { onConflict: "slug" });
+  const { error: es } = await admin.from("shelters").insert(filas);
   if (es) throw es;
+});
+
+// Este spec siembra 220 protectoras: si se quedaran, contaminarían los tests de
+// RLS de proximidad (`shelters-nearby`) del resto de la suite.
+test.afterAll(async () => {
+  const admin = createClient(URL, SERVICE_KEY, {
+    auth: { autoRefreshToken: false, persistSession: false },
+  });
+  const { data } = await admin.auth.admin.listUsers({ page: 1, perPage: 200 });
+  const owner = data.users.find((u) => u.email === "e2e-mapa-clustering@test.com");
+  if (owner) await admin.from("shelters").delete().eq("owner_id", owner.id);
 });
 
 test("el mapa agrupa 200+ protectoras en clusters sin romperse", async ({ page }) => {

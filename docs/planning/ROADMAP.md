@@ -80,14 +80,14 @@ Para centrar el desarrollo en un lado de la app cada vez, el 0.2 se aborda en do
 | [FEATURE-015](items/FEATURE-015.md) | Contenido educativo sobre adopción responsable | hecho | baja |
 | [FEATURE-016](items/FEATURE-016.md) | Registro de casas de acogida | hecho | baja |
 
-### Hito 0.5 — 89% completado (17/19)
+### Hito 0.5 — 95% completado (18/19)
 
 | Item | Título | Estado | Prioridad |
 |------|--------|--------|-----------|
 | [BUG-004](items/BUG-004.md) | Reservar cita" lleva a una página 404 | hecho | alta |
 | [BUG-006](items/BUG-006.md) | El listado sirve la URL de YouTube como imagen de portada cuando el animal no tiene foto de portada | hecho | alta |
 | [BUG-007](items/BUG-007.md) | CI no ejecuta ni un solo test de RLS — 122 tests se saltan en silencio en cada push | hecho | alta |
-| [BUG-008](items/BUG-008.md) | La suite E2E está podrida — 14 de 26 fallan al ejecutarla entera | recibido | alta |
+| [BUG-008](items/BUG-008.md) | La suite E2E está podrida — 14 de 26 fallan al ejecutarla entera | hecho | alta |
 | [FEATURE-019](items/FEATURE-019.md) | Directorio público de protectoras (/protectoras) | hecho | alta |
 | [FEATURE-022](items/FEATURE-022.md) | Avisos de perdidos — contacto sin exponer datos y avistamientos ciudadanos | hecho | alta |
 | [IMPROVEMENT-016](items/IMPROVEMENT-016.md) | Redirección post-login según rol (protectora al panel, admin a admin) | hecho | alta |

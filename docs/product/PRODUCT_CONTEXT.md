@@ -45,6 +45,7 @@ Estado de cada capacidad en lenguaje de usuario. Se regenera con `python scripts
 - npm run test -- --coverage revienta al parsear globals.css y las guías .md ([BUG-005](../planning/items/BUG-005.md))
 - El listado sirve la URL de YouTube como imagen de portada cuando el animal no tiene foto de portada ([BUG-006](../planning/items/BUG-006.md))
 - CI no ejecuta ni un solo test de RLS — 122 tests se saltan en silencio en cada push ([BUG-007](../planning/items/BUG-007.md))
+- La suite E2E está podrida — 14 de 26 fallan al ejecutarla entera ([BUG-008](../planning/items/BUG-008.md))
 - Inicialización y andamiaje del proyecto ([FEATURE-000](../planning/items/FEATURE-000.md))
 - Registro y login de adoptantes y protectoras ([FEATURE-001](../planning/items/FEATURE-001.md))
 - Onboarding de protectoras y verificación por admin ([FEATURE-002](../planning/items/FEATURE-002.md))
@@ -99,6 +100,5 @@ _Nada en desarrollo en este momento._
 
 #### 🗓️ Previsto
 
-- La suite E2E está podrida — 14 de 26 fallan al ejecutarla entera — hito 0.5 ([BUG-008](../planning/items/BUG-008.md))
 - Galería de fotos en los avisos de perdidos (hoy solo cabe una) — hito 0.5 ([FEATURE-024](../planning/items/FEATURE-024.md))
 <!-- RENDER:END -->

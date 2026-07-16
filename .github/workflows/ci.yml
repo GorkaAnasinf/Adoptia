@@ -105,15 +105,10 @@ jobs:
   # se saltaban solos sin stack, invisibles. Job propio: Playwright arranca su
   # `next dev`, así que no cabe en el de RLS sin alargarlo de más.
   #
-  # ⚠️ De momento SOLO a mano (`workflow_dispatch`). Al ejecutar la suite entera
-  # por primera vez aparecieron 14 fallos: no está rota la app, están podridos
-  # los tests (se pisan los datos entre proyectos, redirecciones de login,
-  # timeouts). Activarlo en cada push dejaría CI en rojo crónico, que es peor
-  # que el silencio de ahora: se acaba ignorando. Se sanea en **BUG-008** y
-  # entonces se quita este `if` — ese es el único cambio que hará falta.
+  # Activo en cada push desde BUG-008, que dejó la suite en verde (27/27; los 2
+  # saltos que quedan son `test.skip` declarados, no saltos por entorno).
   e2e:
     name: E2E (Playwright + Supabase local)
-    if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -146,8 +141,10 @@ jobs:
             echo "NEXT_PUBLIC_SUPABASE_ANON_KEY=$ANON_KEY"
             echo "SUPABASE_SERVICE_ROLE_KEY=$SERVICE_ROLE_KEY"
             echo "NEXT_PUBLIC_SITE_URL=http://localhost:3000"
-            echo "NEXT_PUBLIC_TURNSTILE_SITE_KEY=1x00000000000000000000AA"
           } >> "$GITHUB_ENV"
+        # Nota: NO se define NEXT_PUBLIC_TURNSTILE_SITE_KEY a propósito — sin
+        # ella el captcha no se renderiza. `playwright.config.ts` la vacía
+        # también en local (ver el comentario de `webServer.env`).
 
       # Si faltasen las variables, `e2e/entorno.ts` aborta con CI=true en vez
       # de saltarse los tests en verde.

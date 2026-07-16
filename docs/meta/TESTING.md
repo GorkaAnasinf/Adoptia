@@ -34,11 +34,29 @@ Todo item de desarrollo sigue red → green → refactor. El plan de cada item (
 - Datos de prueba con factories (`src/test/factories.ts`), no fixtures gigantes.
 - Mock de servicios externos (Resend, Nominatim) por defecto; integración real solo en tests marcados.
 
+## E2E: cómo correrlos sin volverse loco
+
+Los E2E necesitan el stack local (`npx supabase start`) y las variables `SUPABASE_TEST_*`. Sin ellas se saltan **en local**; en CI **fallan** a propósito (`e2e/entorno.ts`), porque un test saltado se ve igual de verde que uno que pasa y por ahí se coló BUG-006 hasta producción.
+
+```powershell
+npx supabase start
+# Las claves del stack local son las de demo del CLI, no son secretos:
+$raw = npx supabase status -o env
+# exporta SUPABASE_TEST_URL / _ANON_KEY / _SERVICE_ROLE_KEY desde ahí
+npx playwright test
+```
+
+Tres trampas que cuestan horas si no se conocen (todas descubiertas en BUG-008):
+
+1. **Mata cualquier `npm run dev` antes.** `reuseExistingServer` está activo en local: si hay algo escuchando en el 3000, Playwright corre contra ESO y no contra el servidor que levanta el config. Durante BUG-008 invalidó una medición entera y llevó a descartar la hipótesis correcta.
+2. **Los fixtures no usan `upsert(..., { onConflict: "slug" })`.** No es idempotente aquí: el trigger de de-duplicación de slugs (IMPROVEMENT-001) reescribe el slug *antes* de que Postgres evalúe el conflicto, así que cada ejecución inserta una fila nueva. Usa `sembrarPorSlug` de `e2e/fixtures.ts` (o `upsertShelterFixture` en los tests de RLS).
+3. **Nada de captcha en los E2E.** `playwright.config.ts` vacía `NEXT_PUBLIC_TURNSTILE_SITE_KEY`: el botón de registro está deshabilitado hasta que Turnstile entrega un token, y Turnstile se descarga del CDN de Cloudflare. Con varios workers, el widget tardaba y los clics agotaban el timeout. Nuestros flujos no deben depender de una red externa.
+
 ## Comandos
 
 ```powershell
 npm run test                  # suite completa
 npm run test -- --coverage    # con cobertura (CI)
 npm run test -- --watch       # desarrollo
-npx playwright test           # E2E
+npx playwright test           # E2E (ver arriba)
 ```

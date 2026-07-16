@@ -2,6 +2,7 @@ import { expect, test } from "@playwright/test";
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 import messages from "../messages/es.json";
 import { MOTIVO_SALTO, SERVICE_KEY, TEST_URL, e2eDisponible } from "./entorno";
+import { cerrarSesion, iniciarSesion } from "./sesion";
 
 /**
  * E2E de FEATURE-009: solicitud aprobada → el adoptante reserva un hueco →
@@ -102,11 +103,7 @@ test("solicitud aprobada → reservar hueco → agenda de la protectora → real
   page,
 }) => {
   // --- Adoptante: entra y reserva ---
-  await page.goto("/login");
-  await page.getByLabel(messages.auth.email).fill(ADOPTER_EMAIL);
-  await page.getByLabel(messages.auth.password, { exact: true }).fill(PASS);
-  await page.getByRole("button", { name: messages.auth.submitLogin }).click();
-  await expect(page).toHaveURL("/");
+  await iniciarSesion(page, ADOPTER_EMAIL, PASS);
 
   await page.goto("/mi-cuenta/solicitudes");
   await expect(page.getByText(ANIMAL.name)).toBeVisible();
@@ -123,13 +120,9 @@ test("solicitud aprobada → reservar hueco → agenda de la protectora → real
   await expect(page.getByText(/Visita:/)).toBeVisible();
 
   // --- Protectora: ve la cita y la marca realizada ---
-  await page.getByRole("button", { name: messages.shell.userMenu }).click();
-  await page.getByRole("menuitem", { name: messages.auth.logout }).click();
-  await page.goto("/login");
-  await page.getByLabel(messages.auth.email).fill(SHELTER_EMAIL);
-  await page.getByLabel(messages.auth.password, { exact: true }).fill(PASS);
-  await page.getByRole("button", { name: messages.auth.submitLogin }).click();
-  await expect(page).toHaveURL("/");
+  await cerrarSesion(page);
+  // A la protectora `destinoPostLogin` la lleva al panel, no a la home.
+  await iniciarSesion(page, SHELTER_EMAIL, PASS, /\/panel/);
 
   await page.goto("/panel/citas");
   await expect(page.getByText(ANIMAL.name)).toBeVisible();

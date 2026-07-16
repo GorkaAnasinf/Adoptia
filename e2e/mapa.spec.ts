@@ -1,6 +1,7 @@
 import { expect, test } from "@playwright/test";
 import { createClient } from "@supabase/supabase-js";
 import { MOTIVO_SALTO, SERVICE_KEY, TEST_URL, e2eDisponible } from "./entorno";
+import { asegurarUsuario, sembrarPorSlug } from "./fixtures";
 
 /**
  * E2E de FEATURE-006: permitir ubicación → protectora en la lista →
@@ -24,51 +25,28 @@ test.beforeAll(async () => {
     auth: { autoRefreshToken: false, persistSession: false },
   });
 
-  let ownerId: string | undefined;
-  const { data: creado, error } = await admin.auth.admin.createUser({
-    email: "e2e-mapa@test.com",
-    password: "password-de-test-123",
-    email_confirm: true,
+  const ownerId = await asegurarUsuario(admin, "e2e-mapa@test.com", "password-de-test-123");
+
+  const shelter = await sembrarPorSlug(admin, "shelters", {
+    owner_id: ownerId,
+    name: PROTECTORA.name,
+    slug: PROTECTORA.slug,
+    status: "verified",
+    city: "Bilbao",
+    province: "Bizkaia",
+    location: `POINT(${BILBAO.lng} ${BILBAO.lat})`,
   });
-  if (!error) ownerId = creado.user.id;
-  else {
-    const { data: lista } = await admin.auth.admin.listUsers({ page: 1, perPage: 200 });
-    ownerId = lista.users.find((u) => u.email === "e2e-mapa@test.com")?.id;
-  }
-  if (!ownerId) throw new Error("No se pudo crear el usuario del seed");
 
-  const { data: shelter, error: es } = await admin
-    .from("shelters")
-    .upsert(
-      {
-        owner_id: ownerId,
-        name: PROTECTORA.name,
-        slug: PROTECTORA.slug,
-        status: "verified",
-        city: "Bilbao",
-        province: "Bizkaia",
-        location: `POINT(${BILBAO.lng} ${BILBAO.lat})`,
-      },
-      { onConflict: "slug" },
-    )
-    .select()
-    .single();
-  if (es) throw es;
-
-  const { error: ea } = await admin.from("animals").upsert(
-    {
-      shelter_id: shelter.id,
-      name: "Perro E2E Mapa",
-      slug: "perro-e2e-mapa",
-      species: "dog",
-      sex: "male",
-      size: "medium",
-      status: "available",
-      published_at: new Date().toISOString(),
-    },
-    { onConflict: "slug" },
-  );
-  if (ea) throw ea;
+  await sembrarPorSlug(admin, "animals", {
+    shelter_id: (shelter as { id: string }).id,
+    name: "Perro E2E Mapa",
+    slug: "perro-e2e-mapa",
+    species: "dog",
+    sex: "male",
+    size: "medium",
+    status: "available",
+    published_at: new Date().toISOString(),
+  });
 });
 
 test.beforeEach(async ({ context }, testInfo) => {
@@ -85,9 +63,20 @@ test("permitir ubicación → lista → marcador → popup → ficha", async ({ 
   const aside = page.locator("aside");
   await expect(aside.getByText(PROTECTORA.name)).toBeVisible();
 
-  // Clic en el marcador de esta protectora (alt = nombre, evita ambigüedad
-  // con otros marcadores/clusters que pueda haber en el mapa).
-  await page.getByAltText(PROTECTORA.name).click();
+  // Esperar a que el mapa esté montado antes de tocar la lista: la lista la
+  // pinta el servidor, pero el mapa entra por `dynamic import` y el botón no
+  // responde hasta que React hidrata. Sin esto el clic se pierde y el popup no
+  // abre nunca (BUG-008).
+  await expect(page.locator(".leaflet-container")).toBeVisible();
+  await expect(page.locator(".leaflet-marker-icon, .marker-cluster").first()).toBeVisible();
+
+  // Seleccionar desde la lista abre el popup de su marcador (MapaShell pasa el
+  // `selectedId` al mapa, que hace `openPopup`). Antes el test buscaba el
+  // marcador por su `alt`, pero los marcadores viven en un
+  // `markerClusterGroup`: agrupados con los del seed, no existen en el DOM y el
+  // clic esperaba para siempre. El clustering llegó después que este test y lo
+  // dejó roto (BUG-008). Además, pinchar en la lista es lo que hace la gente.
+  await aside.getByRole("button", { name: new RegExp(PROTECTORA.name) }).click();
 
   const popup = page.locator(".leaflet-popup");
   await expect(popup.getByText(PROTECTORA.name)).toBeVisible();
