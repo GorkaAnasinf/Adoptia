@@ -63,9 +63,20 @@ test("permitir ubicación → lista → marcador → popup → ficha", async ({ 
   const aside = page.locator("aside");
   await expect(aside.getByText(PROTECTORA.name)).toBeVisible();
 
-  // Clic en el marcador de esta protectora (alt = nombre, evita ambigüedad
-  // con otros marcadores/clusters que pueda haber en el mapa).
-  await page.getByAltText(PROTECTORA.name).click();
+  // Esperar a que el mapa esté montado antes de tocar la lista: la lista la
+  // pinta el servidor, pero el mapa entra por `dynamic import` y el botón no
+  // responde hasta que React hidrata. Sin esto el clic se pierde y el popup no
+  // abre nunca (BUG-008).
+  await expect(page.locator(".leaflet-container")).toBeVisible();
+  await expect(page.locator(".leaflet-marker-icon, .marker-cluster").first()).toBeVisible();
+
+  // Seleccionar desde la lista abre el popup de su marcador (MapaShell pasa el
+  // `selectedId` al mapa, que hace `openPopup`). Antes el test buscaba el
+  // marcador por su `alt`, pero los marcadores viven en un
+  // `markerClusterGroup`: agrupados con los del seed, no existen en el DOM y el
+  // clic esperaba para siempre. El clustering llegó después que este test y lo
+  // dejó roto (BUG-008). Además, pinchar en la lista es lo que hace la gente.
+  await aside.getByRole("button", { name: new RegExp(PROTECTORA.name) }).click();
 
   const popup = page.locator(".leaflet-popup");
   await expect(popup.getByText(PROTECTORA.name)).toBeVisible();

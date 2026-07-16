@@ -5,7 +5,7 @@ import "leaflet/dist/leaflet.css";
 import "leaflet.markercluster/dist/MarkerCluster.css";
 import "leaflet.markercluster/dist/MarkerCluster.Default.css";
 import "leaflet.markercluster";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { MapContainer, TileLayer, useMap } from "react-leaflet";
 import { useTranslations } from "next-intl";
 import type { ShelterMapResult } from "./ListaProtectoras";
@@ -59,6 +59,7 @@ function ClusterLayer({
   const t = useTranslations("mapa");
   const clusterRef = useRef<L.MarkerClusterGroup | null>(null);
   const markersRef = useRef<Map<string, L.Marker>>(new Map());
+  const [marcadoresListos, setMarcadoresListos] = useState(0);
 
   useEffect(() => {
     const clusterGroup = L.markerClusterGroup();
@@ -76,6 +77,7 @@ function ClusterLayer({
     }
 
     map.addLayer(clusterGroup);
+    setMarcadoresListos((v) => v + 1);
 
     if (shelters.length > 0) {
       const bounds = L.latLngBounds(shelters.map((s) => [s.lat, s.lng] as [number, number]));
@@ -88,12 +90,31 @@ function ClusterLayer({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [shelters, map]);
 
+  // Hover: solo asoma el popup si el marcador ya está a la vista. NO mueve el
+  // mapa — que el mapa salte cada vez que el ratón cruza la lista es mareante.
   useEffect(() => {
-    const activeId = hoveredId ?? selectedId;
-    if (!activeId) return;
-    const marker = markersRef.current.get(activeId);
-    marker?.openPopup();
-  }, [selectedId, hoveredId]);
+    if (!hoveredId) return;
+    markersRef.current.get(hoveredId)?.openPopup();
+  }, [hoveredId, marcadoresListos]);
+
+  // Selección (clic): esta sí acerca. Si el marcador está dentro de un cluster
+  // NO está en el mapa y `openPopup()` no hace nada, así que seleccionar una
+  // protectora agrupada con otra cercana no mostraba absolutamente nada
+  // (encontrado al sanear los E2E, BUG-008). `zoomToShowLayer` acerca hasta
+  // deshacer el cluster y entonces abre el popup.
+  //
+  // `marcadoresListos` en las dependencias: sin él, seleccionar ANTES de que el
+  // mapa terminara de montar no hacía nada nunca — el efecto buscaba un
+  // marcador que aún no existía y no volvía a intentarlo. Pasa de verdad: la
+  // lista la pinta el servidor y el mapa entra por `dynamic import`.
+  useEffect(() => {
+    if (!selectedId) return;
+    const marker = markersRef.current.get(selectedId);
+    if (!marker) return;
+    const cluster = clusterRef.current;
+    if (cluster) cluster.zoomToShowLayer(marker, () => marker.openPopup());
+    else marker.openPopup();
+  }, [selectedId, marcadoresListos]);
 
   return null;
 }

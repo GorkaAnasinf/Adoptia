@@ -63,9 +63,12 @@ test.beforeAll(async () => {
 });
 
 test("home → filtrar por especie → ficha → volver conservando filtros", async ({ page }) => {
-  // Home: buscador rápido
+  // Home: el buscador. Ojo, ya no son enlaces rápidos por especie: desde el
+  // rediseño es un `select` + botón (`HeroSearch`), y el test se quedó
+  // esperando un enlace «Perros» que no existía (BUG-008).
   await page.goto("/");
-  await page.getByRole("link", { name: messages.home.quickDogs }).click();
+  await page.getByLabel(messages.home.searchSpeciesLabel).selectOption("dog");
+  await page.getByRole("button", { name: messages.home.searchButton }).click();
 
   // Listado filtrado por perros, reflejado en la URL
   await expect(page).toHaveURL(/\/animales\?especie=dog/);
