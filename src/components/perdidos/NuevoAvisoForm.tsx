@@ -11,6 +11,7 @@ import { createClient } from "@/lib/supabase/client";
 const ESPECIES = ["dog", "cat", "other"] as const;
 const SEXOS = ["male", "female", "unknown"] as const;
 const TAMANOS = ["small", "medium", "large"] as const;
+const MAX_FOTOS = 6;
 
 /** Mismo formato que el check de BD (FEATURE-022). */
 const TELEFONO_RE = /^[+0-9][0-9 ]{5,19}$/;
@@ -50,7 +51,9 @@ export function NuevoAvisoForm({ userId }: { userId: string }) {
   const [collarDesc, setCollarDesc] = useState("");
   const [microchip, setMicrochip] = useState<Terna>("nose");
   const [fecha, setFecha] = useState(hoyLocal());
-  const [foto, setFoto] = useState<File | null>(null);
+  // Galería (FEATURE-024): varias fotos, la de índice `portada` es la principal.
+  const [fotos, setFotos] = useState<File[]>([]);
+  const [portada, setPortada] = useState(0);
   const [pin, setPin] = useState<{ lat: number; lng: number } | null>(null);
   const [estado, setEstado] = useState<"idle" | "enviando" | "ok">("idle");
   const [error, setError] = useState<string>();
@@ -99,42 +102,63 @@ export function NuevoAvisoForm({ userId }: { userId: string }) {
     const supabase = createClient();
 
     try {
-      let photoUrl: string | null = null;
-      if (foto && esImagen(foto)) {
-        const comprimido = await comprimirFoto(foto);
-        const ruta = `${userId}/${crypto.randomUUID()}-${foto.name.replace(/[^\w.-]/g, "_")}`;
+      // Subir todas las fotos primero. Si una falla, se corta y NO se publica a
+      // medias (mismo criterio que la foto del avistamiento). La portada se
+      // sube primera para que quede con el orden más bajo.
+      const orden = fotos.map((_, i) => i).sort((a, b) => (a === portada ? -1 : b === portada ? 1 : a - b));
+      const urls: string[] = [];
+      for (const i of orden) {
+        const f = fotos[i];
+        if (!esImagen(f)) continue;
+        const comprimido = await comprimirFoto(f);
+        const ruta = `${userId}/${crypto.randomUUID()}-${f.name.replace(/[^\w.-]/g, "_")}`;
         const { error: upErr } = await supabase.storage
           .from("lost-found")
           .upload(ruta, comprimido, { contentType: comprimido.type || "image/jpeg" });
-        if (upErr) throw upErr;
-        photoUrl = supabase.storage.from("lost-found").getPublicUrl(ruta).data.publicUrl;
+        if (upErr) throw new Error("foto");
+        urls.push(supabase.storage.from("lost-found").getPublicUrl(ruta).data.publicUrl);
       }
 
-      const { error: insErr } = await supabase.from("lost_found_posts").insert({
-        user_id: userId,
-        type: tipo,
-        species: especie,
-        name: nombre.trim() || null,
-        description: descripcion.trim(),
-        photo_url: photoUrl,
-        city: ciudad.trim() || null,
-        contact_phone: telefono.trim() || null,
-        allow_contact: permitirContacto,
-        breed: raza.trim() || null,
-        color: color.trim() || null,
-        sex: sexo || null,
-        size: tamano || null,
-        has_collar: ternaABool(collar),
-        // Sin collar (o sin saberlo), una descripción de collar es basura.
-        collar_description: collar === "si" ? collarDesc.trim() || null : null,
-        has_microchip: ternaABool(microchip),
-        occurred_on: fecha,
-        location: `POINT(${pin.lng} ${pin.lat})`,
-      });
-      if (insErr) throw insErr;
+      const { data: post, error: insErr } = await supabase
+        .from("lost_found_posts")
+        .insert({
+          user_id: userId,
+          type: tipo,
+          species: especie,
+          name: nombre.trim() || null,
+          description: descripcion.trim(),
+          city: ciudad.trim() || null,
+          contact_phone: telefono.trim() || null,
+          allow_contact: permitirContacto,
+          breed: raza.trim() || null,
+          color: color.trim() || null,
+          sex: sexo || null,
+          size: tamano || null,
+          has_collar: ternaABool(collar),
+          // Sin collar (o sin saberlo), una descripción de collar es basura.
+          collar_description: collar === "si" ? collarDesc.trim() || null : null,
+          has_microchip: ternaABool(microchip),
+          occurred_on: fecha,
+          location: `POINT(${pin.lng} ${pin.lat})`,
+        })
+        .select("id")
+        .single();
+      if (insErr || !post) throw insErr ?? new Error("insert");
+
+      if (urls.length > 0) {
+        const { error: mediaErr } = await supabase.from("lost_found_media").insert(
+          urls.map((url, i) => ({
+            post_id: post.id,
+            url,
+            is_cover: i === 0, // la portada se subió primera
+            sort_order: i,
+          })),
+        );
+        if (mediaErr) throw mediaErr;
+      }
       setEstado("ok");
-    } catch {
-      setError(t("fError"));
+    } catch (err) {
+      setError(err instanceof Error && err.message === "foto" ? t("fFotoError") : t("fError"));
       setEstado("idle");
     }
   }
@@ -235,23 +259,75 @@ export function NuevoAvisoForm({ userId }: { userId: string }) {
           />
         </label>
         <div className="flex flex-col gap-1 text-sm font-medium">
-          {t("fFoto")}
+          {t("fFotos")}
           <button
             type="button"
             onClick={() => inputRef.current?.click()}
-            className="rounded-lg border border-border bg-card px-3 py-2 text-left hover:bg-accent"
+            disabled={fotos.length >= MAX_FOTOS}
+            className="rounded-lg border border-border bg-card px-3 py-2 text-left hover:bg-accent disabled:opacity-50"
           >
-            {foto ? foto.name : t("fFotoSubir")}
+            {t("fFotosSubir")}
           </button>
           <input
             ref={inputRef}
             type="file"
             accept="image/*"
+            multiple
             className="sr-only"
-            onChange={(e) => setFoto(e.target.files?.[0] ?? null)}
+            onChange={(e) => {
+              const nuevas = Array.from(e.target.files ?? []).filter(esImagen);
+              setFotos((prev) => [...prev, ...nuevas].slice(0, MAX_FOTOS));
+              e.target.value = ""; // permite volver a elegir el mismo fichero
+            }}
           />
+          <span className="text-xs font-normal text-muted-foreground">{t("fFotosHelp")}</span>
         </div>
       </div>
+
+      {fotos.length > 0 && (
+        <ul className="flex flex-wrap gap-3">
+          {fotos.map((f, i) => (
+            <li
+              key={`${f.name}-${i}`}
+              className={`flex flex-col items-center gap-1 rounded-xl border p-2 ${
+                i === portada ? "border-primary bg-primary/5" : "border-border"
+              }`}
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={URL.createObjectURL(f)}
+                alt=""
+                className="size-16 rounded-lg object-cover"
+              />
+              {i === portada ? (
+                <span className="text-xs font-semibold text-primary">{t("fFotoPortada")}</span>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => setPortada(i)}
+                  className="text-xs text-muted-foreground underline-offset-2 hover:underline"
+                >
+                  {t("fFotoMarcarPortada")}
+                </button>
+              )}
+              <button
+                type="button"
+                onClick={() =>
+                  setFotos((prev) => {
+                    const resto = prev.filter((_, j) => j !== i);
+                    // Reajustar la portada si se quita antes o la propia.
+                    setPortada((p) => (i === p ? 0 : i < p ? p - 1 : p));
+                    return resto;
+                  })
+                }
+                className="text-xs text-muted-foreground underline-offset-2 hover:text-destructive hover:underline"
+              >
+                {t("fFotoQuitar")}
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
 
       <div className="flex flex-col gap-1">
         <label className="text-sm font-medium" htmlFor="aviso-fecha">
