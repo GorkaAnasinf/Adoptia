@@ -2,7 +2,7 @@
 id: FEATURE-027
 tipo: feature
 titulo: Rediseño del alta de aviso en tarjetas de sección (mockup nuevo)
-estado: listo
+estado: hecho
 prioridad: alta
 hito: "0.5"
 duplicado_de: null
@@ -72,10 +72,16 @@ El alta debe caber en <2 min desde el móvil (criterio histórico). Agrupar en t
 
 ## Criterios de aceptación / Casuística a cubrir
 
-- [ ] Todas las secciones del mockup presentes como tarjetas, en el orden del mockup.
-- [ ] El alta sigue completándose en <2 min: cero campos nuevos obligatorios.
-- [ ] Dropzone: clic y arrastrar funcionan; no-imágenes se ignoran; límite 6 se respeta.
-- [ ] Radios de tipo accesibles (teclado + lector) aunque se pinten como tarjetas.
-- [ ] Validaciones y mensajes de error idénticos a hoy (teléfono, fecha futura, pin, descripción).
-- [ ] «Cancelar y volver» no publica nada.
-- [ ] Cero literales.
+- [x] Todas las secciones del mockup presentes como tarjetas, en el orden del mockup.
+- [x] El alta sigue completándose en <2 min: cero campos nuevos obligatorios.
+- [x] Dropzone: clic y arrastrar funcionan; no-imágenes se ignoran; límite 6 se respeta.
+- [x] Radios de tipo accesibles (teclado + lector) aunque se pinten como tarjetas.
+- [x] Validaciones y mensajes de error idénticos a hoy (teléfono, fecha futura, pin, descripción).
+- [x] «Cancelar y volver» no publica nada.
+- [x] Cero literales.
+
+## Cierre (2026-07-16)
+
+- Formulario reagrupado en tarjetas: «¿Qué quieres reportar?» (tarjetas grandes con icono y subtítulo; los radios siguen siendo accesibles vía `aria-labelledby`/`aria-describedby` para que el nombre accesible no arrastre el subtítulo), «Información del animal» (incluye las señas de FEATURE-023 — el fieldset «¿Cómo es?» desaparece y su clave `comoEs` se retira), «Fotos» (dropzone clic + arrastre con `agregarFotos` compartido con el input: mismo filtro `esImagen` y límite 6), «Ubicación» (ciudad + pin), «Descripción y detalles» (descripción + fecha del suceso) y «Información de contacto». Pie con «Cancelar y volver» + «Publicar aviso».
+- Ninguna validación ni campo cambió: los 15 tests previos del alta pasaron sin tocarlos; 3 nuevos (dropzone, cancelar, radios accesibles).
+- Fuera, según alcance: «Edad aproximada» y «Tu nombre» del mockup (no existen en BD ni en el flujo de contacto).

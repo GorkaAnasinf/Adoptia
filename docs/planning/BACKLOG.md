@@ -6,24 +6,18 @@
 ## 📍 ESTADO ACTUAL
 
 - **Hito activo:** 0.5 — post-MVP (mantenimiento y features detectadas en pruebas reales; hitos 0.2–0.4 cerrados).
-- **Progreso:** **FEATURE-024 hecha** — los avisos de perdidos admiten varias fotos: galería en el alta (elegir portada, quitar) y en la ficha (miniaturas navegables). Espeja `animal_media`; se migra `photo_url` a `lost_found_media` y se retira la columna. Suite: **921 verdes**. Antes, en esta racha de la sección perdidos: BUG-008 (suite E2E de 8/28 a 28/28 y activa en CI, + 2 bugs del mapa), FEATURE-023 (señas y fecha del suceso), FEATURE-022 (contacto y avistamientos), y la tanda de infra BUG-005/006/007 + IMPROVEMENT-022/023.
+- **Progreso:** **FEATURE-025/026/027 hechas** — rediseño de las tres pantallas de perdidos según mockups del usuario: listado (tarjetas verticales, «Más filtros» colapsable, «Ver todos»), ficha (dos columnas, compartir, consejos de seguridad, breadcrumbs) y alta (tarjetas de sección, dropzone, «Cancelar y volver»). Solo presentación: sin cambios de BD ni API. Entregadas en tanda en `feature/FEATURE-025-rediseno-perdidos` con la suite completa **una sola vez al final** (decisión del usuario): verde, cobertura 81,3 % global / 96,6 % `src/lib`. Antes: FEATURE-024 (galería multi-foto, migración ya aplicada en producción), BUG-008, FEATURE-023, FEATURE-022.
 - **Siguiente:** nada en cola — lo que entre por la pasarela del analista o se detecte probando.
-- **Bloqueos:** ninguno. **Pendiente de despliegue:** ⚠️ migración `20260716120000_feature024_lost_found_media` — verificada en local (921/921, 139 RLS, E2E de galería), **sin aplicar en producción** todavía.
+- **Bloqueos:** ninguno. Nada pendiente de despliegue (la migración de FEATURE-024 se aplicó en producción el 2026-07-16).
 - **Follow-ups abiertos:** Re-medir Lighthouse de ficha/listado en producción cuando haya contenido real (ver IMPROVEMENT-012). Datos de prueba masivos (`@masivo.adoptia.es`, slugs `-msv`) cargados en local y en producción el 2026-07-13 — borrarlos al acabar las pruebas. Candidatos a item: badge «Urgente» (requiere campo en BD) y filtro «Apto para piso» en el RPC `animals_search` (mockup de IMPROVEMENT-019).
 - **Nota (2026-07-15):** se corrigió una afirmación errónea de BUG-005: los umbrales de cobertura **sí** se vigilaban en CI — el `RolldownError` era ruido en Linux (exit 0, tabla impresa, umbrales evaluados) y solo tumbaba el proceso en Windows.
 - **Cómo correr los E2E en local:** ver `docs/meta/TESTING.md` — hay tres trampas documentadas que cuestan horas si no se conocen (el `npm run dev` zombi que Playwright reutiliza, el `upsert(onConflict: "slug")` que no es idempotente, y el captcha).
-- **Última actualización:** 2026-07-16 (FEATURE-024 cerrada — galería multi-foto en los avisos; pendiente `db push` de su migración).
+- **Última actualización:** 2026-07-16 (FEATURE-025/026/027 cerradas — rediseño de la sección perdidos, pendiente merge de la rama a `develop`).
 
 ## Items abiertos por estado
 
 Los items `hecho`/`descartado` no aparecen aquí — su histórico vive en [CHANGELOG](CHANGELOG.md) y git.
 
 <!-- RENDER:START -->
-### ✅ Listo para desarrollo (3)
-
-| Item | Título | Prioridad | Hito |
-|------|--------|-----------|------|
-| [FEATURE-025](items/FEATURE-025.md) | Rediseño del listado/mapa de Perdidos y encontrados (mockup nuevo) | alta | 0.5 |
-| [FEATURE-026](items/FEATURE-026.md) | Rediseño de la ficha del aviso a dos columnas (mockup nuevo) | alta | 0.5 |
-| [FEATURE-027](items/FEATURE-027.md) | Rediseño del alta de aviso en tarjetas de sección (mockup nuevo) | alta | 0.5 |
+_No hay items abiertos._
 <!-- RENDER:END -->

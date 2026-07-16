@@ -2,7 +2,7 @@
 id: FEATURE-026
 tipo: feature
 titulo: Rediseño de la ficha del aviso a dos columnas (mockup nuevo)
-estado: listo
+estado: hecho
 prioridad: alta
 hito: "0.5"
 duplicado_de: null
@@ -71,11 +71,19 @@ La ficha es donde se decide si alguien ayuda. El mockup pone las acciones (avist
 
 ## Criterios de aceptación / Casuística a cubrir
 
-- [ ] Desktop 2 columnas, móvil 1 columna con acciones accesibles (sticky o arriba, target ≥44px).
-- [ ] «He visto a este animal» solo en avisos `open`; sin sesión lleva al login con redirect (flujo actual).
-- [ ] Compartir funciona con y sin Web Share API; el fallback confirma la copia.
-- [ ] Consejos de seguridad con texto distinto para perdido y encontrado; estático, en `es.json`.
-- [ ] Badge superpuesto en la foto; resuelto añade su badge como hoy.
-- [ ] Avisos sin fotos: sin galería ni hueco, el resto del layout no se rompe.
-- [ ] Nada de datos nuevos del autor en pantalla (RGPD: solo el teléfono ya opt-in).
-- [ ] Cero literales.
+- [x] Desktop 2 columnas, móvil 1 columna con acciones accesibles (sticky o arriba, target ≥44px).
+- [x] «He visto a este animal» solo en avisos `open`; sin sesión lleva al login con redirect (flujo actual).
+- [x] Compartir funciona con y sin Web Share API; el fallback confirma la copia.
+- [x] Consejos de seguridad con texto distinto para perdido y encontrado; estático, en `es.json`.
+- [x] Badge superpuesto en la foto; resuelto añade su badge como hoy.
+- [x] Avisos sin fotos: sin galería ni hueco, el resto del layout no se rompe.
+- [x] Nada de datos nuevos del autor en pantalla (RGPD: solo el teléfono ya opt-in).
+- [x] Cero literales.
+
+## Cierre (2026-07-16)
+
+- Ficha a dos columnas (`lg:grid-cols-[minmax(0,1fr)_360px]`): izquierda galería (badge superpuesto solo si hay fotos válidas), título, fechas, descripción en tarjeta, avistamientos y resolver; derecha CTA «He visto a este animal» (ancla `#ayudar`, solo en abiertos), `CompartirAvisoButton` nuevo (Web Share → portapapeles con confirmación), señas en tiles, mini-mapa, contacto y consejos de seguridad (4 por tipo, en `es.json`).
+- Breadcrumbs Inicio / Perdidos y encontrados / título.
+- **Desvío consciente del mockup**: se conservan las fechas absolutas de suceso/publicación (en vez de «hace X horas») — esa distinción la trajo FEATURE-023 y sus tests la protegen; cambiarla habría perdido información.
+- Detalle de test aprendido: `userEvent.setup()` instala su propio stub de `navigator.clipboard`; para verificar la copia hay que espiarlo (`vi.spyOn`), no reemplazar `navigator`.
+- Tests: 3 de compartir + 5 nuevos de la ficha (23 verdes en total); los 18 previos sin tocar.

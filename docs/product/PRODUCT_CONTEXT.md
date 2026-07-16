@@ -71,6 +71,9 @@ Estado de cada capacidad en lenguaje de usuario. Se regenera con `python scripts
 - Avisos de perdidos — contacto sin exponer datos y avistamientos ciudadanos ([FEATURE-022](../planning/items/FEATURE-022.md))
 - Avisos de perdidos — datos identificativos, fecha real del suceso y filtros ([FEATURE-023](../planning/items/FEATURE-023.md))
 - Galería de fotos en los avisos de perdidos (hoy solo cabe una) ([FEATURE-024](../planning/items/FEATURE-024.md))
+- Rediseño del listado/mapa de Perdidos y encontrados (mockup nuevo) ([FEATURE-025](../planning/items/FEATURE-025.md))
+- Rediseño de la ficha del aviso a dos columnas (mockup nuevo) ([FEATURE-026](../planning/items/FEATURE-026.md))
+- Rediseño del alta de aviso en tarjetas de sección (mockup nuevo) ([FEATURE-027](../planning/items/FEATURE-027.md))
 - De-duplicar el slug de protectora (nombres repetidos) ([IMPROVEMENT-001](../planning/items/IMPROVEMENT-001.md))
 - Rediseño UX del wizard de alta de protectora (+ fix del mapa gris) ([IMPROVEMENT-002](../planning/items/IMPROVEMENT-002.md))
 - Pulido del shell chrome (sidebar + cabecera) hacia el mockup de Stitch ([IMPROVEMENT-003](../planning/items/IMPROVEMENT-003.md))
@@ -101,7 +104,5 @@ _Nada en desarrollo en este momento._
 
 #### 🗓️ Previsto
 
-- Rediseño del listado/mapa de Perdidos y encontrados (mockup nuevo) — hito 0.5 ([FEATURE-025](../planning/items/FEATURE-025.md))
-- Rediseño de la ficha del aviso a dos columnas (mockup nuevo) — hito 0.5 ([FEATURE-026](../planning/items/FEATURE-026.md))
-- Rediseño del alta de aviso en tarjetas de sección (mockup nuevo) — hito 0.5 ([FEATURE-027](../planning/items/FEATURE-027.md))
+_Backlog vacío._
 <!-- RENDER:END -->

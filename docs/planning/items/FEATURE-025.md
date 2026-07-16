@@ -2,7 +2,7 @@
 id: FEATURE-025
 tipo: feature
 titulo: Rediseño del listado/mapa de Perdidos y encontrados (mockup nuevo)
-estado: listo
+estado: hecho
 prioridad: alta
 hito: "0.5"
 duplicado_de: null
@@ -70,10 +70,18 @@ Es la puerta de entrada de la sección perdidos. El diseño actual es funcional 
 
 ## Criterios de aceptación / Casuística a cubrir
 
-- [ ] Chips de tipo funcionan igual; selects tras «Más filtros», colapsados por defecto, accesibles (aria-expanded, teclado).
-- [ ] Tarjeta vertical: foto grande con badge superpuesto, nombre, «Hace X», ciudad, botón «Ver detalles» (target ≥44px).
-- [ ] Aviso sin foto → placeholder 🐾, nunca imagen rota (no reintroducir BUG-006).
-- [ ] «Ver todos» solo si hay más de 8; al pulsar, muestra todos.
-- [ ] Estados vacíos distinguen «no hay avisos» de «los filtros no dejan ver ninguno».
-- [ ] Cero literales: todo en `messages/es.json`.
-- [ ] El mapa y sus filtros siguen sincronizados con la lista (mismo `visibles`).
+- [x] Chips de tipo funcionan igual; selects tras «Más filtros», colapsados por defecto, accesibles (aria-expanded, teclado).
+- [x] Tarjeta vertical: foto grande con badge superpuesto, nombre, «Hace X», ciudad, botón «Ver detalles» (target ≥44px).
+- [x] Aviso sin foto → placeholder 🐾, nunca imagen rota (no reintroducir BUG-006).
+- [x] «Ver todos» solo si hay más de 8; al pulsar, muestra todos.
+- [x] Estados vacíos distinguen «no hay avisos» de «los filtros no dejan ver ninguno».
+- [x] Cero literales: todo en `messages/es.json`.
+- [x] El mapa y sus filtros siguen sincronizados con la lista (mismo `visibles`).
+
+## Cierre (2026-07-16)
+
+- `PerdidosView` rediseñado: chips + «Más filtros» colapsable (aria-expanded), tarjetas verticales (foto 4:3 con badge superpuesto, tiempo relativo del suceso con `format.relativeTime`, ciudad, «Ver detalles»), sección «Avisos recientes» con «Ver todos» a partir de 8.
+- Fuera, según alcance: distancia «a X km» (exigiría geolocalizar al visitante) y cambios en marcadores/popups del mapa.
+- E2E `perdidos.spec.ts` adaptado: helper `desplegarTodos` y apertura de «Más filtros» antes de usar los selects.
+- Tests: 4 nuevos + 9 adaptados en `PerdidosView.test.tsx` (13 verdes). Suite completa de la tanda: verde con cobertura 81,3 % global / 96,6 % en `src/lib`.
+- Recaída evitada del linter de i18n (lección de FEATURE-024): `visibles.length > RECIENTES` dentro del JSX parecía texto de UI; la comparación se extrajo a `hayMasAvisos`.
