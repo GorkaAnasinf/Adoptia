@@ -96,7 +96,7 @@ Para centrar el desarrollo en un lado de la app cada vez, el 0.2 se aborda en do
 | [FEATURE-020](items/FEATURE-020.md) | Vídeos en la ficha del animal (YouTube + MP4) | hecho | media |
 | [FEATURE-021](items/FEATURE-021.md) | Rediseño de la cabecera superior con menú de usuario por rol | hecho | media |
 | [FEATURE-023](items/FEATURE-023.md) | Avisos de perdidos — datos identificativos, fecha real del suceso y filtros | hecho | media |
-| [FEATURE-024](items/FEATURE-024.md) | Galería de fotos en los avisos de perdidos (hoy solo cabe una) | recibido | media |
+| [FEATURE-024](items/FEATURE-024.md) | Galería de fotos en los avisos de perdidos (hoy solo cabe una) | listo | media |
 | [IMPROVEMENT-017](items/IMPROVEMENT-017.md) | Rediseño del dashboard de protectora (tarjetas de color y próximas citas) | hecho | media |
 | [IMPROVEMENT-018](items/IMPROVEMENT-018.md) | Rediseño de la home pública (hero con buscador, recién llegados, banda de stats y CTA) | hecho | media |
 | [IMPROVEMENT-019](items/IMPROVEMENT-019.md) | Rediseño del listado /animales (filtros horizontales, tarjetas con favorito y paginación numerada) | hecho | media |

@@ -19,7 +19,7 @@
 Los items `hecho`/`descartado` no aparecen aquí — su histórico vive en [CHANGELOG](CHANGELOG.md) y git.
 
 <!-- RENDER:START -->
-### 📥 Recibido (1)
+### ✅ Listo para desarrollo (1)
 
 | Item | Título | Prioridad | Hito |
 |------|--------|-----------|------|
