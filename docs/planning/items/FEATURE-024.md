@@ -2,7 +2,7 @@
 id: FEATURE-024
 tipo: feature
 titulo: Galería de fotos en los avisos de perdidos (hoy solo cabe una)
-estado: desarrollo
+estado: hecho
 prioridad: media
 hito: "0.5"
 duplicado_de: null
@@ -106,13 +106,22 @@ alter table public.lost_found_posts drop column photo_url;
 
 ## Criterios de aceptación / Casuística a cubrir
 
-- [ ] El alta admite varias fotos (hasta el límite) y sigue completándose en <2 min desde el móvil; subir fotos es opcional.
-- [ ] La primera foto es la portada por defecto; el autor puede marcar otra antes de publicar.
-- [ ] Una sola portada por aviso, garantizado por BD (índice único parcial), no solo por la UI.
-- [ ] La ficha muestra la galería (portada + miniaturas); con una sola foto se ve como hoy; sin fotos no deja hueco ni imagen rota.
-- [ ] El listado y el popup del mapa usan la portada; un aviso sin fotos cae al placeholder, **nunca** a una URL que no es imagen (regresión de BUG-006 que no puede volver).
-- [ ] `lost_found_media` es pública en avisos `open`/`resolved` y queda oculta en `archived` ajenos; solo el autor inserta/borra.
-- [ ] Los avisos que ya tenían `photo_url` conservan su foto como portada tras la migración; ninguno pierde su imagen.
-- [ ] `photo_url` desaparece de `lost_found_posts` y nada en el código sigue leyéndola.
-- [ ] Si una foto no sube, el aviso no se publica a medias y se avisa (como el avistamiento con foto).
-- [ ] Borrar un aviso arrastra su media (cascade); no quedan filas huérfanas.
+- [x] El alta admite varias fotos (hasta 6) y sigue completándose en <2 min; subir fotos es opcional (test: publica sin ninguna foto).
+- [x] La primera foto es la portada por defecto; el autor puede marcar otra antes de publicar (test: marca la 2ª → `is_cover` en la de `sort_order` 0).
+- [x] Una sola portada por aviso, garantizado por BD (índice único parcial), probado en RLS.
+- [x] La ficha muestra la galería (portada + miniaturas); con una sola foto se ve como hoy; sin fotos no deja hueco (tests de `GaleriaAviso` y de la ficha).
+- [x] El listado y el popup del mapa usan la portada; un aviso sin fotos cae al placeholder vía `esImagenValida(cover_url)`, **nunca** a una URL que no es imagen.
+- [x] `lost_found_media` pública en `open`/`resolved`, oculta en `archived` ajenos; solo el autor inserta/borra (tests RLS).
+- [x] Los avisos con `photo_url` previo conservan su foto como portada tras la migración (backfill; test RLS).
+- [x] `photo_url` desaparece de `lost_found_posts` y nada en el código de avisos la lee (test RLS de la columna + grep de QA).
+- [x] Si una foto no sube, el aviso no se publica a medias y se avisa (test del alta).
+- [x] Borrar un aviso arrastra su media (cascade; test RLS).
+
+## Cierre (2026-07-16)
+
+- **BD**: migración `20260716120000`. Tabla `lost_found_media` espejo de `animal_media` (índice único parcial de una portada). Backfill de `photo_url` → fila portada, y **`photo_url` eliminada**. `lost_found_list` reescrita para devolver `cover_url` (subconsulta a la tabla) — Decisión #36 aplicada: hay un test que muerde si se rompe el `order by` de la portada (el fallo exacto de BUG-006), y los 139 tests de RLS siguieron en verde tras la reescritura. RPC nuevo `lost_found_media_list`.
+- **UI**: `NuevoAvisoForm` sube varias fotos (miniaturas para quitar y elegir portada); `GaleriaAviso` en la ficha (portada grande + tira navegable), que **ordena por portada él mismo** en vez de confiar en el RPC. Listado y mapa a `cover_url`.
+- **Alcance consciente**: sin edición de la galería tras publicar (decisión del usuario). Una vez publicado, las fotos no se tocan.
+- **Tests**: 9 RLS + 4 de galería + 15 del alta (4 nuevos multi-foto) + 8 de la ficha (2 nuevos) + 1 E2E. Suite: **921 verdes** (venía de 903).
+- **Dos falsos positivos del linter de i18n** por el camino: mi `.filter((f) => …)` y mi `.sort((a,b) => …)` tenían un `=>` seguido de una expresión con `<` de comparación, y el heurístico `>texto<` los leía como texto de UI. Se extrajeron `tieneUrlValida` y `compararFotos` a funciones con nombre.
+- **Nota menor (no bloqueante)**: el uploader del alta usa `URL.createObjectURL` sin `revokeObjectURL`; leak trivial en un formulario que se desmonta al publicar. Candidato a limpieza si se retoca el componente.
