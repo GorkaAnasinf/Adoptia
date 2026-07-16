@@ -6,7 +6,7 @@ Formato: [Keep a Changelog](https://keepachangelog.com/es/) adaptado. Versionado
 
 ### Añadido
 
-- **Los avisos de perdidos admiten varias fotos (FEATURE-024)**: hasta ahora cabía una sola, y con «perro marrón + una foto de espaldas» no lo reconoce nadie. Ahora se pueden subir varias al publicar —de frente, de perfil, la mancha del lomo—, elegir cuál es la principal y quitarlas antes de enviar; la ficha las muestra en una galería con miniaturas navegables. Con una sola foto se ve como antes, y sin fotos no deja hueco. Por dentro se copia el patrón de las fichas de animales (`lost_found_media`, con una sola portada garantizada por la base de datos), se migran las fotos que ya había y se retira la columna vieja. **Requiere `supabase db push`** (migración `20260716120000`). No hay edición de la galería una vez publicado el aviso: eso queda para más adelante.
+- **Los avisos de perdidos admiten varias fotos (FEATURE-024)**: hasta ahora cabía una sola, y con «perro marrón + una foto de espaldas» no lo reconoce nadie. Ahora se pueden subir varias al publicar —de frente, de perfil, la mancha del lomo—, elegir cuál es la principal y quitarlas antes de enviar; la ficha las muestra en una galería con miniaturas navegables. Con una sola foto se ve como antes, y sin fotos no deja hueco. Por dentro se copia el patrón de las fichas de animales (`lost_found_media`, con una sola portada garantizada por la base de datos), se migran las fotos que ya había y se retira la columna vieja. Migración `20260716120000` **aplicada en producción el 2026-07-16**, verificada antes en local y en CI. No hay edición de la galería una vez publicado el aviso: eso queda para más adelante.
 
 ## [0.0.58] — 2026-07-16
 
