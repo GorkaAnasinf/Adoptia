@@ -2,6 +2,12 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/es/) adaptado. Versionado 0.x hasta el MVP.
 
+## [0.0.60] — 2026-07-16
+
+### Cambiado
+
+- **La sección de perdidos estrena diseño en sus tres pantallas (FEATURE-025, FEATURE-026, FEATURE-027)**, a partir de los mockups aportados: el **listado** pasa a tarjetas verticales con foto grande, badge sobre la imagen y «Ver detalles», con los filtros avanzados recogidos tras «Más filtros» y la lista de «Avisos recientes» desplegable con «Ver todos»; la **ficha** se reorganiza a dos columnas con las acciones siempre a la vista («He visto a este animal», **compartir el aviso** —novedad: comparte por el móvil o copia el enlace—, señas en tarjetitas, mapa, contacto y **consejos de seguridad** distintos para perdidos y encontrados) y migas de pan; y el **alta** se agrupa en tarjetas de sección con **subida de fotos arrastrando** y «Cancelar y volver». Solo cambia la presentación: mismos datos, filtros, validaciones y privacidad. Los tres rediseños se entregaron juntos con la suite completa pasada una única vez al final (decisión del usuario para acelerar la entrega).
+
 ## [0.0.59] — 2026-07-16
 
 ### Añadido

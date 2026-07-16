@@ -58,6 +58,12 @@ export function NuevoAvisoForm({ userId }: { userId: string }) {
   const [estado, setEstado] = useState<"idle" | "enviando" | "ok">("idle");
   const [error, setError] = useState<string>();
 
+  /** Mismo filtro y límite vengan del input o de la dropzone (FEATURE-027). */
+  function agregarFotos(lista: FileList | File[]) {
+    const nuevas = Array.from(lista).filter(esImagen);
+    setFotos((prev) => [...prev, ...nuevas].slice(0, MAX_FOTOS));
+  }
+
   // Etiquetas ya existentes en `animales.*`: no se duplican en `perdidos.*`.
   const ESPECIE_LABEL: Record<string, string> = {
     dog: tAnimales("speciesDog"),
@@ -183,16 +189,18 @@ export function NuevoAvisoForm({ userId }: { userId: string }) {
   }
 
   return (
-    <form onSubmit={publicar} className="flex flex-col gap-5">
-      <fieldset className="flex flex-col gap-2">
-        <legend className="text-sm font-medium">{t("fTipo")}</legend>
-        <div className="flex gap-2">
+    <form onSubmit={publicar} className="flex flex-col gap-6">
+      <fieldset className="rounded-2xl border border-border bg-card p-5">
+        <legend className="px-1 font-heading text-lg font-semibold">
+          <span aria-hidden>🐾</span> {t("fTipo")}
+        </legend>
+        <div className="mt-2 grid gap-3 sm:grid-cols-2">
           {(["lost", "found"] as const).map((v) => (
             <label
               key={v}
-              className={`flex-1 cursor-pointer rounded-2xl border px-4 py-3 text-center text-sm font-medium ${
+              className={`flex cursor-pointer flex-col items-center gap-1 rounded-2xl border px-4 py-5 text-center ${
                 tipo === v
-                  ? "border-primary bg-primary/10 text-primary"
+                  ? "border-primary bg-primary/10"
                   : "border-border bg-card hover:border-primary/40"
               }`}
             >
@@ -202,155 +210,60 @@ export function NuevoAvisoForm({ userId }: { userId: string }) {
                 value={v}
                 checked={tipo === v}
                 onChange={() => setTipo(v)}
+                aria-labelledby={`tipo-${v}-titulo`}
+                aria-describedby={`tipo-${v}-help`}
                 className="sr-only"
               />
-              {t(v === "lost" ? "fTipoLost" : "fTipoFound")}
+              <span aria-hidden className="text-3xl">
+                {v === "lost" ? "🔍" : "✋"}
+              </span>
+              <span
+                id={`tipo-${v}-titulo`}
+                className={`font-medium ${tipo === v ? "text-primary" : ""}`}
+              >
+                {t(v === "lost" ? "fTipoLost" : "fTipoFound")}
+              </span>
+              <span id={`tipo-${v}-help`} className="text-xs text-muted-foreground">
+                {t(v === "lost" ? "fTipoLostHelp" : "fTipoFoundHelp")}
+              </span>
             </label>
           ))}
         </div>
       </fieldset>
 
-      <div className="grid gap-4 sm:grid-cols-2">
-        <label className="flex flex-col gap-1 text-sm font-medium">
-          {t("fEspecie")}
-          <select
-            value={especie}
-            onChange={(e) => setEspecie(e.target.value as (typeof ESPECIES)[number])}
-            className="rounded-lg border border-input bg-white px-3 py-2"
-          >
-            {ESPECIES.map((s) => (
-              <option key={s} value={s}>
-                {ESPECIE_LABEL[s]}
-              </option>
-            ))}
-          </select>
-        </label>
-        <label className="flex flex-col gap-1 text-sm font-medium">
-          {t("fNombre")}
-          <input
-            value={nombre}
-            onChange={(e) => setNombre(e.target.value)}
-            maxLength={80}
-            className="rounded-lg border border-input bg-white px-3 py-2"
-          />
-        </label>
-      </div>
-
-      <label className="flex flex-col gap-1 text-sm font-medium">
-        {t("fDescripcion")}
-        <textarea
-          value={descripcion}
-          onChange={(e) => setDescripcion(e.target.value)}
-          rows={3}
-          maxLength={2000}
-          placeholder={t("fDescripcionHelp")}
-          className="rounded-lg border border-input bg-white px-3 py-2 text-sm"
-        />
-      </label>
-
-      <div className="grid gap-4 sm:grid-cols-2">
-        <label className="flex flex-col gap-1 text-sm font-medium">
-          {t("fCiudad")}
-          <input
-            value={ciudad}
-            onChange={(e) => setCiudad(e.target.value)}
-            maxLength={120}
-            className="rounded-lg border border-input bg-white px-3 py-2"
-          />
-        </label>
-        <div className="flex flex-col gap-1 text-sm font-medium">
-          {t("fFotos")}
-          <button
-            type="button"
-            onClick={() => inputRef.current?.click()}
-            disabled={fotos.length >= MAX_FOTOS}
-            className="rounded-lg border border-border bg-card px-3 py-2 text-left hover:bg-accent disabled:opacity-50"
-          >
-            {t("fFotosSubir")}
-          </button>
-          <input
-            ref={inputRef}
-            type="file"
-            accept="image/*"
-            multiple
-            className="sr-only"
-            onChange={(e) => {
-              const nuevas = Array.from(e.target.files ?? []).filter(esImagen);
-              setFotos((prev) => [...prev, ...nuevas].slice(0, MAX_FOTOS));
-              e.target.value = ""; // permite volver a elegir el mismo fichero
-            }}
-          />
-          <span className="text-xs font-normal text-muted-foreground">{t("fFotosHelp")}</span>
+      <section className="flex flex-col gap-4 rounded-2xl border border-border bg-card p-5">
+        <div>
+          <h2 className="font-heading text-lg font-semibold">
+            <span aria-hidden>🐕</span> {t("fSeccionAnimal")}
+          </h2>
+          <p className="mt-1 text-xs text-muted-foreground">{t("comoEsHelp")}</p>
         </div>
-      </div>
 
-      {fotos.length > 0 && (
-        <ul className="flex flex-wrap gap-3">
-          {fotos.map((f, i) => (
-            <li
-              key={`${f.name}-${i}`}
-              className={`flex flex-col items-center gap-1 rounded-xl border p-2 ${
-                i === portada ? "border-primary bg-primary/5" : "border-border"
-              }`}
+        <div className="grid gap-4 sm:grid-cols-2">
+          <label className="flex flex-col gap-1 text-sm font-medium">
+            {t("fNombre")}
+            <input
+              value={nombre}
+              onChange={(e) => setNombre(e.target.value)}
+              maxLength={80}
+              className="rounded-lg border border-input bg-white px-3 py-2"
+            />
+          </label>
+          <label className="flex flex-col gap-1 text-sm font-medium">
+            {t("fEspecie")}
+            <select
+              value={especie}
+              onChange={(e) => setEspecie(e.target.value as (typeof ESPECIES)[number])}
+              className="rounded-lg border border-input bg-white px-3 py-2"
             >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={URL.createObjectURL(f)}
-                alt=""
-                className="size-16 rounded-lg object-cover"
-              />
-              {i === portada ? (
-                <span className="text-xs font-semibold text-primary">{t("fFotoPortada")}</span>
-              ) : (
-                <button
-                  type="button"
-                  onClick={() => setPortada(i)}
-                  className="text-xs text-muted-foreground underline-offset-2 hover:underline"
-                >
-                  {t("fFotoMarcarPortada")}
-                </button>
-              )}
-              <button
-                type="button"
-                onClick={() =>
-                  setFotos((prev) => {
-                    const resto = prev.filter((_, j) => j !== i);
-                    // Reajustar la portada si se quita antes o la propia.
-                    setPortada((p) => (i === p ? 0 : i < p ? p - 1 : p));
-                    return resto;
-                  })
-                }
-                className="text-xs text-muted-foreground underline-offset-2 hover:text-destructive hover:underline"
-              >
-                {t("fFotoQuitar")}
-              </button>
-            </li>
-          ))}
-        </ul>
-      )}
-
-      <div className="flex flex-col gap-1">
-        <label className="text-sm font-medium" htmlFor="aviso-fecha">
-          {t("fFecha")}
-        </label>
-        {/* Sin `max`: el bloqueo nativo corta el submit con un aviso sin
-            traducir (lección de FEATURE-022). Validamos aquí y en BD. */}
-        <input
-          id="aviso-fecha"
-          type="date"
-          value={fecha}
-          onChange={(e) => setFecha(e.target.value)}
-          aria-describedby="aviso-fecha-help"
-          className="rounded-lg border border-input bg-white px-3 py-2"
-        />
-        <p id="aviso-fecha-help" className="text-xs text-muted-foreground">
-          {t(tipo === "lost" ? "fFechaHelpLost" : "fFechaHelpFound")}
-        </p>
-      </div>
-
-      <fieldset className="flex flex-col gap-3 rounded-2xl border border-border p-4">
-        <legend className="px-1 text-sm font-medium">{t("comoEs")}</legend>
-        <p className="text-xs text-muted-foreground">{t("comoEsHelp")}</p>
+              {ESPECIES.map((s) => (
+                <option key={s} value={s}>
+                  {ESPECIE_LABEL[s]}
+                </option>
+              ))}
+            </select>
+          </label>
+        </div>
 
         <div className="grid gap-4 sm:grid-cols-2">
           <div className="flex flex-col gap-1">
@@ -474,10 +387,149 @@ export function NuevoAvisoForm({ userId }: { userId: string }) {
             />
           </div>
         )}
-      </fieldset>
+      </section>
 
-      <fieldset className="flex flex-col gap-3 rounded-2xl border border-border p-4">
-        <legend className="px-1 text-sm font-medium">{t("contactoTitulo")}</legend>
+      <section className="flex flex-col gap-3 rounded-2xl border border-border bg-card p-5">
+        <h2 className="font-heading text-lg font-semibold">
+          <span aria-hidden>📷</span> {t("fFotos")}
+        </h2>
+        <button
+          type="button"
+          onClick={() => inputRef.current?.click()}
+          onDragOver={(e) => e.preventDefault()}
+          onDrop={(e) => {
+            e.preventDefault();
+            agregarFotos(e.dataTransfer.files);
+          }}
+          disabled={fotos.length >= MAX_FOTOS}
+          className="flex flex-col items-center gap-1 rounded-2xl border-2 border-dashed border-border px-4 py-8 text-sm font-medium hover:border-primary/50 disabled:opacity-50"
+        >
+          <span aria-hidden className="text-2xl">
+            🖼️
+          </span>
+          {t("fFotosArrastra")}
+        </button>
+        <input
+          ref={inputRef}
+          type="file"
+          accept="image/*"
+          multiple
+          className="sr-only"
+          onChange={(e) => {
+            agregarFotos(e.target.files ?? []);
+            e.target.value = ""; // permite volver a elegir el mismo fichero
+          }}
+        />
+        <p className="text-xs text-muted-foreground">{t("fFotosHelp")}</p>
+
+        {fotos.length > 0 && (
+          <ul className="flex flex-wrap gap-3">
+            {fotos.map((f, i) => (
+              <li
+                key={`${f.name}-${i}`}
+                className={`flex flex-col items-center gap-1 rounded-xl border p-2 ${
+                  i === portada ? "border-primary bg-primary/5" : "border-border"
+                }`}
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={URL.createObjectURL(f)}
+                  alt=""
+                  className="size-16 rounded-lg object-cover"
+                />
+                {i === portada ? (
+                  <span className="text-xs font-semibold text-primary">{t("fFotoPortada")}</span>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => setPortada(i)}
+                    className="text-xs text-muted-foreground underline-offset-2 hover:underline"
+                  >
+                    {t("fFotoMarcarPortada")}
+                  </button>
+                )}
+                <button
+                  type="button"
+                  onClick={() =>
+                    setFotos((prev) => {
+                      const resto = prev.filter((_, j) => j !== i);
+                      // Reajustar la portada si se quita antes o la propia.
+                      setPortada((p) => (i === p ? 0 : i < p ? p - 1 : p));
+                      return resto;
+                    })
+                  }
+                  className="text-xs text-muted-foreground underline-offset-2 hover:text-destructive hover:underline"
+                >
+                  {t("fFotoQuitar")}
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
+
+      <section className="flex flex-col gap-3 rounded-2xl border border-border bg-card p-5">
+        <h2 className="font-heading text-lg font-semibold">
+          <span aria-hidden>📍</span> {t("fSeccionUbicacion")}
+        </h2>
+        <label className="flex flex-col gap-1 text-sm font-medium">
+          {t("fCiudad")}
+          <input
+            value={ciudad}
+            onChange={(e) => setCiudad(e.target.value)}
+            maxLength={120}
+            className="rounded-lg border border-input bg-white px-3 py-2"
+          />
+        </label>
+        <div className="flex flex-col gap-2">
+          <p className="text-sm font-medium">{t("fPin")}</p>
+          <MapPinPicker
+            value={pin ?? { lat: 40.4168, lng: -3.7038 }}
+            onChange={(c) => setPin(c)}
+          />
+          <p className="text-xs text-muted-foreground">{t("fPinHelp")}</p>
+        </div>
+      </section>
+
+      <section className="flex flex-col gap-4 rounded-2xl border border-border bg-card p-5">
+        <h2 className="font-heading text-lg font-semibold">
+          <span aria-hidden>📝</span> {t("fSeccionDescripcion")}
+        </h2>
+        <label className="flex flex-col gap-1 text-sm font-medium">
+          {t("fDescripcion")}
+          <textarea
+            value={descripcion}
+            onChange={(e) => setDescripcion(e.target.value)}
+            rows={4}
+            maxLength={2000}
+            placeholder={t("fDescripcionHelp")}
+            className="rounded-lg border border-input bg-white px-3 py-2 text-sm"
+          />
+        </label>
+        <div className="flex flex-col gap-1">
+          <label className="text-sm font-medium" htmlFor="aviso-fecha">
+            {t("fFecha")}
+          </label>
+          {/* Sin `max`: el bloqueo nativo corta el submit con un aviso sin
+              traducir (lección de FEATURE-022). Validamos aquí y en BD. */}
+          <input
+            id="aviso-fecha"
+            type="date"
+            value={fecha}
+            onChange={(e) => setFecha(e.target.value)}
+            aria-describedby="aviso-fecha-help"
+            className="rounded-lg border border-input bg-white px-3 py-2"
+          />
+          <p id="aviso-fecha-help" className="text-xs text-muted-foreground">
+            {t(tipo === "lost" ? "fFechaHelpLost" : "fFechaHelpFound")}
+          </p>
+        </div>
+      </section>
+
+      <fieldset className="flex flex-col gap-3 rounded-2xl border border-border bg-card p-5">
+        <legend className="px-1 font-heading text-lg font-semibold">
+          <span aria-hidden>📞</span> {t("fSeccionContacto")}
+        </legend>
 
         <div className="flex flex-col gap-1">
           <label className="text-sm font-medium" htmlFor="aviso-telefono">
@@ -521,18 +573,15 @@ export function NuevoAvisoForm({ userId }: { userId: string }) {
         </div>
       </fieldset>
 
-      <div className="flex flex-col gap-2">
-        <p className="text-sm font-medium">{t("fPin")}</p>
-        <MapPinPicker
-          value={pin ?? { lat: 40.4168, lng: -3.7038 }}
-          onChange={(c) => setPin(c)}
-        />
-        <p className="text-xs text-muted-foreground">{t("fPinHelp")}</p>
-      </div>
-
       {error && <p className="text-sm text-destructive">{error}</p>}
 
-      <div>
+      <div className="flex flex-wrap items-center justify-between gap-4">
+        <Link
+          href="/perdidos-encontrados"
+          className="text-sm text-muted-foreground underline-offset-4 hover:underline"
+        >
+          {t("fCancelar")}
+        </Link>
         <button
           type="submit"
           disabled={estado === "enviando"}
