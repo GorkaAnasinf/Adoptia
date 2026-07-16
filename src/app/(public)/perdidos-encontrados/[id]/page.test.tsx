@@ -264,6 +264,48 @@ describe("Detalle de aviso de perdidos", () => {
     expect(screen.queryByTestId("galeria-principal")).not.toBeInTheDocument();
   });
 
+  // FEATURE-026 — rediseño de la ficha
+  it("muestra las migas de pan hacia el listado", async () => {
+    await renderPagina();
+    const nav = screen.getByRole("navigation", { name: messages.perdidos.breadcrumbLabel });
+    expect(nav).toBeInTheDocument();
+    expect(
+      screen.getByRole("link", { name: messages.perdidos.breadcrumbInicio }),
+    ).toHaveAttribute("href", "/");
+  });
+
+  it("el CTA «He visto a este animal» ancla a la zona de ayuda en avisos abiertos", async () => {
+    getUserMock.mockResolvedValue({ data: { user: { id: "vecino1" } } });
+    await renderPagina();
+    expect(screen.getByRole("link", { name: messages.perdidos.avistamiento })).toHaveAttribute(
+      "href",
+      "#ayudar",
+    );
+  });
+
+  it("un aviso resuelto no muestra el CTA de avistamiento", async () => {
+    maybeSingleMock.mockResolvedValue({ data: { ...AVISO, status: "resolved" }, error: null });
+    await renderPagina();
+    expect(
+      screen.queryByRole("link", { name: messages.perdidos.avistamiento }),
+    ).not.toBeInTheDocument();
+  });
+
+  it("los consejos de seguridad cambian entre perdido y encontrado", async () => {
+    await renderPagina(); // lost
+    expect(screen.getByText(messages.perdidos.consejosLost1)).toBeInTheDocument();
+    expect(screen.queryByText(messages.perdidos.consejosFound1)).not.toBeInTheDocument();
+
+    maybeSingleMock.mockResolvedValue({ data: { ...AVISO, type: "found" }, error: null });
+    const { getByText } = await renderPagina();
+    expect(getByText(messages.perdidos.consejosFound1)).toBeInTheDocument();
+  });
+
+  it("ofrece compartir el aviso", async () => {
+    await renderPagina();
+    expect(screen.getByRole("button", { name: messages.perdidos.compartir })).toBeInTheDocument();
+  });
+
   it("un aviso inexistente ofrece volver al mapa", async () => {
     maybeSingleMock.mockResolvedValue({ data: null, error: null });
     await renderPagina();

@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { getFormatter, getTranslations } from "next-intl/server";
+import { esImagenValida } from "@/lib/animal-search";
 import { MiniMapa } from "@/components/map/MiniMapa";
 import { AvistamientosTimeline } from "@/components/perdidos/AvistamientosTimeline";
+import { CompartirAvisoButton } from "@/components/perdidos/CompartirAvisoButton";
 import { ContactarAvisoDialog } from "@/components/perdidos/ContactarAvisoDialog";
 import { GaleriaAviso } from "@/components/perdidos/GaleriaAviso";
 import { NuevoAvistamientoForm } from "@/components/perdidos/NuevoAvistamientoForm";
@@ -133,126 +135,195 @@ export default async function AvisoPage({ params }: { params: Params }) {
   const publicadoEnOtraFecha =
     aviso.occurred_on !== new Date(aviso.created_at).toISOString().slice(0, 10);
 
-  return (
-    <section className="mx-auto max-w-3xl px-4 py-10">
-      <div className="flex flex-wrap items-center gap-2">
-        <span
-          className={`rounded-full px-3 py-1 text-sm font-semibold ${
-            aviso.type === "lost" ? "bg-rose-100 text-rose-800" : "bg-emerald-100 text-emerald-800"
-          }`}
-        >
-          {t(aviso.type === "lost" ? "tipoLost" : "tipoFound")}
+  const titulo = aviso.name ?? t(aviso.type === "lost" ? "tipoLost" : "tipoFound");
+  const hayFotos = fotos.some((f) => esImagenValida(f.url));
+  const consejos = (["1", "2", "3", "4"] as const).map((n) =>
+    t(aviso.type === "lost" ? `consejosLost${n}` : `consejosFound${n}`),
+  );
+
+  const badges = (
+    <div className="flex flex-wrap items-center gap-2">
+      <span
+        className={`rounded-full px-3 py-1 text-sm font-semibold ${
+          aviso.type === "lost" ? "bg-rose-100 text-rose-800" : "bg-emerald-100 text-emerald-800"
+        }`}
+      >
+        {t(aviso.type === "lost" ? "tipoLost" : "tipoFound")}
+      </span>
+      {aviso.status === "resolved" && (
+        <span className="rounded-full bg-sky-100 px-3 py-1 text-sm font-semibold text-sky-800">
+          {t("resueltoBadge")}
         </span>
-        {aviso.status === "resolved" && (
-          <span className="rounded-full bg-sky-100 px-3 py-1 text-sm font-semibold text-sky-800">
-            {t("resueltoBadge")}
-          </span>
-        )}
-        <span className="text-sm text-muted-foreground">{ESPECIE[aviso.species]}</span>
-      </div>
-
-      <h1 className="mt-3 font-heading text-3xl font-bold">
-        {aviso.name ?? t(aviso.type === "lost" ? "tipoLost" : "tipoFound")}
-      </h1>
-      <p className="mt-1 text-sm font-medium">
-        {t(aviso.type === "lost" ? "ocurrioEl" : "encontradoEl", {
-          fecha: fechaLarga(aviso.occurred_on),
-        })}
-        {aviso.city ? ` · ${aviso.city}` : ""}
-      </p>
-      {publicadoEnOtraFecha && (
-        <p className="mt-0.5 text-sm text-muted-foreground">
-          {t("publicadoEl", { fecha: fechaLarga(aviso.created_at) })}
-        </p>
       )}
+    </div>
+  );
 
-      <GaleriaAviso fotos={fotos} alt={aviso.name ?? t(aviso.type === "lost" ? "tipoLost" : "tipoFound")} />
+  return (
+    <section className="mx-auto max-w-6xl px-4 py-10">
+      <nav aria-label={t("breadcrumbLabel")} className="text-sm text-muted-foreground">
+        <ol className="flex flex-wrap items-center gap-1">
+          <li className="flex items-center gap-1">
+            <Link href="/" className="hover:underline">
+              {t("breadcrumbInicio")}
+            </Link>
+            <span aria-hidden>/</span>
+          </li>
+          <li className="flex items-center gap-1">
+            <Link href="/perdidos-encontrados" className="hover:underline">
+              {t("title")}
+            </Link>
+            <span aria-hidden>/</span>
+          </li>
+          <li aria-current="page" className="font-medium text-foreground">
+            {titulo}
+          </li>
+        </ol>
+      </nav>
 
-      <p className="mt-6 whitespace-pre-line leading-relaxed">{aviso.description}</p>
-
-      {senas.length > 0 && (
-        <div className="mt-6">
-          <h2 className="font-heading text-lg font-semibold">{t("datosTitulo")}</h2>
-          <dl className="mt-2 grid gap-x-6 gap-y-2 sm:grid-cols-2">
-            {senas.map((s) => (
-              <div key={s.etiqueta} className="flex gap-2 text-sm">
-                <dt className="shrink-0 text-muted-foreground">{s.etiqueta}:</dt>
-                <dd className="font-medium">{s.valor}</dd>
-              </div>
-            ))}
-          </dl>
-        </div>
-      )}
-
-      {aviso.status === "resolved" && aviso.resolution_story && (
-        <div className="mt-6 rounded-2xl bg-sky-50 px-5 py-4">
-          <h2 className="font-heading font-semibold text-sky-900">{t("resueltoHistoria")}</h2>
-          <p className="mt-1 whitespace-pre-line text-sky-900">{aviso.resolution_story}</p>
-        </div>
-      )}
-
-      {punto && (
-        <div className="mt-6">
-          <h2 className="font-heading text-lg font-semibold">{t("zona")}</h2>
-          <p className="mb-2 text-xs text-muted-foreground">{t("avisoPrivacidad")}</p>
-          <MiniMapa
-            lat={punto.lat}
-            lng={punto.lng}
-            extras={avistamientos.map((a) => ({
-              id: a.id,
-              lat: a.lat,
-              lng: a.lng,
-              etiqueta: a.note ?? undefined,
-            }))}
-          />
-        </div>
-      )}
-
-      {(puedeAyudar || invitarALogin) && (
-        <div className="mt-8 rounded-2xl bg-muted/40 px-5 py-5">
-          <h2 className="font-heading text-lg font-semibold">{t("contactoTitulo")}</h2>
-          <p className="mt-1 text-sm text-muted-foreground">{t("contactoSubtitulo")}</p>
-
-          {aviso.contact_phone && (
-            <div className="mt-4">
-              <p className="font-medium">{t("telefonoAutor", { telefono: aviso.contact_phone })}</p>
-              <p className="mt-1 text-xs text-muted-foreground">{t("telefonoAvisoEstafa")}</p>
-            </div>
-          )}
-
-          {puedeAyudar ? (
-            <div className="mt-4 flex flex-col gap-3">
-              <NuevoAvistamientoForm avisoId={aviso.id} userId={auth.user!.id} />
-              {aviso.allow_contact && <ContactarAvisoDialog avisoId={aviso.id} />}
+      <div className="mt-6 grid gap-8 lg:grid-cols-[minmax(0,1fr)_360px]">
+        {/* Columna principal: fotos, historia y avistamientos. */}
+        <div>
+          {hayFotos ? (
+            <div className="relative">
+              {/* El badge flota sobre la portada (la galería abre con mt-6). */}
+              <div className="absolute left-3 top-9 z-10">{badges}</div>
+              <GaleriaAviso fotos={fotos} alt={titulo} />
             </div>
           ) : (
-            <Link
-              href={`/login?redirect=${encodeURIComponent(`/perdidos-encontrados/${aviso.id}`)}`}
-              className="mt-4 inline-block rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground hover:opacity-90"
-            >
-              {t("entrarParaAyudar")}
-            </Link>
+            badges
           )}
-        </div>
-      )}
 
-      <div className="mt-8">
-        <h2 className="font-heading text-lg font-semibold">{t("avistamientosTitulo")}</h2>
-        <div className="mt-3">
-          <AvistamientosTimeline avistamientos={avistamientos} puedeBorrar={esAutor} />
-        </div>
-      </div>
+          <h1 className="mt-4 font-heading text-3xl font-bold">{titulo}</h1>
+          <p className="mt-1 text-sm font-medium">
+            {t(aviso.type === "lost" ? "ocurrioEl" : "encontradoEl", {
+              fecha: fechaLarga(aviso.occurred_on),
+            })}
+            {aviso.city ? ` · ${aviso.city}` : ""}
+            <span className="text-muted-foreground"> · {ESPECIE[aviso.species]}</span>
+          </p>
+          {publicadoEnOtraFecha && (
+            <p className="mt-0.5 text-sm text-muted-foreground">
+              {t("publicadoEl", { fecha: fechaLarga(aviso.created_at) })}
+            </p>
+          )}
 
-      {esAutor && abierto && (
-        <div className="mt-8">
-          <ResolverAvisoButton avisoId={aviso.id} />
-        </div>
-      )}
+          <div className="mt-6 rounded-2xl border border-border bg-card px-5 py-4">
+            <h2 className="font-heading text-lg font-semibold">{t("descripcionTitulo")}</h2>
+            <p className="mt-2 whitespace-pre-line leading-relaxed">{aviso.description}</p>
+          </div>
 
-      <div className="mt-10">
-        <Link href="/perdidos-encontrados" className="text-primary underline-offset-4 hover:underline">
-          {t("volverMapa")}
-        </Link>
+          {aviso.status === "resolved" && aviso.resolution_story && (
+            <div className="mt-6 rounded-2xl bg-sky-50 px-5 py-4">
+              <h2 className="font-heading font-semibold text-sky-900">{t("resueltoHistoria")}</h2>
+              <p className="mt-1 whitespace-pre-line text-sky-900">{aviso.resolution_story}</p>
+            </div>
+          )}
+
+          <div className="mt-8">
+            <h2 className="font-heading text-lg font-semibold">{t("avistamientosTitulo")}</h2>
+            <div className="mt-3">
+              <AvistamientosTimeline avistamientos={avistamientos} puedeBorrar={esAutor} />
+            </div>
+          </div>
+
+          {esAutor && abierto && (
+            <div className="mt-8">
+              <ResolverAvisoButton avisoId={aviso.id} />
+            </div>
+          )}
+
+          <div className="mt-10">
+            <Link href="/perdidos-encontrados" className="text-primary underline-offset-4 hover:underline">
+              {t("volverMapa")}
+            </Link>
+          </div>
+        </div>
+
+        {/* Columna de acción: siempre a la vista en desktop (FEATURE-026). */}
+        <aside className="flex flex-col gap-6">
+          <div className="flex flex-col gap-2">
+            {(puedeAyudar || invitarALogin) && (
+              <a
+                href="#ayudar"
+                className="rounded-full bg-secondary px-5 py-3 text-center text-sm font-semibold text-secondary-foreground hover:opacity-90"
+              >
+                {t("avistamiento")}
+              </a>
+            )}
+            <CompartirAvisoButton titulo={titulo} />
+            <p className="text-center text-xs text-muted-foreground">{t("compartirAyuda")}</p>
+          </div>
+
+          {senas.length > 0 && (
+            <div>
+              <h2 className="font-heading text-lg font-semibold">{t("datosTitulo")}</h2>
+              <dl className="mt-2 grid grid-cols-2 gap-2">
+                {senas.map((s) => (
+                  <div key={s.etiqueta} className="rounded-xl bg-muted/40 px-3 py-2 text-sm">
+                    <dt className="text-xs text-muted-foreground">{s.etiqueta}</dt>
+                    <dd className="font-medium">{s.valor}</dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
+          )}
+
+          {punto && (
+            <div>
+              <h2 className="font-heading text-lg font-semibold">{t("ubicacionTitulo")}</h2>
+              <p className="mb-2 text-xs text-muted-foreground">{t("avisoPrivacidad")}</p>
+              <MiniMapa
+                lat={punto.lat}
+                lng={punto.lng}
+                extras={avistamientos.map((a) => ({
+                  id: a.id,
+                  lat: a.lat,
+                  lng: a.lng,
+                  etiqueta: a.note ?? undefined,
+                }))}
+              />
+            </div>
+          )}
+
+          {(puedeAyudar || invitarALogin) && (
+            <div id="ayudar" className="scroll-mt-24 rounded-2xl bg-muted/40 px-5 py-5">
+              <h2 className="font-heading text-lg font-semibold">{t("contactoTitulo")}</h2>
+              <p className="mt-1 text-sm text-muted-foreground">{t("contactoSubtitulo")}</p>
+
+              {aviso.contact_phone && (
+                <div className="mt-4">
+                  <p className="font-medium">{t("telefonoAutor", { telefono: aviso.contact_phone })}</p>
+                  <p className="mt-1 text-xs text-muted-foreground">{t("telefonoAvisoEstafa")}</p>
+                </div>
+              )}
+
+              {puedeAyudar ? (
+                <div className="mt-4 flex flex-col gap-3">
+                  <NuevoAvistamientoForm avisoId={aviso.id} userId={auth.user!.id} />
+                  {aviso.allow_contact && <ContactarAvisoDialog avisoId={aviso.id} />}
+                </div>
+              ) : (
+                <Link
+                  href={`/login?redirect=${encodeURIComponent(`/perdidos-encontrados/${aviso.id}`)}`}
+                  className="mt-4 inline-block rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground hover:opacity-90"
+                >
+                  {t("entrarParaAyudar")}
+                </Link>
+              )}
+            </div>
+          )}
+
+          <div className="rounded-2xl bg-amber-50 px-5 py-4">
+            <h2 className="font-heading text-sm font-semibold text-amber-900">
+              {t("consejosTitulo")}
+            </h2>
+            <ul className="mt-2 list-disc space-y-1 pl-4 text-xs text-amber-900">
+              {consejos.map((c) => (
+                <li key={c}>{c}</li>
+              ))}
+            </ul>
+          </div>
+        </aside>
       </div>
     </section>
   );
