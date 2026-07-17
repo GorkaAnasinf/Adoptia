@@ -72,3 +72,4 @@ Sin esto, la trazabilidad de FEATURE-029 queda coja: el panel dice «aceptada» 
 - 4 tests contra Postgres real. Lección de higiene: la BD local persiste entre ejecuciones — las fixtures van en Zaragoza (lejos del cluster de Bilbao de FEATURE-016) y se limpian en `afterAll`, porque un acogedor zombi rompía 3 tests de `acogida.test.ts`.
 - QA Scooby 5/5. Suite 1013/1013 con RLS, lint y `tsc` limpios, cobertura 82,4 % / 96,7 % `src/lib`. Sin cambios de UI: el badge «En acogida» ya existía; ahora por fin se enciende solo.
 - **Producción (2026-07-17)**: migración aplicada con dry-run previo y confirmada (`migration list --linked`); release `334f210` desplegado en Vercel (READY).
+- **Remate (mismo día)**: las propuestas aceptadas ANTES del trigger dejaron animales sin marcar (lo detectó el usuario). Migración `20260717200000`: el trigger cubre también INSERT (propuesta que nace `aceptada`) + backfill idempotente con el mismo criterio. Test nuevo (5 en total).

@@ -164,6 +164,31 @@ describe.skipIf(!rlsDisponible)("IMPROVEMENT-026 sincronización animal-acogida"
     await prot.from("foster_proposals").update({ status: "finalizada" }).eq("id", sinAnimal!.id);
   });
 
+  it("una propuesta que nace ya aceptada (caso admin/backfill) también sincroniza", async () => {
+    const admin = adminClient();
+    // Asegurar hueco: sin propuestas activas y animal disponible
+    await admin.from("foster_proposals").delete().eq("foster_user_id", fosterId);
+    await admin.from("animals").update({ status: "available" }).eq("id", animalLibre);
+
+    const { data: p, error } = await admin
+      .from("foster_proposals")
+      .insert({
+        shelter_id: shelterId,
+        foster_user_id: fosterId,
+        animal_id: animalLibre,
+        duracion: "2 semanas",
+        mensaje: "insert directo aceptada",
+        status: "aceptada",
+      })
+      .select()
+      .single();
+    expect(error).toBeNull();
+    expect(await estadoAnimal(animalLibre)).toBe("fostered");
+
+    await admin.from("foster_proposals").update({ status: "finalizada" }).eq("id", p!.id);
+    expect(await estadoAnimal(animalLibre)).toBe("available");
+  });
+
   it("rechazar desde enviada no altera el estado del animal", async () => {
     const prot = await signInAs("sync-prot@test.com", PASS);
     const { data: p } = await prot
