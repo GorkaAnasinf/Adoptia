@@ -153,6 +153,22 @@ describe("ShelterPublicProfile — hero (FEATURE-028)", () => {
     expect(screen.getByRole("heading", { name: "Refugio" })).toBeInTheDocument();
   });
 
+  it("sin logo, el avatar es la huella accesible con el nombre (IMPROVEMENT-024)", () => {
+    const { unmount } = conIntl(
+      <ShelterPublicProfile shelter={{ name: "Refugio Sin Logo" }} animals={[]} />,
+    );
+    expect(screen.getByRole("img", { name: "Refugio Sin Logo" })).toBeInTheDocument();
+    unmount();
+    conIntl(
+      <ShelterPublicProfile
+        shelter={{ name: "Refugio Con Logo", logo_url: "https://cdn/logo.png" }}
+        animals={[]}
+      />,
+    );
+    // Con logo, la imagen accesible es el propio logo (next/image con alt)
+    expect(screen.getByRole("img", { name: "Refugio Con Logo" })).toBeInTheDocument();
+  });
+
   it("el badge de verificada solo aparece con status verified", () => {
     const { unmount } = conIntl(
       <ShelterPublicProfile shelter={{ name: "Refugio", status: "verified" }} animals={[]} />,

@@ -64,4 +64,4 @@
 | [IMPROVEMENT-021](IMPROVEMENT-021.md) | Búsqueda por texto/raza en el listado de animales | improvement | hecho | 0.5 |
 | [IMPROVEMENT-022](IMPROVEMENT-022.md) | Ejecutar los E2E de Playwright en CI, aprovechando el stack que ya levanta el job de RLS | improvement | hecho | 0.5 |
 | [IMPROVEMENT-023](IMPROVEMENT-023.md) | Subir CI y el runtime a Node 22+ (hoy el job de la app va en Node 20, ya deprecado) | improvement | hecho | 0.5 |
-| [IMPROVEMENT-024](IMPROVEMENT-024.md) | Pulido menor del perfil público de protectora (fallbacks del hero y de las tarjetas) | improvement | recibido | — |
+| [IMPROVEMENT-024](IMPROVEMENT-024.md) | Pulido menor del perfil público de protectora (fallbacks del hero y de las tarjetas) | improvement | hecho | 0.5 |

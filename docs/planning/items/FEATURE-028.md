@@ -101,4 +101,4 @@ Migración `20260717_feature028_perfil_publico.sql`:
 ## Cierre (2026-07-17)
 
 - QA Scooby: ✅ APROBADO 13/13. Notas menores trasladadas a IMPROVEMENT-024.
-- **Pendiente de despliegue:** migración `20260717090000_feature028_perfil_publico.sql` aplicada solo en local — falta `supabase db push` a producción antes de liberar.
+- **Desplegado (2026-07-17):** migración `20260717090000_feature028_perfil_publico.sql` aplicada en producción (dry-run previo; verificada con `migration list --linked`, local = remote). Release `0aface2` en `main`, deploy de Vercel `dpl_8bHY7Rb…` en READY y verificado en real: el perfil rediseñado se sirve en `/protectoras/<slug>` (hero, buscador y mailto presentes en el HTML renderizado).

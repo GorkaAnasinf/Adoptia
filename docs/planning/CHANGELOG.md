@@ -2,11 +2,17 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/es/) adaptado. Versionado 0.x hasta el MVP.
 
+## [0.0.62] — 2026-07-17
+
+### Cambiado
+
+- **Los huecos sin foto muestran una huella en vez de texto suelto (IMPROVEMENT-024)**: el avatar del perfil de protectora sin logo y las tarjetas de animales sin foto (en el perfil y en la búsqueda, que comparten tarjeta) enseñan ahora el icono de huella, como pedía el mockup. El «Sin foto» no desaparece: queda como etiqueta accesible para lectores de pantalla. Salió del QA de FEATURE-028.
+
 ## [0.0.61] — 2026-07-17
 
 ### Añadido
 
-- **El perfil público de la protectora deja de ser una ficha plana y se convierte en un escaparate (FEATURE-028)**, a partir del mockup aportado: cabecera con **foto de portada** (la sube la protectora desde su editor; con degradado de marca si no hay), avatar redondo, badge de «Protectora verificada» y dos acciones directas — **Contactar** (abre el correo de la protectora) y **Donar** (el enlace externo de siempre, con su aviso). Debajo, una franja de **métricas que se ganan sola**s: adopciones conseguidas, animales en adopción y años de labor (con el nuevo campo «Año de fundación» del editor); cada cifra solo aparece si existe. «Sobre nosotros» y los servicios (voluntariado, acogida, web) conviven ahora a dos columnas con «Horario y ubicación», que estrena **mini-mapa** y dirección. Y la lista de animales pasa a las **tarjetas estándar de la búsqueda** (foto, raza, edad, corazón de favorito, «Adoptar») con **buscador por nombre y filtros de especie y edad** al instante, con contador. El recuento de adopciones sale de una función blindada en la base de datos que cuenta también los animales adoptados ya despublicados, sin exponer sus fichas. Migración `20260717090000` **pendiente de aplicar en producción**.
+- **El perfil público de la protectora deja de ser una ficha plana y se convierte en un escaparate (FEATURE-028)**, a partir del mockup aportado: cabecera con **foto de portada** (la sube la protectora desde su editor; con degradado de marca si no hay), avatar redondo, badge de «Protectora verificada» y dos acciones directas — **Contactar** (abre el correo de la protectora) y **Donar** (el enlace externo de siempre, con su aviso). Debajo, una franja de **métricas que se ganan sola**s: adopciones conseguidas, animales en adopción y años de labor (con el nuevo campo «Año de fundación» del editor); cada cifra solo aparece si existe. «Sobre nosotros» y los servicios (voluntariado, acogida, web) conviven ahora a dos columnas con «Horario y ubicación», que estrena **mini-mapa** y dirección. Y la lista de animales pasa a las **tarjetas estándar de la búsqueda** (foto, raza, edad, corazón de favorito, «Adoptar») con **buscador por nombre y filtros de especie y edad** al instante, con contador. El recuento de adopciones sale de una función blindada en la base de datos que cuenta también los animales adoptados ya despublicados, sin exponer sus fichas. Migración `20260717090000` **aplicada en producción el 2026-07-17**, verificada antes en local (dry-run y `migration list --linked`); release desplegado y comprobado en real.
 
 ## [0.0.60] — 2026-07-16
 
