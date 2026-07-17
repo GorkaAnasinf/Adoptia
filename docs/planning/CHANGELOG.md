@@ -2,6 +2,12 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/es/) adaptado. Versionado 0.x hasta el MVP.
 
+## [0.0.62] — 2026-07-17
+
+### Cambiado
+
+- **Los huecos sin foto muestran una huella en vez de texto suelto (IMPROVEMENT-024)**: el avatar del perfil de protectora sin logo y las tarjetas de animales sin foto (en el perfil y en la búsqueda, que comparten tarjeta) enseñan ahora el icono de huella, como pedía el mockup. El «Sin foto» no desaparece: queda como etiqueta accesible para lectores de pantalla. Salió del QA de FEATURE-028.
+
 ## [0.0.61] — 2026-07-17
 
 ### Añadido
