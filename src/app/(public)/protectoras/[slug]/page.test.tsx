@@ -5,7 +5,7 @@ import messages from "../../../../../messages/es.json";
 
 const maybeSingleMock = vi.fn();
 const rpcMock = vi.fn();
-const selectMocks: Record<string, ReturnType<typeof vi.fn>> = {};
+const selectMocks: Record<string, import("vitest").Mock<(campos: unknown) => void>> = {};
 
 // Builder encadenable: cualquier método devuelve el propio builder y es
 // "thenable" para que `await` resuelva con { data }.
