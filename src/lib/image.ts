@@ -47,6 +47,18 @@ export function rutaFoto(shelterId: string, animalId: string, file: File): strin
   return `${shelterId}/${animalId}/${crypto.randomUUID()}.${ext}`;
 }
 
+/**
+ * Ruta de la foto de portada del perfil (bucket `shelter-media`):
+ * `{shelterId}/cover.{ext}` — nombre fijo para que la re-subida sobreescriba
+ * (upsert) y no deje huérfanos en Storage.
+ */
+export function rutaPortada(shelterId: string, file: File): string {
+  const ext = file.name.includes(".")
+    ? (file.name.split(".").pop() as string).toLowerCase()
+    : "jpg";
+  return `${shelterId}/cover.${ext}`;
+}
+
 /** Ruta de una foto de instalaciones (bucket `shelter-media`): `{shelterId}/{uuid}.{ext}`. */
 export function rutaMediaShelter(shelterId: string, file: File): string {
   const ext = file.name.includes(".")
