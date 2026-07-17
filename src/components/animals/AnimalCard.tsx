@@ -1,4 +1,4 @@
-import { Building2, Mars, Venus } from "lucide-react";
+import { Building2, Mars, PawPrint, Venus } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
@@ -74,8 +74,12 @@ export function AnimalCard({
             className="object-cover transition-transform duration-300 group-hover:scale-105"
           />
         ) : (
-          <div className="flex h-full items-center justify-center text-sm text-muted-foreground">
-            {t("sinFoto")}
+          <div
+            role="img"
+            aria-label={t("sinFoto")}
+            className="flex h-full items-center justify-center text-muted-foreground"
+          >
+            <PawPrint className="size-10" aria-hidden="true" />
           </div>
         )}
         {animal.status !== "available" ? (
