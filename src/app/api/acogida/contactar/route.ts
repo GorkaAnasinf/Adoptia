@@ -1,15 +1,13 @@
 import { obtenerContactoAdoptante } from "@/lib/adopter-contact";
 import { enviarEmail } from "@/lib/email/mailer";
 import { plantillaContactoAcogida } from "@/lib/email/templates";
+import { propuestaAcogidaSchema } from "@/lib/schemas/acogida";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
-import { z } from "zod";
 
 function json(body: unknown, status = 200) {
   return Response.json(body, { status });
 }
-
-const bodySchema = z.object({ foster_user_id: z.uuid() });
 
 // Rate limit en memoria: una protectora no puede spamear acogedores.
 const LIMITE = 10;
@@ -20,10 +18,11 @@ export function __resetRateLimitForTests() {
 }
 
 /**
- * Primer contacto protectora → acogedor. El email va AL ACOGEDOR con los
- * datos de la protectora (nunca al revés: su contacto no se expone). Solo
- * puede contactarse a acogedores que el RPC de proximidad devuelve para la
- * protectora del llamante (verificada y dentro del radio del acogedor).
+ * Propuesta de acogida protectora → acogedor (FEATURE-029). Persiste la
+ * propuesta (una sola activa por pareja: índice único en BD) y envía el email
+ * AL ACOGEDOR con los datos de la protectora, el animal, la duración y el
+ * mensaje — nunca al revés: su contacto no se expone. Solo puede proponerse a
+ * acogedores que el RPC de proximidad devuelve para la protectora del llamante.
  */
 export async function POST(req: Request) {
   const supabase = await createClient();
@@ -40,10 +39,11 @@ export async function POST(req: Request) {
     return json({ error: { code: "rate_limited", message: "Demasiadas peticiones" } }, 429);
   }
 
-  const parsed = bodySchema.safeParse(await req.json().catch(() => null));
+  const parsed = propuestaAcogidaSchema.safeParse(await req.json().catch(() => null));
   if (!parsed.success) {
     return json({ error: { code: "validation", message: "Petición inválida" } }, 422);
   }
+  const { foster_user_id, animal_id, duracion, mensaje } = parsed.data;
 
   const { data: shelter } = await supabase
     .from("shelters")
@@ -63,7 +63,7 @@ export async function POST(req: Request) {
     p_shelter_id: shelter.id,
   });
   const foster = ((cercanos as { user_id: string; full_name: string | null }[] | null) ?? []).find(
-    (f) => f.user_id === parsed.data.foster_user_id,
+    (f) => f.user_id === foster_user_id,
   );
   if (!foster) {
     return json(
@@ -72,9 +72,50 @@ export async function POST(req: Request) {
     );
   }
 
-  const contacto = await obtenerContactoAdoptante(createAdminClient(), foster.user_id);
+  // El animal, si se indica, debe ser de la propia protectora (RLS lo re-verifica).
+  let animalName: string | null = null;
+  if (animal_id) {
+    const { data: animal } = await supabase
+      .from("animals")
+      .select("id, name")
+      .eq("id", animal_id)
+      .eq("shelter_id", shelter.id)
+      .maybeSingle();
+    if (!animal) {
+      return json(
+        { error: { code: "animal_not_found", message: "El animal no es de tu protectora" } },
+        404,
+      );
+    }
+    animalName = animal.name as string;
+  }
+
+  // Contacto antes de persistir: sin email posible, no se abre propuesta.
+  const contacto = await obtenerContactoAdoptante(createAdminClient(), foster_user_id);
   if (!contacto.email) {
     return json({ error: { code: "no_email", message: "El acogedor no tiene email" } }, 409);
+  }
+
+  const { error: errPropuesta } = await supabase.from("foster_proposals").insert({
+    shelter_id: shelter.id,
+    foster_user_id,
+    animal_id: animal_id ?? null,
+    duracion,
+    mensaje,
+  });
+  if (errPropuesta) {
+    if (errPropuesta.code === "23505") {
+      return json(
+        {
+          error: {
+            code: "proposal_exists",
+            message: "Ya tienes una propuesta abierta con este acogedor",
+          },
+        },
+        409,
+      );
+    }
+    return json({ error: { code: "db_error", message: "No se pudo guardar la propuesta" } }, 500);
   }
 
   const plantilla = plantillaContactoAcogida({
@@ -82,11 +123,23 @@ export async function POST(req: Request) {
     shelterName: shelter.name,
     shelterEmail: shelter.email,
     shelterPhone: shelter.phone,
+    animalName,
+    duracion,
+    mensaje,
   });
   try {
     await enviarEmail({ to: contacto.email, ...plantilla });
   } catch (err) {
-    console.error("No se pudo enviar el email de contacto de acogida:", err);
+    console.error("No se pudo enviar el email de propuesta de acogida:", err);
+    // Compensación: sin aviso al acogedor la propuesta no debe quedar abierta
+    // (el índice único bloquearía el reintento). RLS no deja borrar a la
+    // protectora: va con el cliente admin.
+    await createAdminClient()
+      .from("foster_proposals")
+      .delete()
+      .eq("shelter_id", shelter.id)
+      .eq("foster_user_id", foster_user_id)
+      .eq("status", "enviada");
     return json({ error: { code: "email_error", message: "No se pudo enviar el aviso" } }, 502);
   }
 

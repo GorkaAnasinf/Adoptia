@@ -1,11 +1,11 @@
 import { render, screen } from "@testing-library/react";
 import { NextIntlClientProvider } from "next-intl";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import messages from "../../../../../messages/es.json";
+import messages from "../../../../messages/es.json";
 
 const { state } = vi.hoisted(() => ({
   state: {
-    user: { id: "u1" } as { id: string } | null,
+    user: null as { id: string } | null,
     fosterHome: null as Record<string, unknown> | null,
     propuestas: [] as Record<string, unknown>[],
   },
@@ -13,9 +13,6 @@ const { state } = vi.hoisted(() => ({
 
 vi.mock("next/navigation", () => ({
   useRouter: () => ({ refresh: vi.fn(), push: vi.fn() }),
-  redirect: vi.fn((destino: string) => {
-    throw new Error(`REDIRECT:${destino}`);
-  }),
 }));
 
 vi.mock("@/components/shelters/MapPinPicker", () => ({
@@ -51,49 +48,31 @@ vi.mock("next-intl/server", () => ({
   }),
 }));
 
-import MiAcogidaPage from "./page";
+import AcogidaPage from "./page";
 
 async function renderPagina() {
   return render(
     <NextIntlClientProvider locale="es" messages={messages}>
-      {await MiAcogidaPage()}
+      {await AcogidaPage()}
     </NextIntlClientProvider>,
   );
 }
 
-describe("Mi cuenta — Acogidas", () => {
+describe("Página pública de acogida", () => {
   beforeEach(() => {
-    state.user = { id: "u1" };
+    state.user = null;
     state.fosterHome = null;
     state.propuestas = [];
   });
 
-  it("sin sesión redirige a /login", async () => {
-    state.user = null;
-    await expect(MiAcogidaPage()).rejects.toThrow("REDIRECT:/login");
-  });
-
-  it("sin registro de acogedor muestra el formulario de alta", async () => {
+  it("sin sesión invita a iniciar sesión y no muestra propuestas", async () => {
     await renderPagina();
-    expect(screen.getByRole("button", { name: messages.acogida.registrar })).toBeInTheDocument();
-    expect(screen.queryByText(messages.acogida.yaRegistradoTitle)).not.toBeInTheDocument();
+    expect(screen.getByText(messages.acogida.loginNecesario)).toBeInTheDocument();
+    expect(screen.queryByText(messages.acogida.recibidasTitulo)).not.toBeInTheDocument();
   });
 
-  it("con registro activo muestra el estado y la gestión (pausar / baja)", async () => {
-    state.fosterHome = {
-      user_id: "u1",
-      city: "Bilbao",
-      radius_km: 25,
-      condiciones: { especies: ["dog"], vivienda: "casa", jardin: true },
-      active: true,
-    };
-    await renderPagina();
-    expect(screen.getByText(messages.acogida.estadoActivo)).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: messages.acogida.pausar })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: messages.acogida.baja })).toBeInTheDocument();
-  });
-
-  it("con registro muestra las propuestas recibidas", async () => {
+  it("acogedor registrado ve sus propuestas recibidas", async () => {
+    state.user = { id: "u1" };
     state.fosterHome = {
       user_id: "u1",
       city: "Bilbao",
@@ -115,11 +94,12 @@ describe("Mi cuenta — Acogidas", () => {
     await renderPagina();
     expect(screen.getByText(messages.acogida.recibidasTitulo)).toBeInTheDocument();
     expect(screen.getByText(/Protectora Bilbao/)).toBeInTheDocument();
-    expect(screen.getByText(/Trufa/)).toBeInTheDocument();
   });
 
-  it("sin registro no muestra el bloque de propuestas", async () => {
+  it("usuario con sesión pero sin registro: formulario de alta sin bloque de propuestas", async () => {
+    state.user = { id: "u1" };
     await renderPagina();
+    expect(screen.getByRole("button", { name: messages.acogida.registrar })).toBeInTheDocument();
     expect(screen.queryByText(messages.acogida.recibidasTitulo)).not.toBeInTheDocument();
   });
 });
