@@ -135,6 +135,21 @@ describe("Panel de casas de acogida", () => {
     ).toBeInTheDocument();
   });
 
+  it("con relevo pedido muestra el aviso con fecha y motivo", async () => {
+    state.propuestas = [
+      {
+        ...PROPUESTA,
+        status: "aceptada",
+        relevo_pedido_at: "2026-07-17T10:00:00Z",
+        relevo_motivo: "Obras en casa",
+        relevo_fecha_limite: "2026-08-01",
+      },
+    ];
+    await renderPagina();
+    expect(screen.getAllByText(/2026-08-01/).length).toBeGreaterThan(0);
+    expect(screen.getByText(/Obras en casa/)).toBeInTheDocument();
+  });
+
   it("una protectora sin verificar ve el aviso, no la lista", async () => {
     state.shelter = { id: "s1", status: "pending" };
     await renderPagina();
