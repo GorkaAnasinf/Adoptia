@@ -19,11 +19,16 @@
 Los items `hecho`/`descartado` no aparecen aquí — su histórico vive en [CHANGELOG](CHANGELOG.md) y git.
 
 <!-- RENDER:START -->
-### 📥 Recibido (5)
+### ✅ Listo para desarrollo (1)
 
 | Item | Título | Prioridad | Hito |
 |------|--------|-----------|------|
-| [FEATURE-029](items/FEATURE-029.md) | Propuestas de acogida estructuradas con trazabilidad | media | — |
+| [FEATURE-029](items/FEATURE-029.md) | Propuestas de acogida estructuradas con trazabilidad | media | 0.5 |
+
+### 📥 Recibido (4)
+
+| Item | Título | Prioridad | Hito |
+|------|--------|-----------|------|
 | [FEATURE-030](items/FEATURE-030.md) | Relevo de acogida (emergencias del acogedor) | media | — |
 | [FEATURE-031](items/FEATURE-031.md) | Tablón de necesidades de protectoras (pedir ayuda material) | media | — |
 | [FEATURE-032](items/FEATURE-032.md) | Ofertas de donación de particulares (material para protectoras) | media | — |
