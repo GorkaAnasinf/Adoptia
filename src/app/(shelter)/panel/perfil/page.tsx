@@ -15,6 +15,8 @@ type ShelterRow = {
   id: string;
   name: string;
   logo_url: string | null;
+  cover_url: string | null;
+  founded_year: number | null;
   description: string | null;
   donation_link: string | null;
   city: string | null;
@@ -36,7 +38,7 @@ export default async function PerfilPage() {
     ? await supabase
         .from("shelters")
         .select(
-          "id, name, logo_url, description, donation_link, city, province, website, social_links, opening_hours, accepts_volunteers, accepts_fostering, status",
+          "id, name, logo_url, cover_url, founded_year, description, donation_link, city, province, website, social_links, opening_hours, accepts_volunteers, accepts_fostering, status",
         )
         .eq("owner_id", user.id)
         .maybeSingle()
@@ -66,6 +68,8 @@ export default async function PerfilPage() {
       base={{ name: s.name, city: s.city, province: s.province, website: s.website, status: s.status }}
       initial={{
         logoUrl: s.logo_url ?? "",
+        coverUrl: s.cover_url ?? "",
+        foundedYear: s.founded_year != null ? String(s.founded_year) : "",
         description: s.description ?? "",
         donationLink: s.donation_link ?? "",
         openingHours: s.opening_hours ?? {},

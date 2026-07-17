@@ -40,6 +40,7 @@
 | [FEATURE-025](FEATURE-025.md) | Rediseño del listado/mapa de Perdidos y encontrados (mockup nuevo) | feature | hecho | 0.5 |
 | [FEATURE-026](FEATURE-026.md) | Rediseño de la ficha del aviso a dos columnas (mockup nuevo) | feature | hecho | 0.5 |
 | [FEATURE-027](FEATURE-027.md) | Rediseño del alta de aviso en tarjetas de sección (mockup nuevo) | feature | hecho | 0.5 |
+| [FEATURE-028](FEATURE-028.md) | Rediseño del perfil público de protectora (mockup nuevo) | feature | hecho | 0.5 |
 | [IMPROVEMENT-001](IMPROVEMENT-001.md) | De-duplicar el slug de protectora (nombres repetidos) | improvement | hecho | — |
 | [IMPROVEMENT-002](IMPROVEMENT-002.md) | Rediseño UX del wizard de alta de protectora (+ fix del mapa gris) | improvement | hecho | 0.2 |
 | [IMPROVEMENT-003](IMPROVEMENT-003.md) | Pulido del shell chrome (sidebar + cabecera) hacia el mockup de Stitch | improvement | hecho | 0.2 |
@@ -63,3 +64,4 @@
 | [IMPROVEMENT-021](IMPROVEMENT-021.md) | Búsqueda por texto/raza en el listado de animales | improvement | hecho | 0.5 |
 | [IMPROVEMENT-022](IMPROVEMENT-022.md) | Ejecutar los E2E de Playwright en CI, aprovechando el stack que ya levanta el job de RLS | improvement | hecho | 0.5 |
 | [IMPROVEMENT-023](IMPROVEMENT-023.md) | Subir CI y el runtime a Node 22+ (hoy el job de la app va en Node 20, ya deprecado) | improvement | hecho | 0.5 |
+| [IMPROVEMENT-024](IMPROVEMENT-024.md) | Pulido menor del perfil público de protectora (fallbacks del hero y de las tarjetas) | improvement | recibido | — |

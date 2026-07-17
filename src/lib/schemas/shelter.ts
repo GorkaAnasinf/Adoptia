@@ -126,6 +126,15 @@ export const socialLinksSchema = z
 export const perfilSchema = z.object({
   description: z.string().trim().max(2000).optional(),
   logoUrl: z.string().optional(),
+  // Perfil público rediseñado (FEATURE-028): portada del hero y año de
+  // fundación (años de labor). El máximo se evalúa al validar, no al cargar.
+  coverUrl: z.string().optional(),
+  foundedYear: z
+    .number()
+    .int()
+    .min(1900)
+    .refine((v) => v <= new Date().getFullYear(), { message: "anio_invalido" })
+    .optional(),
   // Donaciones (FEATURE-013): enlace externo a plataforma permitida.
   donationLink: z
     .union([z.string().trim().regex(ENLACE_PAGO_RE, "enlace_pago_invalido"), z.literal("")])

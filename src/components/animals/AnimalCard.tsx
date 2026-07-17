@@ -15,6 +15,8 @@ export interface AnimalSearchResult {
   species: "dog" | "cat" | "other";
   sex: "male" | "female" | "unknown";
   size: "small" | "medium" | "large" | null;
+  /** Solo llega en contextos con select propio (perfil de protectora); el RPC no la devuelve. */
+  breed?: string | null;
   birth_date_approx: string | null;
   status: AnimalStatus;
   published_at: string;
@@ -51,6 +53,7 @@ export function AnimalCard({
 
   const edad = edadAproximada(animal.birth_date_approx);
   const datos = [
+    animal.breed || null,
     edad ? t(edad.unidad === "anios" ? "edadAnios" : "edadMeses", { n: edad.n }) : null,
     animal.size ? tAnimal(CLAVE_TAMANO[animal.size]) : null,
     animal.distance_m !== null ? t("distanciaDe", { km: Math.round(animal.distance_m / 1000) }) : null,

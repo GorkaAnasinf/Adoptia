@@ -3,6 +3,7 @@ import {
   PAGE_SIZE,
   buildQueryString,
   edadAproximada,
+  edadEnBucket,
   paginasVisibles,
   parseAnimalSearch,
   searchToRpcArgs,
@@ -221,6 +222,22 @@ describe("edadAproximada", () => {
     expect(edadAproximada(null, HOY)).toBeNull();
     expect(edadAproximada("no-fecha", HOY)).toBeNull();
     expect(edadAproximada("2030-01-01", HOY)).toBeNull();
+  });
+});
+
+describe("edadEnBucket", () => {
+  it("clasifica por los mismos límites que la búsqueda ([desde, hasta) en años)", () => {
+    expect(edadEnBucket("2026-02-01", "cachorro", HOY)).toBe(true); // 5 meses
+    expect(edadEnBucket("2024-01-15", "joven", HOY)).toBe(true); // 2 años
+    expect(edadEnBucket("2020-01-15", "adulto", HOY)).toBe(true); // 6 años
+    expect(edadEnBucket("2015-01-15", "senior", HOY)).toBe(true); // 11 años
+    expect(edadEnBucket("2024-01-15", "cachorro", HOY)).toBe(false);
+    expect(edadEnBucket("2024-01-15", "adulto", HOY)).toBe(false);
+  });
+
+  it("sin fecha o inválida no encaja en ningún bucket", () => {
+    expect(edadEnBucket(null, "cachorro", HOY)).toBe(false);
+    expect(edadEnBucket("no-fecha", "senior", HOY)).toBe(false);
   });
 });
 

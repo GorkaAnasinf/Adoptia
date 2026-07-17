@@ -80,7 +80,7 @@ Para centrar el desarrollo en un lado de la app cada vez, el 0.2 se aborda en do
 | [FEATURE-015](items/FEATURE-015.md) | Contenido educativo sobre adopción responsable | hecho | baja |
 | [FEATURE-016](items/FEATURE-016.md) | Registro de casas de acogida | hecho | baja |
 
-### Hito 0.5 — 100% completado (22/22)
+### Hito 0.5 — 100% completado (23/23)
 
 | Item | Título | Estado | Prioridad |
 |------|--------|--------|-----------|
@@ -93,6 +93,7 @@ Para centrar el desarrollo en un lado de la app cada vez, el 0.2 se aborda en do
 | [FEATURE-025](items/FEATURE-025.md) | Rediseño del listado/mapa de Perdidos y encontrados (mockup nuevo) | hecho | alta |
 | [FEATURE-026](items/FEATURE-026.md) | Rediseño de la ficha del aviso a dos columnas (mockup nuevo) | hecho | alta |
 | [FEATURE-027](items/FEATURE-027.md) | Rediseño del alta de aviso en tarjetas de sección (mockup nuevo) | hecho | alta |
+| [FEATURE-028](items/FEATURE-028.md) | Rediseño del perfil público de protectora (mockup nuevo) | hecho | alta |
 | [IMPROVEMENT-016](items/IMPROVEMENT-016.md) | Redirección post-login según rol (protectora al panel, admin a admin) | hecho | alta |
 | [IMPROVEMENT-020](items/IMPROVEMENT-020.md) | Rediseño de la ficha pública de animal | hecho | alta |
 | [BUG-005](items/BUG-005.md) | npm run test -- --coverage revienta al parsear globals.css y las guías .md | hecho | media |
@@ -106,4 +107,10 @@ Para centrar el desarrollo en un lado de la app cada vez, el 0.2 se aborda en do
 | [IMPROVEMENT-022](items/IMPROVEMENT-022.md) | Ejecutar los E2E de Playwright en CI, aprovechando el stack que ya levanta el job de RLS | hecho | media |
 | [IMPROVEMENT-023](items/IMPROVEMENT-023.md) | Subir CI y el runtime a Node 22+ (hoy el job de la app va en Node 20, ya deprecado) | hecho | media |
 | [IMPROVEMENT-021](items/IMPROVEMENT-021.md) | Búsqueda por texto/raza en el listado de animales | hecho | baja |
+
+### Sin hito asignado (1)
+
+_Capturas pendientes de promover — no forman parte del roadmap todavía._
+
+- [IMPROVEMENT-024](items/IMPROVEMENT-024.md) — Pulido menor del perfil público de protectora (fallbacks del hero y de las tarjetas) (recibido)
 <!-- RENDER:END -->
