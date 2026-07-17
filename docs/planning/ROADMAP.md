@@ -108,4 +108,15 @@ Para centrar el desarrollo en un lado de la app cada vez, el 0.2 se aborda en do
 | [IMPROVEMENT-023](items/IMPROVEMENT-023.md) | Subir CI y el runtime a Node 22+ (hoy el job de la app va en Node 20, ya deprecado) | hecho | media |
 | [IMPROVEMENT-021](items/IMPROVEMENT-021.md) | Búsqueda por texto/raza en el listado de animales | hecho | baja |
 | [IMPROVEMENT-024](items/IMPROVEMENT-024.md) | Pulido menor del perfil público de protectora (fallbacks del hero y de las tarjetas) | hecho | baja |
+
+### Sin hito asignado (6)
+
+_Capturas pendientes de promover — no forman parte del roadmap todavía._
+
+- [FEATURE-029](items/FEATURE-029.md) — Propuestas de acogida estructuradas con trazabilidad (recibido)
+- [FEATURE-030](items/FEATURE-030.md) — Relevo de acogida (emergencias del acogedor) (recibido)
+- [FEATURE-031](items/FEATURE-031.md) — Tablón de necesidades de protectoras (pedir ayuda material) (recibido)
+- [FEATURE-032](items/FEATURE-032.md) — Ofertas de donación de particulares (material para protectoras) (recibido)
+- [FEATURE-033](items/FEATURE-033.md) — Alertas de búsqueda guardada (avisos de nuevos animales) (recibido)
+- [IMPROVEMENT-025](items/IMPROVEMENT-025.md) — Acogidas visibles en la navegación del usuario (recibido)
 <!-- RENDER:END -->

@@ -106,5 +106,10 @@ _Nada en desarrollo en este momento._
 
 #### 🗓️ Previsto
 
-_Backlog vacío._
+- Propuestas de acogida estructuradas con trazabilidad — hito sin asignar ([FEATURE-029](../planning/items/FEATURE-029.md))
+- Relevo de acogida (emergencias del acogedor) — hito sin asignar ([FEATURE-030](../planning/items/FEATURE-030.md))
+- Tablón de necesidades de protectoras (pedir ayuda material) — hito sin asignar ([FEATURE-031](../planning/items/FEATURE-031.md))
+- Ofertas de donación de particulares (material para protectoras) — hito sin asignar ([FEATURE-032](../planning/items/FEATURE-032.md))
+- Alertas de búsqueda guardada (avisos de nuevos animales) — hito sin asignar ([FEATURE-033](../planning/items/FEATURE-033.md))
+- Acogidas visibles en la navegación del usuario — hito sin asignar ([IMPROVEMENT-025](../planning/items/IMPROVEMENT-025.md))
 <!-- RENDER:END -->
