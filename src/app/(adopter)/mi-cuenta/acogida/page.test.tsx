@@ -7,6 +7,7 @@ const { state } = vi.hoisted(() => ({
   state: {
     user: { id: "u1" } as { id: string } | null,
     fosterHome: null as Record<string, unknown> | null,
+    propuestas: [] as Record<string, unknown>[],
   },
 }));
 
@@ -28,9 +29,18 @@ vi.mock("@/lib/supabase/client", () => ({
 vi.mock("@/lib/supabase/server", () => ({
   createClient: vi.fn(async () => ({
     auth: { getUser: vi.fn(async () => ({ data: { user: state.user } })) },
-    from: vi.fn(() => ({
-      select: () => ({ eq: () => ({ maybeSingle: async () => ({ data: state.fosterHome }) }) }),
-    })),
+    from: vi.fn((tabla: string) => {
+      if (tabla === "foster_proposals") {
+        return {
+          select: () => ({
+            eq: () => ({ order: async () => ({ data: state.propuestas }) }),
+          }),
+        };
+      }
+      return {
+        select: () => ({ eq: () => ({ maybeSingle: async () => ({ data: state.fosterHome }) }) }),
+      };
+    }),
   })),
 }));
 
@@ -55,6 +65,7 @@ describe("Mi cuenta — Acogidas", () => {
   beforeEach(() => {
     state.user = { id: "u1" };
     state.fosterHome = null;
+    state.propuestas = [];
   });
 
   it("sin sesión redirige a /login", async () => {
@@ -80,5 +91,35 @@ describe("Mi cuenta — Acogidas", () => {
     expect(screen.getByText(messages.acogida.estadoActivo)).toBeInTheDocument();
     expect(screen.getByRole("button", { name: messages.acogida.pausar })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: messages.acogida.baja })).toBeInTheDocument();
+  });
+
+  it("con registro muestra las propuestas recibidas", async () => {
+    state.fosterHome = {
+      user_id: "u1",
+      city: "Bilbao",
+      radius_km: 25,
+      condiciones: { especies: ["dog"] },
+      active: true,
+    };
+    state.propuestas = [
+      {
+        id: "p1",
+        duracion: "2 semanas",
+        mensaje: "Camada de cachorros",
+        status: "enviada",
+        created_at: "2026-07-15T10:00:00Z",
+        shelters: { name: "Protectora Bilbao" },
+        animals: { name: "Trufa" },
+      },
+    ];
+    await renderPagina();
+    expect(screen.getByText(messages.acogida.recibidasTitulo)).toBeInTheDocument();
+    expect(screen.getByText(/Protectora Bilbao/)).toBeInTheDocument();
+    expect(screen.getByText(/Trufa/)).toBeInTheDocument();
+  });
+
+  it("sin registro no muestra el bloque de propuestas", async () => {
+    await renderPagina();
+    expect(screen.queryByText(messages.acogida.recibidasTitulo)).not.toBeInTheDocument();
   });
 });
