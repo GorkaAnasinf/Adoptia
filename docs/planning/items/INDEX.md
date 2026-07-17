@@ -41,6 +41,11 @@
 | [FEATURE-026](FEATURE-026.md) | Rediseño de la ficha del aviso a dos columnas (mockup nuevo) | feature | hecho | 0.5 |
 | [FEATURE-027](FEATURE-027.md) | Rediseño del alta de aviso en tarjetas de sección (mockup nuevo) | feature | hecho | 0.5 |
 | [FEATURE-028](FEATURE-028.md) | Rediseño del perfil público de protectora (mockup nuevo) | feature | hecho | 0.5 |
+| [FEATURE-029](FEATURE-029.md) | Propuestas de acogida estructuradas con trazabilidad | feature | recibido | — |
+| [FEATURE-030](FEATURE-030.md) | Relevo de acogida (emergencias del acogedor) | feature | recibido | — |
+| [FEATURE-031](FEATURE-031.md) | Tablón de necesidades de protectoras (pedir ayuda material) | feature | recibido | — |
+| [FEATURE-032](FEATURE-032.md) | Ofertas de donación de particulares (material para protectoras) | feature | recibido | — |
+| [FEATURE-033](FEATURE-033.md) | Alertas de búsqueda guardada (avisos de nuevos animales) | feature | recibido | — |
 | [IMPROVEMENT-001](IMPROVEMENT-001.md) | De-duplicar el slug de protectora (nombres repetidos) | improvement | hecho | — |
 | [IMPROVEMENT-002](IMPROVEMENT-002.md) | Rediseño UX del wizard de alta de protectora (+ fix del mapa gris) | improvement | hecho | 0.2 |
 | [IMPROVEMENT-003](IMPROVEMENT-003.md) | Pulido del shell chrome (sidebar + cabecera) hacia el mockup de Stitch | improvement | hecho | 0.2 |
@@ -65,3 +70,4 @@
 | [IMPROVEMENT-022](IMPROVEMENT-022.md) | Ejecutar los E2E de Playwright en CI, aprovechando el stack que ya levanta el job de RLS | improvement | hecho | 0.5 |
 | [IMPROVEMENT-023](IMPROVEMENT-023.md) | Subir CI y el runtime a Node 22+ (hoy el job de la app va en Node 20, ya deprecado) | improvement | hecho | 0.5 |
 | [IMPROVEMENT-024](IMPROVEMENT-024.md) | Pulido menor del perfil público de protectora (fallbacks del hero y de las tarjetas) | improvement | hecho | 0.5 |
+| [IMPROVEMENT-025](IMPROVEMENT-025.md) | Acogidas visibles en la navegación del usuario | improvement | hecho | 0.5 |

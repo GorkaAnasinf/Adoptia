@@ -183,6 +183,10 @@ describe("UserMenu", () => {
     expect(
       screen.getByRole("menuitem", { name: messages.shell.navMyAppointments }),
     ).toHaveAttribute("href", "/mi-cuenta/citas");
+    expect(screen.getByRole("menuitem", { name: messages.shell.navFosterCare })).toHaveAttribute(
+      "href",
+      "/mi-cuenta/acogida",
+    );
     expect(
       screen.queryByRole("menuitem", { name: messages.shell.navShelterPanel }),
     ).not.toBeInTheDocument();

@@ -2,6 +2,12 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/es/) adaptado. Versionado 0.x hasta el MVP.
 
+## [0.0.63] — 2026-07-17
+
+### Añadido
+
+- **«Acogidas» aparece por fin en la navegación del usuario (IMPROVEMENT-025)**: hasta ahora ofrecerse como casa de acogida solo se descubría por un enlace del pie de página. Ahora el adoptante tiene la entrada «Acogidas» en su área personal (**Mi cuenta**) y en el menú del avatar, que lleva a una pantalla propia con todo lo que ya existía: darse de alta, ver si está disponible o en pausa, editar condiciones, pausarse o darse de baja. La página pública sigue igual para quien llegue sin cuenta. También se capturaron seis items nuevos del análisis de acogidas y ayuda material (FEATURE-029 a 033 e IMPROVEMENT-025).
+
 ## [0.0.62] — 2026-07-17
 
 ### Cambiado

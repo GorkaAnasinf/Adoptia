@@ -6,6 +6,7 @@ import {
   Clock,
   FileText,
   Heart,
+  HeartHandshake,
   Home,
   type LucideIcon,
   LifeBuoy,
@@ -48,6 +49,7 @@ const NAV: Record<Role, Item[]> = {
     { key: "navFavorites", href: "/mi-cuenta/favoritos", icon: Heart, exists: true },
     { key: "navMyAppointments", href: "/mi-cuenta/citas", icon: CalendarHeart, exists: true },
     { key: "navMyAlerts", href: "/mi-cuenta/alertas", icon: Bell, exists: true },
+    { key: "navFosterCare", href: "/mi-cuenta/acogida", icon: HeartHandshake, exists: true },
   ],
 };
 

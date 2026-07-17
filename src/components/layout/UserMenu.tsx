@@ -6,6 +6,7 @@ import {
   CalendarHeart,
   FileText,
   Heart,
+  HeartHandshake,
   LogOut,
   type LucideIcon,
   Store,
@@ -33,6 +34,7 @@ const ACCESOS: Record<UserRole, MenuItem[]> = {
     { key: "navFavorites", href: "/mi-cuenta/favoritos", icon: Heart },
     { key: "navMyRequests", href: "/mi-cuenta/solicitudes", icon: FileText },
     { key: "navMyAppointments", href: "/mi-cuenta/citas", icon: CalendarHeart },
+    { key: "navFosterCare", href: "/mi-cuenta/acogida", icon: HeartHandshake },
   ],
 };
 
