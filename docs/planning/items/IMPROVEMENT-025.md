@@ -2,7 +2,7 @@
 id: IMPROVEMENT-025
 tipo: improvement
 titulo: Acogidas visibles en la navegación del usuario
-estado: desarrollo
+estado: hecho
 prioridad: media
 hito: "0.5"
 duplicado_de: null
@@ -70,9 +70,15 @@ Las casas de acogida son una necesidad constante de las protectoras, pero el reg
 
 ## Criterios de aceptación / Casuística a cubrir
 
-- [ ] Adoptante autenticado ve «Acogidas» en el sidebar de `/mi-cuenta` y en el menú del avatar; un clic lleva a `/mi-cuenta/acogida`.
-- [ ] Con registro de acogedor: la página muestra el estado (Disponible/Pausado) y permite editar / pausar / darse de baja (funcionalidad existente de `AcogidaForm`).
-- [ ] Sin registro: la página muestra el formulario de alta con consentimiento.
-- [ ] Sin sesión: `/mi-cuenta/acogida` redirige a `/login`.
-- [ ] La página pública `/acogida` sigue funcionando igual (footer y sitemap intactos).
-- [ ] Textos nuevos en `messages/es.json`; suite completa verde, lint y `tsc` limpios.
+- [x] Adoptante autenticado ve «Acogidas» en el sidebar de `/mi-cuenta` y en el menú del avatar; un clic lleva a `/mi-cuenta/acogida`.
+- [x] Con registro de acogedor: la página muestra el estado (Disponible/Pausado) y permite editar / pausar / darse de baja (funcionalidad existente de `AcogidaForm`).
+- [x] Sin registro: la página muestra el formulario de alta con consentimiento.
+- [x] Sin sesión: `/mi-cuenta/acogida` redirige a `/login`.
+- [x] La página pública `/acogida` sigue funcionando igual (footer y sitemap intactos).
+- [x] Textos nuevos en `messages/es.json`; suite completa verde, lint y `tsc` limpios.
+
+## Cierre (2026-07-17)
+
+- Página nueva `/mi-cuenta/acogida` (server component, redirect a `/login` sin sesión) que reutiliza `AcogidaForm` — alta, estado Disponible/Pausado, editar, pausar y baja sin duplicar lógica. La pública `/acogida` queda intacta.
+- Navegación: entrada «Acogidas» (`HeartHandshake`) en el sidebar de adoptante y en `ACCESOS.adopter` del menú del avatar; clave `shell.navFosterCare` en `es.json`.
+- QA Scooby 6/6. TDD: 3 tests nuevos (sidebar, menú, página con redirect/alta/gestión). Suite 836 passed + 143 RLS skipped (Supabase local parado; sin cambios de RLS), lint y `tsc` limpios, cobertura 82,0 % / 96,7 % `src/lib`.

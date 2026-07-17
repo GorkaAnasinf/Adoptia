@@ -99,6 +99,7 @@ Estado de cada capacidad en lenguaje de usuario. Se regenera con `python scripts
 - Ejecutar los E2E de Playwright en CI, aprovechando el stack que ya levanta el job de RLS ([IMPROVEMENT-022](../planning/items/IMPROVEMENT-022.md))
 - Subir CI y el runtime a Node 22+ (hoy el job de la app va en Node 20, ya deprecado) ([IMPROVEMENT-023](../planning/items/IMPROVEMENT-023.md))
 - Pulido menor del perfil público de protectora (fallbacks del hero y de las tarjetas) ([IMPROVEMENT-024](../planning/items/IMPROVEMENT-024.md))
+- Acogidas visibles en la navegación del usuario ([IMPROVEMENT-025](../planning/items/IMPROVEMENT-025.md))
 
 #### 🚧 En camino (en desarrollo ahora)
 
@@ -106,7 +107,6 @@ _Nada en desarrollo en este momento._
 
 #### 🗓️ Previsto
 
-- Acogidas visibles en la navegación del usuario — hito 0.5 ([IMPROVEMENT-025](../planning/items/IMPROVEMENT-025.md))
 - Propuestas de acogida estructuradas con trazabilidad — hito sin asignar ([FEATURE-029](../planning/items/FEATURE-029.md))
 - Relevo de acogida (emergencias del acogedor) — hito sin asignar ([FEATURE-030](../planning/items/FEATURE-030.md))
 - Tablón de necesidades de protectoras (pedir ayuda material) — hito sin asignar ([FEATURE-031](../planning/items/FEATURE-031.md))
