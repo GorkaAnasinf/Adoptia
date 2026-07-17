@@ -104,5 +104,5 @@ _Nada en desarrollo en este momento._
 
 #### 🗓️ Previsto
 
-_Backlog vacío._
+- Rediseño del perfil público de protectora (mockup nuevo) — hito 0.5 ([FEATURE-028](../planning/items/FEATURE-028.md))
 <!-- RENDER:END -->
