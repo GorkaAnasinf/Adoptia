@@ -39,6 +39,7 @@ describe("AppSidebar", () => {
       navFavorites: "/mi-cuenta/favoritos",
       navMyAppointments: "/mi-cuenta/citas",
       navMyAlerts: "/mi-cuenta/alertas",
+      navFosterCare: "/mi-cuenta/acogida",
     };
     for (const [clave, href] of Object.entries(rutas)) {
       expect(
