@@ -80,7 +80,7 @@ Para centrar el desarrollo en un lado de la app cada vez, el 0.2 se aborda en do
 | [FEATURE-015](items/FEATURE-015.md) | Contenido educativo sobre adopción responsable | hecho | baja |
 | [FEATURE-016](items/FEATURE-016.md) | Registro de casas de acogida | hecho | baja |
 
-### Hito 0.5 — 100% completado (26/26)
+### Hito 0.5 — 100% completado (27/27)
 
 | Item | Título | Estado | Prioridad |
 |------|--------|--------|-----------|
@@ -108,6 +108,7 @@ Para centrar el desarrollo en un lado de la app cada vez, el 0.2 se aborda en do
 | [IMPROVEMENT-022](items/IMPROVEMENT-022.md) | Ejecutar los E2E de Playwright en CI, aprovechando el stack que ya levanta el job de RLS | hecho | media |
 | [IMPROVEMENT-023](items/IMPROVEMENT-023.md) | Subir CI y el runtime a Node 22+ (hoy el job de la app va en Node 20, ya deprecado) | hecho | media |
 | [IMPROVEMENT-025](items/IMPROVEMENT-025.md) | Acogidas visibles en la navegación del usuario | hecho | media |
+| [IMPROVEMENT-026](items/IMPROVEMENT-026.md) | Sincronizar el estado del animal con su propuesta de acogida | hecho | media |
 | [IMPROVEMENT-021](items/IMPROVEMENT-021.md) | Búsqueda por texto/raza en el listado de animales | hecho | baja |
 | [IMPROVEMENT-024](items/IMPROVEMENT-024.md) | Pulido menor del perfil público de protectora (fallbacks del hero y de las tarjetas) | hecho | baja |
 
