@@ -109,6 +109,14 @@ adoptantes distintos con solicitud sobre el animal — sin filtrar identidades; 
 `adoption_requests` sigue sin lectura pública). La ficha lo consume con
 `supabase.rpc("contar_interesados", { p_animal_id })`.
 
+Al mismo patrón pertenece **`shelter_public_stats`** (FEATURE-028, migración
+`20260717090000`, que también añade `shelters.cover_url` y `shelters.founded_year`):
+devuelve los conteos agregados del perfil público — `adopciones` (todos los `status =
+'adopted'`, **incluidos los despublicados** que la RLS pública no deja ver como filas) y
+`disponibles` (publicados con `status = 'available'`) — solo si la protectora está
+`verified`, es del caller o el caller es admin; si no, 0 filas. Lo consume
+`/protectoras/[slug]` vía `supabase.rpc("shelter_public_stats", { p_shelter_id })`.
+
 ## Migraciones
 
 SQL versionado en `supabase/migrations/` con la CLI de Supabase (`supabase migration new`, `supabase db push`). Nunca cambios manuales en el dashboard sin su migración correspondiente. Seed de demo en `supabase/seed.sql`.

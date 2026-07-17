@@ -14,6 +14,8 @@ export type ShelterForm = {
   lng: number;
   description?: string;
   logoUrl?: string;
+  coverUrl?: string;
+  foundedYear?: number;
   donationLink?: string;
   openingHours: OpeningHours;
   socialLinks: SocialLinks;
@@ -71,6 +73,8 @@ export function shelterRowToForm(row: Record<string, unknown> | null): Partial<S
     postalCode: (row.postal_code as string) ?? undefined,
     description: (row.description as string) ?? undefined,
     logoUrl: (row.logo_url as string) ?? undefined,
+    coverUrl: (row.cover_url as string) ?? undefined,
+    foundedYear: (row.founded_year as number) ?? undefined,
     donationLink: (row.donation_link as string) ?? undefined,
     openingHours: (row.opening_hours as ShelterForm["openingHours"]) ?? {},
     socialLinks: (row.social_links as ShelterForm["socialLinks"]) ?? {},
@@ -107,6 +111,8 @@ export function formToShelterRow(
     postal_code: form.postalCode,
     description: form.description ?? null,
     logo_url: form.logoUrl ?? null,
+    cover_url: form.coverUrl ?? null,
+    founded_year: form.foundedYear ?? null,
     donation_link: form.donationLink || null,
     opening_hours: form.openingHours ?? null,
     social_links: form.socialLinks ?? null,

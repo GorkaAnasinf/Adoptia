@@ -137,14 +137,37 @@ describe("socialLinksSchema", () => {
 });
 
 describe("perfilSchema (paso 3)", () => {
+  const base = {
+    description: "Somos un refugio sin ánimo de lucro.",
+    openingHours: {},
+    socialLinks: {},
+    acceptsVolunteers: true,
+    acceptsFostering: false,
+  };
+
   it("valida el perfil público mínimo", () => {
+    expect(perfilSchema.safeParse(base).success).toBe(true);
+  });
+
+  it("acepta portada y año de fundación válidos (FEATURE-028)", () => {
     const r = perfilSchema.safeParse({
-      description: "Somos un refugio sin ánimo de lucro.",
-      openingHours: {},
-      socialLinks: {},
-      acceptsVolunteers: true,
-      acceptsFostering: false,
+      ...base,
+      coverUrl: "https://x.supabase.co/storage/v1/object/public/shelter-media/s1/cover.webp",
+      foundedYear: 2005,
     });
     expect(r.success).toBe(true);
+  });
+
+  it("rechaza años de fundación fuera de rango", () => {
+    expect(perfilSchema.safeParse({ ...base, foundedYear: 1899 }).success).toBe(false);
+    const futuro = new Date().getFullYear() + 1;
+    expect(perfilSchema.safeParse({ ...base, foundedYear: futuro }).success).toBe(false);
+    expect(perfilSchema.safeParse({ ...base, foundedYear: 2005.5 }).success).toBe(false);
+  });
+
+  it("admite el año actual y ausencia de año", () => {
+    const actual = new Date().getFullYear();
+    expect(perfilSchema.safeParse({ ...base, foundedYear: actual }).success).toBe(true);
+    expect(perfilSchema.safeParse(base).success).toBe(true);
   });
 });

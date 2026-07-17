@@ -11,6 +11,7 @@ import { esEnlacePagoValido } from "@/lib/enlaces-pago";
 import { socialLinksSchema } from "@/lib/schemas/shelter";
 import type { OpeningHours, SocialLinks } from "@/lib/schemas/shelter";
 import { createClient } from "@/lib/supabase/client";
+import { CoverUploader } from "./CoverUploader";
 import { LogoUploader } from "./LogoUploader";
 import { OpeningHoursEditor } from "./OpeningHoursEditor";
 import { type ShelterMedia, ShelterMediaUploader } from "./ShelterMediaUploader";
@@ -22,6 +23,8 @@ import {
 
 type Form = {
   logoUrl: string;
+  coverUrl: string;
+  foundedYear: string; // input de texto; se valida y parsea al guardar
   description: string;
   donationLink: string;
   openingHours: OpeningHours;
@@ -69,9 +72,17 @@ export function PerfilEditor({
     setGuardado(false);
   }
 
+  const anioActual = new Date().getFullYear();
+  const anioFundacion = form.foundedYear.trim() ? Number(form.foundedYear.trim()) : null;
+  const anioValido =
+    anioFundacion === null ||
+    (Number.isInteger(anioFundacion) && anioFundacion >= 1900 && anioFundacion <= anioActual);
+
   const shelterPreview: PublicShelter = {
     ...base,
     logo_url: form.logoUrl || null,
+    cover_url: form.coverUrl || null,
+    founded_year: anioValido ? anioFundacion : null,
     description: form.description || null,
     donation_link: form.donationLink || null,
     social_links: form.socialLinks,
@@ -94,6 +105,10 @@ export function PerfilEditor({
       setError(t("errDonationLink"));
       return;
     }
+    if (!anioValido) {
+      setError(t("errFoundedYear"));
+      return;
+    }
     setGuardando(true);
     try {
       const supabase = createClient();
@@ -101,6 +116,8 @@ export function PerfilEditor({
         .from("shelters")
         .update({
           logo_url: form.logoUrl || null,
+          cover_url: form.coverUrl || null,
+          founded_year: anioFundacion,
           description: form.description.trim() || null,
           donation_link: form.donationLink.trim() || null,
           opening_hours: form.openingHours,
@@ -144,6 +161,28 @@ export function PerfilEditor({
             initialUrl={form.logoUrl || undefined}
             onUploaded={(url) => set("logoUrl", url)}
           />
+
+          <CoverUploader
+            shelterId={shelterId}
+            initialUrl={form.coverUrl || undefined}
+            onChange={(url) => set("coverUrl", url ?? "")}
+          />
+
+          <div className="flex flex-col gap-1.5">
+            <Label htmlFor="foundedYear">{t("foundedYear")}</Label>
+            <Input
+              id="foundedYear"
+              type="number"
+              inputMode="numeric"
+              min={1900}
+              max={anioActual}
+              value={form.foundedYear}
+              placeholder={String(anioActual - 10)}
+              onChange={(e) => set("foundedYear", e.target.value)}
+              className="max-w-40"
+            />
+            <p className="text-xs text-muted-foreground">{t("foundedYearHelp")}</p>
+          </div>
 
           <div className="flex flex-col gap-1.5">
             <Label htmlFor="description">{t("description")}</Label>

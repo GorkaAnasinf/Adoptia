@@ -198,6 +198,25 @@ export function edadAproximada(
 }
 
 /**
+ * ¿La fecha de nacimiento cae en el bucket de edad? Mismos límites
+ * `[desde, hasta)` que la búsqueda del RPC (RANGO_EDAD). Para el filtrado
+ * client-side del perfil de protectora (FEATURE-028).
+ */
+export function edadEnBucket(
+  birth: string | null | undefined,
+  bucket: EdadBucket,
+  hoy: Date = new Date(),
+): boolean {
+  const edad = edadAproximada(birth, hoy);
+  if (!edad) return false;
+  const anios = edad.unidad === "meses" ? edad.n / 12 : edad.n;
+  const [desde, hasta] = RANGO_EDAD[bucket];
+  if (desde !== null && anios < desde) return false;
+  if (hasta !== null && anios >= hasta) return false;
+  return true;
+}
+
+/**
  * `next/image` lanza con src relativas sin barra inicial (datos antiguos o
  * corruptos). Solo aceptamos URLs absolutas o rutas del propio dominio.
  */

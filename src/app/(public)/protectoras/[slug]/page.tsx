@@ -4,11 +4,12 @@ import {
   type PublicAnimal,
   type PublicShelter,
   ShelterPublicProfile,
+  type ShelterStats,
 } from "@/components/shelters/ShelterPublicProfile";
 import { createClient } from "@/lib/supabase/server";
 
 const CAMPOS =
-  "name, slug, description, city, province, website, social_links, opening_hours, accepts_volunteers, accepts_fostering, status, donation_link";
+  "name, slug, description, city, province, website, social_links, opening_hours, accepts_volunteers, accepts_fostering, status, donation_link, email, cover_url, founded_year, address, location";
 
 async function cargarProtectora(slug: string) {
   const supabase = await createClient();
@@ -20,25 +21,31 @@ async function cargarProtectora(slug: string) {
   if (!shelter) return null;
 
   const shelterId = (shelter as { id: string }).id;
-  const { data: animals } = await supabase
-    .from("animals")
-    .select("id,name,slug,status,sponsorable,animal_media(url,is_cover,sort_order)")
-    .eq("shelter_id", shelterId)
-    .not("published_at", "is", null)
-    .eq("status", "available")
-    .order("updated_at", { ascending: false });
-
-  const { data: photos } = await supabase
-    .from("shelter_media")
-    .select("id,url,sort_order")
-    .eq("shelter_id", shelterId)
-    .eq("type", "photo")
-    .order("sort_order", { ascending: true });
+  const [{ data: animals }, { data: photos }, { data: stats }] = await Promise.all([
+    supabase
+      .from("animals")
+      .select(
+        "id,name,slug,status,sponsorable,species,sex,size,breed,birth_date_approx,published_at,animal_media(url,is_cover,sort_order)",
+      )
+      .eq("shelter_id", shelterId)
+      .not("published_at", "is", null)
+      .eq("status", "available")
+      .order("updated_at", { ascending: false }),
+    supabase
+      .from("shelter_media")
+      .select("id,url,sort_order")
+      .eq("shelter_id", shelterId)
+      .eq("type", "photo")
+      .order("sort_order", { ascending: true }),
+    // Métricas agregadas (FEATURE-028): security definer, solo verificadas.
+    supabase.rpc("shelter_public_stats", { p_shelter_id: shelterId }),
+  ]);
 
   return {
     shelter: shelter as PublicShelter & { id: string },
     animals: (animals as PublicAnimal[]) ?? [],
     photos: (photos as { id: string; url: string }[]) ?? [],
+    stats: ((stats as ShelterStats[] | null)?.[0] as ShelterStats | undefined) ?? null,
   };
 }
 
@@ -61,5 +68,12 @@ export default async function ProtectoraPublicaPage({
   const data = await cargarProtectora(slug);
   if (!data) notFound();
 
-  return <ShelterPublicProfile shelter={data.shelter} animals={data.animals} photos={data.photos} />;
+  return (
+    <ShelterPublicProfile
+      shelter={data.shelter}
+      animals={data.animals}
+      photos={data.photos}
+      stats={data.stats}
+    />
+  );
 }

@@ -57,6 +57,19 @@ describe("formToShelterRow", () => {
     expect(row.website).toBeNull();
     expect(row.location).toBeUndefined();
   });
+
+  it("mapea portada y año de fundación; ausentes → null (FEATURE-028)", () => {
+    const row = formToShelterRow(
+      { ...form, coverUrl: "https://cdn/cover.webp", foundedYear: 2005 },
+      "owner-1",
+    );
+    expect(row.cover_url).toBe("https://cdn/cover.webp");
+    expect(row.founded_year).toBe(2005);
+
+    const sin = formToShelterRow(form, "owner-1");
+    expect(sin.cover_url).toBeNull();
+    expect(sin.founded_year).toBeNull();
+  });
 });
 
 describe("shelterRowToForm", () => {
@@ -85,6 +98,16 @@ describe("shelterRowToForm", () => {
     expect(form.openingHours).toEqual({});
     expect(form.socialLinks).toEqual({});
     expect(form.acceptsFostering).toBe(false);
+  });
+
+  it("recupera portada y año de fundación de la fila (FEATURE-028)", () => {
+    const form = shelterRowToForm({
+      name: "Refugio",
+      cover_url: "https://cdn/cover.webp",
+      founded_year: 2005,
+    });
+    expect(form.coverUrl).toBe("https://cdn/cover.webp");
+    expect(form.foundedYear).toBe(2005);
   });
 
   it("recupera lat/lng desde el EWKB hex de la location (round-trip del pin)", () => {
