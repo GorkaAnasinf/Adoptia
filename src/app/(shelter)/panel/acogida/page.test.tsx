@@ -106,6 +106,8 @@ describe("Panel de casas de acogida", () => {
     expect(screen.getByText(messages.acogida.jardin)).toBeInTheDocument();
     expect(screen.getByText(/Mejor findes/)).toBeInTheDocument();
     expect(screen.getByRole("button", { name: messages.acogida.contactar })).toBeInTheDocument();
+    // Sin propuestas: el historial muestra su estado vacío
+    expect(screen.getByText(messages.acogida.historialEmpty)).toBeInTheDocument();
   });
 
   it("con propuesta activa muestra el estado en vez del botón de proponer", async () => {
