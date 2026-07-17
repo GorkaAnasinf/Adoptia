@@ -785,7 +785,18 @@
     "sinAnimalConcreto": "Sin animal concreto",
     "recibidasTitulo": "Propuestas recibidas",
     "recibidasEmpty": "Cuando una protectora te proponga una acogida, la verás aquí.",
-    "recibidaDe": "De {nombre}"
+    "recibidaDe": "De {nombre}",
+    "relevoNecesito": "Necesito relevo",
+    "relevoMotivo": "¿Por qué necesitas el relevo?",
+    "relevoFecha": "¿Hasta cuándo puedes seguir con la acogida?",
+    "relevoEnviar": "Pedir relevo",
+    "relevoEnviando": "Enviando…",
+    "relevoCancelarForm": "Cancelar",
+    "relevoFaltanCampos": "Cuéntanos el motivo e indica hasta cuándo puedes seguir.",
+    "relevoError": "No se pudo pedir el relevo. Inténtalo de nuevo.",
+    "relevoPedido": "Relevo pedido hasta {fecha}",
+    "relevoCancelar": "Cancelar relevo",
+    "relevoMotivoLabel": "Motivo: {motivo}"
   },
   "guias": {
     "title": "Guías de adopción responsable",

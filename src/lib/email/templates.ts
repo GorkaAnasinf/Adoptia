@@ -387,6 +387,35 @@ export function plantillaContactoAcogida({
   };
 }
 
+/** FEATURE-030: el acogedor pide relevo — aviso a la protectora. */
+export function plantillaRelevoAcogida({
+  shelterName,
+  fosterName,
+  animalName,
+  motivo,
+  fechaLimite,
+}: {
+  shelterName: string;
+  fosterName: string;
+  animalName: string | null;
+  motivo: string;
+  fechaLimite: string;
+}) {
+  return {
+    subject: `${fosterName || "Una casa de acogida"} necesita relevo de acogida`,
+    html: BASE(`
+      <p>Hola ${shelterName},</p>
+      <p><strong>${escaparHtml(fosterName || "Una casa de acogida")}</strong> necesita dejar la acogida
+      ${animalName ? `de <strong>${escaparHtml(animalName)}</strong>` : "que tiene en marcha"}
+      antes del <strong>${escaparHtml(fechaLimite)}</strong>.</p>
+      <p style="border-left:3px solid #396662;padding-left:10px;margin:8px 0">${escaparHtml(motivo)}</p>
+      <p>Entra en tu panel de acogidas para proponer un relevo a otros acogedores de la zona
+      y, cuando esté resuelto, marca la acogida original como finalizada.</p>
+      <p><a href="https://adoptia-eight.vercel.app/panel/acogida" style="color:#396662">Ir a mi panel de acogidas</a></p>
+    `),
+  };
+}
+
 // ---------- FEATURE-022: contacto y avistamientos en avisos ----------
 
 const AVISO_URL = (avisoId: string) =>

@@ -1,4 +1,5 @@
 import { useFormatter, useTranslations } from "next-intl";
+import { RelevoAcogidaButton } from "./RelevoAcogidaButton";
 
 export type PropuestaRecibida = {
   id: string;
@@ -6,6 +7,9 @@ export type PropuestaRecibida = {
   mensaje: string;
   status: string;
   created_at: string;
+  relevo_pedido_at?: string | null;
+  relevo_motivo?: string | null;
+  relevo_fecha_limite?: string | null;
   shelters: { name: string } | null;
   animals: { name: string } | null;
 };
@@ -57,6 +61,16 @@ export function PropuestasRecibidas({ propuestas }: { propuestas: PropuestaRecib
                 </span>
               </div>
               <p className="text-muted-foreground">{p.mensaje}</p>
+              {p.status === "aceptada" && (
+                <RelevoAcogidaButton
+                  proposalId={p.id}
+                  relevo={
+                    p.relevo_pedido_at && p.relevo_fecha_limite
+                      ? { motivo: p.relevo_motivo ?? "", fechaLimite: p.relevo_fecha_limite }
+                      : null
+                  }
+                />
+              )}
             </li>
           ))}
         </ul>

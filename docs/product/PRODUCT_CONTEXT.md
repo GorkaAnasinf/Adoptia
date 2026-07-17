@@ -76,6 +76,7 @@ Estado de cada capacidad en lenguaje de usuario. Se regenera con `python scripts
 - Rediseño del alta de aviso en tarjetas de sección (mockup nuevo) ([FEATURE-027](../planning/items/FEATURE-027.md))
 - Rediseño del perfil público de protectora (mockup nuevo) ([FEATURE-028](../planning/items/FEATURE-028.md))
 - Propuestas de acogida estructuradas con trazabilidad ([FEATURE-029](../planning/items/FEATURE-029.md))
+- Relevo de acogida (emergencias del acogedor) ([FEATURE-030](../planning/items/FEATURE-030.md))
 - De-duplicar el slug de protectora (nombres repetidos) ([IMPROVEMENT-001](../planning/items/IMPROVEMENT-001.md))
 - Rediseño UX del wizard de alta de protectora (+ fix del mapa gris) ([IMPROVEMENT-002](../planning/items/IMPROVEMENT-002.md))
 - Pulido del shell chrome (sidebar + cabecera) hacia el mockup de Stitch ([IMPROVEMENT-003](../planning/items/IMPROVEMENT-003.md))
@@ -109,7 +110,6 @@ _Nada en desarrollo en este momento._
 
 #### 🗓️ Previsto
 
-- Relevo de acogida (emergencias del acogedor) — hito sin asignar ([FEATURE-030](../planning/items/FEATURE-030.md))
 - Tablón de necesidades de protectoras (pedir ayuda material) — hito sin asignar ([FEATURE-031](../planning/items/FEATURE-031.md))
 - Ofertas de donación de particulares (material para protectoras) — hito sin asignar ([FEATURE-032](../planning/items/FEATURE-032.md))
 - Alertas de búsqueda guardada (avisos de nuevos animales) — hito sin asignar ([FEATURE-033](../planning/items/FEATURE-033.md))

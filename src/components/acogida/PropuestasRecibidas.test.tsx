@@ -1,7 +1,12 @@
 import { render, screen } from "@testing-library/react";
 import { NextIntlClientProvider } from "next-intl";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import messages from "../../../messages/es.json";
+
+vi.mock("next/navigation", () => ({
+  useRouter: () => ({ refresh: vi.fn() }),
+}));
+
 import { PropuestasRecibidas, type PropuestaRecibida } from "./PropuestasRecibidas";
 
 const PROPUESTA: PropuestaRecibida = {
@@ -41,5 +46,31 @@ describe("PropuestasRecibidas", () => {
   it("vacío: estado cuidado", () => {
     renderBloque([]);
     expect(screen.getByText(messages.acogida.recibidasEmpty)).toBeInTheDocument();
+  });
+
+  it("propuesta aceptada ofrece pedir relevo; enviada no", () => {
+    renderBloque([
+      { ...PROPUESTA, id: "p1", status: "aceptada" },
+      { ...PROPUESTA, id: "p2", status: "enviada" },
+    ]);
+    expect(screen.getAllByRole("button", { name: messages.acogida.relevoNecesito })).toHaveLength(
+      1,
+    );
+  });
+
+  it("con relevo ya pedido muestra el aviso con la fecha", () => {
+    renderBloque([
+      {
+        ...PROPUESTA,
+        status: "aceptada",
+        relevo_pedido_at: "2026-07-17T10:00:00Z",
+        relevo_motivo: "Obras",
+        relevo_fecha_limite: "2026-08-01",
+      },
+    ]);
+    expect(screen.getByText(/2026-08-01/)).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: messages.acogida.relevoCancelar }),
+    ).toBeInTheDocument();
   });
 });

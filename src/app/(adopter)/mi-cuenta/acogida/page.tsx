@@ -33,7 +33,9 @@ export default async function MiAcogidaPage() {
   if (existente) {
     const { data: dataPropuestas } = await supabase
       .from("foster_proposals")
-      .select("id, duracion, mensaje, status, created_at, shelters (name), animals (name)")
+      .select(
+        "id, duracion, mensaje, status, created_at, relevo_pedido_at, relevo_motivo, relevo_fecha_limite, shelters (name), animals (name)",
+      )
       .eq("foster_user_id", user.id)
       .order("created_at", { ascending: false });
     propuestas = (dataPropuestas as unknown as PropuestaRecibida[] | null) ?? [];
