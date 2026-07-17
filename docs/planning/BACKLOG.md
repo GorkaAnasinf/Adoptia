@@ -6,25 +6,19 @@
 ## 📍 ESTADO ACTUAL
 
 - **Hito activo:** 0.5 — post-MVP (mantenimiento y features detectadas en pruebas reales; hitos 0.2–0.4 cerrados).
-- **Progreso:** **IMPROVEMENT-025 hecha** (rama `feature/IMPROVEMENT-025-acogidas-navegacion`) — «Acogidas» en el sidebar de `/mi-cuenta` y en el menú del avatar, con página nueva `/mi-cuenta/acogida` que reutiliza `AcogidaForm` (alta, estado, pausa, baja); la pública `/acogida` intacta. QA Scooby 6/6; suite 836 passed (RLS skipped, sin cambios de RLS), cobertura 82,0 % / 96,7 % `src/lib`. Mismo día: capturados **FEATURE-029..033** (propuestas de acogida con trazabilidad, relevo de acogida, tablón de necesidades, donaciones de particulares, alertas de búsqueda guardada) tras la revisión del flujo de acogidas con el usuario. Antes: FEATURE-028 (perfil público, en producción), IMPROVEMENT-024.
-- **Siguiente:** decidir cuál de los capturados se promueve — candidato natural **FEATURE-029** (arregla el reenvío infinito de avisos de acogida y da trazabilidad; FEATURE-030 depende de él). IMPROVEMENT-024 e IMPROVEMENT-025 (ambas solo UI, sin migración) **pendientes de liberar a producción**.
+- **Progreso:** **FEATURE-029 hecha** (rama `feature/FEATURE-029-propuestas-acogida`) — propuestas de acogida estructuradas: tabla `foster_proposals` (cascada desde la baja del acogedor —decisión #40—, índice único parcial de propuesta abierta —#41—), handler con formulario obligatorio (animal opcional propio, duración, mensaje) y email ampliado, chip de estado + historial con acciones en `/panel/acogida`, y bloque «Propuestas recibidas» en `/acogida` y `/mi-cuenta/acogida`. QA Scooby 7/7; suite **1009/1009 con RLS**, cobertura 82,4 % / 96,7 % `src/lib`. Antes el mismo día: IMPROVEMENT-025 (acogidas en la navegación, **en producción**) y captura de FEATURE-029..033.
+- **Siguiente:** liberar FEATURE-029 a producción — **requiere `supabase db push` de la migración `20260717150000` ANTES del release** (dry-run primero, como siempre). Después, candidatos: FEATURE-030 (relevo, ya desbloqueado), FEATURE-031 (tablón de necesidades) o FEATURE-033 (alertas de búsqueda guardada, favorita del usuario).
 - **Bloqueos:** ninguno. **Pendiente de despliegue:** nada — la migración `20260717090000_feature028_perfil_publico.sql` **aplicada en producción el 2026-07-17** (dry-run previo, confirmada con `migration list --linked`) y el release `0aface2` desplegado en Vercel (READY) y verificado en real sobre `/protectoras/<slug>`.
 - **Follow-ups abiertos:** Re-medir Lighthouse de ficha/listado en producción cuando haya contenido real (ver IMPROVEMENT-012). Datos de prueba masivos (`@masivo.adoptia.es`, slugs `-msv`) cargados en local y en producción el 2026-07-13 — borrarlos al acabar las pruebas. Candidatos a item: badge «Urgente» (requiere campo en BD) y filtro «Apto para piso» en el RPC `animals_search` (mockup de IMPROVEMENT-019).
 - **Nota (2026-07-15):** se corrigió una afirmación errónea de BUG-005: los umbrales de cobertura **sí** se vigilaban en CI — el `RolldownError` era ruido en Linux (exit 0, tabla impresa, umbrales evaluados) y solo tumbaba el proceso en Windows.
 - **Cómo correr los E2E en local:** ver `docs/meta/TESTING.md` — hay tres trampas documentadas que cuestan horas si no se conocen (el `npm run dev` zombi que Playwright reutiliza, el `upsert(onConflict: "slug")` que no es idempotente, y el captcha).
-- **Última actualización:** 2026-07-17 (IMPROVEMENT-025 cerrada — acogidas visibles en la navegación del adoptante; capturados FEATURE-029..033. Antes el mismo día: IMPROVEMENT-024 cerrada y FEATURE-028 liberada a producción y verificada en real).
+- **Última actualización:** 2026-07-17 (FEATURE-029 cerrada — propuestas de acogida con trazabilidad; migración pendiente de producción. Antes el mismo día: IMPROVEMENT-024/025 liberadas a producción, FEATURE-029..033 capturadas).
 
 ## Items abiertos por estado
 
 Los items `hecho`/`descartado` no aparecen aquí — su histórico vive en [CHANGELOG](CHANGELOG.md) y git.
 
 <!-- RENDER:START -->
-### ✅ Listo para desarrollo (1)
-
-| Item | Título | Prioridad | Hito |
-|------|--------|-----------|------|
-| [FEATURE-029](items/FEATURE-029.md) | Propuestas de acogida estructuradas con trazabilidad | media | 0.5 |
-
 ### 📥 Recibido (4)
 
 | Item | Título | Prioridad | Hito |

@@ -39,6 +39,13 @@ Fase 3: `sponsorships`, `lost_found_posts`, `lost_found_sightings`.
 | `lost_found_sightings` | "He visto a este animal": pista de un vecino | `post_id → lost_found_posts` (`on delete cascade`), `seen_at` con check de no-futuro, `location` con **el mismo trigger de redondeo** que el aviso; trigger `after insert` que refresca `last_activity_at` del aviso |
 | `lost_found_media` | Galería del aviso (FEATURE-024) | Espejo de `animal_media`: `post_id` (`on delete cascade`), `url`, `is_cover`, `sort_order`; **índice único parcial de una sola portada** por aviso. `lost_found_list` devuelve `cover_url` (portada) y el RPC `lost_found_media_list` la galería. La subconsulta de portada va blindada por un test que muerde (lección de BUG-006) |
 
+### Casas de acogida (FEATURE-016 + FEATURE-029)
+
+| Tabla | Qué es | Claves de diseño |
+|-------|--------|------------------|
+| `foster_homes` | Registro de acogedor | PK = `user_id → profiles` (`on delete cascade`); `location` **redondeada ~200 m por trigger**; `radius_km 1..200` (el radio lo declara el acogedor); `condiciones jsonb`; `consent_at` obligatorio. RLS: solo el dueño; las protectoras acceden únicamente por el RPC `foster_homes_nearby` (verificada + dentro del radio DEL ACOGEDOR, sin coordenadas ni email) |
+| `foster_proposals` | Propuesta de acogida protectora → acogedor (FEATURE-029) | `shelter_id` (`cascade`), `foster_user_id → foster_homes` (`cascade`: la baja del acogedor arrastra sus propuestas — supresión real, ver DECISIONS), `animal_id` nullable (`set null`: el historial sobrevive al animal), `duracion ≤120`, `mensaje ≤1000`, `status enviada/aceptada/rechazada/finalizada`. **Índice único parcial** `(shelter_id, foster_user_id) where status in ('enviada','aceptada')`: el reenvío se bloquea en BD. RLS: leen protectora dueña y acogedor; actualiza solo la protectora dueña; insert solo protectora verificada con animal propio; delete solo admin |
+
 **Redondeo de privacidad**: `public.round_lost_found_location()` hace snap a una rejilla de 0.002° (~200 m) en un `BEFORE INSERT/UPDATE`. La coordenada exacta **nunca llega a existir en BD**, así que no puede filtrarse por ninguna vía (ni un dump, ni un `select` con `service_role`). La misma función la reusan `lost_found_posts`, `lost_found_sightings` y `foster_homes`.
 
 **Nada de número de microchip** (FEATURE-023): `has_microchip` es un `boolean` nullable (null = «no lo sé»), como las compatibilidades de `animals`. El número identifica al dueño en el registro autonómico, así que es un dato personal indirecto disfrazado de dato del animal. Hay un test de RLS que vigila que no aparezca ninguna columna que lo contenga.

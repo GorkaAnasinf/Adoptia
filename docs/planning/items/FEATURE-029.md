@@ -2,7 +2,7 @@
 id: FEATURE-029
 tipo: feature
 titulo: Propuestas de acogida estructuradas con trazabilidad
-estado: listo
+estado: hecho
 prioridad: media
 hito: "0.5"
 duplicado_de: null
@@ -84,10 +84,17 @@ Migración nueva `feature029_foster_proposals`:
 
 ## Criterios de aceptación / Casuística a cubrir
 
-- [ ] Proponer acogida exige el formulario (duración y mensaje; animal opcional de la propia protectora) y el email al acogedor incluye esos datos.
-- [ ] La propuesta queda persistida con estado; con propuesta abierta no se puede reenviar a ese acogedor — bloqueado en UI y en BD (índice único parcial), probado.
-- [ ] La protectora consulta y actualiza el estado de sus propuestas (historial incluido); nunca ve datos de contacto del acogedor que hoy no ve.
-- [ ] El acogedor ve sus propuestas recibidas en `/acogida` y `/mi-cuenta/acogida`.
-- [ ] RLS probada: protectora solo sus propuestas; acogedor solo las suyas; terceros nada; update solo de la protectora dueña.
-- [ ] Baja del acogedor: sus propuestas desaparecen en cascada (supresión real, decisión registrada en DECISIONS.md), probado.
-- [ ] Estados vacíos cuidados (sin propuestas en panel y en acogedor); animal borrado → propuesta conserva historial con animal nulo.
+- [x] Proponer acogida exige el formulario (duración y mensaje; animal opcional de la propia protectora) y el email al acogedor incluye esos datos.
+- [x] La propuesta queda persistida con estado; con propuesta abierta no se puede reenviar a ese acogedor — bloqueado en UI y en BD (índice único parcial), probado.
+- [x] La protectora consulta y actualiza el estado de sus propuestas (historial incluido); nunca ve datos de contacto del acogedor que hoy no ve.
+- [x] El acogedor ve sus propuestas recibidas en `/acogida` y `/mi-cuenta/acogida`.
+- [x] RLS probada: protectora solo sus propuestas; acogedor solo las suyas; terceros nada; update solo de la protectora dueña.
+- [x] Baja del acogedor: sus propuestas desaparecen en cascada (supresión real, decisión #40 en DECISIONS.md), probado.
+- [x] Estados vacíos cuidados (sin propuestas en panel y en acogedor); animal borrado → propuesta conserva historial con animal nulo.
+
+## Cierre (2026-07-17)
+
+- **BD**: `foster_proposals` (migración `20260717150000`) con FK a `foster_homes` en cascada (decisión #40: supresión real en la baja), `animal_id` con `set null` (el historial sobrevive al animal) e **índice único parcial** de propuesta abierta (decisión #41: el reenvío se corta en BD; el handler traduce `23505` a `409 proposal_exists`). 7 tests RLS.
+- **API**: `POST /api/acogida/contactar` exige duración y mensaje (Zod compartido `propuestaAcogidaSchema`), valida el animal propio, persiste antes de enviar y revierte si el email falla; email al acogedor ampliado con animal/duración/mensaje escapados. Contrato documentado en API_CONTRACTS.
+- **UI**: `ProponerAcogidaDialog` (formulario con animales publicados de la protectora), chip de estado + fecha en `/panel/acogida` cuando hay propuesta abierta, historial con `PropuestaEstadoActions` (enviada→aceptada/rechazada; aceptada→finalizada), y bloque compartido `PropuestasRecibidas` en `/acogida` y `/mi-cuenta/acogida`.
+- **QA Scooby 7/7**. Suite **1009/1009 con RLS** (Supabase local), lint y `tsc` limpios, cobertura 82,4 % global / 96,7 % `src/lib`. Pendiente de despliegue: `supabase db push` de la migración antes del release.
