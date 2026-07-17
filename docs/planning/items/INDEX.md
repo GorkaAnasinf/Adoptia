@@ -42,7 +42,7 @@
 | [FEATURE-027](FEATURE-027.md) | Rediseño del alta de aviso en tarjetas de sección (mockup nuevo) | feature | hecho | 0.5 |
 | [FEATURE-028](FEATURE-028.md) | Rediseño del perfil público de protectora (mockup nuevo) | feature | hecho | 0.5 |
 | [FEATURE-029](FEATURE-029.md) | Propuestas de acogida estructuradas con trazabilidad | feature | hecho | 0.5 |
-| [FEATURE-030](FEATURE-030.md) | Relevo de acogida (emergencias del acogedor) | feature | recibido | — |
+| [FEATURE-030](FEATURE-030.md) | Relevo de acogida (emergencias del acogedor) | feature | listo | 0.5 |
 | [FEATURE-031](FEATURE-031.md) | Tablón de necesidades de protectoras (pedir ayuda material) | feature | recibido | — |
 | [FEATURE-032](FEATURE-032.md) | Ofertas de donación de particulares (material para protectoras) | feature | recibido | — |
 | [FEATURE-033](FEATURE-033.md) | Alertas de búsqueda guardada (avisos de nuevos animales) | feature | recibido | — |
