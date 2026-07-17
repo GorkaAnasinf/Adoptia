@@ -203,6 +203,9 @@
   "shelterPublic": {
     "coverAlt": "Portada de {name}",
     "contactCta": "Contactar",
+    "metricsAdoptions": "Adopciones",
+    "metricsAnimals": "Animales",
+    "metricsYears": "Años de labor",
     "aboutTitle": "Sobre nosotros",
     "hoursTitle": "Horario de visitas",
     "closed": "Cerrado",

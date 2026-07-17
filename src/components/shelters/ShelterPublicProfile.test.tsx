@@ -46,6 +46,52 @@ describe("ShelterPublicProfile", () => {
   });
 });
 
+describe("ShelterPublicProfile — métricas (FEATURE-028)", () => {
+  const HOY = new Date().getFullYear();
+
+  it("muestra adopciones, animales y años de labor cuando hay datos", () => {
+    conIntl(
+      <ShelterPublicProfile
+        shelter={{ name: "Refugio", founded_year: HOY - 8 }}
+        animals={[]}
+        stats={{ adopciones: 245, disponibles: 42 }}
+      />,
+    );
+    expect(screen.getByText("245")).toBeInTheDocument();
+    expect(screen.getByText(messages.shelterPublic.metricsAdoptions)).toBeInTheDocument();
+    expect(screen.getByText("42")).toBeInTheDocument();
+    expect(screen.getByText(messages.shelterPublic.metricsAnimals)).toBeInTheDocument();
+    expect(screen.getByText("8")).toBeInTheDocument();
+    expect(screen.getByText(messages.shelterPublic.metricsYears)).toBeInTheDocument();
+  });
+
+  it("sin año de fundación no aparece el tile de años de labor", () => {
+    conIntl(
+      <ShelterPublicProfile
+        shelter={{ name: "Refugio" }}
+        animals={[]}
+        stats={{ adopciones: 3, disponibles: 1 }}
+      />,
+    );
+    expect(screen.queryByText(messages.shelterPublic.metricsYears)).not.toBeInTheDocument();
+    expect(screen.getByText(messages.shelterPublic.metricsAdoptions)).toBeInTheDocument();
+  });
+
+  it("fundada este año no muestra «0 años»; sin ningún dato la franja no se pinta", () => {
+    const { unmount } = conIntl(
+      <ShelterPublicProfile
+        shelter={{ name: "Refugio", founded_year: HOY }}
+        animals={[]}
+        stats={{ adopciones: 1, disponibles: 0 }}
+      />,
+    );
+    expect(screen.queryByText(messages.shelterPublic.metricsYears)).not.toBeInTheDocument();
+    unmount();
+    conIntl(<ShelterPublicProfile shelter={{ name: "Refugio" }} animals={[]} />);
+    expect(screen.queryByText(messages.shelterPublic.metricsAdoptions)).not.toBeInTheDocument();
+  });
+});
+
 describe("ShelterPublicProfile — hero (FEATURE-028)", () => {
   it("muestra la foto de portada cuando existe", () => {
     conIntl(

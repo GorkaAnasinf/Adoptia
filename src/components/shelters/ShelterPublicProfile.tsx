@@ -51,14 +51,18 @@ function portada(media: PublicAnimal["animal_media"]): string | null {
   return (media.find((m) => m.is_cover) ?? [...media].sort((a, b) => a.sort_order - b.sort_order)[0]).url;
 }
 
+export type ShelterStats = { adopciones: number; disponibles: number };
+
 export function ShelterPublicProfile({
   shelter,
   animals = [],
   photos = [],
+  stats,
 }: {
   shelter: PublicShelter;
   animals?: PublicAnimal[];
   photos?: { id: string; url: string }[];
+  stats?: ShelterStats | null;
 }) {
   const t = useTranslations("shelterPublic");
   const td = useTranslations("onboarding");
@@ -67,6 +71,18 @@ export function ShelterPublicProfile({
     return Boolean(shelter.social_links?.[r.key]);
   });
   const horario = resumenHorario(shelter.opening_hours);
+
+  // Métricas (FEATURE-028): cada tile solo con dato real; nada de «0 años».
+  const anios = shelter.founded_year ? new Date().getFullYear() - shelter.founded_year : 0;
+  const metricas: { valor: number; etiqueta: string }[] = [
+    ...(stats && stats.adopciones > 0
+      ? [{ valor: stats.adopciones, etiqueta: t("metricsAdoptions") }]
+      : []),
+    ...(stats && stats.disponibles > 0
+      ? [{ valor: stats.disponibles, etiqueta: t("metricsAnimals") }]
+      : []),
+    ...(anios >= 1 ? [{ valor: anios, etiqueta: t("metricsYears") }] : []),
+  ];
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-8">
@@ -147,6 +163,25 @@ export function ShelterPublicProfile({
           </div>
         </div>
       </header>
+
+      {/* Franja de métricas (FEATURE-028) */}
+      {metricas.length > 0 && (
+        <dl className="mt-6 grid grid-cols-3 gap-3">
+          {metricas.map((m) => (
+            <div
+              key={m.etiqueta}
+              className="flex flex-col items-center gap-0.5 rounded-2xl border border-border bg-card px-3 py-4"
+            >
+              <dd className="font-heading text-2xl font-bold text-primary sm:text-3xl">
+                {m.valor}
+              </dd>
+              <dt className="text-center text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                {m.etiqueta}
+              </dt>
+            </div>
+          ))}
+        </dl>
+      )}
 
       {/* Colaboración + web */}
       {(shelter.accepts_volunteers || shelter.accepts_fostering || shelter.website) && (
