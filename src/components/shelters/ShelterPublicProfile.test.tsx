@@ -9,6 +9,14 @@ vi.mock("@/components/map/MiniMapa", () => ({
   MiniMapa: () => <div data-testid="mini-mapa" />,
 }));
 
+// El corazón de favorito usa router y Supabase en cliente.
+vi.mock("next/navigation", () => ({ useRouter: () => ({ push: vi.fn() }) }));
+vi.mock("@/lib/supabase/client", () => ({
+  createClient: vi.fn(() => ({
+    auth: { getUser: vi.fn(async () => ({ data: { user: null } })) },
+  })),
+}));
+
 function conIntl(ui: React.ReactElement) {
   return render(
     <NextIntlClientProvider locale="es" messages={messages}>

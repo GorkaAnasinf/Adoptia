@@ -3,12 +3,12 @@
 import { BadgeCheck, Globe, HandHeart, Home, Mail, MapPin, PawPrint } from "lucide-react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
-import { AnimalStatusBadge } from "@/components/animals/AnimalStatusBadge";
 import { EnlaceExternoPago } from "@/components/apadrinamiento/EnlaceExternoPago";
 import { MiniMapa } from "@/components/map/MiniMapa";
 import type { AnimalStatus } from "@/lib/schemas/animal";
 import { resumenHorario, tieneHorario } from "@/lib/opening-hours";
 import { parsePoint } from "@/lib/shelter-mapping";
+import { ShelterAnimalsGrid } from "./ShelterAnimalsGrid";
 import type { OpeningHours, SocialLinks } from "@/lib/schemas/shelter";
 import { cn } from "@/lib/utils";
 
@@ -38,6 +38,14 @@ export type PublicAnimal = {
   slug: string;
   status: AnimalStatus;
   sponsorable?: boolean;
+  // FEATURE-028: datos de la tarjeta y filtros del grid (opcionales para
+  // no romper contextos que aún no los seleccionan, como la preview del panel).
+  species?: "dog" | "cat" | "other" | null;
+  sex?: "male" | "female" | "unknown" | null;
+  size?: "small" | "medium" | "large" | null;
+  breed?: string | null;
+  birth_date_approx?: string | null;
+  published_at?: string | null;
   animal_media: { url: string; is_cover: boolean; sort_order: number }[];
 };
 
@@ -47,11 +55,6 @@ const REDES: { key: keyof SocialLinks; label: string }[] = [
   { key: "x", label: "X" },
   { key: "tiktok", label: "TikTok" },
 ];
-
-function portada(media: PublicAnimal["animal_media"]): string | null {
-  if (media.length === 0) return null;
-  return (media.find((m) => m.is_cover) ?? [...media].sort((a, b) => a.sort_order - b.sort_order)[0]).url;
-}
 
 export type ShelterStats = { adopciones: number; disponibles: number };
 
@@ -311,49 +314,8 @@ export function ShelterPublicProfile({
         </section>
       )}
 
-      {/* Animales en adopción (apadrinables destacados primero) */}
-      <section className="mt-10">
-        <h2 className="font-heading text-xl font-semibold">{t("animalsTitle")}</h2>
-        {animals.length === 0 ? (
-          <p className="mt-3 text-muted-foreground">{t("noAnimals")}</p>
-        ) : (
-          <ul className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-3">
-            {[...animals]
-              .sort((a, b) => Number(b.sponsorable ?? false) - Number(a.sponsorable ?? false))
-              .map((a) => {
-              const url = portada(a.animal_media);
-              return (
-                <li key={a.id} className="overflow-hidden rounded-2xl border border-border bg-card">
-                  {url ? (
-                    <Image
-                      src={url}
-                      alt={a.name}
-                      width={240}
-                      height={180}
-                      className="aspect-[4/3] w-full object-cover"
-                    />
-                  ) : (
-                    <div className="flex aspect-[4/3] w-full items-center justify-center bg-muted text-muted-foreground">
-                      <PawPrint className="size-8" aria-hidden="true" />
-                    </div>
-                  )}
-                  <div className="flex items-center justify-between gap-2 p-3">
-                    <span className="min-w-0 truncate font-medium">{a.name}</span>
-                    <span className="flex shrink-0 items-center gap-1">
-                      {a.sponsorable && (
-                        <span className="rounded-full bg-tertiary/15 px-2 py-0.5 text-xs font-semibold text-tertiary">
-                          {t("sponsorBadge")}
-                        </span>
-                      )}
-                      <AnimalStatusBadge status={a.status} />
-                    </span>
-                  </div>
-                </li>
-              );
-            })}
-          </ul>
-        )}
-      </section>
+      {/* Animales en adopción (FEATURE-028): buscador + filtros client-side */}
+      <ShelterAnimalsGrid animals={animals} shelterName={shelter.name} />
     </div>
   );
 }

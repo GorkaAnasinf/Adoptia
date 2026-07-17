@@ -210,8 +210,10 @@
     "servicesTitle": "Servicios y oportunidades",
     "hoursLocationTitle": "Horario y ubicación",
     "closed": "Cerrado",
-    "animalsTitle": "En adopción",
+    "animalsTitle": "Animales en adopción",
+    "animalsSearchPlaceholder": "Buscar…",
     "noAnimals": "Ahora mismo no hay animales publicados.",
+    "noAnimalsFiltered": "Ningún animal coincide con la búsqueda o los filtros.",
     "collabTitle": "Colabora",
     "volunteers": "Acepta voluntariado",
     "fostering": "Acepta acogida",
@@ -222,8 +224,7 @@
     "donarCta": "Hacer una donación",
     "donarAviso": "La donación se hace directamente a la protectora a través de una plataforma externa. Adoptia no procesa ni recibe ningún pago.",
     "donarContinuar": "Entendido, continuar",
-    "donarCancelar": "Cancelar",
-    "sponsorBadge": "Apadrinable"
+    "donarCancelar": "Cancelar"
   },
   "perfil": {
     "title": "Perfil público",
