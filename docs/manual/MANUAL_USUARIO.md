@@ -125,8 +125,9 @@ Tablón público de anuncios de animales perdidos o encontrados:
 
 Si puedes cuidar temporalmente de un animal:
 
-1. Entra en **Acogida** y rellena el **registro de casa de acogida**: datos de contacto, tipo de vivienda, qué animales puedes acoger y por cuánto tiempo.
+1. Entra en **Acogidas** — desde tu área personal (**Mi cuenta → Acogidas**, también en el menú del avatar) o desde el enlace del pie de página — y rellena el **registro de casa de acogida**: datos de contacto, tipo de vivienda, qué animales puedes acoger y por cuánto tiempo.
 2. Las protectoras de tu zona podrán **contactar contigo a través de la plataforma** cuando necesiten una acogida — tu correo no se muestra públicamente.
+3. Desde esa misma pantalla puedes **editar tus condiciones, pausarte** (por ejemplo en vacaciones) **o darte de baja** en cualquier momento.
 
 ### 3.11 Guías de adopción responsable
 
