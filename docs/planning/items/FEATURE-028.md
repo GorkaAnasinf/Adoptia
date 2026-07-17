@@ -2,7 +2,7 @@
 id: FEATURE-028
 tipo: feature
 titulo: Rediseño del perfil público de protectora (mockup nuevo)
-estado: listo
+estado: hecho
 prioridad: alta
 hito: "0.5"
 duplicado_de: null
@@ -85,15 +85,20 @@ Migración `20260717_feature028_perfil_publico.sql`:
 
 ## Criterios de aceptación / Casuística a cubrir
 
-- [ ] Hero muestra portada si existe; degradado de marca si no. Avatar con fallback de icono.
-- [ ] Badge «Verificada» solo con `status = verified`.
-- [ ] «Contactar» abre `mailto:` del email; el botón no aparece sin email. «Donar» solo con `donation_link` y mantiene el aviso de pago externo.
-- [ ] Métricas: cada tile se oculta sin dato; sin ninguno, la franja no se pinta. Años de labor = año actual − `founded_year` (0 no se muestra como «0 años»).
-- [ ] RPC: anónimo obtiene conteos de una protectora verified; de una pending/rejected no obtiene datos. Los adoptados despublicados cuentan como adopciones sin filtrarse como filas.
-- [ ] Horario semanal como hoy; mini-mapa solo si hay `location`; dirección textual si existe.
-- [ ] Grid: buscador por nombre (case/acentos-insensible), filtros especie y edad combinables, contador refleja el filtrado, estado vacío con filtros activos y estado «sin animales».
-- [ ] Tarjetas con foto (fallback huella), raza, edad y corazón de favorito (comportamiento actual de `AnimalCard`, incl. no autenticado).
-- [ ] Editor: subir/quitar portada (comprimida ≤300 KB, a carpeta propia del bucket), año de fundación validado (1900–actual); errores de validación visibles.
-- [ ] Apadrinables siguen destacados primero en el orden por defecto.
-- [ ] Sin textos hardcodeados (todo en `messages/es.json`); móvil primero (hero y métricas apilan).
-- [ ] Suite completa verde, cobertura sin caer, `tsc --noEmit` limpio.
+- [x] Hero muestra portada si existe; degradado de marca si no. Avatar con fallback de icono.
+- [x] Badge «Verificada» solo con `status = verified`.
+- [x] «Contactar» abre `mailto:` del email; el botón no aparece sin email. «Donar» solo con `donation_link` y mantiene el aviso de pago externo.
+- [x] Métricas: cada tile se oculta sin dato; sin ninguno, la franja no se pinta. Años de labor = año actual − `founded_year` (0 no se muestra como «0 años»).
+- [x] RPC: anónimo obtiene conteos de una protectora verified; de una pending/rejected no obtiene datos. Los adoptados despublicados cuentan como adopciones sin filtrarse como filas.
+- [x] Horario semanal como hoy; mini-mapa solo si hay `location`; dirección textual si existe.
+- [x] Grid: buscador por nombre (case/acentos-insensible), filtros especie y edad combinables, contador refleja el filtrado, estado vacío con filtros activos y estado «sin animales».
+- [x] Tarjetas con foto, raza, edad y corazón de favorito (comportamiento actual de `AnimalCard`, incl. no autenticado). *Desviación menor aceptada: el fallback sin foto es el «Sin foto» estándar de `AnimalCard`, no una huella (ver IMPROVEMENT-024).*
+- [x] Editor: subir/quitar portada (comprimida ≤300 KB, a carpeta propia del bucket), año de fundación validado (1900–actual); errores de validación visibles.
+- [x] Apadrinables siguen destacados primero en el orden por defecto.
+- [x] Sin textos hardcodeados (todo en `messages/es.json`); móvil primero (hero y métricas apilan).
+- [x] Suite completa verde (974/974, RLS incluidos), cobertura 82,0 % global / 96,7 % `src/lib`, `tsc --noEmit` limpio.
+
+## Cierre (2026-07-17)
+
+- QA Scooby: ✅ APROBADO 13/13. Notas menores trasladadas a IMPROVEMENT-024.
+- **Pendiente de despliegue:** migración `20260717090000_feature028_perfil_publico.sql` aplicada solo en local — falta `supabase db push` a producción antes de liberar.

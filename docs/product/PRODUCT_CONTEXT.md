@@ -74,6 +74,7 @@ Estado de cada capacidad en lenguaje de usuario. Se regenera con `python scripts
 - Rediseño del listado/mapa de Perdidos y encontrados (mockup nuevo) ([FEATURE-025](../planning/items/FEATURE-025.md))
 - Rediseño de la ficha del aviso a dos columnas (mockup nuevo) ([FEATURE-026](../planning/items/FEATURE-026.md))
 - Rediseño del alta de aviso en tarjetas de sección (mockup nuevo) ([FEATURE-027](../planning/items/FEATURE-027.md))
+- Rediseño del perfil público de protectora (mockup nuevo) ([FEATURE-028](../planning/items/FEATURE-028.md))
 - De-duplicar el slug de protectora (nombres repetidos) ([IMPROVEMENT-001](../planning/items/IMPROVEMENT-001.md))
 - Rediseño UX del wizard de alta de protectora (+ fix del mapa gris) ([IMPROVEMENT-002](../planning/items/IMPROVEMENT-002.md))
 - Pulido del shell chrome (sidebar + cabecera) hacia el mockup de Stitch ([IMPROVEMENT-003](../planning/items/IMPROVEMENT-003.md))
@@ -104,5 +105,5 @@ _Nada en desarrollo en este momento._
 
 #### 🗓️ Previsto
 
-- Rediseño del perfil público de protectora (mockup nuevo) — hito 0.5 ([FEATURE-028](../planning/items/FEATURE-028.md))
+- Pulido menor del perfil público de protectora (fallbacks del hero y de las tarjetas) — hito sin asignar ([IMPROVEMENT-024](../planning/items/IMPROVEMENT-024.md))
 <!-- RENDER:END -->
