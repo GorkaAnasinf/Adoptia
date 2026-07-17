@@ -71,3 +71,4 @@
 | [IMPROVEMENT-023](IMPROVEMENT-023.md) | Subir CI y el runtime a Node 22+ (hoy el job de la app va en Node 20, ya deprecado) | improvement | hecho | 0.5 |
 | [IMPROVEMENT-024](IMPROVEMENT-024.md) | Pulido menor del perfil público de protectora (fallbacks del hero y de las tarjetas) | improvement | hecho | 0.5 |
 | [IMPROVEMENT-025](IMPROVEMENT-025.md) | Acogidas visibles en la navegación del usuario | improvement | hecho | 0.5 |
+| [IMPROVEMENT-026](IMPROVEMENT-026.md) | Sincronizar el estado del animal con su propuesta de acogida | improvement | hecho | 0.5 |

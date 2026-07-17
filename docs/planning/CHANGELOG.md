@@ -2,6 +2,12 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/es/) adaptado. Versionado 0.x hasta el MVP.
 
+## [0.0.65] — 2026-07-17
+
+### Corregido
+
+- **El animal acogido por fin dice que está «En acogida» (IMPROVEMENT-026)**: aceptar una propuesta de acogida no cambiaba el estado del animal — el panel decía «aceptada» pero el catálogo lo seguía ofreciendo «En adopción». Ahora la base de datos los mantiene sincronizados sola: propuesta aceptada → animal «En acogida»; acogida finalizada (o el acogedor se da de baja) → vuelve a «En adopción». Los reservados y adoptados no se tocan. Detectado por el usuario probando el flujo recién liberado.
+
 ## [0.0.64] — 2026-07-17
 
 ### Añadido
