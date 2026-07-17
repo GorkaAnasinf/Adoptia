@@ -184,4 +184,28 @@ Auth: usuario con sesión, sobre un aviso `open`. Guarda la pista (la coordenada
 // 429 → { "error": { "code": "rate_limited" } }
 ```
 
+## Contrato — POST /api/acogida/contactar  *(FEATURE-016, ampliado en FEATURE-029)*
+
+Auth: dueño de protectora **verificada**. Propone una acogida a un acogedor que el RPC `foster_homes_nearby` devuelve para esa protectora (verificación + radio del acogedor). Persiste la propuesta en `foster_proposals` (una sola abierta por pareja: índice único parcial en BD) y envía el email AL ACOGEDOR con los datos de la protectora, el animal, la duración y el mensaje (escapados) — su contacto nunca se devuelve al llamante. Si el email falla, la propuesta se revierte (compensación con `service_role`). Rate limit: 10/min por protectora. El cambio de estado posterior (`aceptada`/`rechazada`/`finalizada`) no tiene endpoint: update directo del cliente amparado por RLS.
+
+```jsonc
+// Request
+{
+  "foster_user_id": "uuid",
+  "animal_id": "uuid",              // opcional; debe ser de la propia protectora
+  "duracion": "2 semanas",          // 1..120
+  "mensaje": "Camada de cachorros"  // 1..1000
+}
+// 200 → { "data": { "ok": true } }
+// 401 → { "error": { "code": "unauthorized" } }
+// 403 → { "error": { "code": "forbidden" } }         // protectora no verificada
+// 404 → { "error": { "code": "not_found" } }         // acogedor fuera de alcance
+// 404 → { "error": { "code": "animal_not_found" } }  // animal ajeno
+// 409 → { "error": { "code": "proposal_exists" } }   // propuesta abierta con ese acogedor
+// 409 → { "error": { "code": "no_email" } }
+// 422 → { "error": { "code": "validation" } }
+// 429 → { "error": { "code": "rate_limited" } }
+// 502 → { "error": { "code": "email_error" } }       // propuesta revertida
+```
+
 Este documento se amplía por item: cada FEATURE que añada endpoints los documenta aquí al cerrarse (lo verifica Hachiko).

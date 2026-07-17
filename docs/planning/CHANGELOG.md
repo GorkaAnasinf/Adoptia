@@ -2,6 +2,12 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/es/) adaptado. Versionado 0.x hasta el MVP.
 
+## [0.0.64] — 2026-07-17
+
+### Añadido
+
+- **Las propuestas de acogida dejan rastro y dicen algo (FEATURE-029)**: hasta ahora «Proponer acogida» disparaba un email genérico que no se guardaba en ningún sitio — al recargar, la protectora podía reenviar avisos infinitos y no había manera de saber qué animales dejó en acogida ni con quién. Ahora proponer abre un **formulario** (para qué animal —opcional—, cuánto tiempo y un mensaje), el email al acogedor llega con esos datos, y la propuesta queda **guardada con estado**: en el panel, el acogedor con propuesta abierta muestra «Propuesta enviada el X» en vez del botón (y la base de datos impide duplicarla aunque se intente por otra vía), y un **historial** permite marcarla aceptada, rechazada o finalizada — la trazabilidad que faltaba. El acogedor ve sus **propuestas recibidas** en su pantalla de acogida. Si el acogedor se da de baja, sus propuestas se borran con él (supresión real, decisión #40). **Pendiente de aplicar la migración en producción** (`20260717150000`).
+
 ## [0.0.63] — 2026-07-17
 
 ### Añadido

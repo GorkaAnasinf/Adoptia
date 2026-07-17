@@ -334,29 +334,50 @@ export function plantillaFichaDespublicada({
   };
 }
 
-// ---------- FEATURE-016: casas de acogida ----------
+// ---------- FEATURE-016/029: casas de acogida ----------
+
+/** Texto libre del usuario dentro de HTML de email: escapar siempre. */
+function escaparHtml(texto: string): string {
+  return texto
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;");
+}
 
 export function plantillaContactoAcogida({
   fosterName,
   shelterName,
   shelterEmail,
   shelterPhone,
+  animalName,
+  duracion,
+  mensaje,
 }: {
   fosterName: string;
   shelterName: string;
   shelterEmail: string | null;
   shelterPhone: string | null;
+  animalName?: string | null;
+  duracion?: string | null;
+  mensaje?: string | null;
 }) {
   const contacto = [
     shelterEmail ? `<li>Email: <a href="mailto:${shelterEmail}" style="color:#396662">${shelterEmail}</a></li>` : "",
     shelterPhone ? `<li>Teléfono: ${shelterPhone}</li>` : "",
+  ].join("");
+  const detalles = [
+    animalName ? `<li>Animal: <strong>${escaparHtml(animalName)}</strong></li>` : "",
+    duracion ? `<li>Duración estimada: ${escaparHtml(duracion)}</li>` : "",
   ].join("");
   return {
     subject: `${shelterName} busca casa de acogida y ha pensado en ti`,
     html: BASE(`
       <p>Hola ${fosterName},</p>
       <p>La protectora <strong>${shelterName}</strong> ha visto tu registro de casa de acogida
-      y le encajas para una acogida temporal.</p>
+      y te propone una acogida temporal.</p>
+      ${detalles ? `<ul style="margin:4px 0;padding-left:18px">${detalles}</ul>` : ""}
+      ${mensaje ? `<p style="border-left:3px solid #396662;padding-left:10px;margin:8px 0">${escaparHtml(mensaje)}</p>` : ""}
       <p>Si te viene bien, ponte en contacto con ellos:</p>
       <ul style="margin:4px 0;padding-left:18px">${contacto}</ul>
       <p>Tus datos de contacto <strong>no</strong> se han compartido: eres tú quien decide responder.
