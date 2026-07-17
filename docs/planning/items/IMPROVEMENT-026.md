@@ -2,7 +2,7 @@
 id: IMPROVEMENT-026
 tipo: improvement
 titulo: Sincronizar el estado del animal con su propuesta de acogida
-estado: desarrollo
+estado: hecho
 prioridad: media
 hito: "0.5"
 duplicado_de: null
@@ -60,8 +60,14 @@ Sin esto, la trazabilidad de FEATURE-029 queda coja: el panel dice «aceptada» 
 
 ## Criterios de aceptación / Casuística a cubrir
 
-- [ ] Aceptar propuesta con animal disponible → animal «En acogida» (badge visible en ficha y panel).
-- [ ] Finalizar (o rechazar tras aceptar) → animal vuelve a «En adopción» solo si seguía `fostered`.
-- [ ] Baja del acogedor con acogida aceptada → animal vuelve a `available` (trigger de delete).
-- [ ] Animal `reserved`/`adopted` o propuesta sin animal: sin efecto alguno.
-- [ ] Todo probado contra Postgres real (tests RLS); suite completa verde, lint y `tsc` limpios.
+- [x] Aceptar propuesta con animal disponible → animal «En acogida» (badge visible en ficha y panel).
+- [x] Finalizar (o rechazar tras aceptar) → animal vuelve a «En adopción» solo si seguía `fostered`.
+- [x] Baja del acogedor con acogida aceptada → animal vuelve a `available` (trigger de delete).
+- [x] Animal `reserved`/`adopted` o propuesta sin animal: sin efecto alguno.
+- [x] Todo probado contra Postgres real (tests RLS); suite completa verde, lint y `tsc` limpios.
+
+## Cierre (2026-07-17)
+
+- Migración `20260717180000`: función `sync_animal_estado_acogida` (security definer, sin execute para roles de cliente) + trigger `AFTER UPDATE OF status OR DELETE` en `foster_proposals`. Solo mueve `available↔fostered`, así que reservados/adoptados jamás se pisan y las transiciones siguen el mapa de `ESTADOS` del esquema.
+- 4 tests contra Postgres real. Lección de higiene: la BD local persiste entre ejecuciones — las fixtures van en Zaragoza (lejos del cluster de Bilbao de FEATURE-016) y se limpian en `afterAll`, porque un acogedor zombi rompía 3 tests de `acogida.test.ts`.
+- QA Scooby 5/5. Suite 1013/1013 con RLS, lint y `tsc` limpios, cobertura 82,4 % / 96,7 % `src/lib`. Sin cambios de UI: el badge «En acogida» ya existía; ahora por fin se enciende solo.

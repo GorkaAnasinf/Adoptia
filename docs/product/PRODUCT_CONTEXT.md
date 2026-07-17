@@ -101,6 +101,7 @@ Estado de cada capacidad en lenguaje de usuario. Se regenera con `python scripts
 - Subir CI y el runtime a Node 22+ (hoy el job de la app va en Node 20, ya deprecado) ([IMPROVEMENT-023](../planning/items/IMPROVEMENT-023.md))
 - Pulido menor del perfil público de protectora (fallbacks del hero y de las tarjetas) ([IMPROVEMENT-024](../planning/items/IMPROVEMENT-024.md))
 - Acogidas visibles en la navegación del usuario ([IMPROVEMENT-025](../planning/items/IMPROVEMENT-025.md))
+- Sincronizar el estado del animal con su propuesta de acogida ([IMPROVEMENT-026](../planning/items/IMPROVEMENT-026.md))
 
 #### 🚧 En camino (en desarrollo ahora)
 
