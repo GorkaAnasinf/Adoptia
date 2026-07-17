@@ -5,8 +5,10 @@ import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { AnimalStatusBadge } from "@/components/animals/AnimalStatusBadge";
 import { EnlaceExternoPago } from "@/components/apadrinamiento/EnlaceExternoPago";
+import { MiniMapa } from "@/components/map/MiniMapa";
 import type { AnimalStatus } from "@/lib/schemas/animal";
 import { resumenHorario, tieneHorario } from "@/lib/opening-hours";
+import { parsePoint } from "@/lib/shelter-mapping";
 import type { OpeningHours, SocialLinks } from "@/lib/schemas/shelter";
 import { cn } from "@/lib/utils";
 
@@ -71,6 +73,7 @@ export function ShelterPublicProfile({
     return Boolean(shelter.social_links?.[r.key]);
   });
   const horario = resumenHorario(shelter.opening_hours);
+  const punto = parsePoint(shelter.location);
 
   // Métricas (FEATURE-028): cada tile solo con dato real; nada de «0 años».
   const anios = shelter.founded_year ? new Date().getFullYear() - shelter.founded_year : 0;
@@ -183,42 +186,110 @@ export function ShelterPublicProfile({
         </dl>
       )}
 
-      {/* Colaboración + web */}
-      {(shelter.accepts_volunteers || shelter.accepts_fostering || shelter.website) && (
-        <div className="mt-5 flex flex-wrap gap-2">
-          {shelter.accepts_volunteers && (
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-tertiary/40 bg-tertiary/10 px-3 py-1 text-sm font-medium text-tertiary">
-              <HandHeart className="size-4" aria-hidden="true" />
-              {t("volunteers")}
-            </span>
-          )}
-          {shelter.accepts_fostering && (
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-secondary/40 bg-secondary/10 px-3 py-1 text-sm font-medium text-secondary-foreground">
-              <Home className="size-4" aria-hidden="true" />
-              {t("fostering")}
-            </span>
-          )}
-          {shelter.website && (
-            <a
-              href={shelter.website}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 rounded-full border border-border px-3 py-1 text-sm font-medium hover:bg-accent"
-            >
-              <Globe className="size-4" aria-hidden="true" />
-              {t("website")}
-            </a>
-          )}
-        </div>
-      )}
+      {/* Dos columnas: sobre nosotros + servicios | horario y ubicación (FEATURE-028) */}
+      <div className="mt-8 grid items-start gap-6 lg:grid-cols-3">
+        {(shelter.description ||
+          shelter.accepts_volunteers ||
+          shelter.accepts_fostering ||
+          shelter.website ||
+          redes.length > 0) && (
+          <section className="rounded-2xl border border-border bg-card p-5 sm:p-6 lg:col-span-2">
+            <h2 className="font-heading text-lg font-semibold">{t("aboutTitle")}</h2>
+            {shelter.description && (
+              <p className="mt-2 whitespace-pre-line text-foreground/90">{shelter.description}</p>
+            )}
+            {(shelter.accepts_volunteers || shelter.accepts_fostering || shelter.website) && (
+              <div className="mt-4">
+                <h3 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                  {t("servicesTitle")}
+                </h3>
+                <div className="mt-2 flex flex-wrap gap-2">
+                  {shelter.accepts_volunteers && (
+                    <span className="inline-flex items-center gap-1.5 rounded-full border border-tertiary/40 bg-tertiary/10 px-3 py-1 text-sm font-medium text-tertiary">
+                      <HandHeart className="size-4" aria-hidden="true" />
+                      {t("volunteers")}
+                    </span>
+                  )}
+                  {shelter.accepts_fostering && (
+                    <span className="inline-flex items-center gap-1.5 rounded-full border border-secondary/40 bg-secondary/10 px-3 py-1 text-sm font-medium text-secondary-foreground">
+                      <Home className="size-4" aria-hidden="true" />
+                      {t("fostering")}
+                    </span>
+                  )}
+                  {shelter.website && (
+                    <a
+                      href={shelter.website}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 rounded-full border border-border px-3 py-1 text-sm font-medium hover:bg-accent"
+                    >
+                      <Globe className="size-4" aria-hidden="true" />
+                      {t("website")}
+                    </a>
+                  )}
+                </div>
+              </div>
+            )}
+            {redes.length > 0 && (
+              <div className="mt-4">
+                <h3 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                  {t("contact")}
+                </h3>
+                <div className="mt-2 flex flex-wrap gap-2">
+                  {redes.map((r) => (
+                    <a
+                      key={r.key}
+                      href={shelter.social_links![r.key]}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="rounded-full border border-border px-3 py-1.5 text-sm font-medium hover:bg-accent"
+                    >
+                      {r.label}
+                    </a>
+                  ))}
+                </div>
+              </div>
+            )}
+          </section>
+        )}
 
-      {/* Sobre nosotros */}
-      {shelter.description && (
-        <section className="mt-8">
-          <h2 className="font-heading text-lg font-semibold">{t("aboutTitle")}</h2>
-          <p className="mt-2 whitespace-pre-line text-foreground/90">{shelter.description}</p>
-        </section>
-      )}
+        {(tieneHorario(shelter.opening_hours) || punto || shelter.address) && (
+          <aside className="rounded-2xl border border-border bg-card p-5 sm:p-6">
+            <h2 className="font-heading text-lg font-semibold">{t("hoursLocationTitle")}</h2>
+            {tieneHorario(shelter.opening_hours) && (
+              <dl className="mt-3 divide-y divide-border">
+                {horario.map(({ dia, franjas }) => (
+                  <div
+                    key={dia}
+                    className="flex items-center justify-between gap-3 py-1.5 text-sm"
+                  >
+                    <dt className="font-medium">{td(`days.${dia}`)}</dt>
+                    <dd
+                      className={cn(
+                        "tabular-nums",
+                        franjas ? "text-foreground" : "text-muted-foreground",
+                      )}
+                    >
+                      {franjas ?? t("closed")}
+                    </dd>
+                  </div>
+                ))}
+              </dl>
+            )}
+            {punto && (
+              <div className="mt-4 overflow-hidden rounded-xl">
+                <MiniMapa lat={punto.lat} lng={punto.lng} />
+              </div>
+            )}
+            {shelter.address && (
+              <p className="mt-3 flex items-start gap-1.5 text-sm text-muted-foreground">
+                <MapPin className="mt-0.5 size-4 shrink-0" aria-hidden="true" />
+                {[shelter.address, shelter.city].filter(Boolean).join(", ")}
+              </p>
+            )}
+          </aside>
+        )}
+      </div>
 
       {/* Instalaciones */}
       {photos.length > 0 && (
@@ -239,45 +310,6 @@ export function ShelterPublicProfile({
           </ul>
         </section>
       )}
-
-      <div className="mt-8 grid gap-8 sm:grid-cols-2">
-        {/* Horario */}
-        {tieneHorario(shelter.opening_hours) && (
-          <section>
-            <h2 className="font-heading text-lg font-semibold">{t("hoursTitle")}</h2>
-            <dl className="mt-3 divide-y divide-border rounded-xl border border-border">
-              {horario.map(({ dia, franjas }) => (
-                <div key={dia} className="flex items-center justify-between gap-3 px-3 py-2 text-sm">
-                  <dt className="font-medium">{td(`days.${dia}`)}</dt>
-                  <dd className={cn("tabular-nums", franjas ? "text-foreground" : "text-muted-foreground")}>
-                    {franjas ?? t("closed")}
-                  </dd>
-                </div>
-              ))}
-            </dl>
-          </section>
-        )}
-
-        {/* Redes */}
-        {redes.length > 0 && (
-          <section>
-            <h2 className="font-heading text-lg font-semibold">{t("contact")}</h2>
-            <div className="mt-3 flex flex-wrap gap-2">
-              {redes.map((r) => (
-                <a
-                  key={r.key}
-                  href={shelter.social_links![r.key]}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="rounded-full border border-border px-3 py-1.5 text-sm font-medium hover:bg-accent"
-                >
-                  {r.label}
-                </a>
-              ))}
-            </div>
-          </section>
-        )}
-      </div>
 
       {/* Animales en adopción (apadrinables destacados primero) */}
       <section className="mt-10">

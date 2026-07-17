@@ -1,8 +1,13 @@
 import { render, screen } from "@testing-library/react";
 import { NextIntlClientProvider } from "next-intl";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import messages from "../../../messages/es.json";
 import { type PublicAnimal, ShelterPublicProfile } from "./ShelterPublicProfile";
+
+// Leaflet toca window: en tests lo sustituimos, como en el resto de fichas.
+vi.mock("@/components/map/MiniMapa", () => ({
+  MiniMapa: () => <div data-testid="mini-mapa" />,
+}));
 
 function conIntl(ui: React.ReactElement) {
   return render(
@@ -89,6 +94,36 @@ describe("ShelterPublicProfile — métricas (FEATURE-028)", () => {
     unmount();
     conIntl(<ShelterPublicProfile shelter={{ name: "Refugio" }} animals={[]} />);
     expect(screen.queryByText(messages.shelterPublic.metricsAdoptions)).not.toBeInTheDocument();
+  });
+});
+
+describe("ShelterPublicProfile — horario y ubicación (FEATURE-028)", () => {
+  // POINT(-2.935 43.263) en EWKB hex (como lo devuelve Supabase)
+  const LOCATION = "0101000020E61000007B14AE47E17A07C08B6CE7FBA9A14540";
+
+  it("muestra el mini-mapa y la dirección cuando hay location", () => {
+    conIntl(
+      <ShelterPublicProfile
+        shelter={{ name: "Refugio", address: "Calle Esperanza 14", location: LOCATION }}
+        animals={[]}
+      />,
+    );
+    expect(screen.getByTestId("mini-mapa")).toBeInTheDocument();
+    expect(screen.getByText(/calle esperanza 14/i)).toBeInTheDocument();
+  });
+
+  it("sin location no hay mapa; la sección de horario sigue funcionando", () => {
+    conIntl(
+      <ShelterPublicProfile
+        shelter={{
+          name: "Refugio",
+          opening_hours: { lun: [{ open: "10:00", close: "18:00" }] },
+        }}
+        animals={[]}
+      />,
+    );
+    expect(screen.queryByTestId("mini-mapa")).not.toBeInTheDocument();
+    expect(screen.getByText("10:00–18:00")).toBeInTheDocument();
   });
 });
 
