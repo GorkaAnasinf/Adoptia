@@ -201,6 +201,8 @@
     "vacioCta": "Ver animales en adopción"
   },
   "shelterPublic": {
+    "coverAlt": "Portada de {name}",
+    "contactCta": "Contactar",
     "aboutTitle": "Sobre nosotros",
     "hoursTitle": "Horario de visitas",
     "closed": "Cerrado",
