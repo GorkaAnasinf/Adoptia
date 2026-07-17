@@ -2,6 +2,12 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/es/) adaptado. Versionado 0.x hasta el MVP.
 
+## [0.0.66] — 2026-07-17
+
+### Añadido
+
+- **La casa de acogida puede pedir relevo sin dramas (FEATURE-030)**: si al acogedor le surge una emergencia (obras, inundación, hospitalización…), ya no tiene que resolverlo por WhatsApp ni abandonar la acogida sin rastro. En su pantalla de acogida, sobre la propuesta aceptada, pulsa **«Necesito relevo»**, cuenta el motivo y hasta cuándo puede seguir — la protectora recibe el aviso por email y ve un **chip de «Relevo pedido»** con el motivo en su panel, desde donde propone la acogida a otros acogedores de la zona con el flujo de siempre. El acogedor puede cancelar la petición si su situación se arregla. Y un detalle fino por debajo: mientras el relevo está en marcha conviven dos acogidas aceptadas del mismo animal — cerrar la primera ya no lo marca «En adopción» por error. **Pendiente de aplicar la migración en producción** (`20260717210000`).
+
 ## [0.0.65] — 2026-07-17
 
 ### Corregido

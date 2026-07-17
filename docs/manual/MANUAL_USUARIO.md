@@ -128,6 +128,7 @@ Si puedes cuidar temporalmente de un animal:
 1. Entra en **Acogidas** — desde tu área personal (**Mi cuenta → Acogidas**, también en el menú del avatar) o desde el enlace del pie de página — y rellena el **registro de casa de acogida**: datos de contacto, tipo de vivienda, qué animales puedes acoger y por cuánto tiempo.
 2. Las protectoras de tu zona podrán **proponerte acogidas a través de la plataforma** — recibirás un email con el animal, la duración estimada y un mensaje; tu correo no se muestra públicamente.
 3. En esa misma pantalla verás tus **propuestas recibidas** con su estado, y puedes **editar tus condiciones, pausarte** (por ejemplo en vacaciones) **o darte de baja** en cualquier momento.
+4. Si ya tienes una acogida en marcha y te surge una emergencia (obras, un viaje inesperado…), pulsa **«Necesito relevo»** sobre esa acogida, cuenta el motivo y hasta cuándo puedes seguir: la protectora recibirá el aviso y buscará otra casa de acogida. Puedes cancelar la petición si tu situación se arregla.
 
 ### 3.11 Guías de adopción responsable
 
@@ -173,7 +174,7 @@ En **Panel → Perfil** editas lo que ven los adoptantes: descripción, fotos, d
 
 ### 4.7 Casas de acogida
 
-En **Panel → Acogida** consultas las **casas de acogida registradas** en tu zona y les **propones acogidas** con un formulario (para qué animal, cuánto tiempo y un mensaje); el acogedor recibe el aviso por email. Cada propuesta queda registrada con su estado: mientras esté abierta no puedes reenviarla, y desde el **historial** la marcas aceptada, rechazada o finalizada — así sabes en todo momento qué animales tienes en acogida y con quién.
+En **Panel → Acogida** consultas las **casas de acogida registradas** en tu zona y les **propones acogidas** con un formulario (para qué animal, cuánto tiempo y un mensaje); el acogedor recibe el aviso por email. Cada propuesta queda registrada con su estado: mientras esté abierta no puedes reenviarla, y desde el **historial** la marcas aceptada, rechazada o finalizada — así sabes en todo momento qué animales tienes en acogida y con quién. Si una casa de acogida **pide relevo** (emergencia), lo verás con un aviso destacado (motivo y fecha límite) y recibirás un email: propón la acogida a otro acogedor de la zona y, resuelto el relevo, marca la original como finalizada.
 
 ---
 
