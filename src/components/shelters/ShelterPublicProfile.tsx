@@ -13,6 +13,11 @@ import { cn } from "@/lib/utils";
 export type PublicShelter = {
   name: string;
   logo_url?: string | null;
+  cover_url?: string | null;
+  founded_year?: number | null;
+  email?: string | null;
+  address?: string | null;
+  location?: unknown;
   description?: string | null;
   city?: string | null;
   province?: string | null;
