@@ -98,6 +98,7 @@ Estado de cada capacidad en lenguaje de usuario. Se regenera con `python scripts
 - Búsqueda por texto/raza en el listado de animales ([IMPROVEMENT-021](../planning/items/IMPROVEMENT-021.md))
 - Ejecutar los E2E de Playwright en CI, aprovechando el stack que ya levanta el job de RLS ([IMPROVEMENT-022](../planning/items/IMPROVEMENT-022.md))
 - Subir CI y el runtime a Node 22+ (hoy el job de la app va en Node 20, ya deprecado) ([IMPROVEMENT-023](../planning/items/IMPROVEMENT-023.md))
+- Pulido menor del perfil público de protectora (fallbacks del hero y de las tarjetas) ([IMPROVEMENT-024](../planning/items/IMPROVEMENT-024.md))
 
 #### 🚧 En camino (en desarrollo ahora)
 
@@ -105,5 +106,5 @@ _Nada en desarrollo en este momento._
 
 #### 🗓️ Previsto
 
-- Pulido menor del perfil público de protectora (fallbacks del hero y de las tarjetas) — hito sin asignar ([IMPROVEMENT-024](../planning/items/IMPROVEMENT-024.md))
+_Backlog vacío._
 <!-- RENDER:END -->

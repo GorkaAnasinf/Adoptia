@@ -123,7 +123,11 @@ export function ShelterPublicProfile({
                   className="size-20 rounded-full border-4 border-card bg-card object-cover sm:size-24"
                 />
               ) : (
-                <span className="flex size-20 items-center justify-center rounded-full border-4 border-card bg-primary/10 text-primary sm:size-24">
+                <span
+                  role="img"
+                  aria-label={shelter.name}
+                  className="flex size-20 items-center justify-center rounded-full border-4 border-card bg-primary/10 text-primary sm:size-24"
+                >
                   <PawPrint className="size-10" aria-hidden="true" />
                 </span>
               )}

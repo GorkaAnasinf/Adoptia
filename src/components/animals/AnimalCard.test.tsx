@@ -81,7 +81,12 @@ describe("AnimalCard", () => {
   it("una cover_url inválida (sin http ni /) cae al placeholder sin romper", () => {
     renderCard({ cover_url: "a.jpg" });
     expect(screen.queryByRole("img", { name: "Pipa" })).not.toBeInTheDocument();
-    expect(screen.getByText("Sin foto")).toBeInTheDocument();
+    expect(screen.getByRole("img", { name: "Sin foto" })).toBeInTheDocument();
+  });
+
+  it("sin foto, el placeholder es la huella accesible «Sin foto» (IMPROVEMENT-024)", () => {
+    renderCard({ cover_url: null });
+    expect(screen.getByRole("img", { name: "Sin foto" })).toBeInTheDocument();
   });
 
   it("muestra edad, tamaño, sexo (icono) y protectora", () => {
