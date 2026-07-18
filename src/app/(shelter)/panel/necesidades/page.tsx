@@ -31,8 +31,13 @@ export default async function NecesidadesPanelPage() {
       .order("created_at", { ascending: false });
     necesidades = (data as Necesidad[] | null) ?? [];
   }
-  const abiertas = necesidades.filter((n) => n.status === "abierta");
-  const cubiertas = necesidades.filter((n) => n.status === "cubierta");
+  // Llaves y return explícito: el guardián de i18n confunde `=> x === "texto"` con texto JSX.
+  const abiertas = necesidades.filter((n) => {
+    return n.status === "abierta";
+  });
+  const cubiertas = necesidades.filter((n) => {
+    return n.status === "cubierta";
+  });
 
   return (
     <section className="mx-auto max-w-4xl px-4 py-8">

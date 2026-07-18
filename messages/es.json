@@ -844,7 +844,9 @@
     "perfilTitulo": "Necesitamos",
     "footer": "Necesidades de protectoras",
     "filtroTodas": "Todas",
-    "filtroUrgentes": "Solo urgentes"
+    "filtroUrgentes": "Solo urgentes",
+    "fCiudad": "Ciudad",
+    "filtrar": "Filtrar"
   },
   "guias": {
     "title": "Guías de adopción responsable",

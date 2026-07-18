@@ -25,6 +25,7 @@ function builder(tabla: string) {
 
 vi.mock("@/lib/supabase/server", () => ({
   createClient: vi.fn(async () => ({
+    auth: { getUser: vi.fn(async () => ({ data: { user: null } })) },
     from: vi.fn((tabla: string) => builder(tabla)),
     rpc: rpcMock,
   })),
