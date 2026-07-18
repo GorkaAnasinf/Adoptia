@@ -100,3 +100,8 @@ La home rediseñada es fiel al wireframe pero estática. Estas micro-interaccion
 - Historias felices demo integrada tras la banda de números; fotos de Luna y Simba se sustituyeron en revisión visual por tomas cálidas acordes a la paleta (las primeras chocaban: fondos amarillo/azul saturados).
 - Lección de test: `getByRole(..., { name: undefined })` no filtra — el test de labels se endureció con `toHaveProperty` (patrón repetido de FEATURE-034).
 - Trampa de verificación: el optimizador de imágenes de Next cachea por nombre de fichero — al reemplazar un asset con el mismo nombre hay que vaciar `.next/cache/images` para ver el cambio en dev.
+
+### Remate (2026-07-18, feedback del usuario tras la liberación)
+
+- El usuario percibió que el count-up «corría al cargar la página». Diagnóstico con muestreo en navegador real: la animación sí arrancaba al intersectar, pero **antes de intersectar el contador mostraba el valor final** (estado SSR), así que al asomar la banda se veía «31» estático un instante. Arreglo: en cliente, si va a haber animación, el contador baja a 0 nada más montar y anima al entrar (umbral 0,2). Test nuevo que lo fija.
+- De paso se corrigió un bug de base de tiempos: `inicio` salía de `performance.now()` pero los frames usan el timestamp del rAF — ahora el inicio se toma del primer frame (t además acotado a [0,1]). Suite 1113/1113 con RLS.

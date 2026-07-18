@@ -48,6 +48,14 @@ describe("CountUp", () => {
     expect(screen.getByText("140")).toBeInTheDocument();
   });
 
+  it("con animación pendiente muestra 0 hasta intersectar (no adelanta el final)", () => {
+    stubIO();
+    stubReducedMotion(false);
+    render(<CountUp value={140} />);
+    expect(screen.getByText("0")).toBeInTheDocument();
+    expect(screen.queryByText("140")).not.toBeInTheDocument();
+  });
+
   it("al entrar en viewport anima y termina en el valor real", async () => {
     const io = stubIO();
     stubReducedMotion(false);
