@@ -2,6 +2,12 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/es/) adaptado. Versionado 0.x hasta el MVP.
 
+## [0.0.72] — 2026-07-18
+
+### Cambiado
+
+- **El listado de animales se alinea con el diseño nuevo (FEATURE-036)**: segunda pantalla de la tanda Stitch. El panel de filtros pasa a la **superficie crema tonal** de la home (adiós a los bordes duros), el título estrena el copy del wireframe — **«Peludos buscando un hogar»** — con el recuento en su propia línea en terracota («130 resultados encontrados»), la paginación gana **flechas anterior/siguiente** accesibles y las tarjetas se revelan al hacer scroll como en la home. Detalles que el mock no traía: en móvil el desplegable dice **«Filtros (N)»** con el número de filtros activos, y el slider de distancia deshabilitado explica que hay que activar la ubicación. Sin cambios de datos ni de búsqueda. QA: suite 1121/1121 con RLS, E2E 4/4.
+
 ## [0.0.71] — 2026-07-18
 
 ### Añadido

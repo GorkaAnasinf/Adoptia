@@ -206,12 +206,18 @@ export function AnimalSearchFilters({ search }: { search: AnimalSearch }) {
             value={borrador.distanciaKm ?? 500}
             disabled={!conUbicacion}
             aria-label={t("distancia")}
+            aria-describedby={conUbicacion ? undefined : `${id}-distancia-ayuda`}
             onChange={(e) => {
               const km = Number(e.target.value);
               editar({ distanciaKm: km >= 500 ? undefined : km });
             }}
             className="min-h-10 w-full accent-primary disabled:opacity-50"
           />
+          {!conUbicacion && (
+            <p id={`${id}-distancia-ayuda`} className="text-xs text-muted-foreground">
+              {t("distanciaAyuda")}
+            </p>
+          )}
         </div>
       </div>
 
@@ -258,7 +264,7 @@ export function AnimalSearchFilters({ search }: { search: AnimalSearch }) {
           </button>
           <button
             type="submit"
-            className="min-h-10 rounded-full bg-secondary px-5 text-sm font-semibold text-secondary-foreground transition-colors hover:bg-secondary/90"
+            className="min-h-10 rounded-full bg-secondary px-5 text-sm font-semibold text-secondary-foreground transition hover:bg-secondary/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary motion-safe:active:scale-95"
           >
             {t("aplicar")}
           </button>

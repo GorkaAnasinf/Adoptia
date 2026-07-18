@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   PAGE_SIZE,
   buildQueryString,
+  contarFiltrosActivos,
   edadAproximada,
   edadEnBucket,
   paginasVisibles,
@@ -270,5 +271,34 @@ describe("paginasVisibles", () => {
 
   it("con una sola página devuelve lista vacía (no hay nada que paginar)", () => {
     expect(paginasVisibles(1, 1)).toEqual([]);
+  });
+});
+
+describe("contarFiltrosActivos", () => {
+  it("sin filtros devuelve 0 (página, orden y ubicación no cuentan)", () => {
+    const s = parseAnimalSearch({ pagina: "3", orden: "recientes", lat: "43.2", lng: "-2.9" });
+    expect(contarFiltrosActivos(s)).toBe(0);
+  });
+
+  it("cuenta cada filtro activo una vez", () => {
+    const s = parseAnimalSearch({
+      q: "pipa",
+      especie: "dog",
+      tamano: "small",
+      edad: "joven",
+      sexo: "female",
+      ninos: "si",
+      perros: "si",
+      gatos: "si",
+      distancia: "100",
+      lat: "43.2",
+      lng: "-2.9",
+    });
+    expect(contarFiltrosActivos(s)).toBe(9);
+  });
+
+  it("con un único filtro devuelve 1", () => {
+    const s = parseAnimalSearch({ especie: "cat" });
+    expect(contarFiltrosActivos(s)).toBe(1);
   });
 });
