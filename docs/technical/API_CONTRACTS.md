@@ -240,4 +240,21 @@ Auth: cualquier usuario con sesión (anti-spam). **Relay puro** sobre una necesi
 // 502 → { "error": { "code": "email_error" } }
 ```
 
+## Contrato — POST /api/donaciones/contactar  *(FEATURE-032)*
+
+Auth: dueño de protectora **verificada**. **Relay puro e inverso al de necesidades**: el email va AL DONANTE con el nombre, email y teléfono de la protectora (que los cede al escribir) y el mensaje escapado; el contacto del donante se resuelve server-side con `service_role` y **nunca se devuelve al llamante**. Solo puede contactarse una oferta que `donation_offers_nearby` devuelve para la protectora del llamante (verificada + radio del donante): si no está en la lista, 404. Rate limit: 10/min por protectora. El CRUD de ofertas del donante no tiene endpoints: supabase-js directo amparado por RLS; la caducidad la marca el cron `/api/cron/avisos` (60 días sin renovar).
+
+```jsonc
+// Request
+{ "offer_id": "uuid", "mensaje": "Nos interesa el pienso, ¿podemos pasar el sábado?" }
+// 200 → { "data": { "ok": true } }
+// 401 → { "error": { "code": "unauthorized" } }
+// 403 → { "error": { "code": "forbidden" } }       // sin protectora o sin verificar
+// 404 → { "error": { "code": "not_found" } }       // oferta fuera de alcance/cerrada/caducada
+// 409 → { "error": { "code": "no_email" } }
+// 422 → { "error": { "code": "validation" } }      // mensaje < 10 o > 1000
+// 429 → { "error": { "code": "rate_limited" } }
+// 502 → { "error": { "code": "email_error" } }
+```
+
 Este documento se amplía por item: cada FEATURE que añada endpoints los documenta aquí al cerrarse (lo verifica Hachiko).

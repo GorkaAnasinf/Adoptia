@@ -44,7 +44,7 @@
 | [FEATURE-029](FEATURE-029.md) | Propuestas de acogida estructuradas con trazabilidad | feature | hecho | 0.5 |
 | [FEATURE-030](FEATURE-030.md) | Relevo de acogida (emergencias del acogedor) | feature | hecho | 0.5 |
 | [FEATURE-031](FEATURE-031.md) | Tablón de necesidades de protectoras (pedir ayuda material) | feature | hecho | 0.5 |
-| [FEATURE-032](FEATURE-032.md) | Ofertas de donación de particulares (material para protectoras) | feature | desarrollo | 0.5 |
+| [FEATURE-032](FEATURE-032.md) | Ofertas de donación de particulares (material para protectoras) | feature | hecho | 0.5 |
 | [FEATURE-033](FEATURE-033.md) | Alertas de búsqueda guardada (avisos de nuevos animales) | feature | descartado | 0.3 |
 | [IMPROVEMENT-001](IMPROVEMENT-001.md) | De-duplicar el slug de protectora (nombres repetidos) | improvement | hecho | — |
 | [IMPROVEMENT-002](IMPROVEMENT-002.md) | Rediseño UX del wizard de alta de protectora (+ fix del mapa gris) | improvement | hecho | 0.2 |

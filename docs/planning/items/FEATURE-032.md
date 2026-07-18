@@ -2,7 +2,7 @@
 id: FEATURE-032
 tipo: feature
 titulo: Ofertas de donación de particulares (material para protectoras)
-estado: desarrollo
+estado: hecho
 prioridad: media
 hito: "0.5"
 duplicado_de: null
@@ -81,9 +81,11 @@ Migración `feature032_donation_offers`:
 
 ## Criterios de aceptación / Casuística a cubrir
 
-- [ ] Alta de oferta con cuenta: categoría, descripción, zona con pin redondeado (~200 m) y radio; sin exponer dirección exacta jamás.
-- [ ] Solo protectoras verificadas de la zona ven la oferta (RPC con radio; probado permitido/denegado como en acogidas).
-- [ ] Contacto: email al donante con datos de la protectora, nunca al revés; rate-limit por protectora.
-- [ ] Donante puede editar, marcar `entregada` o borrar su oferta (borrado real).
-- [ ] Caducidad automática pasado el plazo (definir en plan técnico) con posibilidad de renovar.
-- [ ] RLS probada: dueño gestiona lo suyo; protectoras solo leen vía RPC; terceros nada.
+- [x] Alta de oferta con cuenta: categoría, descripción, zona con pin redondeado (~200 m) y radio; sin exponer dirección exacta jamás (`/mi-cuenta/donaciones`, trigger de redondeo probado).
+- [x] Solo protectoras verificadas de la zona ven la oferta (RPC `donation_offers_nearby` con doble guarda; probado permitido/denegado, sin coordenadas ni `user_id`).
+- [x] Contacto: email al donante con datos de la protectora, nunca al revés; rate-limit 10/min por protectora (`POST /api/donaciones/contactar`).
+- [x] Donante puede editar, marcar `entregada` o borrar su oferta (borrado real probado en RLS).
+- [x] Caducidad automática a los 60 días (cron `/api/cron/avisos` + `renovada_at` no manipulable + doble red en el RPC) con «Renovar».
+- [x] RLS probada: dueño gestiona lo suyo; protectoras solo leen vía RPC; terceros nada (`src/test/rls/donaciones.test.ts`, 9 casos).
+
+**QA (2026-07-18):** suite 1098/1098 con RLS, cobertura 82,4 % global / 96,6 % `src/lib`, lint y `tsc --noEmit` limpios.
