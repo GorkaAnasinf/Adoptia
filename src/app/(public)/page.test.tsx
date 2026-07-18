@@ -149,6 +149,21 @@ describe("Home", () => {
     ).not.toBeInTheDocument();
   });
 
+  it("muestra las historias felices de demostración con sus fotos", async () => {
+    await renderHome();
+    expect(
+      screen.getByRole("heading", { name: messages.home.storiesTitle }),
+    ).toBeInTheDocument();
+    for (const historia of ["stories1", "stories2", "stories3"] as const) {
+      expect(
+        screen.getByText(messages.home[`${historia}Quote`]),
+      ).toBeInTheDocument();
+      expect(
+        screen.getByRole("img", { name: messages.home[`${historia}Alt`] }),
+      ).toBeInTheDocument();
+    }
+  });
+
   it("incluye el bloque para protectoras con overline, título y CTA al registro", async () => {
     await renderHome();
     expect(screen.getByText(messages.home.ctaSheltersOverline)).toBeInTheDocument();

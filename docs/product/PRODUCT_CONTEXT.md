@@ -106,6 +106,7 @@ Estado de cada capacidad en lenguaje de usuario. Se regenera con `python scripts
 - Pulido menor del perfil público de protectora (fallbacks del hero y de las tarjetas) ([IMPROVEMENT-024](../planning/items/IMPROVEMENT-024.md))
 - Acogidas visibles en la navegación del usuario ([IMPROVEMENT-025](../planning/items/IMPROVEMENT-025.md))
 - Sincronizar el estado del animal con su propuesta de acogida ([IMPROVEMENT-026](../planning/items/IMPROVEMENT-026.md))
+- Vida y micro-interacciones en la web (cursor, count-up, reveal, header compacto, huellas) ([IMPROVEMENT-027](../planning/items/IMPROVEMENT-027.md))
 
 #### 🚧 En camino (en desarrollo ahora)
 
@@ -113,5 +114,5 @@ _Nada en desarrollo en este momento._
 
 #### 🗓️ Previsto
 
-_Backlog vacío._
+- Historias felices — social proof de adopciones en la home — hito sin asignar ([FEATURE-035](../planning/items/FEATURE-035.md))
 <!-- RENDER:END -->

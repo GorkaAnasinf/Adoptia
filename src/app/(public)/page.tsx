@@ -4,6 +4,10 @@ import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import { AnimalCard, type AnimalSearchResult } from "@/components/animals/AnimalCard";
 import { HeroSearch } from "@/components/home/HeroSearch";
+import { CountUp } from "@/components/ui/CountUp";
+import { Parallax } from "@/components/ui/Parallax";
+import { PawTrail } from "@/components/ui/PawTrail";
+import { Reveal } from "@/components/ui/Reveal";
 import { createClient } from "@/lib/supabase/server";
 
 export const revalidate = 300;
@@ -63,20 +67,32 @@ export default async function HomePage() {
     { icono: CalendarCheck, titulo: t("home.how3Title"), texto: t("home.how3Text") },
   ];
 
+  // DEMO (IMPROVEMENT-027): historias inventadas — FEATURE-035 traerá las reales
+  const historias = (["stories1", "stories2", "stories3"] as const).map((clave, i) => ({
+    nombre: t(`home.${clave}Name`),
+    frase: t(`home.${clave}Quote`),
+    autor: t(`home.${clave}Author`),
+    tiempo: t(`home.${clave}Time`),
+    alt: t(`home.${clave}Alt`),
+    foto: ["/images/story-luna.jpg", "/images/story-simba.jpg", "/images/story-kira.jpg"][i],
+  }));
+
   return (
     <>
       {/* Hero con buscador sobre foto ambiente */}
       <section className="relative flex min-h-120 flex-col items-center justify-center px-4 py-16 sm:min-h-160">
         <div className="absolute inset-0 overflow-hidden" aria-hidden="true">
-          <Image
-            data-testid="hero-bg"
-            src={FOTO_HERO}
-            alt=""
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover opacity-20 grayscale-[0.2]"
-          />
+          <Parallax factor={0.35} className="absolute -inset-y-24 inset-x-0">
+            <Image
+              data-testid="hero-bg"
+              src={FOTO_HERO}
+              alt=""
+              fill
+              priority
+              sizes="100vw"
+              className="object-cover opacity-20 grayscale-[0.2]"
+            />
+          </Parallax>
           <div className="absolute inset-0 bg-linear-to-b from-transparent to-background" />
         </div>
         <div className="relative z-10 mx-auto flex w-full max-w-3xl flex-col items-center gap-5 text-center">
@@ -105,14 +121,19 @@ export default async function HomePage() {
             </Link>
           </div>
           <ul className="mt-5 grid grid-cols-2 gap-4 lg:grid-cols-4">
-            {recientes.map((animal) => (
+            {recientes.map((animal, i) => (
               <li key={animal.id}>
-                <AnimalCard animal={animal} conCta />
+                <Reveal delayMs={i * 100} className="h-full">
+                  <AnimalCard animal={animal} conCta />
+                </Reveal>
               </li>
             ))}
           </ul>
         </section>
       )}
+
+      {/* Separador de marca */}
+      <PawTrail className="pb-6" />
 
       {/* Cómo funciona */}
       <section className="bg-surface-container-low/40">
@@ -120,16 +141,18 @@ export default async function HomePage() {
           <h2 className="text-center font-heading text-2xl font-semibold">{t("home.howTitle")}</h2>
           <p className="mt-2 text-center text-sm text-muted-foreground">{t("home.howSubtitle")}</p>
           <ol className="mt-10 grid gap-6 sm:grid-cols-3">
-            {pasos.map(({ icono: Icono, titulo, texto }) => (
-              <li
-                key={titulo}
-                className="flex flex-col items-center gap-3 rounded-3xl bg-surface-container-lowest px-6 py-8 text-center shadow-soft"
-              >
-                <span className="flex size-16 items-center justify-center rounded-full bg-primary/10 text-primary">
-                  <Icono className="size-7" aria-hidden="true" />
-                </span>
-                <h3 className="font-heading text-xl font-semibold">{titulo}</h3>
-                <p className="max-w-xs text-sm text-muted-foreground">{texto}</p>
+            {pasos.map(({ icono: Icono, titulo, texto }, i) => (
+              <li key={titulo}>
+                <Reveal
+                  delayMs={i * 120}
+                  className="flex h-full flex-col items-center gap-3 rounded-3xl bg-surface-container-lowest px-6 py-8 text-center shadow-soft"
+                >
+                  <span className="flex size-16 items-center justify-center rounded-full bg-primary/10 text-primary">
+                    <Icono className="size-7" aria-hidden="true" />
+                  </span>
+                  <h3 className="font-heading text-xl font-semibold">{titulo}</h3>
+                  <p className="max-w-xs text-sm text-muted-foreground">{texto}</p>
+                </Reveal>
               </li>
             ))}
           </ol>
@@ -149,7 +172,9 @@ export default async function HomePage() {
               { valor: stats.adopciones, etiqueta: t("home.statsAdoptionsLabel") },
             ].map(({ valor, etiqueta }) => (
               <div key={etiqueta} className="flex flex-col gap-1 px-2">
-                <dd className="font-heading text-3xl font-bold tabular-nums sm:text-4xl">{valor}</dd>
+                <dd className="font-heading text-3xl font-bold tabular-nums sm:text-4xl">
+                  <CountUp value={valor} />
+                </dd>
                 <dt className="text-sm text-white/80">{etiqueta}</dt>
               </div>
             ))}
@@ -157,14 +182,56 @@ export default async function HomePage() {
         </section>
       )}
 
+      {/* Historias felices — DEMO con datos inventados (IMPROVEMENT-027).
+          FEATURE-035 sustituirá esta sección por adopciones reales. */}
+      <section className="mx-auto max-w-6xl px-4 pt-14">
+        <div className="text-center">
+          <h2 className="font-heading text-2xl font-semibold">{t("home.storiesTitle")}</h2>
+          <p className="mt-2 text-sm text-muted-foreground">{t("home.storiesSubtitle")}</p>
+        </div>
+        <ul className="mt-8 grid gap-6 sm:grid-cols-3">
+          {historias.map(({ nombre, frase, autor, tiempo, alt, foto }, i) => (
+            <li key={nombre}>
+              <Reveal delayMs={i * 120} className="h-full">
+                <figure className="flex h-full flex-col overflow-hidden rounded-3xl bg-surface-container-lowest shadow-soft">
+                  <div className="relative aspect-4/3">
+                    <Image
+                      src={foto}
+                      alt={alt}
+                      fill
+                      sizes="(max-width: 640px) 100vw, 33vw"
+                      className="object-cover"
+                    />
+                    <span className="absolute left-3 top-3 rounded-full bg-tertiary px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-tertiary-foreground">
+                      {t("home.storiesBadge")}
+                    </span>
+                  </div>
+                  <blockquote className="flex-1 px-5 pt-5 text-sm text-foreground">
+                    {frase}
+                  </blockquote>
+                  <figcaption className="px-5 pb-5 pt-3 text-sm">
+                    <span className="font-heading font-semibold text-primary">{nombre}</span>
+                    <span className="block text-muted-foreground">
+                      {autor} · {tiempo}
+                    </span>
+                  </figcaption>
+                </figure>
+              </Reveal>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <PawTrail className="pt-10" />
+
       {/* Guías (FEATURE-015) */}
-      <section className="mx-auto max-w-6xl px-4 pb-4 pt-12">
+      <section className="mx-auto max-w-6xl px-4 pb-4 pt-2">
         <div className="flex flex-col items-center gap-3 rounded-3xl border border-border/60 bg-surface-container-lowest px-6 py-10 text-center shadow-soft">
           <h2 className="font-heading text-2xl font-semibold">{t("guias.homeTitle")}</h2>
           <p className="max-w-xl text-muted-foreground">{t("guias.homeText")}</p>
           <Link
             href="/guias"
-            className="mt-1 rounded-2xl border-2 border-primary px-6 py-2.5 font-medium text-primary transition-colors hover:bg-primary hover:text-primary-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+            className="mt-1 rounded-2xl border-2 border-primary px-6 py-2.5 font-medium text-primary transition hover:bg-primary hover:text-primary-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary motion-safe:active:scale-95"
           >
             {t("guias.homeCta")}
           </Link>
@@ -184,7 +251,7 @@ export default async function HomePage() {
             <p className="max-w-md text-muted-foreground">{t("home.ctaSheltersText")}</p>
             <Link
               href="/registro"
-              className="mt-2 rounded-2xl bg-primary px-6 py-3 font-semibold text-primary-foreground shadow-lg shadow-primary/20 transition-colors hover:bg-primary/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+              className="mt-2 rounded-2xl bg-primary px-6 py-3 font-semibold text-primary-foreground shadow-lg shadow-primary/20 transition hover:bg-primary/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary motion-safe:active:scale-95"
             >
               {t("home.ctaShelters")}
             </Link>
