@@ -79,9 +79,9 @@ describe("Página /animales", () => {
     });
     await renderPagina();
     expect(
-      screen.getByRole("heading", { level: 1, name: /Peludos cerca de ti/ }),
+      screen.getByRole("heading", { level: 1, name: "Peludos buscando un hogar" }),
     ).toBeInTheDocument();
-    expect(screen.getByText("(2 resultados)")).toBeInTheDocument();
+    expect(screen.getByText("2 resultados encontrados")).toBeInTheDocument();
     expect(screen.getByText("Pipa")).toBeInTheDocument();
     expect(screen.getByText("Golfo")).toBeInTheDocument();
   });
@@ -139,6 +139,54 @@ describe("Página /animales", () => {
     ).not.toBeInTheDocument();
     // La página 1 sigue enlazada (sin parámetro pagina)
     expect(screen.getByRole("link", { name: "1" })).toHaveAttribute("href", "/animales");
+  });
+
+  it("la paginación lleva flechas anterior/siguiente con destino correcto", async () => {
+    rpcMock.mockResolvedValue({
+      data: Array.from({ length: 24 }, (_, i) => fila({ name: `Animal ${i}`, total_count: 60 })),
+      error: null,
+    });
+    await renderPagina({ pagina: "2" });
+    expect(
+      screen.getByRole("link", { name: messages.busqueda.paginaAnterior }),
+    ).toHaveAttribute("href", "/animales");
+    expect(
+      screen.getByRole("link", { name: messages.busqueda.paginaSiguiente }),
+    ).toHaveAttribute("href", "/animales?pagina=3");
+  });
+
+  it("en la primera página no aparece la flecha de anterior", async () => {
+    rpcMock.mockResolvedValue({
+      data: Array.from({ length: 24 }, (_, i) => fila({ name: `Animal ${i}`, total_count: 48 })),
+      error: null,
+    });
+    await renderPagina();
+    expect(
+      screen.queryByRole("link", { name: messages.busqueda.paginaAnterior }),
+    ).not.toBeInTheDocument();
+  });
+
+  it("en la última página no aparece la flecha de siguiente", async () => {
+    rpcMock.mockResolvedValue({
+      data: Array.from({ length: 24 }, (_, i) => fila({ name: `Animal ${i}`, total_count: 48 })),
+      error: null,
+    });
+    await renderPagina({ pagina: "2" });
+    expect(
+      screen.queryByRole("link", { name: messages.busqueda.paginaSiguiente }),
+    ).not.toBeInTheDocument();
+  });
+
+  it("el resumen móvil de filtros muestra cuántos hay activos", async () => {
+    rpcMock.mockResolvedValue({ data: [], error: null });
+    await renderPagina({ especie: "dog", ninos: "si" });
+    expect(screen.getByText("Filtros (2)")).toBeInTheDocument();
+  });
+
+  it("sin ubicación el slider de distancia explica cómo activarse", async () => {
+    rpcMock.mockResolvedValue({ data: [], error: null });
+    await renderPagina();
+    expect(screen.getAllByText(messages.busqueda.distanciaAyuda).length).toBeGreaterThan(0);
   });
 
   it("con una sola página no hay paginación", async () => {
