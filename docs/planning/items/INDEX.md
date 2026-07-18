@@ -48,6 +48,7 @@
 | [FEATURE-033](FEATURE-033.md) | Alertas de búsqueda guardada (avisos de nuevos animales) | feature | descartado | 0.3 |
 | [FEATURE-034](FEATURE-034.md) | Rediseño de la home según wireframe Stitch (tanda de rediseño, pantalla 1) | feature | hecho | 0.5 |
 | [FEATURE-035](FEATURE-035.md) | Historias felices — social proof de adopciones en la home | feature | recibido | — |
+| [FEATURE-036](FEATURE-036.md) | Rediseño del listado de animales según wireframe Stitch (tanda, pantalla 2) | feature | hecho | 0.5 |
 | [IMPROVEMENT-001](IMPROVEMENT-001.md) | De-duplicar el slug de protectora (nombres repetidos) | improvement | hecho | — |
 | [IMPROVEMENT-002](IMPROVEMENT-002.md) | Rediseño UX del wizard de alta de protectora (+ fix del mapa gris) | improvement | hecho | 0.2 |
 | [IMPROVEMENT-003](IMPROVEMENT-003.md) | Pulido del shell chrome (sidebar + cabecera) hacia el mockup de Stitch | improvement | hecho | 0.2 |

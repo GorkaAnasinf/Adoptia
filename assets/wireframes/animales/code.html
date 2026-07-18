@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Adoptia - Peludos buscando un hogar</title>
+<!-- Google Fonts: Montserrat & Open Sans -->
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&amp;family=Open+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-low": "#f9f3eb",
+                        "surface-container-lowest": "#ffffff",
+                        "on-error": "#ffffff",
+                        "on-background": "#1d1b17",
+                        "tertiary-fixed-dim": "#b5ccc1",
+                        "surface-tint": "#9f402d",
+                        "on-surface-variant": "#56423e",
+                        "surface-container": "#f3ede5",
+                        "on-secondary-container": "#3f6c68",
+                        "primary": "#9f402d",
+                        "on-secondary": "#ffffff",
+                        "secondary-fixed": "#bcece6",
+                        "tertiary-fixed": "#d1e8dd",
+                        "on-tertiary-fixed-variant": "#374b43",
+                        "surface-variant": "#e7e2da",
+                        "outline": "#89726d",
+                        "on-secondary-fixed": "#00201e",
+                        "on-primary-container": "#5a0d02",
+                        "background": "#fef8f0",
+                        "on-tertiary-container": "#1b2f28",
+                        "tertiary-container": "#81978d",
+                        "error": "#ba1a1a",
+                        "on-tertiary-fixed": "#0b1f18",
+                        "on-secondary-fixed-variant": "#204e4a",
+                        "secondary": "#396662",
+                        "on-primary-fixed": "#3e0500",
+                        "surface-bright": "#fef8f0",
+                        "surface-dim": "#dfd9d2",
+                        "on-tertiary": "#ffffff",
+                        "inverse-surface": "#32302b",
+                        "surface-container-high": "#ede7e0",
+                        "surface": "#fef8f0",
+                        "error-container": "#ffdad6",
+                        "on-primary": "#ffffff",
+                        "primary-fixed-dim": "#ffb4a5",
+                        "secondary-fixed-dim": "#a1cfca",
+                        "primary-fixed": "#ffdad3",
+                        "on-error-container": "#93000a",
+                        "surface-container-highest": "#e7e2da",
+                        "inverse-primary": "#ffb4a5",
+                        "on-primary-fixed-variant": "#802918",
+                        "secondary-container": "#bcece6",
+                        "outline-variant": "#ddc0ba",
+                        "primary-container": "#e2725b",
+                        "inverse-on-surface": "#f6f0e8",
+                        "tertiary": "#4e635a",
+                        "on-surface": "#1d1b17"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "sm": "8px",
+                        "gutter": "20px",
+                        "md": "16px",
+                        "xxl": "48px",
+                        "xl": "32px",
+                        "lg": "24px",
+                        "unit": "4px",
+                        "xs": "4px",
+                        "container-max": "1200px",
+                        "margin-mobile": "16px"
+                    },
+                    "fontFamily": {
+                        "headline-xl": ["Montserrat"],
+                        "headline-lg": ["Montserrat"],
+                        "body-lg": ["Open Sans"],
+                        "headline-md": ["Montserrat"],
+                        "label-sm": ["Open Sans"],
+                        "body-md": ["Open Sans"],
+                        "label-md": ["Open Sans"],
+                        "headline-lg-mobile": ["Montserrat"]
+                    },
+                    "fontSize": {
+                        "headline-xl": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                        "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        .pet-card-shadow {
+            box-shadow: 0 4px 12px rgba(226, 114, 91, 0.08);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f3ede5;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #e2725b;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md selection:bg-primary-fixed selection:text-on-primary-fixed overflow-x-hidden">
+<!-- Top Navigation Bar -->
+<header class="bg-surface/80 backdrop-blur-md sticky top-0 z-50 shadow-sm shadow-primary/5">
+<div class="flex justify-between items-center px-lg py-md max-w-container-max mx-auto w-full">
+<div class="flex items-center gap-xl">
+<a class="font-headline-md text-headline-md font-bold text-primary flex items-center gap-xs" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">pets</span>
+                    Adoptia
+                </a>
+<nav class="hidden md:flex items-center gap-lg">
+<a class="text-primary border-b-2 border-primary font-bold pb-1 font-label-md text-label-md" href="#">Adoptar</a>
+<a class="text-on-surface-variant font-label-md hover:text-primary transition-colors" href="#">Protectoras</a>
+<a class="text-on-surface-variant font-label-md hover:text-primary transition-colors" href="#">Sobre nosotros</a>
+<a class="text-on-surface-variant font-label-md hover:text-primary transition-colors" href="#">Perdidos</a>
+</nav>
+</div>
+<div class="flex items-center gap-md">
+<button class="hidden sm:block text-on-surface-variant font-label-md hover:text-primary transition-colors">Iniciar sesión</button>
+<button class="bg-primary text-on-primary px-lg py-sm rounded-xl font-label-md hover:opacity-90 active:scale-95 transition-all">Registrarse</button>
+</div>
+</div>
+</header>
+<main class="max-w-container-max mx-auto px-margin-mobile md:px-lg py-xl">
+<!-- Breadcrumbs -->
+<nav class="flex items-center gap-xs text-on-surface-variant mb-lg font-label-sm">
+<a class="hover:text-primary" href="#">Inicio</a>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<span class="text-primary font-semibold">Animales en Adopción</span>
+</nav>
+<!-- Search & Filter Bar -->
+<section class="bg-surface-container-low rounded-2xl p-lg md:p-xl mb-xxl shadow-sm">
+<div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-md items-end">
+<!-- Search by name -->
+<div class="flex flex-col gap-xs lg:col-span-1">
+<label class="font-label-md text-on-surface-variant ml-1">Buscar</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[20px]">search</span>
+<input class="w-full pl-10 pr-md py-sm rounded-lg border-none bg-surface-container-lowest focus:ring-2 focus:ring-tertiary-container outline-none text-body-md transition-all" placeholder="Nombre o raza..." type="text"/>
+</div>
+</div>
+<!-- Species -->
+<div class="flex flex-col gap-xs">
+<label class="font-label-md text-on-surface-variant ml-1">Especie</label>
+<select class="w-full px-md py-sm rounded-lg border-none bg-surface-container-lowest focus:ring-2 focus:ring-tertiary-container outline-none text-body-md appearance-none">
+<option>Todas</option>
+<option>Perros</option>
+<option>Gatos</option>
+<option>Otros</option>
+</select>
+</div>
+<!-- Tamaño -->
+<div class="flex flex-col gap-xs">
+<label class="font-label-md text-on-surface-variant ml-1">Tamaño</label>
+<select class="w-full px-md py-sm rounded-lg border-none bg-surface-container-lowest focus:ring-2 focus:ring-tertiary-container outline-none text-body-md appearance-none">
+<option>Cualquiera</option>
+<option>Pequeño</option>
+<option>Mediano</option>
+<option>Grande</option>
+</select>
+</div>
+<!-- Edad -->
+<div class="flex flex-col gap-xs">
+<label class="font-label-md text-on-surface-variant ml-1">Edad</label>
+<select class="w-full px-md py-sm rounded-lg border-none bg-surface-container-lowest focus:ring-2 focus:ring-tertiary-container outline-none text-body-md appearance-none">
+<option>Todas</option>
+<option>Cachorro</option>
+<option>Joven</option>
+<option>Adulto</option>
+<option>Senior</option>
+</select>
+</div>
+<!-- Sexo -->
+<div class="flex flex-col gap-xs">
+<label class="font-label-md text-on-surface-variant ml-1">Sexo</label>
+<select class="w-full px-md py-sm rounded-lg border-none bg-surface-container-lowest focus:ring-2 focus:ring-tertiary-container outline-none text-body-md appearance-none">
+<option>Indiferente</option>
+<option>Macho</option>
+<option>Hembra</option>
+</select>
+</div>
+<!-- Distancia -->
+<div class="flex flex-col gap-xs">
+<div class="flex justify-between items-center ml-1">
+<label class="font-label-md text-on-surface-variant">Distancia</label>
+<span class="text-label-sm text-on-surface-variant">Sin límite</span>
+</div>
+<input class="w-full h-2 bg-surface-container rounded-lg appearance-none cursor-pointer accent-primary" type="range"/>
+</div>
+</div>
+<!-- Toggle Filters -->
+<div class="flex flex-wrap items-center justify-between gap-md mt-lg border-t border-surface-container pt-lg">
+<div class="flex flex-wrap gap-lg">
+<label class="flex items-center gap-sm cursor-pointer group">
+<input class="w-5 h-5 rounded border-outline-variant text-primary focus:ring-primary/20 transition-all" type="checkbox"/>
+<span class="text-body-md group-hover:text-primary transition-colors">Bien con niños</span>
+</label>
+<label class="flex items-center gap-sm cursor-pointer group">
+<input class="w-5 h-5 rounded border-outline-variant text-primary focus:ring-primary/20 transition-all" type="checkbox"/>
+<span class="text-body-md group-hover:text-primary transition-colors">Bien con perros</span>
+</label>
+<label class="flex items-center gap-sm cursor-pointer group">
+<input class="w-5 h-5 rounded border-outline-variant text-primary focus:ring-primary/20 transition-all" type="checkbox"/>
+<span class="text-body-md group-hover:text-primary transition-colors">Bien con gatos</span>
+</label>
+<button class="flex items-center gap-xs text-secondary hover:text-secondary-fixed-dim font-label-md transition-colors">
+<span class="material-symbols-outlined text-[18px]">my_location</span>
+                        Usar mi ubicación
+                    </button>
+</div>
+<div class="flex items-center gap-lg">
+<button class="text-on-surface-variant hover:text-primary font-label-md transition-colors">Limpiar filtros</button>
+<button class="bg-secondary text-on-secondary px-xxl py-sm rounded-xl font-label-md hover:opacity-95 active:scale-95 transition-all shadow-md shadow-secondary/10">Aplicar filtros</button>
+</div>
+</div>
+</section>
+<!-- Header Results -->
+<div class="flex justify-between items-end mb-lg">
+<div>
+<h1 class="font-headline-xl text-headline-xl text-on-background">Peludos buscando un hogar</h1>
+<p class="text-body-lg text-primary font-semibold mt-xs">130 resultados encontrados</p>
+</div>
+<div class="hidden sm:flex items-center gap-sm">
+<span class="text-label-md text-on-surface-variant">Ordenar por</span>
+<select class="border-none bg-surface-container-high rounded-lg px-md py-sm font-label-md outline-none text-on-surface focus:ring-2 focus:ring-primary/20 cursor-pointer">
+<option>Más recientes</option>
+<option>Cercanos a mí</option>
+<option>Menor edad</option>
+</select>
+</div>
+</div>
+<!-- Grid Results -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-xl">
+<!-- Pet Card 1: Toby -->
+<article class="bg-surface-container-lowest rounded-2xl overflow-hidden pet-card-shadow group hover:-translate-y-1 transition-all duration-300">
+<div class="relative aspect-[4/3] overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="A portrait of a curious black and white cat looking directly into the camera with bright green eyes. The cat is indoors in a sunlit room, with a soft blur in the background that creates a warm, cozy atmosphere. High-quality photography with organic, earthy tones and a clean, minimalist aesthetic that feels inviting and safe." src="https://lh3.googleusercontent.com/aida-public/AB6AXuChrin2_HbxU0lyZPq4TVoiFw8kUytrs6-6-kbRQbvgAbThId8NPwSa_dBRMXHskojNq8khU8d_l2CF3U7HIsFBCNpeYBgApQx6XL_gxsxxi6f9Lwh5b0_CuTyeslms6FRcp4HtzV0ozjVNUFErJOent2vf3l8pkh1mt_pny-ABDXGuIwlGc76UGVwQv4vD1JjkNOicKtRV-8DgO7oJJQwIwT_HEBShbX50-i2CDeYTF7zmnxGNVU_65G3lAS0XodXfqDb8uIe3pXLK"/>
+<span class="absolute top-md left-md bg-primary-container/90 text-on-primary-container px-sm py-1 rounded-full text-label-sm font-bold uppercase tracking-wider backdrop-blur-sm">Recién llegado</span>
+<button class="absolute top-md right-md bg-surface-container-lowest/80 backdrop-blur-sm p-sm rounded-full text-primary hover:bg-primary hover:text-on-primary transition-all active:scale-90">
+<span class="material-symbols-outlined text-[20px]">favorite</span>
+</button>
+</div>
+<div class="p-lg">
+<div class="flex justify-between items-start mb-sm">
+<h3 class="font-headline-md text-headline-md text-on-background group-hover:text-primary transition-colors">Toby <span class="material-symbols-outlined text-secondary text-[20px] align-middle ml-1">female</span></h3>
+</div>
+<div class="flex flex-col gap-xs text-on-surface-variant">
+<p class="text-body-md">8 años • Pequeño</p>
+<div class="flex items-center gap-xs mt-sm text-label-md">
+<span class="material-symbols-outlined text-[18px]">home_work</span>
+<span>Protectora Mediterranea</span>
+</div>
+</div>
+</div>
+</article>
+<!-- Pet Card 2: Chispa -->
+<article class="bg-surface-container-lowest rounded-2xl overflow-hidden pet-card-shadow group hover:-translate-y-1 transition-all duration-300">
+<div class="relative aspect-[4/3] overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="Close up of a happy Beagle dog with its tongue out, showing a joyful expression. The dog is outdoors on a green lawn with soft afternoon lighting. The background is a gently blurred natural landscape. The image uses warm, golden lighting to highlight the dog's soft fur and friendly eyes, fitting the nurturing connection brand identity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD_aNVxTQ8HjcbOB8IVd-aMSRArEITXwbEEKVY4pqZMuyvp_a9gpwFcJ8JjyCCqWJLabmGs57-4dlzQM33bTEYHWZy950FRtR2s_-MypG0hz35qpfUsJIeTy436MX5KF8lKDGjoU0sZkdbeCEQJz4NoRgKiuihiM07phbRx0WJydfqTl9WW2X86lj1WsJ4GtPr8wHFbFo8l_JYYXEMURbjNTUz_M6vhkg9KMe1-ssjVAr5BUAScXbSGD_iQKDToK2HxIMiiS6NPes3A"/>
+<span class="absolute top-md left-md bg-primary-container/90 text-on-primary-container px-sm py-1 rounded-full text-label-sm font-bold uppercase tracking-wider backdrop-blur-sm">Recién llegado</span>
+<button class="absolute top-md right-md bg-surface-container-lowest/80 backdrop-blur-sm p-sm rounded-full text-primary hover:bg-primary hover:text-on-primary transition-all active:scale-90">
+<span class="material-symbols-outlined text-[20px]">favorite</span>
+</button>
+</div>
+<div class="p-lg">
+<div class="flex justify-between items-start mb-sm">
+<h3 class="font-headline-md text-headline-md text-on-background group-hover:text-primary transition-colors">Chispa <span class="material-symbols-outlined text-primary-container text-[20px] align-middle ml-1" style="font-variation-settings: 'FILL' 1;">male</span></h3>
+</div>
+<div class="flex flex-col gap-xs text-on-surface-variant">
+<p class="text-body-md">1 año • Mediano</p>
+<div class="flex items-center gap-xs mt-sm text-label-md">
+<span class="material-symbols-outlined text-[18px]">home_work</span>
+<span>Protectora El Pilar</span>
+</div>
+</div>
+</div>
+</article>
+<!-- Pet Card 3: Argos -->
+<article class="bg-surface-container-lowest rounded-2xl overflow-hidden pet-card-shadow group hover:-translate-y-1 transition-all duration-300">
+<div class="relative aspect-[4/3] overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="A large, fluffy golden retriever dog holding a yellow flower in its mouth, sitting patiently by a wooden fence. The setting is a rustic garden with soft, diffuse lighting that enhances the golden tones of the dog's coat. The mood is serene and hopeful, reflecting a professional yet homestyle digital environment for pet adoption." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD0KZ9PyvNNKG087iA6cTQbiUXHHL7ajG153_CWUAblkb_u6pUrkP9aHBQkF4ghk1SvE6igyNArKT237JH7LVaHvaYF8kJzgqLDglhmMxlZ_idxcJKGQeVfbSNWqA11aJR3Gwd30N4d88Uo4efAxYgnGraav5BYKiYncH9y5pAE5eJK3ztTd1MJUWcbwBcBhdp88gQxg2aLQ_k45NR37BVLyw93tOOaqJ69dycOjgqheTykSgj1EopX0-_53bOTTu5Q08Fg5pp9sM9X"/>
+<span class="absolute top-md left-md bg-primary-container/90 text-on-primary-container px-sm py-1 rounded-full text-label-sm font-bold uppercase tracking-wider backdrop-blur-sm">Recién llegado</span>
+<button class="absolute top-md right-md bg-surface-container-lowest/80 backdrop-blur-sm p-sm rounded-full text-primary hover:bg-primary hover:text-on-primary transition-all active:scale-90">
+<span class="material-symbols-outlined text-[20px]">favorite</span>
+</button>
+</div>
+<div class="p-lg">
+<div class="flex justify-between items-start mb-sm">
+<h3 class="font-headline-md text-headline-md text-on-background group-hover:text-primary transition-colors">Argos <span class="material-symbols-outlined text-secondary text-[20px] align-middle ml-1">female</span></h3>
+</div>
+<div class="flex flex-col gap-xs text-on-surface-variant">
+<p class="text-body-md">3 años • Grande</p>
+<div class="flex items-center gap-xs mt-sm text-label-md">
+<span class="material-symbols-outlined text-[18px]">home_work</span>
+<span>Refugio Cervantes</span>
+</div>
+</div>
+</div>
+</article>
+<!-- Pet Card 4: Trufa -->
+<article class="bg-surface-container-lowest rounded-2xl overflow-hidden pet-card-shadow group hover:-translate-y-1 transition-all duration-300">
+<div class="relative aspect-[4/3] overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="A beautiful calico cat with long fur looking up at a blue butterfly landing near its nose. The scene is magical and soft, with a cool blue and white palette. The lighting is ethereal and bright, emphasizing a modern minimalism aesthetic that highlights the gentle nature of the animal. High-resolution masonry-inspired layout style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDYmg9QkJ3I1N1C4aV0GnEZZsGwQpXqejTrUEjKiY3mo8i3lEvKcHH-M0naWtRjMjeE9A4aAVRsWuTLUKC9gk69G_ArAZ_tA3UxlhZEJaklKjJRx3N6Bw5ZRSNCCt2LxOXyy8UzCToNYpHcGfmhi2EWlYNcE98Ut2imY5SU7sTe61WcrE18ZubAars1M5eEd-Zw84kGx_F0nNxdW6mcHO3BckoEall95v6JqkNGNQ1jMVUnsON0Sf52OnNbHzI3wjWSeP6IxJT0huJ-"/>
+<span class="absolute top-md left-md bg-primary-container/90 text-on-primary-container px-sm py-1 rounded-full text-label-sm font-bold uppercase tracking-wider backdrop-blur-sm">Recién llegado</span>
+<button class="absolute top-md right-md bg-surface-container-lowest/80 backdrop-blur-sm p-sm rounded-full text-primary hover:bg-primary hover:text-on-primary transition-all active:scale-90">
+<span class="material-symbols-outlined text-[20px]">favorite</span>
+</button>
+</div>
+<div class="p-lg">
+<div class="flex justify-between items-start mb-sm">
+<h3 class="font-headline-md text-headline-md text-on-background group-hover:text-primary transition-colors">Trufa <span class="material-symbols-outlined text-primary-container text-[20px] align-middle ml-1" style="font-variation-settings: 'FILL' 1;">male</span></h3>
+</div>
+<div class="flex flex-col gap-xs text-on-surface-variant">
+<p class="text-body-md">4 años • Pequeño</p>
+<div class="flex items-center gap-xs mt-sm text-label-md">
+<span class="material-symbols-outlined text-[18px]">home_work</span>
+<span>Costa del Sol Rescue</span>
+</div>
+</div>
+</div>
+</article>
+<!-- Pet Card 5: Tomas -->
+<article class="bg-surface-container-lowest rounded-2xl overflow-hidden pet-card-shadow group hover:-translate-y-1 transition-all duration-300">
+<div class="relative aspect-[4/3] overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="Dramatic close-up of a German Shepherd with intense, loyal eyes staring into the distance. The lighting is directional, creating deep shadows and bright highlights on its thick coat. The background is a soft-focus urban park at dusk. The overall mood is one of quiet strength and companionship, aligned with the brand's earthy, warm palette." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAZoD9FYhlZ87ndOmfeHZCIrgQO1bb_faj4Of4jDiMyuLM6oCREUC2NBI9cHMEqoeBZAEM3L5ClsIBEv-sB17E59wCZBsHTF7FXqHedUvNXSgs4DWZrS-nuOcz3M2FKsbxv1IQ0EkCmCsx8GUs-EJaJ_55UX_LliJGyNMhzjbPvwUt655AryS_JbbQy8clvRRLcBZfw3A_UXF9ItJsBc4UfoeDp9aAzoNQWOXtZn6BpBC5UuKlu6AgreRVSKfizznjWWlr-2go136J9"/>
+<span class="absolute top-md left-md bg-primary-container/90 text-on-primary-container px-sm py-1 rounded-full text-label-sm font-bold uppercase tracking-wider backdrop-blur-sm">Urgente</span>
+<button class="absolute top-md right-md bg-surface-container-lowest/80 backdrop-blur-sm p-sm rounded-full text-primary hover:bg-primary hover:text-on-primary transition-all active:scale-90">
+<span class="material-symbols-outlined text-[20px]">favorite</span>
+</button>
+</div>
+<div class="p-lg">
+<div class="flex justify-between items-start mb-sm">
+<h3 class="font-headline-md text-headline-md text-on-background group-hover:text-primary transition-colors">Tomas <span class="material-symbols-outlined text-secondary text-[20px] align-middle ml-1">female</span></h3>
+</div>
+<div class="flex flex-col gap-xs text-on-surface-variant">
+<p class="text-body-md">5 años • Mediano</p>
+<div class="flex items-center gap-xs mt-sm text-label-md">
+<span class="material-symbols-outlined text-[18px]">home_work</span>
+<span>Bihotz Animalia</span>
+</div>
+</div>
+</div>
+</article>
+<!-- Pet Card 6: Bongo -->
+<article class="bg-surface-container-lowest rounded-2xl overflow-hidden pet-card-shadow group hover:-translate-y-1 transition-all duration-300">
+<div class="relative aspect-[4/3] overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="A funny chocolate Labrador looking up with its tongue licking its nose in a playful manner. Wide-angle lens perspective makes its face look adorable and quirky. The environment is a bright, airy home with cream-colored walls and natural wood floors. The image captures a moment of tactile softness and pure joy, encouraging adoption through emotional connection." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDZLrvxVH2oZLOV3JOkFiyEeXPgkSgTUqUR82w8qURoQ0586-YU0m523tGiyTVSOqMTaQx5kABo1ZdMV7SWdMEeVJVUGlbDBoUyRr8ulAqeOuHwst3MRsnplzNkQbWM9arJ99Oi7soQ7Ltva6TPGuWXH3mMW68fvwWIu2i2M8De60dyfoD2XWjxKo3FbLIh8WMw1pEWq2ljduVZd-lW7kSvoA5IyvQbyBcbAfexBWAaWZ_-rVp55zP9C-yo4VY1tAV1vrLn24wG8dCC"/>
+<button class="absolute top-md right-md bg-surface-container-lowest/80 backdrop-blur-sm p-sm rounded-full text-primary hover:bg-primary hover:text-on-primary transition-all active:scale-90">
+<span class="material-symbols-outlined text-[20px]">favorite</span>
+</button>
+</div>
+<div class="p-lg">
+<div class="flex justify-between items-start mb-sm">
+<h3 class="font-headline-md text-headline-md text-on-background group-hover:text-primary transition-colors">Bongo <span class="material-symbols-outlined text-secondary text-[20px] align-middle ml-1">female</span></h3>
+</div>
+<div class="flex flex-col gap-xs text-on-surface-variant">
+<p class="text-body-md">8 años • Pequeño</p>
+<div class="flex items-center gap-xs mt-sm text-label-md">
+<span class="material-symbols-outlined text-[18px]">home_work</span>
+<span>Alhambra Animal</span>
+</div>
+</div>
+</div>
+</article>
+<!-- Pet Card 7: Duna -->
+<article class="bg-surface-container-lowest rounded-2xl overflow-hidden pet-card-shadow group hover:-translate-y-1 transition-all duration-300">
+<div class="relative aspect-[4/3] overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="A cheerful ginger dog running on a beach with the ocean waves in the background. The dog has a big smile and its ears are flopping in the wind. High-key lighting and vibrant, saturated colors create an expansive and immersive feeling. The photography priorities large-scale imagery that feels like a breath of fresh air." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDcAlUKDyPpk8KLU4OM_4n7d3IfN5xsHrSh7icMADPB19qW54KrM4ralUm3-hlu8xG70osSq0ggEyCubYgK-Ek22TIVC_UXKxzyZzXsGo8EWcTbJi6BsAM5GzmtVErgD_M5m9E-nrsu9S3fBzAr8EIh8fYfsrAOI2MGlXEJd1LbsoS-ka-F4XkpIRsP_0FO5_MIcE03lByOZHhBkMryrrgedbWZzT9NvOt6DgPzs7YPItwno7EkFnX3kePtyAg-VMMZs2knBK9ZJeo8"/>
+<button class="absolute top-md right-md bg-surface-container-lowest/80 backdrop-blur-sm p-sm rounded-full text-primary hover:bg-primary hover:text-on-primary transition-all active:scale-90">
+<span class="material-symbols-outlined text-[20px]">favorite</span>
+</button>
+</div>
+<div class="p-lg">
+<div class="flex justify-between items-start mb-sm">
+<h3 class="font-headline-md text-headline-md text-on-background group-hover:text-primary transition-colors">Duna <span class="material-symbols-outlined text-primary-container text-[20px] align-middle ml-1" style="font-variation-settings: 'FILL' 1;">male</span></h3>
+</div>
+<div class="flex flex-col gap-xs text-on-surface-variant">
+<p class="text-body-md">1 año • Mediano</p>
+<div class="flex items-center gap-xs mt-sm text-label-md">
+<span class="material-symbols-outlined text-[18px]">home_work</span>
+<span>Amigos Peludos Cantabria</span>
+</div>
+</div>
+</div>
+</article>
+<!-- Pet Card 8: Dylan -->
+<article class="bg-surface-container-lowest rounded-2xl overflow-hidden pet-card-shadow group hover:-translate-y-1 transition-all duration-300">
+<div class="relative aspect-[4/3] overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="A cool-looking grey tabby cat wearing miniature yellow sunglasses, sitting on a designer couch. The lighting is soft and even, highlighting the cat's unique personality and humorous style. The background is a modern living room with organic, earthy tones. The UI design frame is a quiet and supportive backdrop for this high-quality animal photography." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDo_CQv6FNuuiejt8uIIHxJCoGTQZqiS8piKquNs_eBPbBJxqIgGITiTG8CsiDJu0uKAH4GAmH44mX0_6x9qEVIRXzPVQ2hy9bDzBm1SxvHv4PQ18nT5AMoB6wcH4XdeJCUronqY8cWpFNdueg2VlPSSilIfc44Jt8WQeYWymSAs1Q5CkNLwj6E6KTCFUiH8yJn8JnZY5BItW7plhGuCHvFOao1tpMCAeKzYT5ZTU6nGRFd8jWLP8R54QEEVS0xT9A0Swf0RbsfBZAV"/>
+<span class="absolute top-md left-md bg-primary-container/90 text-on-primary-container px-sm py-1 rounded-full text-label-sm font-bold uppercase tracking-wider backdrop-blur-sm">Recién llegado</span>
+<button class="absolute top-md right-md bg-surface-container-lowest/80 backdrop-blur-sm p-sm rounded-full text-primary hover:bg-primary hover:text-on-primary transition-all active:scale-90">
+<span class="material-symbols-outlined text-[20px]">favorite</span>
+</button>
+</div>
+<div class="p-lg">
+<div class="flex justify-between items-start mb-sm">
+<h3 class="font-headline-md text-headline-md text-on-background group-hover:text-primary transition-colors">Dylan <span class="material-symbols-outlined text-secondary text-[20px] align-middle ml-1">female</span></h3>
+</div>
+<div class="flex flex-col gap-xs text-on-surface-variant">
+<p class="text-body-md">2 años • Grande</p>
+<div class="flex items-center gap-xs mt-sm text-label-md">
+<span class="material-symbols-outlined text-[18px]">home_work</span>
+<span>Refugi Tramuntana</span>
+</div>
+</div>
+</div>
+</article>
+</div>
+<!-- Pagination -->
+<div class="mt-xxl flex justify-center items-center gap-md">
+<button class="w-10 h-10 flex items-center justify-center rounded-full bg-surface-container-high text-on-surface-variant hover:bg-primary hover:text-on-primary transition-all">
+<span class="material-symbols-outlined">chevron_left</span>
+</button>
+<div class="flex gap-sm">
+<button class="w-10 h-10 rounded-full bg-primary text-on-primary font-bold">1</button>
+<button class="w-10 h-10 rounded-full bg-surface-container-high text-on-surface-variant hover:bg-surface-container-highest">2</button>
+<button class="w-10 h-10 rounded-full bg-surface-container-high text-on-surface-variant hover:bg-surface-container-highest">3</button>
+<span class="w-10 h-10 flex items-center justify-center text-on-surface-variant">...</span>
+<button class="w-10 h-10 rounded-full bg-surface-container-high text-on-surface-variant hover:bg-surface-container-highest">17</button>
+</div>
+<button class="w-10 h-10 flex items-center justify-center rounded-full bg-surface-container-high text-on-surface-variant hover:bg-primary hover:text-on-primary transition-all">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-high mt-xxl">
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center px-lg py-xl max-w-container-max mx-auto w-full gap-lg">
+<div class="flex flex-col gap-sm">
+<div class="font-headline-md text-headline-md font-bold text-primary flex items-center gap-xs">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">pets</span>
+                    Adoptia
+                </div>
+<p class="text-body-md text-on-surface-variant max-w-xs">Encuentra a tu nuevo mejor amigo y dale el hogar que se merece. Naciendo de la conexión.</p>
+</div>
+<nav class="flex flex-wrap gap-xl">
+<a class="text-on-surface-variant hover:text-primary font-label-md transition-colors hover:underline decoration-primary underline-offset-4" href="#">Privacidad</a>
+<a class="text-on-surface-variant hover:text-primary font-label-md transition-colors hover:underline decoration-primary underline-offset-4" href="#">Términos y condiciones</a>
+<a class="text-on-surface-variant hover:text-primary font-label-md transition-colors hover:underline decoration-primary underline-offset-4" href="#">Contacto</a>
+<a class="text-primary font-bold font-label-md transition-colors hover:underline underline-offset-4" href="#">Donar</a>
+</nav>
+<div class="flex flex-col md:items-end gap-xs">
+<p class="text-label-sm text-secondary font-medium">© 2024 Adoptia. Naciendo de la conexión.</p>
+<div class="flex gap-md mt-sm">
+<span class="material-symbols-outlined text-secondary cursor-pointer hover:text-primary transition-colors">face_nod</span>
+<span class="material-symbols-outlined text-secondary cursor-pointer hover:text-primary transition-colors">share_reviews</span>
+<span class="material-symbols-outlined text-secondary cursor-pointer hover:text-primary transition-colors">public</span>
+</div>
+</div>
+</div>
+</footer>
+<script>
+        // Micro-interaction for heart buttons
+        document.querySelectorAll('button .material-symbols-outlined').forEach(icon => {
+            if (icon.innerText === 'favorite') {
+                icon.parentElement.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const isFilled = this.querySelector('span').style.fontVariationSettings.includes("'FILL' 1");
+                    this.querySelector('span').style.fontVariationSettings = isFilled ? "'FILL' 0" : "'FILL' 1";
+                    if (!isFilled) {
+                        this.classList.add('scale-125');
+                        setTimeout(() => this.classList.remove('scale-125'), 200);
+                    }
+                });
+            }
+        });
+
+        // Sticky Header scroll effect
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 20) {
+                header.classList.add('shadow-md');
+                header.classList.remove('shadow-sm');
+            } else {
+                header.classList.remove('shadow-md');
+                header.classList.add('shadow-sm');
+            }
+        });
+    </script>
+</body></html>

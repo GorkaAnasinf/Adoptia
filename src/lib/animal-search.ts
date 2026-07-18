@@ -92,6 +92,24 @@ export function parseAnimalSearch(params: RawParams): AnimalSearch {
   };
 }
 
+/**
+ * Cuenta los filtros activos de la búsqueda (para el resumen «Filtros (N)»).
+ * Página, orden y ubicación no son filtros: no se cuentan.
+ */
+export function contarFiltrosActivos(search: AnimalSearch): number {
+  return [
+    search.q,
+    search.especie,
+    search.tamanos.length > 0 || undefined,
+    search.sexos.length > 0 || undefined,
+    search.edad,
+    search.ninos,
+    search.perros,
+    search.gatos,
+    search.distanciaKm,
+  ].filter((v) => v !== undefined).length;
+}
+
 // ---------- Traducción a argumentos del RPC animals_search ----------
 
 /** Límites de cada bucket de edad en años: [desde, hasta). */
