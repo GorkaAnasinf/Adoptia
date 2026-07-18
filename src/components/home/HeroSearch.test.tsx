@@ -26,6 +26,15 @@ describe("HeroSearch — buscador del hero", () => {
     vi.unstubAllGlobals();
   });
 
+  it("los dos campos del buscador tienen nombre accesible", () => {
+    renderBuscador();
+    expect(messages.home).toHaveProperty("searchCityLabel");
+    expect(
+      screen.getByRole("combobox", { name: messages.home.searchSpeciesLabel }),
+    ).toBeInTheDocument();
+    expect(screen.getByLabelText(messages.home.searchCityLabel)).toBeInTheDocument();
+  });
+
   it("sin ciudad navega al listado filtrado solo por especie", async () => {
     renderBuscador();
     fireEvent.change(screen.getByLabelText(messages.home.searchSpeciesLabel), {

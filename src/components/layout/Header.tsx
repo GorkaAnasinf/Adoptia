@@ -13,14 +13,15 @@ export async function Header() {
   const role = await getUserRole(supabase);
 
   return (
-    <header className="sticky top-0 z-40 bg-background/90 backdrop-blur">
-      <div className="border-b border-border">
+    <header className="sticky top-0 z-40 bg-background/80 backdrop-blur-md">
+      <div className="border-b border-border/60">
         <div className="mx-auto flex h-16 max-w-6xl items-center gap-4 px-4">
-          <Link href="/" className="flex items-center gap-2">
-            <span className="flex size-9 items-center justify-center rounded-xl bg-primary text-primary-foreground">
-              <PawPrint className="size-5" aria-hidden="true" />
-            </span>
-            <span className="font-heading text-xl font-bold text-primary">
+          <Link
+            href="/"
+            className="flex items-center gap-2 rounded-md focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
+          >
+            <PawPrint className="size-6 text-primary" aria-hidden="true" />
+            <span className="font-heading text-2xl font-bold text-primary">
               {t("common.appName")}
             </span>
           </Link>

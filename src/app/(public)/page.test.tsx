@@ -79,6 +79,13 @@ describe("Home", () => {
     ).toBeInTheDocument();
   });
 
+  it("el hero lleva foto de fondo decorativa (alt vacío, invisible para lectores)", async () => {
+    await renderHome();
+    const fondo = screen.getByTestId("hero-bg");
+    expect(fondo).toHaveAttribute("alt", "");
+    expect(fondo).toHaveAttribute("src", expect.stringContaining("hero-home"));
+  });
+
   it("el hero incluye el buscador con especie, ciudad y ubicación", async () => {
     await renderHome();
     expect(screen.getByLabelText(messages.home.searchSpeciesLabel)).toBeInTheDocument();
