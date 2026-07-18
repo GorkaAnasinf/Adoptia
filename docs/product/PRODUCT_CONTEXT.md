@@ -107,9 +107,9 @@ Estado de cada capacidad en lenguaje de usuario. Se regenera con `python scripts
 
 #### 🚧 En camino (en desarrollo ahora)
 
-_Nada en desarrollo en este momento._
+- Ofertas de donación de particulares (material para protectoras) ([FEATURE-032](../planning/items/FEATURE-032.md))
 
 #### 🗓️ Previsto
 
-- Ofertas de donación de particulares (material para protectoras) — hito sin asignar ([FEATURE-032](../planning/items/FEATURE-032.md))
+_Backlog vacío._
 <!-- RENDER:END -->

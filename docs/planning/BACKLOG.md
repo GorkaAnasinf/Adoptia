@@ -19,9 +19,9 @@
 Los items `hecho`/`descartado` no aparecen aquí — su histórico vive en [CHANGELOG](CHANGELOG.md) y git.
 
 <!-- RENDER:START -->
-### 📥 Recibido (1)
+### 🔨 En desarrollo (1)
 
 | Item | Título | Prioridad | Hito |
 |------|--------|-----------|------|
-| [FEATURE-032](items/FEATURE-032.md) | Ofertas de donación de particulares (material para protectoras) | media | — |
+| [FEATURE-032](items/FEATURE-032.md) | Ofertas de donación de particulares (material para protectoras) | media | 0.5 |
 <!-- RENDER:END -->
