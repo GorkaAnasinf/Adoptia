@@ -20,20 +20,24 @@ export function CountUp({ value, durationMs = 1200 }: { value: number; durationM
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     let raf = 0;
+    // A partir de aquí habrá animación: baja a 0 ya, para que al asomar la
+    // sección no se vea el valor final un instante antes de arrancar.
+    setMostrado(0);
     const observer = new IntersectionObserver(
       (entradas) => {
         if (!entradas.some((e) => e.isIntersecting)) return;
         observer.disconnect();
-        const inicio = performance.now();
+        // el inicio se toma del primer frame: misma base de tiempos que el rAF
+        let inicio: number | null = null;
         const tick = (ahora: number) => {
-          const t = Math.min((ahora - inicio) / durationMs, 1);
+          if (inicio === null) inicio = ahora;
+          const t = Math.min(Math.max((ahora - inicio) / durationMs, 0), 1);
           setMostrado(Math.round(easeOut(t) * value));
           if (t < 1) raf = requestAnimationFrame(tick);
         };
-        setMostrado(0);
         raf = requestAnimationFrame(tick);
       },
-      { threshold: 0.4 },
+      { threshold: 0.2 },
     );
     observer.observe(nodo);
     return () => {
