@@ -245,9 +245,9 @@ describe("edadEnBucket", () => {
 describe("totalPaginas", () => {
   it("redondea hacia arriba y nunca baja de 1", () => {
     expect(totalPaginas(0)).toBe(1);
-    expect(totalPaginas(24)).toBe(1);
-    expect(totalPaginas(25)).toBe(2);
-    expect(totalPaginas(100)).toBe(5);
+    expect(totalPaginas(12)).toBe(1);
+    expect(totalPaginas(13)).toBe(2);
+    expect(totalPaginas(100)).toBe(9);
   });
 });
 

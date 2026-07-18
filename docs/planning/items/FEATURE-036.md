@@ -90,3 +90,11 @@ Es la pantalla de conversión principal (donde se elige animal). La coherencia t
 - Incoherencias del mock resueltas a favor de la home según instrucción del usuario (header/footer/breadcrumbs reales); chip «URGENTE» del mock fuera de alcance (campo en BD — candidato en backlog).
 - Detalles añadidos no pedidos por el mock: contador de filtros activos en el summary móvil y explicación accesible del slider deshabilitado.
 - Lección de test: dos `render()` en el mismo `it` conviven en el DOM (Testing Library solo limpia entre tests) — separar en tests independientes.
+
+### Remate (2026-07-18, feedback del usuario tras la liberación)
+
+- **Panel de filtros desbordaba** (los campos `flex-1 min-w-*` se salían del contenedor): rehecho como grid responsive (1/2/3/6 columnas) — ya no se corta a ningún ancho.
+- **«Aplicar filtros» en granate** (decisión del usuario, prevalece sobre el teal del mock y del design system para este botón).
+- **Página de 12 animales** (antes 24): `PAGE_SIZE` con sus tests de paginación adaptados primero (rojo→verde).
+- **Carrusel de fotos en la tarjeta** (`FotoCarrusel`, componente nuevo compartido): flechas para pasar las fotos del animal sin entrar en la ficha. Las fotos se piden a `animal_media` en cliente **solo la primera vez que se pulsa una flecha** (cero tráfico extra si nadie las usa; sin migración — la RLS pública de media ya lo permite); con una sola foto las flechas se retiran. 4 tests + verificación E2E manual con doble foto sembrada y borrada en local.
+- QA del remate: suite **1125/1125 con RLS**, E2E 4/4, lint y tsc limpios.
