@@ -86,7 +86,8 @@ Sin este mecanismo, el acogedor en apuros resuelve por WhatsApp o abandona la ac
 - **BD** (migración `20260717210000`): columnas `relevo_pedido_at/motivo/fecha_limite` en `foster_proposals` + RPCs `pedir_relevo`/`cancelar_relevo` (security definer, doble guarda: destinatario Y propuesta aceptada; la RLS de update sigue siendo solo de la protectora, probado). Trigger de sincronización corregido: con dos `aceptada` del mismo animal (relevo en marcha), finalizar una no lo devuelve a `available` — solo cuando no queda ninguna viva. 6 tests contra Postgres real.
 - **API**: `POST /api/acogida/relevo` (pedir/cancelar) con email best-effort a la protectora (acogedor, animal, motivo, fecha límite). Contrato en API_CONTRACTS.
 - **UI**: `RelevoAcogidaButton` en las propuestas aceptadas del acogedor (`/acogida` y `/mi-cuenta/acogida`); chips ámbar de relevo (fecha + motivo) en la tarjeta del acogedor y el historial de `/panel/acogida`. El relevo se resuelve con el flujo existente: la protectora propone a otro acogedor y finaliza la original.
-- QA Scooby 5/5. Suite 1033/1033 con RLS, lint y `tsc` limpios, cobertura 82,6 % / 96,7 % `src/lib`. Pendiente de despliegue: `supabase db push` de la migración antes del release.
+- QA Scooby 5/5. Suite 1033/1033 con RLS, lint y `tsc` limpios, cobertura 82,6 % / 96,7 % `src/lib`.
+- **Producción (2026-07-18)**: migración aplicada con dry-run previo y confirmada (`migration list --linked`); release `4a0f794` desplegado en Vercel (READY).
 
 ## Criterios de aceptación / Casuística a cubrir
 
