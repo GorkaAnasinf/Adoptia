@@ -2,6 +2,12 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/es/) adaptado. Versionado 0.x hasta el MVP.
 
+## [0.0.71] — 2026-07-18
+
+### Añadido
+
+- **La home cobra vida (IMPROVEMENT-027)**: los contadores reales de la banda teal ahora **suben desde cero** al entrar en pantalla, las secciones y tarjetas **se revelan** con un fundido sutil al hacer scroll, la cabecera **se compacta** con sombra al bajar, el fondo del hero se mueve con un **parallax** suave en desktop y unas **huellas tenues** cruzan la página entre secciones — como si un animal acabara de pasar. Además se estrena la sección **«Historias felices»** con tres adopciones de demostración (datos inventados: FEATURE-035 las sustituirá por reales) y se corrige un bug global: **el cursor vuelve a ser una mano** sobre todos los botones (Tailwind v4 lo había quitado de su preflight). Todo el movimiento respeta `prefers-reduced-motion` y los lectores de pantalla reciben siempre el contenido final. QA: suite 1112/1112 con RLS, E2E 4/4.
+
 ## [0.0.70] — 2026-07-18
 
 ### Cambiado

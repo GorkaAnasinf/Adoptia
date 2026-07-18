@@ -47,6 +47,7 @@
 | [FEATURE-032](FEATURE-032.md) | Ofertas de donación de particulares (material para protectoras) | feature | hecho | 0.5 |
 | [FEATURE-033](FEATURE-033.md) | Alertas de búsqueda guardada (avisos de nuevos animales) | feature | descartado | 0.3 |
 | [FEATURE-034](FEATURE-034.md) | Rediseño de la home según wireframe Stitch (tanda de rediseño, pantalla 1) | feature | hecho | 0.5 |
+| [FEATURE-035](FEATURE-035.md) | Historias felices — social proof de adopciones en la home | feature | recibido | — |
 | [IMPROVEMENT-001](IMPROVEMENT-001.md) | De-duplicar el slug de protectora (nombres repetidos) | improvement | hecho | — |
 | [IMPROVEMENT-002](IMPROVEMENT-002.md) | Rediseño UX del wizard de alta de protectora (+ fix del mapa gris) | improvement | hecho | 0.2 |
 | [IMPROVEMENT-003](IMPROVEMENT-003.md) | Pulido del shell chrome (sidebar + cabecera) hacia el mockup de Stitch | improvement | hecho | 0.2 |
@@ -73,3 +74,4 @@
 | [IMPROVEMENT-024](IMPROVEMENT-024.md) | Pulido menor del perfil público de protectora (fallbacks del hero y de las tarjetas) | improvement | hecho | 0.5 |
 | [IMPROVEMENT-025](IMPROVEMENT-025.md) | Acogidas visibles en la navegación del usuario | improvement | hecho | 0.5 |
 | [IMPROVEMENT-026](IMPROVEMENT-026.md) | Sincronizar el estado del animal con su propuesta de acogida | improvement | hecho | 0.5 |
+| [IMPROVEMENT-027](IMPROVEMENT-027.md) | Vida y micro-interacciones en la web (cursor, count-up, reveal, header compacto, huellas) | improvement | hecho | 0.5 |
