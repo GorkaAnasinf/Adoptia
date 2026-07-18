@@ -17,7 +17,7 @@ vi.mock("@/components/shelters/MapPinPicker", () => ({
 
 const insertMock = vi.fn();
 const updateEqMock = vi.fn();
-const updateMock = vi.fn(() => ({ eq: updateEqMock }));
+const updateMock = vi.fn((_fila: Record<string, unknown>) => ({ eq: updateEqMock }));
 vi.mock("@/lib/supabase/client", () => ({
   createClient: vi.fn(() => ({
     from: vi.fn(() => ({
@@ -107,7 +107,7 @@ describe("DonacionForm", () => {
     renderForm(EXISTENTE);
     await user.click(screen.getByRole("button", { name: messages.donaciones.guardar }));
     await waitFor(() => expect(updateEqMock).toHaveBeenCalled());
-    const fila = updateMock.mock.calls[0][0] as unknown as Record<string, unknown>;
+    const fila = updateMock.mock.calls[0][0];
     expect(fila.location).toBeUndefined();
     expect(insertMock).not.toHaveBeenCalled();
   });
