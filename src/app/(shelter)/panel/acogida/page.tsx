@@ -32,6 +32,9 @@ type Propuesta = {
   mensaje: string;
   status: string;
   created_at: string;
+  relevo_pedido_at: string | null;
+  relevo_motivo: string | null;
+  relevo_fecha_limite: string | null;
   animals: { name: string } | null;
 };
 
@@ -74,7 +77,9 @@ export default async function AcogidaPanelPage() {
 
     const { data: dataPropuestas } = await supabase
       .from("foster_proposals")
-      .select("id, foster_user_id, duracion, mensaje, status, created_at, animals (name)")
+      .select(
+        "id, foster_user_id, duracion, mensaje, status, created_at, relevo_pedido_at, relevo_motivo, relevo_fecha_limite, animals (name)",
+      )
       .eq("shelter_id", shelter.id)
       .order("created_at", { ascending: false });
     propuestas = (dataPropuestas as unknown as Propuesta[] | null) ?? [];
@@ -169,6 +174,11 @@ export default async function AcogidaPanelPage() {
                           {ESTADO_TEXTO[activa.status]}
                         </span>
                         {t("propuestaEnviadaEl", { fecha: fecha(activa.created_at) })}
+                        {activa.relevo_pedido_at && activa.relevo_fecha_limite && (
+                          <span className="rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-semibold text-amber-800">
+                            {t("relevoPedido", { fecha: activa.relevo_fecha_limite })}
+                          </span>
+                        )}
                       </span>
                     ) : (
                       <ProponerAcogidaDialog fosterUserId={a.user_id} animales={animales} />
@@ -203,6 +213,18 @@ export default async function AcogidaPanelPage() {
                     {ESTADO_TEXTO[p.status]}
                   </span>
                   <span className="text-xs text-muted-foreground">{fecha(p.created_at)}</span>
+                  {p.relevo_pedido_at && p.relevo_fecha_limite && p.status === "aceptada" && (
+                    <span className="flex flex-wrap items-center gap-2">
+                      <span className="rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-semibold text-amber-800">
+                        {t("relevoPedido", { fecha: p.relevo_fecha_limite })}
+                      </span>
+                      {p.relevo_motivo && (
+                        <span className="text-xs text-muted-foreground">
+                          {t("relevoMotivoLabel", { motivo: p.relevo_motivo })}
+                        </span>
+                      )}
+                    </span>
+                  )}
                   <span className="ml-auto">
                     <PropuestaEstadoActions proposalId={p.id} status={p.status} />
                   </span>

@@ -208,4 +208,20 @@ Auth: dueño de protectora **verificada**. Propone una acogida a un acogedor que
 // 502 → { "error": { "code": "email_error" } }       // propuesta revertida
 ```
 
+## Contrato — POST /api/acogida/relevo  *(FEATURE-030)*
+
+Auth: el acogedor destinatario de una propuesta **aceptada**. Pide (o cancela, con `cancelar: true`) el relevo de su acogida. La escritura va por RPC con doble guarda (`pedir_relevo`/`cancelar_relevo`: destinatario + status aceptada) — la tabla no da update al acogedor. El aviso a la protectora es **best-effort**: el relevo queda registrado y visible en su panel aunque el email falle. Rate limit: 5/min por usuario.
+
+```jsonc
+// Request (pedir)
+{ "proposal_id": "uuid", "motivo": "Obras en casa", "fecha_limite": "2026-08-01" }
+// Request (cancelar)
+{ "proposal_id": "uuid", "cancelar": true }
+// 200 → { "data": { "ok": true } }
+// 401 → { "error": { "code": "unauthorized" } }
+// 404 → { "error": { "code": "not_found" } }   // no es suya o no está aceptada
+// 422 → { "error": { "code": "validation" } }  // sin motivo/fecha (o >500)
+// 429 → { "error": { "code": "rate_limited" } }
+```
+
 Este documento se amplía por item: cada FEATURE que añada endpoints los documenta aquí al cerrarse (lo verifica Hachiko).
