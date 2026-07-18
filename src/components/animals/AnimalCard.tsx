@@ -62,7 +62,7 @@ export function AnimalCard({
   return (
     <Link
       href={`/animales/${animal.slug}`}
-      className="group relative flex flex-col overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-black/5 transition hover:shadow-md focus-visible:outline-2 focus-visible:outline-primary"
+      className="group relative flex flex-col overflow-hidden rounded-2xl bg-surface-container-low shadow-soft transition duration-300 hover:shadow-md focus-visible:outline-2 focus-visible:outline-primary motion-safe:hover:-translate-y-1"
     >
       <div className="relative aspect-[4/3] bg-muted">
         {esImagenValida(animal.cover_url) ? (
@@ -88,7 +88,7 @@ export function AnimalCard({
           </div>
         ) : (
           esRecienLlegado(animal.published_at) && (
-            <span className="absolute bottom-2 left-2 rounded-full bg-primary-container px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-white shadow-sm">
+            <span className="absolute left-3 top-3 rounded-full bg-primary-container px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-on-primary-container shadow-sm">
               {t("badgeNuevo")}
             </span>
           )
@@ -113,7 +113,7 @@ export function AnimalCard({
         {conCta && (
           <span
             aria-hidden="true"
-            className="mt-2 rounded-full border border-primary px-4 py-1.5 text-center text-sm font-semibold text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground"
+            className="mt-2 rounded-2xl border-2 border-primary px-4 py-1.5 text-center text-sm font-semibold text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground"
           >
             {t("ctaAdoptar")}
           </span>

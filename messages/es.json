@@ -17,6 +17,8 @@
   },
   "footer": {
     "rights": "Hecho con cariño por y para las protectoras.",
+    "tagline": "Creando vínculos entre hogares y animales que buscan una segunda oportunidad.",
+    "navLabel": "Enlaces del pie de página",
     "privacy": "Privacidad",
     "terms": "Términos",
     "legalNotice": "Aviso legal",
@@ -27,6 +29,7 @@
     "subtitle": "Conectamos corazones con hogares. Descubre cientos de animales esperando una segunda oportunidad cerca de ti.",
     "searchSpeciesLabel": "Especie",
     "searchAllSpecies": "Todas las especies",
+    "searchCityLabel": "Ciudad o código postal",
     "searchCityPlaceholder": "Ciudad o código postal",
     "searchButton": "Buscar",
     "searchUseLocation": "Usar mi ubicación",
@@ -53,7 +56,8 @@
     "how3Text": "Contacta directamente con la protectora para organizar una visita y empezar el proceso.",
     "ctaSheltersOverline": "Para refugios y protectoras",
     "ctaSheltersTitle": "¿Eres una protectora? Únete gratis",
-    "ctaSheltersText": "Digitaliza tus procesos, gestiona adopciones de forma sencilla y llega a miles de personas interesadas en adoptar en tu zona."
+    "ctaSheltersText": "Digitaliza tus procesos, gestiona adopciones de forma sencilla y llega a miles de personas interesadas en adoptar en tu zona.",
+    "ctaSheltersImageAlt": "Perro negro jugando con un juguete de cuerda en un salón acogedor"
   },
   "auth": {
     "loginTitle": "Inicia sesión",

@@ -81,7 +81,7 @@ Para centrar el desarrollo en un lado de la app cada vez, el 0.2 se aborda en do
 | [FEATURE-015](items/FEATURE-015.md) | Contenido educativo sobre adopción responsable | hecho | baja |
 | [FEATURE-016](items/FEATURE-016.md) | Registro de casas de acogida | hecho | baja |
 
-### Hito 0.5 — 100% completado (30/30)
+### Hito 0.5 — 97% completado (30/31)
 
 | Item | Título | Estado | Prioridad |
 |------|--------|--------|-----------|
@@ -95,6 +95,7 @@ Para centrar el desarrollo en un lado de la app cada vez, el 0.2 se aborda en do
 | [FEATURE-026](items/FEATURE-026.md) | Rediseño de la ficha del aviso a dos columnas (mockup nuevo) | hecho | alta |
 | [FEATURE-027](items/FEATURE-027.md) | Rediseño del alta de aviso en tarjetas de sección (mockup nuevo) | hecho | alta |
 | [FEATURE-028](items/FEATURE-028.md) | Rediseño del perfil público de protectora (mockup nuevo) | hecho | alta |
+| [FEATURE-034](items/FEATURE-034.md) | Rediseño de la home según wireframe Stitch (tanda de rediseño, pantalla 1) | listo | alta |
 | [IMPROVEMENT-016](items/IMPROVEMENT-016.md) | Redirección post-login según rol (protectora al panel, admin a admin) | hecho | alta |
 | [IMPROVEMENT-020](items/IMPROVEMENT-020.md) | Rediseño de la ficha pública de animal | hecho | alta |
 | [BUG-005](items/BUG-005.md) | npm run test -- --coverage revienta al parsear globals.css y las guías .md | hecho | media |

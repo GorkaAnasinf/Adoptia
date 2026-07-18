@@ -19,5 +19,9 @@
 Los items `hecho`/`descartado` no aparecen aquí — su histórico vive en [CHANGELOG](CHANGELOG.md) y git.
 
 <!-- RENDER:START -->
-_No hay items abiertos._
+### ✅ Listo para desarrollo (1)
+
+| Item | Título | Prioridad | Hito |
+|------|--------|-----------|------|
+| [FEATURE-034](items/FEATURE-034.md) | Rediseño de la home según wireframe Stitch (tanda de rediseño, pantalla 1) | alta | 0.5 |
 <!-- RENDER:END -->

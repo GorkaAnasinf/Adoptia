@@ -112,5 +112,5 @@ _Nada en desarrollo en este momento._
 
 #### 🗓️ Previsto
 
-_Backlog vacío._
+- Rediseño de la home según wireframe Stitch (tanda de rediseño, pantalla 1) — hito 0.5 ([FEATURE-034](../planning/items/FEATURE-034.md))
 <!-- RENDER:END -->

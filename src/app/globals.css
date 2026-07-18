@@ -11,6 +11,7 @@
   --primary: #9f402d; /* terracota */
   --primary-foreground: #ffffff;
   --primary-container: #e2725b;
+  --on-primary-container: #5a0d02;
   --secondary: #396662; /* teal — CTAs de alta prioridad */
   --secondary-foreground: #ffffff;
   --tertiary: #4e635a; /* salvia — éxito, etiquetas */
@@ -32,6 +33,12 @@
   --destructive: #ba1a1a;
   --destructive-foreground: #ffffff;
 
+  /* Superficies tonales (wireframes Stitch — profundidad por color, no por borde) */
+  --surface-container-lowest: #ffffff;
+  --surface-container-low: #f9f3eb;
+  --surface-container: #f3ede5;
+  --surface-container-high: #ede7e0;
+
   /* Bordes y focos */
   --border: #e5ddd0;
   --input: #e5ddd0;
@@ -48,6 +55,7 @@
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
   --color-primary-container: var(--primary-container);
+  --color-on-primary-container: var(--on-primary-container);
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
   --color-tertiary: var(--tertiary);
@@ -65,6 +73,14 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
+  --color-surface-container-lowest: var(--surface-container-lowest);
+  --color-surface-container-low: var(--surface-container-low);
+  --color-surface-container: var(--surface-container);
+  --color-surface-container-high: var(--surface-container-high);
+
+  /* Sombra ambiente con tinte terracota (elevación baja del design system) */
+  --shadow-soft: 0 4px 12px rgba(226, 114, 91, 0.08);
+  --shadow-soft-lg: 0 8px 24px rgba(226, 114, 91, 0.12);
 
   --radius-sm: calc(var(--radius) - 2px);
   --radius-md: var(--radius);
