@@ -44,7 +44,7 @@ function Campo({
   htmlFor: string;
 }) {
   return (
-    <div className="flex min-w-36 flex-1 flex-col gap-1">
+    <div className="flex min-w-0 flex-col gap-1">
       <label htmlFor={htmlFor} className="text-xs font-semibold text-muted-foreground">
         {etiqueta}
       </label>
@@ -114,7 +114,7 @@ export function AnimalSearchFilters({ search }: { search: AnimalSearch }) {
 
   return (
     <form onSubmit={aplicar} className="space-y-3">
-      <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-end">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
         <Campo etiqueta={t("texto")} htmlFor={`${id}-texto`}>
           <input
             id={`${id}-texto`}
@@ -188,7 +188,7 @@ export function AnimalSearchFilters({ search }: { search: AnimalSearch }) {
           </select>
         </Campo>
 
-        <div className="flex min-w-44 flex-1 flex-col gap-1">
+        <div className="flex min-w-0 flex-col gap-1">
           <label htmlFor={`${id}-distancia`} className="flex justify-between text-xs font-semibold text-muted-foreground">
             <span>{t("distancia")}</span>
             <span className="font-normal">
@@ -264,7 +264,7 @@ export function AnimalSearchFilters({ search }: { search: AnimalSearch }) {
           </button>
           <button
             type="submit"
-            className="min-h-10 rounded-full bg-secondary px-5 text-sm font-semibold text-secondary-foreground transition hover:bg-secondary/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary motion-safe:active:scale-95"
+            className="min-h-10 rounded-full bg-primary px-5 text-sm font-semibold text-primary-foreground transition hover:bg-primary/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary motion-safe:active:scale-95"
           >
             {t("aplicar")}
           </button>

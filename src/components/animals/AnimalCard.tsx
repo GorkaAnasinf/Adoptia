@@ -1,11 +1,11 @@
 import { Building2, Mars, PawPrint, Venus } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { edadAproximada, esImagenValida } from "@/lib/animal-search";
 import type { AnimalStatus } from "@/lib/schemas/animal";
 import { AnimalStatusBadge } from "./AnimalStatusBadge";
 import { FavoritoOverlay } from "./FavoritoOverlay";
+import { FotoCarrusel } from "./FotoCarrusel";
 
 /** Fila que devuelve el RPC animals_search. */
 export interface AnimalSearchResult {
@@ -66,12 +66,11 @@ export function AnimalCard({
     >
       <div className="relative aspect-[4/3] bg-muted">
         {esImagenValida(animal.cover_url) ? (
-          <Image
-            src={animal.cover_url}
+          <FotoCarrusel
+            animalId={animal.id}
+            coverUrl={animal.cover_url}
             alt={animal.name}
-            fill
             sizes="(max-width: 768px) 50vw, 25vw"
-            className="object-cover transition-transform duration-300 group-hover:scale-105"
           />
         ) : (
           <div

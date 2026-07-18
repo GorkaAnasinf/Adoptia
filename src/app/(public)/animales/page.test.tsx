@@ -91,7 +91,7 @@ describe("Página /animales", () => {
     await renderPagina({ especie: "cat", pagina: "2" });
     expect(rpcMock).toHaveBeenCalledWith(
       "animals_search",
-      expect.objectContaining({ p_species: "cat", p_offset: 24 }),
+      expect.objectContaining({ p_species: "cat", p_limit: 12, p_offset: 12 }),
     );
   });
 
@@ -109,11 +109,11 @@ describe("Página /animales", () => {
 
   it("pagina con números conservando los filtros y ofrece Ver más resultados", async () => {
     rpcMock.mockResolvedValue({
-      data: Array.from({ length: 24 }, (_, i) => fila({ name: `Animal ${i}`, total_count: 60 })),
+      data: Array.from({ length: 12 }, (_, i) => fila({ name: `Animal ${i}`, total_count: 36 })),
       error: null,
     });
     await renderPagina({ especie: "dog" });
-    // 60 resultados → 3 páginas: 1 (actual), 2 y 3 numeradas
+    // 36 resultados a 12 por página → 3 páginas: 1 (actual), 2 y 3 numeradas
     expect(screen.getByRole("link", { name: "2" })).toHaveAttribute(
       "href",
       "/animales?especie=dog&pagina=2",
@@ -130,7 +130,7 @@ describe("Página /animales", () => {
 
   it("en la última página no aparece Ver más resultados", async () => {
     rpcMock.mockResolvedValue({
-      data: Array.from({ length: 12 }, (_, i) => fila({ name: `Animal ${i}`, total_count: 60 })),
+      data: Array.from({ length: 12 }, (_, i) => fila({ name: `Animal ${i}`, total_count: 36 })),
       error: null,
     });
     await renderPagina({ pagina: "3" });
@@ -143,7 +143,7 @@ describe("Página /animales", () => {
 
   it("la paginación lleva flechas anterior/siguiente con destino correcto", async () => {
     rpcMock.mockResolvedValue({
-      data: Array.from({ length: 24 }, (_, i) => fila({ name: `Animal ${i}`, total_count: 60 })),
+      data: Array.from({ length: 12 }, (_, i) => fila({ name: `Animal ${i}`, total_count: 36 })),
       error: null,
     });
     await renderPagina({ pagina: "2" });
@@ -157,7 +157,7 @@ describe("Página /animales", () => {
 
   it("en la primera página no aparece la flecha de anterior", async () => {
     rpcMock.mockResolvedValue({
-      data: Array.from({ length: 24 }, (_, i) => fila({ name: `Animal ${i}`, total_count: 48 })),
+      data: Array.from({ length: 12 }, (_, i) => fila({ name: `Animal ${i}`, total_count: 24 })),
       error: null,
     });
     await renderPagina();
@@ -168,7 +168,7 @@ describe("Página /animales", () => {
 
   it("en la última página no aparece la flecha de siguiente", async () => {
     rpcMock.mockResolvedValue({
-      data: Array.from({ length: 24 }, (_, i) => fila({ name: `Animal ${i}`, total_count: 48 })),
+      data: Array.from({ length: 12 }, (_, i) => fila({ name: `Animal ${i}`, total_count: 24 })),
       error: null,
     });
     await renderPagina({ pagina: "2" });

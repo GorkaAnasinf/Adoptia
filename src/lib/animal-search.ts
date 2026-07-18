@@ -2,7 +2,7 @@ import { ESPECIES, SEXOS, TAMANOS } from "@/lib/schemas/animal";
 
 // ---------- Modelo de la búsqueda pública de animales ----------
 
-export const PAGE_SIZE = 24;
+export const PAGE_SIZE = 12;
 
 export const EDADES = ["cachorro", "joven", "adulto", "senior"] as const;
 export type EdadBucket = (typeof EDADES)[number];
