@@ -110,7 +110,7 @@ export function HeroSearch() {
         <button
           type="submit"
           disabled={buscando}
-          className="min-h-12 shrink-0 rounded-2xl bg-primary px-8 text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/20 transition-colors hover:bg-primary/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:opacity-60"
+          className="min-h-12 shrink-0 rounded-2xl bg-primary px-8 text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/20 transition hover:bg-primary/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:opacity-60 motion-safe:active:scale-95"
         >
           {t("searchButton")}
         </button>
