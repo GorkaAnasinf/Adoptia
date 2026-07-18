@@ -79,6 +79,7 @@ Estado de cada capacidad en lenguaje de usuario. Se regenera con `python scripts
 - Relevo de acogida (emergencias del acogedor) ([FEATURE-030](../planning/items/FEATURE-030.md))
 - Tablón de necesidades de protectoras (pedir ayuda material) ([FEATURE-031](../planning/items/FEATURE-031.md))
 - Ofertas de donación de particulares (material para protectoras) ([FEATURE-032](../planning/items/FEATURE-032.md))
+- Rediseño de la home según wireframe Stitch (tanda de rediseño, pantalla 1) ([FEATURE-034](../planning/items/FEATURE-034.md))
 - De-duplicar el slug de protectora (nombres repetidos) ([IMPROVEMENT-001](../planning/items/IMPROVEMENT-001.md))
 - Rediseño UX del wizard de alta de protectora (+ fix del mapa gris) ([IMPROVEMENT-002](../planning/items/IMPROVEMENT-002.md))
 - Pulido del shell chrome (sidebar + cabecera) hacia el mockup de Stitch ([IMPROVEMENT-003](../planning/items/IMPROVEMENT-003.md))
@@ -112,5 +113,5 @@ _Nada en desarrollo en este momento._
 
 #### 🗓️ Previsto
 
-- Rediseño de la home según wireframe Stitch (tanda de rediseño, pantalla 1) — hito 0.5 ([FEATURE-034](../planning/items/FEATURE-034.md))
+_Backlog vacío._
 <!-- RENDER:END -->

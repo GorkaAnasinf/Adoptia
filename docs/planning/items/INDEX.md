@@ -46,7 +46,7 @@
 | [FEATURE-031](FEATURE-031.md) | Tablón de necesidades de protectoras (pedir ayuda material) | feature | hecho | 0.5 |
 | [FEATURE-032](FEATURE-032.md) | Ofertas de donación de particulares (material para protectoras) | feature | hecho | 0.5 |
 | [FEATURE-033](FEATURE-033.md) | Alertas de búsqueda guardada (avisos de nuevos animales) | feature | descartado | 0.3 |
-| [FEATURE-034](FEATURE-034.md) | Rediseño de la home según wireframe Stitch (tanda de rediseño, pantalla 1) | feature | listo | 0.5 |
+| [FEATURE-034](FEATURE-034.md) | Rediseño de la home según wireframe Stitch (tanda de rediseño, pantalla 1) | feature | hecho | 0.5 |
 | [IMPROVEMENT-001](IMPROVEMENT-001.md) | De-duplicar el slug de protectora (nombres repetidos) | improvement | hecho | — |
 | [IMPROVEMENT-002](IMPROVEMENT-002.md) | Rediseño UX del wizard de alta de protectora (+ fix del mapa gris) | improvement | hecho | 0.2 |
 | [IMPROVEMENT-003](IMPROVEMENT-003.md) | Pulido del shell chrome (sidebar + cabecera) hacia el mockup de Stitch | improvement | hecho | 0.2 |

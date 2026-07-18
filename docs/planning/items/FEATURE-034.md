@@ -2,7 +2,7 @@
 id: FEATURE-034
 tipo: feature
 titulo: Rediseño de la home según wireframe Stitch (tanda de rediseño, pantalla 1)
-estado: desarrollo
+estado: hecho
 prioridad: alta
 hito: "0.5"
 duplicado_de: null
@@ -101,3 +101,12 @@ La home es el escaparate del producto. El wireframe fija además el lenguaje vis
 - [x] Responsive fiel verificado con capturas: móvil (buscador apilado, tarjetas 2 col) y desktop (max-w 1200px).
 - [x] Tests de componentes tocados verdes (54/54); lint y `tsc --noEmit` limpios. **Suite completa + QA de Scooby: pendiente al cierre de la tanda** (decisión del usuario, memoria aplicada).
 - [x] A11y: labels accesibles en los dos campos del buscador (nuevo test), foco visible en enlaces/botones nuevos, imagen del hero decorativa (`alt=""` + `aria-hidden`), alt real en la foto del CTA, hover con elevación solo con `motion-safe`, targets ≥44 px.
+
+## Cierre (2026-07-18)
+
+- Home replicando el wireframe Stitch de `assets/wireframes/inicio`: hero con foto ambiente local y degradado, buscador restylado (iconos huella/ubicación terracota), chip «Recién llegado» sobre la foto, «Cómo funciona» sobre fondo tintado con iconos unificados, guías y CTA de protectoras sobre superficies tonales, header glassmorphism con activo subrayado, footer de tres bloques con tagline.
+- Tokens nuevos en `globals.css` (`surface-container-*`, `on-primary-container`, `shadow-soft`); imágenes del wireframe descargadas a `public/images/` (146/134 KB).
+- Fidelidad con cabeza: se conservaron los 7 enlaces del footer, el UserMenu por rol, los breadcrumbs y las especies reales del select (el mock traía contenido de relleno).
+- A11y reforzada a petición del usuario: labels en ambos campos del buscador (test nuevo), `alt=""` en el fondo decorativo, `motion-safe` en las elevaciones.
+- QA (cadencia nueva: circuito completo por pantalla): suite **1101/1101 con RLS**, cobertura 82,44 % / 96,64 % `src/lib`, lint y tsc limpios, E2E área pública 4/4. Capturas desktop/móvil comparadas contra `screen.png`.
+- Cambio de cadencia de la tanda (decisión del usuario en este cierre): cada pantalla cierra circuito completo y se libera a `main`/producción antes de la siguiente.
