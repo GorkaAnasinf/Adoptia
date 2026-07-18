@@ -2,6 +2,12 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/es/) adaptado. Versionado 0.x hasta el MVP.
 
+## [0.0.68] — 2026-07-18
+
+### Descartado
+
+- **FEATURE-033 (alertas de búsqueda guardada) descartada como duplicado de FEATURE-010**: lo pedido ya está en producción desde el hito 0.3 — guardar la búsqueda con sus filtros desde el listado, email diario agrupado cuando entra un animal que encaja (cron de GitHub Actions a las 09:00 UTC), gestión en `/mi-cuenta/alertas` (pausar/activar/borrar, tope de 5 en BD), baja en un clic desde el email sin login y RLS probada. Verificación criterio a criterio documentada en el item, con los tests de la zona re-ejecutados en verde (10/10). Deltas menores anotados como candidatos a mejora: editar una alerta existente y casar el filtro de edad en el matching.
+
 ## [0.0.67] — 2026-07-18
 
 ### Añadido

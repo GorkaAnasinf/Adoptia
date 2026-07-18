@@ -61,13 +61,14 @@ Para centrar el desarrollo en un lado de la app cada vez, el 0.2 se aborda en do
 | [IMPROVEMENT-011](items/IMPROVEMENT-011.md) | Wizard de alta — combo de provincia, autocompletado solo al teclear y título lateral | hecho | media |
 | [IMPROVEMENT-006](items/IMPROVEMENT-006.md) | Completar el sidebar del adoptante con sus secciones (deshabilitadas) | hecho | baja |
 
-### Hito 0.3 — 100% completado (3/3)
+### Hito 0.3 — 75% completado (3/4)
 
 | Item | Título | Estado | Prioridad |
 |------|--------|--------|-----------|
 | [FEATURE-009](items/FEATURE-009.md) | Citas con calendario y agenda de disponibilidad | hecho | alta |
 | [FEATURE-010](items/FEATURE-010.md) | Área personal del adoptante — solicitudes, favoritos y alertas | hecho | media |
 | [FEATURE-011](items/FEATURE-011.md) | Moderación de contenido y cuentas (admin) | hecho | media |
+| [FEATURE-033](items/FEATURE-033.md) | Alertas de búsqueda guardada (avisos de nuevos animales) | descartado | media |
 
 ### Hito 0.4 — 100% completado (6/6)
 
@@ -114,10 +115,9 @@ Para centrar el desarrollo en un lado de la app cada vez, el 0.2 se aborda en do
 | [IMPROVEMENT-021](items/IMPROVEMENT-021.md) | Búsqueda por texto/raza en el listado de animales | hecho | baja |
 | [IMPROVEMENT-024](items/IMPROVEMENT-024.md) | Pulido menor del perfil público de protectora (fallbacks del hero y de las tarjetas) | hecho | baja |
 
-### Sin hito asignado (2)
+### Sin hito asignado (1)
 
 _Capturas pendientes de promover — no forman parte del roadmap todavía._
 
 - [FEATURE-032](items/FEATURE-032.md) — Ofertas de donación de particulares (material para protectoras) (recibido)
-- [FEATURE-033](items/FEATURE-033.md) — Alertas de búsqueda guardada (avisos de nuevos animales) (recibido)
 <!-- RENDER:END -->
