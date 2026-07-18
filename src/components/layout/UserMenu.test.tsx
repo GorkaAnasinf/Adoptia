@@ -187,6 +187,10 @@ describe("UserMenu", () => {
       "href",
       "/mi-cuenta/acogida",
     );
+    expect(screen.getByRole("menuitem", { name: messages.shell.navDonations })).toHaveAttribute(
+      "href",
+      "/mi-cuenta/donaciones",
+    );
     expect(
       screen.queryByRole("menuitem", { name: messages.shell.navShelterPanel }),
     ).not.toBeInTheDocument();
