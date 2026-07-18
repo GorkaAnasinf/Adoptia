@@ -110,7 +110,7 @@ _Nada en desarrollo en este momento._
 
 #### 🗓️ Previsto
 
-- Tablón de necesidades de protectoras (pedir ayuda material) — hito sin asignar ([FEATURE-031](../planning/items/FEATURE-031.md))
+- Tablón de necesidades de protectoras (pedir ayuda material) — hito 0.5 ([FEATURE-031](../planning/items/FEATURE-031.md))
 - Ofertas de donación de particulares (material para protectoras) — hito sin asignar ([FEATURE-032](../planning/items/FEATURE-032.md))
 - Alertas de búsqueda guardada (avisos de nuevos animales) — hito sin asignar ([FEATURE-033](../planning/items/FEATURE-033.md))
 <!-- RENDER:END -->
