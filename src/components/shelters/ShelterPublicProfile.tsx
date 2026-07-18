@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { EnlaceExternoPago } from "@/components/apadrinamiento/EnlaceExternoPago";
 import { MiniMapa } from "@/components/map/MiniMapa";
+import { AyudarNecesidadButton } from "@/components/necesidades/AyudarNecesidadButton";
 import type { AnimalStatus } from "@/lib/schemas/animal";
 import { resumenHorario, tieneHorario } from "@/lib/opening-hours";
 import { parsePoint } from "@/lib/shelter-mapping";
@@ -58,18 +59,30 @@ const REDES: { key: keyof SocialLinks; label: string }[] = [
 
 export type ShelterStats = { adopciones: number; disponibles: number };
 
+export type PublicNeed = {
+  id: string;
+  categoria: string;
+  descripcion: string;
+  urgencia: string;
+};
+
 export function ShelterPublicProfile({
   shelter,
   animals = [],
   photos = [],
   stats,
+  needs = [],
+  autenticado = false,
 }: {
   shelter: PublicShelter;
   animals?: PublicAnimal[];
   photos?: { id: string; url: string }[];
   stats?: ShelterStats | null;
+  needs?: PublicNeed[];
+  autenticado?: boolean;
 }) {
   const t = useTranslations("shelterPublic");
+  const tn = useTranslations("necesidades");
   const td = useTranslations("onboarding");
   const ubicacion = [shelter.city, shelter.province].filter(Boolean).join(", ");
   const redes = REDES.filter((r) => {
@@ -191,6 +204,31 @@ export function ShelterPublicProfile({
             </div>
           ))}
         </dl>
+      )}
+
+      {/* Necesidades abiertas (FEATURE-031) */}
+      {needs.length > 0 && (
+        <section className="mt-8 rounded-2xl border border-border bg-card p-5 sm:p-6">
+          <h2 className="font-heading text-lg font-semibold">{tn("perfilTitulo")}</h2>
+          <ul className="mt-3 flex flex-col gap-3">
+            {needs.map((n) => (
+              <li key={n.id} className="flex flex-col gap-2 rounded-xl bg-muted/40 px-4 py-3 text-sm">
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="rounded-full bg-muted px-2.5 py-0.5 text-xs font-medium">
+                    {tn(`cat${n.categoria.charAt(0).toUpperCase()}${n.categoria.slice(1)}`)}
+                  </span>
+                  {n.urgencia === "urgente" && (
+                    <span className="rounded-full bg-destructive/10 px-2.5 py-0.5 text-xs font-semibold text-destructive">
+                      {tn("urgenteChip")}
+                    </span>
+                  )}
+                  <span className="min-w-0 flex-1">{n.descripcion}</span>
+                </div>
+                <AyudarNecesidadButton needId={n.id} autenticado={autenticado} />
+              </li>
+            ))}
+          </ul>
+        </section>
       )}
 
       {/* Dos columnas: sobre nosotros + servicios | horario y ubicación (FEATURE-028) */}

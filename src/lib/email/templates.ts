@@ -416,6 +416,30 @@ export function plantillaRelevoAcogida({
   };
 }
 
+/** FEATURE-031: «Puedo ayudar» — relay del usuario a la protectora. */
+export function plantillaContactoNecesidad({
+  shelterName,
+  remitenteNombre,
+  descripcion,
+  mensaje,
+}: {
+  shelterName: string;
+  remitenteNombre: string | null;
+  descripcion: string;
+  mensaje: string;
+}) {
+  return {
+    subject: `Alguien quiere ayudar con: ${descripcion.slice(0, 60)}`,
+    html: BASE(`
+      <p>Hola ${shelterName},</p>
+      <p><strong>${escaparHtml(remitenteNombre || "Un usuario de Adoptia")}</strong> ha visto vuestra
+      necesidad «<strong>${escaparHtml(descripcion)}</strong>» y quiere echar una mano:</p>
+      <p style="border-left:3px solid #396662;padding-left:10px;margin:8px 0">${escaparHtml(mensaje)}</p>
+      <p>Puedes responderle directamente a este correo (su dirección va en el remitente de respuesta).</p>
+    `),
+  };
+}
+
 // ---------- FEATURE-022: contacto y avistamientos en avisos ----------
 
 const AVISO_URL = (avisoId: string) =>

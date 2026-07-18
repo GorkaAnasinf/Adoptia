@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import {
   type PublicAnimal,
+  type PublicNeed,
   type PublicShelter,
   ShelterPublicProfile,
   type ShelterStats,
@@ -21,7 +22,7 @@ async function cargarProtectora(slug: string) {
   if (!shelter) return null;
 
   const shelterId = (shelter as { id: string }).id;
-  const [{ data: animals }, { data: photos }, { data: stats }] = await Promise.all([
+  const [{ data: animals }, { data: photos }, { data: stats }, { data: needs }] = await Promise.all([
     supabase
       .from("animals")
       .select(
@@ -39,6 +40,13 @@ async function cargarProtectora(slug: string) {
       .order("sort_order", { ascending: true }),
     // Métricas agregadas (FEATURE-028): security definer, solo verificadas.
     supabase.rpc("shelter_public_stats", { p_shelter_id: shelterId }),
+    // Necesidades abiertas (FEATURE-031): la RLS ya limita a abiertas de verificadas.
+    supabase
+      .from("shelter_needs")
+      .select("id, categoria, descripcion, urgencia")
+      .eq("shelter_id", shelterId)
+      .order("urgencia", { ascending: false })
+      .order("created_at", { ascending: false }),
   ]);
 
   return {
@@ -46,6 +54,7 @@ async function cargarProtectora(slug: string) {
     animals: (animals as PublicAnimal[]) ?? [],
     photos: (photos as { id: string; url: string }[]) ?? [],
     stats: ((stats as ShelterStats[] | null)?.[0] as ShelterStats | undefined) ?? null,
+    needs: (needs as PublicNeed[]) ?? [],
   };
 }
 
@@ -68,12 +77,19 @@ export default async function ProtectoraPublicaPage({
   const data = await cargarProtectora(slug);
   if (!data) notFound();
 
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
   return (
     <ShelterPublicProfile
       shelter={data.shelter}
       animals={data.animals}
       photos={data.photos}
       stats={data.stats}
+      needs={data.needs}
+      autenticado={Boolean(user)}
     />
   );
 }

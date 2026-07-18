@@ -2,6 +2,12 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/es/) adaptado. Versionado 0.x hasta el MVP.
 
+## [0.0.67] — 2026-07-18
+
+### Añadido
+
+- **Las protectoras piden ayuda material sin gritar en redes (FEATURE-031)**: estrenan **tablón de necesidades** — comida, mantas y ropa, medicinas, transporte… Desde su panel publican qué les falta (con marca de **urgente**), lo editan, lo marcan cubierto cuando llega (queda en su historial, reabrible) y se muestra en dos sitios: su **perfil público** (sección «Necesitamos») y el **tablón general** `/necesidades`, filtrable por categoría, urgencia y **ciudad** (urgentes primero, después cercanía). Cualquier persona con cuenta pulsa **«Puedo ayudar»** y su mensaje llega a la protectora por email — avisándole de que al responder verán su dirección. Solo publican protectoras verificadas.
+
 ## [0.0.66] — 2026-07-17
 
 ### Añadido
