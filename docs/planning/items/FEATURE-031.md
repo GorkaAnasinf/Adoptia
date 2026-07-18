@@ -86,4 +86,5 @@ Canaliza la voluntad de ayudar de gente que no puede adoptar ni acoger pero sí 
 - **API**: `POST /api/necesidades/contactar` — relay puro a la protectora con `Reply-To` del usuario (patrón FEATURE-022), rate limit 5/h. Contrato en API_CONTRACTS.
 - **UI**: `/panel/necesidades` (alta/edición/cubrir/reabrir + entrada «Necesidades» en el sidebar), tablón público `/necesidades` (filtros de categoría/urgencia + búsqueda por ciudad con el helper nuevo `buscarCiudad` — caché `geocode_cache` + Nominatim, testeado), sección «Necesitamos» en el perfil público, enlaces en footer y sitemap.
 - Peaje del camino: el guardián de i18n confunde `=> x === "texto"` con texto JSX — filtros con `return` explícito (mismo apaño que favoritos).
-- QA Scooby 6/6. Suite **1059/1059 con RLS**, lint y `tsc` limpios, cobertura 82,4 % / 96,6 % `src/lib`. Pendiente de despliegue: `supabase db push` de la migración antes del release.
+- QA Scooby 6/6. Suite **1059/1059 con RLS**, lint y `tsc` limpios, cobertura 82,4 % / 96,6 % `src/lib`.
+- **Producción (2026-07-18)**: migración aplicada con dry-run previo y confirmada (`migration list --linked`); release `2091ba0` desplegado en Vercel (READY).
