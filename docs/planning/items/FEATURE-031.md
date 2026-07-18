@@ -2,7 +2,7 @@
 id: FEATURE-031
 tipo: feature
 titulo: Tablón de necesidades de protectoras (pedir ayuda material)
-estado: desarrollo
+estado: hecho
 prioridad: media
 hito: "0.5"
 duplicado_de: null
@@ -73,9 +73,17 @@ Canaliza la voluntad de ayudar de gente que no puede adoptar ni acoger pero sí 
 
 ## Criterios de aceptación / Casuística a cubrir
 
-- [ ] Protectora verificada crea/edita/cierra necesidades; no verificada, no (RLS probado).
-- [ ] Necesidades `abiertas` visibles en el perfil público de la protectora y en el tablón general con filtro por zona/categoría/urgencia (urgentes primero).
-- [ ] «Puedo ayudar» exige cuenta y contacta vía plataforma (relay con Reply-To cedido conscientemente); rate-limit anti-spam.
-- [ ] Necesidad `cubierta` desaparece del tablón y del perfil pero queda en el historial de la protectora (reabrible).
-- [ ] Estados vacíos (protectora sin necesidades, tablón sin resultados en la zona) cuidados.
-- [ ] RLS probada: escritura solo dueño verificado; lectura pública solo de `abiertas` de verificadas.
+- [x] Protectora verificada crea/edita/cierra necesidades; no verificada, no (RLS probado).
+- [x] Necesidades `abiertas` visibles en el perfil público de la protectora y en el tablón general con filtro por zona/categoría/urgencia (urgentes primero).
+- [x] «Puedo ayudar» exige cuenta y contacta vía plataforma (relay con Reply-To cedido conscientemente); rate-limit anti-spam.
+- [x] Necesidad `cubierta` desaparece del tablón y del perfil pero queda en el historial de la protectora (reabrible).
+- [x] Estados vacíos (protectora sin necesidades, tablón sin resultados en la zona) cuidados.
+- [x] RLS probada: escritura solo dueño verificado; lectura pública solo de `abiertas` de verificadas.
+
+## Cierre (2026-07-18)
+
+- **BD** (migración `20260718100000`): `shelter_needs` con RLS deny-by-default (escritura solo dueña verificada; público solo abiertas de verificadas; historial de cubiertas para la dueña, reabrible) y RPC `shelter_needs_nearby` (urgentes primero + cercanía, usable por anon). 4 tests contra Postgres real.
+- **API**: `POST /api/necesidades/contactar` — relay puro a la protectora con `Reply-To` del usuario (patrón FEATURE-022), rate limit 5/h. Contrato en API_CONTRACTS.
+- **UI**: `/panel/necesidades` (alta/edición/cubrir/reabrir + entrada «Necesidades» en el sidebar), tablón público `/necesidades` (filtros de categoría/urgencia + búsqueda por ciudad con el helper nuevo `buscarCiudad` — caché `geocode_cache` + Nominatim, testeado), sección «Necesitamos» en el perfil público, enlaces en footer y sitemap.
+- Peaje del camino: el guardián de i18n confunde `=> x === "texto"` con texto JSX — filtros con `return` explícito (mismo apaño que favoritos).
+- QA Scooby 6/6. Suite **1059/1059 con RLS**, lint y `tsc` limpios, cobertura 82,4 % / 96,6 % `src/lib`. Pendiente de despliegue: `supabase db push` de la migración antes del release.

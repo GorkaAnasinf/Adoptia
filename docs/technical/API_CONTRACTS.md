@@ -224,4 +224,20 @@ Auth: el acogedor destinatario de una propuesta **aceptada**. Pide (o cancela, c
 // 429 → { "error": { "code": "rate_limited" } }
 ```
 
+## Contrato — POST /api/necesidades/contactar  *(FEATURE-031)*
+
+Auth: cualquier usuario con sesión (anti-spam). **Relay puro** sobre una necesidad `abierta` de protectora verificada (la RLS oculta el resto: si no se ve, 404): el email va A LA PROTECTORA con el mensaje escapado y `Reply-To` del remitente, que lo cede conscientemente al escribir (avisado en el formulario). Rate limit: 5/h por usuario. El CRUD de necesidades de la protectora no tiene endpoints: supabase-js directo amparado por RLS.
+
+```jsonc
+// Request
+{ "need_id": "uuid", "mensaje": "Tengo dos sacos de pienso sin abrir" }
+// 200 → { "data": { "ok": true } }
+// 401 → { "error": { "code": "unauthorized" } }
+// 404 → { "error": { "code": "not_found" } }   // cubierta, inexistente o sin verificar
+// 409 → { "error": { "code": "no_email" } }
+// 422 → { "error": { "code": "validation" } }  // mensaje < 10 o > 1000
+// 429 → { "error": { "code": "rate_limited" } }
+// 502 → { "error": { "code": "email_error" } }
+```
+
 Este documento se amplía por item: cada FEATURE que añada endpoints los documenta aquí al cerrarse (lo verifica Hachiko).
