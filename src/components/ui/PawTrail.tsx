@@ -33,7 +33,7 @@ export function PawTrail({ className }: { className?: string }) {
     <div aria-hidden="true" className={cn("flex justify-center overflow-hidden", className)}>
       <svg
         viewBox="0 0 600 40"
-        className="h-10 w-full max-w-xl fill-primary opacity-10"
+        className="h-12 w-full max-w-2xl fill-primary opacity-20"
         focusable="false"
       >
         {pasos.map((paso) => (
