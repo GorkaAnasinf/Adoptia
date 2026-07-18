@@ -2,6 +2,18 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/es/) adaptado. Versionado 0.x hasta el MVP.
 
+## [0.0.69] — 2026-07-18
+
+### Añadido
+
+- **Los particulares donan el material que ya no usan (FEATURE-032)**: a quien se le muere su animal (o le sobra material en buen estado) ya no tiene que tirarlo ni peregrinar por redes — publica una **oferta de donación** desde su cuenta (comida, accesorios, mantas y ropa, juguetes…) con su ciudad, un **pin redondeado ~200 m** (la dirección exacta nunca se guarda, mismo patrón que acogidas) y el radio en el que le viene bien entregar. Las **protectoras verificadas de la zona** ven las ofertas en su panel (tablón «Donaciones», ordenado por cercanía) y pulsan **«Contactar»**: el email va **al donante** con los datos de la protectora — nunca al revés. El donante gestiona lo suyo: editar, **marcar entregada**, borrar (borrado real) y **renovar** cuando caduca (a los 60 días, automático, para que el tablón no crie zombis; con tope de 5 abiertas contra el abuso). Complementa al tablón de necesidades: allí la protectora pide, aquí el particular ofrece.
+
+## [0.0.68] — 2026-07-18
+
+### Descartado
+
+- **FEATURE-033 (alertas de búsqueda guardada) descartada como duplicado de FEATURE-010**: lo pedido ya está en producción desde el hito 0.3 — guardar la búsqueda con sus filtros desde el listado, email diario agrupado cuando entra un animal que encaja (cron de GitHub Actions a las 09:00 UTC), gestión en `/mi-cuenta/alertas` (pausar/activar/borrar, tope de 5 en BD), baja en un clic desde el email sin login y RLS probada. Verificación criterio a criterio documentada en el item, con los tests de la zona re-ejecutados en verde (10/10). Deltas menores anotados como candidatos a mejora: editar una alerta existente y casar el filtro de edad en el matching.
+
 ## [0.0.67] — 2026-07-18
 
 ### Añadido

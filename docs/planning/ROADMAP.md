@@ -61,13 +61,14 @@ Para centrar el desarrollo en un lado de la app cada vez, el 0.2 se aborda en do
 | [IMPROVEMENT-011](items/IMPROVEMENT-011.md) | Wizard de alta — combo de provincia, autocompletado solo al teclear y título lateral | hecho | media |
 | [IMPROVEMENT-006](items/IMPROVEMENT-006.md) | Completar el sidebar del adoptante con sus secciones (deshabilitadas) | hecho | baja |
 
-### Hito 0.3 — 100% completado (3/3)
+### Hito 0.3 — 75% completado (3/4)
 
 | Item | Título | Estado | Prioridad |
 |------|--------|--------|-----------|
 | [FEATURE-009](items/FEATURE-009.md) | Citas con calendario y agenda de disponibilidad | hecho | alta |
 | [FEATURE-010](items/FEATURE-010.md) | Área personal del adoptante — solicitudes, favoritos y alertas | hecho | media |
 | [FEATURE-011](items/FEATURE-011.md) | Moderación de contenido y cuentas (admin) | hecho | media |
+| [FEATURE-033](items/FEATURE-033.md) | Alertas de búsqueda guardada (avisos de nuevos animales) | descartado | media |
 
 ### Hito 0.4 — 100% completado (6/6)
 
@@ -80,7 +81,7 @@ Para centrar el desarrollo en un lado de la app cada vez, el 0.2 se aborda en do
 | [FEATURE-015](items/FEATURE-015.md) | Contenido educativo sobre adopción responsable | hecho | baja |
 | [FEATURE-016](items/FEATURE-016.md) | Registro de casas de acogida | hecho | baja |
 
-### Hito 0.5 — 100% completado (29/29)
+### Hito 0.5 — 100% completado (30/30)
 
 | Item | Título | Estado | Prioridad |
 |------|--------|--------|-----------|
@@ -104,6 +105,7 @@ Para centrar el desarrollo en un lado de la app cada vez, el 0.2 se aborda en do
 | [FEATURE-029](items/FEATURE-029.md) | Propuestas de acogida estructuradas con trazabilidad | hecho | media |
 | [FEATURE-030](items/FEATURE-030.md) | Relevo de acogida (emergencias del acogedor) | hecho | media |
 | [FEATURE-031](items/FEATURE-031.md) | Tablón de necesidades de protectoras (pedir ayuda material) | hecho | media |
+| [FEATURE-032](items/FEATURE-032.md) | Ofertas de donación de particulares (material para protectoras) | hecho | media |
 | [IMPROVEMENT-017](items/IMPROVEMENT-017.md) | Rediseño del dashboard de protectora (tarjetas de color y próximas citas) | hecho | media |
 | [IMPROVEMENT-018](items/IMPROVEMENT-018.md) | Rediseño de la home pública (hero con buscador, recién llegados, banda de stats y CTA) | hecho | media |
 | [IMPROVEMENT-019](items/IMPROVEMENT-019.md) | Rediseño del listado /animales (filtros horizontales, tarjetas con favorito y paginación numerada) | hecho | media |
@@ -113,11 +115,4 @@ Para centrar el desarrollo en un lado de la app cada vez, el 0.2 se aborda en do
 | [IMPROVEMENT-026](items/IMPROVEMENT-026.md) | Sincronizar el estado del animal con su propuesta de acogida | hecho | media |
 | [IMPROVEMENT-021](items/IMPROVEMENT-021.md) | Búsqueda por texto/raza en el listado de animales | hecho | baja |
 | [IMPROVEMENT-024](items/IMPROVEMENT-024.md) | Pulido menor del perfil público de protectora (fallbacks del hero y de las tarjetas) | hecho | baja |
-
-### Sin hito asignado (2)
-
-_Capturas pendientes de promover — no forman parte del roadmap todavía._
-
-- [FEATURE-032](items/FEATURE-032.md) — Ofertas de donación de particulares (material para protectoras) (recibido)
-- [FEATURE-033](items/FEATURE-033.md) — Alertas de búsqueda guardada (avisos de nuevos animales) (recibido)
 <!-- RENDER:END -->

@@ -5,6 +5,7 @@ import {
   CalendarHeart,
   Clock,
   FileText,
+  Gift,
   HandHeart,
   Heart,
   HeartHandshake,
@@ -37,6 +38,7 @@ const NAV: Record<Role, Item[]> = {
     { key: "navAgenda", href: "/panel/agenda", icon: Clock, exists: true },
     { key: "navFosterHomes", href: "/panel/acogida", icon: LifeBuoy, exists: true },
     { key: "navNeeds", href: "/panel/necesidades", icon: HandHeart, exists: true },
+    { key: "navDonationBoard", href: "/panel/donaciones", icon: Gift, exists: true },
     { key: "navPublicProfile", href: "/panel/perfil", icon: Store, exists: true },
     { key: "navStats", href: "/panel/estadisticas", icon: BarChart3, exists: true },
   ],
@@ -52,6 +54,7 @@ const NAV: Record<Role, Item[]> = {
     { key: "navMyAppointments", href: "/mi-cuenta/citas", icon: CalendarHeart, exists: true },
     { key: "navMyAlerts", href: "/mi-cuenta/alertas", icon: Bell, exists: true },
     { key: "navFosterCare", href: "/mi-cuenta/acogida", icon: HeartHandshake, exists: true },
+    { key: "navDonations", href: "/mi-cuenta/donaciones", icon: Gift, exists: true },
   ],
 };
 

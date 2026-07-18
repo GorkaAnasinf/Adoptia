@@ -28,6 +28,14 @@ describe("AppSidebar", () => {
     );
   });
 
+  it("protectora: incluye el tablón de donaciones (FEATURE-032)", () => {
+    renderSidebar({ role: "shelter", onboarding: false, pathname: "/panel" });
+    expect(screen.getByRole("link", { name: messages.shell.navDonationBoard })).toHaveAttribute(
+      "href",
+      "/panel/donaciones",
+    );
+  });
+
   it("protectora en onboarding: los ítems del panel están deshabilitados (sin enlaces)", () => {
     renderSidebar({ role: "shelter", onboarding: true, pathname: "/panel/alta" });
     expect(screen.queryByRole("link", { name: messages.shell.navHome })).not.toBeInTheDocument();
@@ -48,6 +56,7 @@ describe("AppSidebar", () => {
       navMyAppointments: "/mi-cuenta/citas",
       navMyAlerts: "/mi-cuenta/alertas",
       navFosterCare: "/mi-cuenta/acogida",
+      navDonations: "/mi-cuenta/donaciones",
     };
     for (const [clave, href] of Object.entries(rutas)) {
       expect(
