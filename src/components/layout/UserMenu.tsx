@@ -5,6 +5,7 @@ import {
   BarChart3,
   CalendarHeart,
   FileText,
+  Gift,
   Heart,
   HeartHandshake,
   LogOut,
@@ -35,6 +36,7 @@ const ACCESOS: Record<UserRole, MenuItem[]> = {
     { key: "navMyRequests", href: "/mi-cuenta/solicitudes", icon: FileText },
     { key: "navMyAppointments", href: "/mi-cuenta/citas", icon: CalendarHeart },
     { key: "navFosterCare", href: "/mi-cuenta/acogida", icon: HeartHandshake },
+    { key: "navDonations", href: "/mi-cuenta/donaciones", icon: Gift },
   ],
 };
 

@@ -52,7 +52,13 @@ Fase 3: `sponsorships`, `lost_found_posts`, `lost_found_sightings`.
 |-------|--------|------------------|
 | `shelter_needs` | Petición de ayuda material de una protectora | `categoria comida/mantas_ropa/medicinas/transporte/otros`, `urgencia normal/urgente`, `status abierta/cubierta`. RLS: escribe solo la dueña de protectora **verificada**; el público (anon incluido) lee solo `abiertas` de verificadas; la dueña conserva su historial de cubiertas (reabrible). RPC `shelter_needs_nearby(lat,lng,radius)` para el tablón por zona: urgentes primero y después cercanía, usable por anon. El contacto «Puedo ayudar» va por handler (relay), no toca la tabla |
 
-**Redondeo de privacidad**: `public.round_lost_found_location()` hace snap a una rejilla de 0.002° (~200 m) en un `BEFORE INSERT/UPDATE`. La coordenada exacta **nunca llega a existir en BD**, así que no puede filtrarse por ninguna vía (ni un dump, ni un `select` con `service_role`). La misma función la reusan `lost_found_posts`, `lost_found_sightings` y `foster_homes`.
+### Ofertas de donación de particulares (FEATURE-032)
+
+| Tabla | Qué es | Claves de diseño |
+|-------|--------|------------------|
+| `donation_offers` | Oferta de material de un particular (comida, accesorios, mantas…) | Espejo de `foster_homes`: `location` **redondeada ~200 m por trigger**, `radius_km 1..200` (el radio lo declara el donante), `categoria comida/accesorios/mantas_ropa/juguetes/otros`, `status abierta/entregada/caducada`. RLS: solo el dueño (borrado real, cascade con la cuenta); las protectoras acceden únicamente por el RPC `donation_offers_nearby(p_shelter_id)` (doble guarda: caller dueño + verificada; sin coordenadas, `user_id` ni email). Caducidad: `renovada_at` **no manipulable** (trigger la fija a `now()`, exime `service_role`), el cron de avisos marca `caducada` a los 60 días y el RPC filtra por `renovada_at` como doble red; «Renovar» la reabre. Tope de 5 abiertas por usuario (trigger). El contacto va por handler (relay AL DONANTE), no toca la tabla |
+
+**Redondeo de privacidad**: `public.round_lost_found_location()` hace snap a una rejilla de 0.002° (~200 m) en un `BEFORE INSERT/UPDATE`. La coordenada exacta **nunca llega a existir en BD**, así que no puede filtrarse por ninguna vía (ni un dump, ni un `select` con `service_role`). La misma función la reusan `lost_found_posts`, `lost_found_sightings`, `foster_homes` y `donation_offers`.
 
 **Nada de número de microchip** (FEATURE-023): `has_microchip` es un `boolean` nullable (null = «no lo sé»), como las compatibilidades de `animals`. El número identifica al dueño en el registro autonómico, así que es un dato personal indirecto disfrazado de dato del animal. Hay un test de RLS que vigila que no aparezca ninguna columna que lo contenga.
 

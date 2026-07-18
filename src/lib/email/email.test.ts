@@ -14,6 +14,7 @@ vi.mock("nodemailer", () => ({
 
 import { enviarEmail } from "./mailer";
 import {
+  plantillaContactoDonacion,
   plantillaRechazada,
   plantillaSolicitudCerradaPorAdopcion,
   plantillaSolicitudRecibida,
@@ -152,5 +153,37 @@ describe("plantillas de solicitudes (FEATURE-007)", () => {
       animalesSimilares: [],
     });
     expect(html).toContain("Juan");
+  });
+});
+
+describe("plantilla de contacto de donación (FEATURE-032)", () => {
+  it("el email al donante lleva la protectora, su contacto y el mensaje escapado", () => {
+    const { subject, html } = plantillaContactoDonacion({
+      donanteNombre: "Dani",
+      shelterName: "Refugio Esperanza",
+      shelterEmail: "refugio@test.com",
+      shelterPhone: "600111222",
+      descripcion: "Dos sacos de pienso",
+      mensaje: "Nos viene genial <script>alert(1)</script>",
+    });
+    expect(subject).toContain("Refugio Esperanza");
+    expect(html).toContain("Dani");
+    expect(html).toContain("Dos sacos de pienso");
+    expect(html).toContain("refugio@test.com");
+    expect(html).toContain("600111222");
+    expect(html).not.toContain("<script>");
+    expect(html).toContain("&lt;script&gt;");
+  });
+
+  it("sin teléfono ni nombre del donante no revienta", () => {
+    const { html } = plantillaContactoDonacion({
+      donanteNombre: null,
+      shelterName: "Refugio",
+      shelterEmail: null,
+      shelterPhone: null,
+      descripcion: "Mantas",
+      mensaje: "Hola, nos interesan las mantas",
+    });
+    expect(html).toContain("Mantas");
   });
 });

@@ -440,6 +440,45 @@ export function plantillaContactoNecesidad({
   };
 }
 
+/**
+ * FEATURE-032: una protectora responde a una oferta de donación — relay AL
+ * DONANTE con los datos de la protectora; el contacto del donante nunca viaja
+ * en sentido contrario.
+ */
+export function plantillaContactoDonacion({
+  donanteNombre,
+  shelterName,
+  shelterEmail,
+  shelterPhone,
+  descripcion,
+  mensaje,
+}: {
+  donanteNombre: string | null;
+  shelterName: string;
+  shelterEmail: string | null;
+  shelterPhone: string | null;
+  descripcion: string;
+  mensaje: string;
+}) {
+  const contacto = [
+    shelterEmail ? `<li>Email: <a href="mailto:${shelterEmail}" style="color:#396662">${shelterEmail}</a></li>` : "",
+    shelterPhone ? `<li>Teléfono: ${escaparHtml(shelterPhone)}</li>` : "",
+  ].join("");
+  return {
+    subject: `${shelterName} está interesada en tu donación`,
+    html: BASE(`
+      <p>Hola ${escaparHtml(donanteNombre || "")},</p>
+      <p>La protectora <strong>${escaparHtml(shelterName)}</strong> ha visto tu oferta de donación
+      «<strong>${escaparHtml(descripcion)}</strong>» y quiere aceptarla:</p>
+      <p style="border-left:3px solid #396662;padding-left:10px;margin:8px 0">${escaparHtml(mensaje)}</p>
+      ${contacto ? `<p>Puedes responderles directamente:</p><ul style="margin:4px 0;padding-left:18px">${contacto}</ul>` : ""}
+      <p>Tus datos de contacto <strong>no</strong> se han compartido: eres tú quien decide responder.
+      Cuando la entrega se concrete, marca la oferta como entregada desde
+      <a href="https://adoptia-eight.vercel.app/mi-cuenta/donaciones" style="color:#396662">tus donaciones</a>.</p>
+    `),
+  };
+}
+
 // ---------- FEATURE-022: contacto y avistamientos en avisos ----------
 
 const AVISO_URL = (avisoId: string) =>
