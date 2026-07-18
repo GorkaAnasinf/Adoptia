@@ -1,6 +1,6 @@
 "use client";
 
-import { LocateFixed, MapPin, Search } from "lucide-react";
+import { LocateFixed, MapPin, PawPrint } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useTranslations } from "next-intl";
@@ -80,10 +80,10 @@ export function HeroSearch() {
       <form
         role="search"
         onSubmit={buscar}
-        className="flex flex-col gap-2 rounded-2xl bg-white p-3 shadow-md ring-1 ring-black/5 sm:flex-row sm:items-center sm:rounded-full sm:py-2 sm:pl-4 sm:pr-2"
+        className="flex flex-col gap-2 rounded-3xl bg-surface-container-lowest p-2 shadow-soft ring-1 ring-border/60 sm:flex-row sm:items-center"
       >
-        <label className="flex min-h-11 flex-1 items-center gap-2 border-border max-sm:rounded-xl max-sm:border max-sm:px-3 sm:border-r sm:pr-3">
-          <MapPin className="size-4 shrink-0 text-muted-foreground" aria-hidden="true" />
+        <label className="flex min-h-12 flex-1 items-center gap-2 border-border px-3 max-sm:rounded-2xl max-sm:border sm:border-r sm:pr-3">
+          <PawPrint className="size-5 shrink-0 text-primary" aria-hidden="true" />
           <span className="sr-only">{t("searchSpeciesLabel")}</span>
           <select
             value={especie}
@@ -96,8 +96,9 @@ export function HeroSearch() {
             <option value="other">{t("quickOthers")}</option>
           </select>
         </label>
-        <label className="flex min-h-11 flex-[1.4] items-center gap-2 border-border max-sm:rounded-xl max-sm:border max-sm:px-3 sm:pr-2">
-          <Search className="size-4 shrink-0 text-muted-foreground" aria-hidden="true" />
+        <label className="flex min-h-12 flex-[1.4] items-center gap-2 border-border px-3 max-sm:rounded-2xl max-sm:border sm:pr-2">
+          <MapPin className="size-5 shrink-0 text-primary" aria-hidden="true" />
+          <span className="sr-only">{t("searchCityLabel")}</span>
           <input
             type="text"
             value={ciudad}
@@ -109,16 +110,16 @@ export function HeroSearch() {
         <button
           type="submit"
           disabled={buscando}
-          className="min-h-11 shrink-0 rounded-xl bg-primary px-6 py-2 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90 disabled:opacity-60 sm:rounded-full"
+          className="min-h-12 shrink-0 rounded-2xl bg-primary px-8 text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/20 transition-colors hover:bg-primary/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:opacity-60"
         >
           {t("searchButton")}
         </button>
       </form>
-      <div className="mt-2 flex flex-col items-center gap-1">
+      <div className="mt-3 flex flex-col items-center gap-1">
         <button
           type="button"
           onClick={usarUbicacion}
-          className="inline-flex items-center gap-1.5 text-sm font-medium text-secondary underline-offset-4 hover:underline"
+          className="inline-flex min-h-11 items-center gap-1.5 rounded-md px-2 text-sm font-medium text-primary underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
         >
           <LocateFixed className="size-4" aria-hidden="true" />
           {t("searchUseLocation")}

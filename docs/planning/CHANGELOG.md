@@ -2,6 +2,12 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/es/) adaptado. Versionado 0.x hasta el MVP.
 
+## [0.0.70] — 2026-07-18
+
+### Cambiado
+
+- **La home estrena el diseño nuevo de la web (FEATURE-034)**: primera pantalla de la **tanda de rediseño con wireframes de Stitch**. El hero recibe una foto ambiente cálida con degradado al crema y el buscador se afina (iconos huella/ubicación en terracota, esquinas del design system); las tarjetas de animales llevan el chip **«Recién llegado» sobre la foto** y se elevan al pasar el ratón; «¿Cómo funciona?» unifica sus tres pasos sobre fondo tintado; la cabecera pasa a **glassmorphism** con el enlace activo subrayado y el pie muestra marca + tagline manteniendo todos sus enlaces. Accesibilidad reforzada a petición del usuario: labels en los dos campos del buscador, foto del hero invisible para lectores de pantalla, foco visible en todo lo nuevo y animaciones que respetan `prefers-reduced-motion`. Sin cambios de datos ni API — misma búsqueda, mismos contadores reales. QA: suite 1101/1101 con RLS, E2E del área pública 4/4.
+
 ## [0.0.69] — 2026-07-18
 
 ### Añadido

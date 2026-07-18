@@ -8,8 +8,8 @@ import { createClient } from "@/lib/supabase/server";
 
 export const revalidate = 300;
 
-const FOTO_CTA_PROTECTORAS =
-  "https://images.unsplash.com/photo-1601758228041-f3b2795255f1?w=1200&q=80";
+const FOTO_HERO = "/images/hero-home.jpg";
+const FOTO_CTA_PROTECTORAS = "/images/cta-protectoras.jpg";
 
 type Estadisticas = { animales: number; protectoras: number; adopciones: number };
 
@@ -65,13 +65,27 @@ export default async function HomePage() {
 
   return (
     <>
-      {/* Hero con buscador */}
-      <section className="mx-auto flex max-w-6xl flex-col items-center gap-5 px-4 pb-12 pt-14 text-center sm:pt-20">
-        <h1 className="font-heading text-4xl font-bold text-foreground sm:text-5xl">
-          {t("home.title")}
-        </h1>
-        <p className="max-w-2xl text-muted-foreground sm:text-lg">{t("home.subtitle")}</p>
-        <HeroSearch />
+      {/* Hero con buscador sobre foto ambiente */}
+      <section className="relative flex min-h-120 flex-col items-center justify-center px-4 py-16 sm:min-h-160">
+        <div className="absolute inset-0 overflow-hidden" aria-hidden="true">
+          <Image
+            data-testid="hero-bg"
+            src={FOTO_HERO}
+            alt=""
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover opacity-20 grayscale-[0.2]"
+          />
+          <div className="absolute inset-0 bg-linear-to-b from-transparent to-background" />
+        </div>
+        <div className="relative z-10 mx-auto flex w-full max-w-3xl flex-col items-center gap-5 text-center">
+          <h1 className="font-heading text-3xl font-bold tracking-tight text-foreground sm:text-[40px] sm:leading-12">
+            {t("home.title")}
+          </h1>
+          <p className="max-w-2xl text-muted-foreground sm:text-lg">{t("home.subtitle")}</p>
+          <HeroSearch />
+        </div>
       </section>
 
       {/* Recién llegados */}
@@ -101,24 +115,20 @@ export default async function HomePage() {
       )}
 
       {/* Cómo funciona */}
-      <section className="bg-white">
+      <section className="bg-surface-container-low/40">
         <div className="mx-auto max-w-6xl px-4 py-16">
           <h2 className="text-center font-heading text-2xl font-semibold">{t("home.howTitle")}</h2>
           <p className="mt-2 text-center text-sm text-muted-foreground">{t("home.howSubtitle")}</p>
-          <ol className="mt-10 grid gap-5 sm:grid-cols-3">
-            {pasos.map(({ icono: Icono, titulo, texto }, i) => (
+          <ol className="mt-10 grid gap-6 sm:grid-cols-3">
+            {pasos.map(({ icono: Icono, titulo, texto }) => (
               <li
                 key={titulo}
-                className="flex flex-col items-center gap-3 rounded-2xl bg-background px-6 py-8 text-center"
+                className="flex flex-col items-center gap-3 rounded-3xl bg-surface-container-lowest px-6 py-8 text-center shadow-soft"
               >
-                <span
-                  className={`flex size-14 items-center justify-center rounded-xl ${
-                    i === 1 ? "bg-secondary/10 text-secondary" : i === 2 ? "bg-tertiary/10 text-tertiary" : "bg-primary/10 text-primary"
-                  }`}
-                >
+                <span className="flex size-16 items-center justify-center rounded-full bg-primary/10 text-primary">
                   <Icono className="size-7" aria-hidden="true" />
                 </span>
-                <h3 className="font-heading text-lg font-semibold">{titulo}</h3>
+                <h3 className="font-heading text-xl font-semibold">{titulo}</h3>
                 <p className="max-w-xs text-sm text-muted-foreground">{texto}</p>
               </li>
             ))}
@@ -149,12 +159,12 @@ export default async function HomePage() {
 
       {/* Guías (FEATURE-015) */}
       <section className="mx-auto max-w-6xl px-4 pb-4 pt-12">
-        <div className="flex flex-col items-center gap-3 rounded-3xl border border-border bg-card px-6 py-10 text-center">
+        <div className="flex flex-col items-center gap-3 rounded-3xl border border-border/60 bg-surface-container-lowest px-6 py-10 text-center shadow-soft">
           <h2 className="font-heading text-2xl font-semibold">{t("guias.homeTitle")}</h2>
           <p className="max-w-xl text-muted-foreground">{t("guias.homeText")}</p>
           <Link
             href="/guias"
-            className="mt-1 rounded-full border border-primary px-6 py-2.5 font-medium text-primary hover:bg-primary hover:text-primary-foreground"
+            className="mt-1 rounded-2xl border-2 border-primary px-6 py-2.5 font-medium text-primary transition-colors hover:bg-primary hover:text-primary-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
           >
             {t("guias.homeCta")}
           </Link>
@@ -163,18 +173,18 @@ export default async function HomePage() {
 
       {/* CTA protectoras */}
       <section className="mx-auto max-w-6xl px-4 py-14">
-        <div className="grid overflow-hidden rounded-3xl bg-accent md:grid-cols-2">
-          <div className="flex flex-col items-start justify-center gap-4 px-6 py-10 sm:px-10">
-            <p className="text-xs font-bold uppercase tracking-wider text-primary">
+        <div className="grid overflow-hidden rounded-3xl border border-border/40 bg-surface-container-low shadow-soft md:grid-cols-2">
+          <div className="flex flex-col items-start justify-center gap-4 px-6 py-10 sm:px-10 lg:py-12">
+            <p className="text-xs font-bold uppercase tracking-widest text-primary">
               {t("home.ctaSheltersOverline")}
             </p>
-            <h2 className="font-heading text-3xl font-bold text-foreground">
+            <h2 className="font-heading text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
               {t("home.ctaSheltersTitle")}
             </h2>
-            <p className="text-muted-foreground">{t("home.ctaSheltersText")}</p>
+            <p className="max-w-md text-muted-foreground">{t("home.ctaSheltersText")}</p>
             <Link
               href="/registro"
-              className="mt-2 rounded-full bg-primary px-6 py-3 font-semibold text-primary-foreground hover:bg-primary/90"
+              className="mt-2 rounded-2xl bg-primary px-6 py-3 font-semibold text-primary-foreground shadow-lg shadow-primary/20 transition-colors hover:bg-primary/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
             >
               {t("home.ctaShelters")}
             </Link>
@@ -182,7 +192,7 @@ export default async function HomePage() {
           <div className="relative min-h-56 md:min-h-full">
             <Image
               src={FOTO_CTA_PROTECTORAS}
-              alt={t("home.ctaSheltersOverline")}
+              alt={t("home.ctaSheltersImageAlt")}
               fill
               sizes="(max-width: 768px) 100vw, 50vw"
               className="object-cover"

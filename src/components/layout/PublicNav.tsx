@@ -84,8 +84,10 @@ export function PublicNav() {
             href={href}
             aria-current={esActivo(href) ? "page" : undefined}
             className={cn(
-              "font-medium transition-colors hover:text-primary",
-              esActivo(href) ? "text-primary" : "text-foreground",
+              "border-b-2 pb-0.5 font-medium transition-colors hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary",
+              esActivo(href)
+                ? "border-primary font-bold text-primary"
+                : "border-transparent text-muted-foreground",
             )}
           >
             {t(key)}

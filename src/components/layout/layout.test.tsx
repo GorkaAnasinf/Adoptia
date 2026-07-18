@@ -59,4 +59,21 @@ describe("Footer", () => {
       screen.getByRole("link", { name: messages.footer.terms }),
     ).toBeInTheDocument();
   });
+
+  it("muestra la marca con tagline y conserva los 7 enlaces del pie", () => {
+    conIntl(<Footer />);
+    expect(screen.getByText(messages.common.appName)).toBeInTheDocument();
+    expect(screen.getByText(messages.footer.tagline)).toBeInTheDocument();
+    for (const nombre of [
+      messages.guias.footer,
+      messages.acogida.footer,
+      messages.necesidades.footer,
+      messages.footer.privacy,
+      messages.footer.legalNotice,
+      messages.footer.cookies,
+      messages.footer.terms,
+    ]) {
+      expect(screen.getByRole("link", { name: nombre })).toBeInTheDocument();
+    }
+  });
 });
