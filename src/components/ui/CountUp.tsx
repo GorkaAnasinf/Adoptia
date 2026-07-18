@@ -9,7 +9,7 @@ const easeOut = (t: number) => 1 - Math.pow(1 - t, 3);
  * El DOM arranca y termina con el valor final: sin IntersectionObserver o con
  * `prefers-reduced-motion` no se anima nada.
  */
-export function CountUp({ value, durationMs = 1200 }: { value: number; durationMs?: number }) {
+export function CountUp({ value, durationMs = 2000 }: { value: number; durationMs?: number }) {
   const ref = useRef<HTMLSpanElement>(null);
   const [mostrado, setMostrado] = useState(value);
 
@@ -27,10 +27,13 @@ export function CountUp({ value, durationMs = 1200 }: { value: number; durationM
       (entradas) => {
         if (!entradas.some((e) => e.isIntersecting)) return;
         observer.disconnect();
-        // el inicio se toma del primer frame: misma base de tiempos que el rAF
+        // el inicio se toma del primer frame (misma base de tiempos que el
+        // rAF) con una pausa breve: si la banda ya es visible al cargar, la
+        // subida no se pierde entre el pintado inicial de la página.
         let inicio: number | null = null;
+        const RETARDO_MS = 350;
         const tick = (ahora: number) => {
-          if (inicio === null) inicio = ahora;
+          if (inicio === null) inicio = ahora + RETARDO_MS;
           const t = Math.min(Math.max((ahora - inicio) / durationMs, 0), 1);
           setMostrado(Math.round(easeOut(t) * value));
           if (t < 1) raf = requestAnimationFrame(tick);
