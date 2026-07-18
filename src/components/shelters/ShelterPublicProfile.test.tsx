@@ -57,6 +57,31 @@ describe("ShelterPublicProfile", () => {
     conIntl(<ShelterPublicProfile shelter={{ name: "Refugio" }} animals={[]} />);
     expect(screen.getByText(messages.shelterPublic.noAnimals)).toBeInTheDocument();
   });
+
+  it("con necesidades abiertas muestra la sección «Necesitamos» con CTA de ayuda", () => {
+    conIntl(
+      <ShelterPublicProfile
+        shelter={{ name: "Refugio" }}
+        animals={[]}
+        needs={[
+          { id: "n1", categoria: "comida", descripcion: "Pienso de cachorro", urgencia: "urgente" },
+        ]}
+      />,
+    );
+    expect(screen.getByText(messages.necesidades.perfilTitulo)).toBeInTheDocument();
+    expect(screen.getByText("Pienso de cachorro")).toBeInTheDocument();
+    expect(screen.getByText(messages.necesidades.urgenteChip)).toBeInTheDocument();
+    // Sin sesión: el CTA lleva a login
+    expect(screen.getByRole("link", { name: messages.necesidades.ayudar })).toHaveAttribute(
+      "href",
+      "/login",
+    );
+  });
+
+  it("sin necesidades no hay sección", () => {
+    conIntl(<ShelterPublicProfile shelter={{ name: "Refugio" }} animals={[]} needs={[]} />);
+    expect(screen.queryByText(messages.necesidades.perfilTitulo)).not.toBeInTheDocument();
+  });
 });
 
 describe("ShelterPublicProfile — métricas (FEATURE-028)", () => {

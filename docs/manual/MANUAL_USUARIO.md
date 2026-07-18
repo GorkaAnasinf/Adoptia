@@ -134,13 +134,17 @@ Si puedes cuidar temporalmente de un animal:
 
 En **Guías** encontrarás contenido educativo: qué implica adoptar, cómo preparar la llegada del animal, cuidados básicos, etc. Son artículos públicos pensados para decidir con información.
 
+### 3.12 Ayudar con material a las protectoras
+
+Si no puedes adoptar ni acoger pero quieres echar una mano, entra en **Necesidades** (enlace del pie de página): es el tablón donde las protectoras piden **comida, mantas y ropa, medicinas o transporte**, con filtros por categoría, urgencia y ciudad. Las mismas peticiones aparecen en el perfil de cada protectora («Necesitamos»). Pulsa **«Puedo ayudar»** (necesitas cuenta), cuenta qué puedes aportar y tu mensaje llegará a la protectora por email — ten en cuenta que al responderte verá tu dirección de correo.
+
 ---
 
 ## 4. Guía de la protectora
 
 ### 4.1 El panel
 
-Tras iniciar sesión, el **Panel** es tu página de inicio: resumen de animales publicados, solicitudes pendientes y próximas citas, con accesos directos a cada sección. La navegación lateral lleva a: **Animales, Solicitudes, Citas, Agenda, Estadísticas, Acogida y Perfil**.
+Tras iniciar sesión, el **Panel** es tu página de inicio: resumen de animales publicados, solicitudes pendientes y próximas citas, con accesos directos a cada sección. La navegación lateral lleva a: **Animales, Solicitudes, Citas, Agenda, Estadísticas, Acogida, Necesidades y Perfil**.
 
 ### 4.2 Cómo publicar un animal
 
@@ -175,6 +179,10 @@ En **Panel → Perfil** editas lo que ven los adoptantes: descripción, fotos, d
 ### 4.7 Casas de acogida
 
 En **Panel → Acogida** consultas las **casas de acogida registradas** en tu zona y les **propones acogidas** con un formulario (para qué animal, cuánto tiempo y un mensaje); el acogedor recibe el aviso por email. Cada propuesta queda registrada con su estado: mientras esté abierta no puedes reenviarla, y desde el **historial** la marcas aceptada, rechazada o finalizada — así sabes en todo momento qué animales tienes en acogida y con quién. Si una casa de acogida **pide relevo** (emergencia), lo verás con un aviso destacado (motivo y fecha límite) y recibirás un email: propón la acogida a otro acogedor de la zona y, resuelto el relevo, marca la original como finalizada.
+
+### 4.8 Pedir ayuda material (necesidades)
+
+En **Panel → Necesidades** publicas lo que os hace falta — comida, mantas y ropa, medicinas, transporte u otros — con descripción y marca de **urgente** si toca. Se muestra en vuestro perfil público y en el tablón general de necesidades. Cuando alguien pulse «Puedo ayudar» recibirás su mensaje por email y podrás responderle directamente. Al conseguir lo pedido, márcalo **cubierto**: desaparece del tablón pero queda en vuestro historial (y puedes reabrirlo si vuelve a hacer falta). Disponible para protectoras verificadas.
 
 ---
 

@@ -15,6 +15,9 @@ export function Footer() {
           <Link href="/acogida" className="hover:text-primary">
             {t("acogida.footer")}
           </Link>
+          <Link href="/necesidades" className="hover:text-primary">
+            {t("necesidades.footer")}
+          </Link>
           <Link href="/privacidad" className="hover:text-primary">
             {t("footer.privacy")}
           </Link>

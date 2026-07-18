@@ -20,6 +20,14 @@ describe("AppSidebar", () => {
     expect(inicio).toHaveAttribute("aria-current", "page");
   });
 
+  it("protectora: incluye la entrada de necesidades", () => {
+    renderSidebar({ role: "shelter", onboarding: false, pathname: "/panel" });
+    expect(screen.getByRole("link", { name: messages.shell.navNeeds })).toHaveAttribute(
+      "href",
+      "/panel/necesidades",
+    );
+  });
+
   it("protectora en onboarding: los ítems del panel están deshabilitados (sin enlaces)", () => {
     renderSidebar({ role: "shelter", onboarding: true, pathname: "/panel/alta" });
     expect(screen.queryByRole("link", { name: messages.shell.navHome })).not.toBeInTheDocument();
