@@ -4,16 +4,9 @@ import "leaflet/dist/leaflet.css";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { CircleMarker, MapContainer, Popup, TileLayer } from "react-leaflet";
-import type { AvisoMapa } from "./tipos";
+import { type AvisoMapa, COLOR_AVISO as COLOR } from "./tipos";
 
 const ESPANA_CENTER: [number, number] = [40.4165, -3.7026];
-
-// Distinción visual clara perdido/encontrado (criterio FEATURE-012):
-// rojo = perdido, verde = encontrado.
-const COLOR: Record<AvisoMapa["type"], string> = {
-  lost: "#dc2626",
-  found: "#059669",
-};
 
 export default function MapaAvisosInner({ avisos }: { avisos: AvisoMapa[] }) {
   const t = useTranslations("perdidos");

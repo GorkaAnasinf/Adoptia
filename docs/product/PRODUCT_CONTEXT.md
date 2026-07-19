@@ -82,6 +82,7 @@ Estado de cada capacidad en lenguaje de usuario. Se regenera con `python scripts
 - Rediseño de la home según wireframe Stitch (tanda de rediseño, pantalla 1) ([FEATURE-034](../planning/items/FEATURE-034.md))
 - Rediseño del listado de animales según wireframe Stitch (tanda, pantalla 2) ([FEATURE-036](../planning/items/FEATURE-036.md))
 - Rediseño del directorio de protectoras según wireframe Stitch (tanda, pantalla 3) ([FEATURE-037](../planning/items/FEATURE-037.md))
+- Rediseño de Perdidos y encontrados según wireframe Stitch (tanda, pantalla 5) ([FEATURE-038](../planning/items/FEATURE-038.md))
 - De-duplicar el slug de protectora (nombres repetidos) ([IMPROVEMENT-001](../planning/items/IMPROVEMENT-001.md))
 - Rediseño UX del wizard de alta de protectora (+ fix del mapa gris) ([IMPROVEMENT-002](../planning/items/IMPROVEMENT-002.md))
 - Pulido del shell chrome (sidebar + cabecera) hacia el mockup de Stitch ([IMPROVEMENT-003](../planning/items/IMPROVEMENT-003.md))
