@@ -2,6 +2,12 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/es/) adaptado. Versionado 0.x hasta el MVP.
 
+## [0.0.73] — 2026-07-19
+
+### Cambiado
+
+- **El directorio de protectoras se pone a la altura (FEATURE-037)**: tercera pantalla de la tanda Stitch, y la de mayor salto — la vista era una lista plana. Ahora: cabecera centrada «Nuestras protectoras colaboradoras», **buscador** por nombre, ciudad o provincia, botón teal «Ver mapa», chips **Todas / Con animales en adopción**, y tarjetas ricas con **foto de cabecera** (la que cada protectora sube a su perfil), badge **«Verificada»**, logo solapado, contadores reales de **ANIMALES y ADOPCIONES** en granate y CTA «Ver perfil →». Paginación de 12 en 12 con «Página X de N». Si tu búsqueda no encuentra nada, un estado propio te deja limpiarla en un clic. Todo accesible (labels, `aria-pressed`, flechas etiquetadas) y sin migraciones — las adopciones se cuentan en la misma consulta pública. QA: suite 1128/1128 con RLS, E2E 4/4.
+
 ## [0.0.72] — 2026-07-18
 
 ### Cambiado
