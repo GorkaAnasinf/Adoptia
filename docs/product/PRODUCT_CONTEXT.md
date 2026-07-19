@@ -109,6 +109,7 @@ Estado de cada capacidad en lenguaje de usuario. Se regenera con `python scripts
 - Acogidas visibles en la navegación del usuario ([IMPROVEMENT-025](../planning/items/IMPROVEMENT-025.md))
 - Sincronizar el estado del animal con su propuesta de acogida ([IMPROVEMENT-026](../planning/items/IMPROVEMENT-026.md))
 - Vida y micro-interacciones en la web (cursor, count-up, reveal, header compacto, huellas) ([IMPROVEMENT-027](../planning/items/IMPROVEMENT-027.md))
+- El mapa de protectoras se alinea con el lenguaje de la tanda (sin wireframe) ([IMPROVEMENT-028](../planning/items/IMPROVEMENT-028.md))
 
 #### 🚧 En camino (en desarrollo ahora)
 

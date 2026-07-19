@@ -83,7 +83,7 @@ describe("ListaProtectoras", () => {
       </NextIntlClientProvider>,
     );
     expect(screen.getByRole("button", { name: /Protectora Madrid/ }).className).toContain(
-      "border-primary",
+      "ring-primary",
     );
   });
 });
