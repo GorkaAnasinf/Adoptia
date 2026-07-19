@@ -9,6 +9,7 @@ import { useEffect, useRef, useState } from "react";
 import { MapContainer, TileLayer, useMap } from "react-leaflet";
 import { useTranslations } from "next-intl";
 import type { ShelterMapResult } from "./ListaProtectoras";
+import { popupHtml } from "./popup";
 
 const icon = L.icon({
   iconUrl: "/leaflet/marker-icon.png",
@@ -20,27 +21,6 @@ const icon = L.icon({
 });
 
 const ESPANA_CENTER: [number, number] = [40.4165, -3.7026];
-
-function escapeHtml(v: string): string {
-  return v
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;");
-}
-
-function popupHtml(s: ShelterMapResult, animalesLabel: string, verProtectoraLabel: string): string {
-  return `
-    <div class="space-y-1">
-      <p class="font-semibold">${escapeHtml(s.name)}</p>
-      <p class="text-sm text-gray-600">${escapeHtml(s.city ?? "")}</p>
-      <p class="text-sm text-gray-600">${escapeHtml(animalesLabel)}</p>
-      <a href="/protectoras/${encodeURIComponent(s.slug)}" class="text-sm font-medium text-primary underline">
-        ${escapeHtml(verProtectoraLabel)}
-      </a>
-    </div>
-  `;
-}
 
 function ClusterLayer({
   shelters,
@@ -68,7 +48,13 @@ function ClusterLayer({
 
     for (const s of shelters) {
       const marker = L.marker([s.lat, s.lng], { icon, alt: s.name });
-      marker.bindPopup(popupHtml(s, t("animales", { count: s.animal_count }), t("verProtectora")));
+      marker.bindPopup(
+        popupHtml(s, {
+          animales: t("animales", { count: s.animal_count }),
+          verProtectora: t("verProtectora"),
+        }),
+        { minWidth: 220 },
+      );
       marker.on("click", () => onSelect(s.id));
       marker.on("mouseover", () => onHover?.(s.id));
       marker.on("mouseout", () => onHover?.(null));

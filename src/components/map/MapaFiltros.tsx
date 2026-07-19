@@ -1,5 +1,6 @@
 "use client";
 
+import { LocateFixed, MapPin } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
@@ -16,10 +17,10 @@ function Chip({
       type="button"
       aria-pressed={activo}
       className={cn(
-        "min-h-9 rounded-full border px-3.5 py-1.5 text-sm transition focus-visible:outline-2 focus-visible:outline-primary disabled:cursor-not-allowed disabled:opacity-50",
+        "min-h-9 rounded-full px-3.5 py-1.5 text-sm transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:cursor-not-allowed disabled:opacity-50 motion-safe:active:scale-95",
         activo
-          ? "border-primary bg-primary text-primary-foreground"
-          : "border-input bg-white text-foreground hover:border-primary/50",
+          ? "bg-primary font-semibold text-primary-foreground"
+          : "bg-surface-container-high text-foreground hover:bg-surface-container-highest",
       )}
       {...props}
     >
@@ -98,30 +99,42 @@ export function MapaFiltros({ search }: { search: SheltersSearch }) {
         </div>
       </fieldset>
 
-      <div className="space-y-2 border-t border-black/5 pt-3">
+      <div className="space-y-2 border-t border-border/60 pt-3">
         {conUbicacion ? (
-          <p className="text-sm text-tertiary">{t("ubicacionActiva")}</p>
+          <p className="text-sm font-medium text-tertiary">{t("ubicacionActiva")}</p>
         ) : (
-          <Chip onClick={pedirUbicacion}>{t("usarUbicacion")}</Chip>
+          <button
+            type="button"
+            onClick={pedirUbicacion}
+            className="inline-flex min-h-9 items-center gap-1.5 rounded-md px-1 text-sm font-medium text-primary underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+          >
+            <LocateFixed className="size-4" aria-hidden="true" />
+            {t("usarUbicacion")}
+          </button>
         )}
-        {errorUbicacion && <p className="text-sm text-destructive">{t("ubicacionError")}</p>}
+        {errorUbicacion && (
+          <p role="alert" className="text-sm text-destructive">
+            {t("ubicacionError")}
+          </p>
+        )}
 
         <form onSubmit={buscarCiudad} className="flex gap-2">
-          <label htmlFor="mapa-ciudad" className="sr-only">
-            {t("ciudadLabel")}
+          <label className="flex min-h-10 flex-1 items-center gap-2 rounded-2xl bg-surface-container-lowest px-3 shadow-soft">
+            <MapPin className="size-4 shrink-0 text-primary" aria-hidden="true" />
+            <span className="sr-only">{t("ciudadLabel")}</span>
+            <input
+              id="mapa-ciudad"
+              type="text"
+              value={ciudad}
+              onChange={(e) => setCiudad(e.target.value)}
+              placeholder={t("ciudadPlaceholder")}
+              className="w-full bg-transparent text-sm outline-none placeholder:text-muted-foreground"
+            />
           </label>
-          <input
-            id="mapa-ciudad"
-            type="text"
-            value={ciudad}
-            onChange={(e) => setCiudad(e.target.value)}
-            placeholder={t("ciudadPlaceholder")}
-            className="min-h-9 flex-1 rounded-full border border-input bg-white px-3.5 py-1.5 text-sm"
-          />
           <button
             type="submit"
             disabled={estadoCiudad === "buscando"}
-            className="min-h-9 rounded-full border border-input bg-white px-3.5 py-1.5 text-sm hover:border-primary/50 disabled:opacity-50"
+            className="min-h-10 rounded-2xl bg-primary px-4 text-sm font-semibold text-primary-foreground transition hover:bg-primary/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:opacity-50 motion-safe:active:scale-95"
           >
             {t("ciudadBuscar")}
           </button>

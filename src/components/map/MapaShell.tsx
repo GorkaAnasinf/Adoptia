@@ -72,8 +72,8 @@ export function MapaShell({
   return (
     <div className="relative h-[calc(100dvh-4rem)] w-full lg:grid lg:grid-cols-[360px_1fr]">
       <aside
-        aria-label="Filtros y listado de protectoras"
-        className="hidden h-full overflow-y-auto border-r border-black/5 bg-white p-4 lg:block"
+        aria-label={t("panelLabel")}
+        className="hidden h-full overflow-y-auto border-r border-border/60 bg-surface-container-low p-4 lg:block"
       >
         {panel}
       </aside>
@@ -92,7 +92,7 @@ export function MapaShell({
         data-testid="bottom-sheet"
         data-state={sheetAbierto ? "open" : "collapsed"}
         className={cn(
-          "absolute inset-x-0 bottom-0 z-[1000] touch-none rounded-t-2xl bg-white p-4 shadow-[0_-4px_16px_rgba(0,0,0,0.08)] transition-[max-height] duration-300 ease-out lg:hidden",
+          "absolute inset-x-0 bottom-0 z-1000 touch-none rounded-t-3xl bg-surface-container-low p-4 shadow-[0_-4px_16px_rgba(0,0,0,0.08)] transition-[max-height] duration-300 ease-out lg:hidden",
           sheetAbierto ? "max-h-[45vh] overflow-y-auto" : "max-h-14 overflow-hidden",
         )}
       >
