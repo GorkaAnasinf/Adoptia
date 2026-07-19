@@ -38,33 +38,46 @@ const fila: Row = {
   name: "Protectora Bilbao",
   slug: "protectora-bilbao",
   logo_url: null,
+  cover_url: "https://example.com/cover.jpg",
   city: "Bilbao",
   province: "Bizkaia",
   description: "Rescatamos perros y gatos.",
-  animals: [{ count: 3 }],
+  disponibles: [{ count: 3 }],
+  adopciones: [{ count: 7 }],
 };
 
 describe("cargarProtectorasDirectorio", () => {
-  it("consulta shelters verificadas ordenadas por nombre", async () => {
+  it("consulta shelters verificadas ordenadas por nombre, con cover y dos conteos", async () => {
     const { supabase, calls } = fakeSupabase([fila]);
     await cargarProtectorasDirectorio(supabase as never);
     expect(calls.from[0]).toEqual(["shelters"]);
     expect(calls.eq).toContainEqual(["status", "verified"]);
     expect(calls.order[0][0]).toBe("name");
+    const select = String(calls.select[0][0]);
+    expect(select).toContain("cover_url");
+    expect(select).toContain("disponibles:animals(count)");
+    expect(select).toContain("adopciones:animals(count)");
   });
 
-  it("cuenta solo animales disponibles y publicados", async () => {
+  it("cuenta disponibles publicados y adoptados por separado", async () => {
     const { supabase, calls } = fakeSupabase([fila]);
     await cargarProtectorasDirectorio(supabase as never);
-    expect(calls.eq).toContainEqual(["animals.status", "available"]);
-    expect(calls.not).toContainEqual(["animals.published_at", "is", null]);
+    expect(calls.eq).toContainEqual(["disponibles.status", "available"]);
+    expect(calls.not).toContainEqual(["disponibles.published_at", "is", null]);
+    expect(calls.eq).toContainEqual(["adopciones.status", "adopted"]);
   });
 
-  it("mapea el conteo anidado a available_count (0 si falta)", async () => {
-    const { supabase } = fakeSupabase([fila, { ...fila, id: "s2", animals: [] }]);
+  it("mapea los conteos a available_count y adopted_count (0 si faltan)", async () => {
+    const { supabase } = fakeSupabase([
+      fila,
+      { ...fila, id: "s2", disponibles: [], adopciones: [] },
+    ]);
     const result = await cargarProtectorasDirectorio(supabase as never);
     expect(result[0].available_count).toBe(3);
+    expect(result[0].adopted_count).toBe(7);
+    expect(result[0].cover_url).toBe("https://example.com/cover.jpg");
     expect(result[1].available_count).toBe(0);
+    expect(result[1].adopted_count).toBe(0);
   });
 
   it("con error de BD devuelve lista vacía sin lanzar", async () => {
