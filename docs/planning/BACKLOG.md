@@ -19,6 +19,12 @@
 Los items `hecho`/`descartado` no aparecen aquí — su histórico vive en [CHANGELOG](CHANGELOG.md) y git.
 
 <!-- RENDER:START -->
+### ✅ Listo para desarrollo (1)
+
+| Item | Título | Prioridad | Hito |
+|------|--------|-----------|------|
+| [FEATURE-038](items/FEATURE-038.md) | Rediseño de Perdidos y encontrados según wireframe Stitch (tanda, pantalla 5) | alta | 0.5 |
+
 ### 📥 Recibido (1)
 
 | Item | Título | Prioridad | Hito |

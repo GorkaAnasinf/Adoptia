@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Adoptia - Animales Perdidos y Encontrados</title>
+<!-- Fonts & Icons -->
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&amp;family=Open+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container-low": "#f9f3eb",
+                    "tertiary-fixed": "#d1e8dd",
+                    "surface": "#fef8f0",
+                    "inverse-surface": "#32302b",
+                    "primary": "#9f402d",
+                    "primary-container": "#e2725b",
+                    "secondary-fixed-dim": "#a1cfca",
+                    "on-surface": "#1d1b17",
+                    "tertiary-container": "#81978d",
+                    "on-primary-fixed-variant": "#802918",
+                    "on-error": "#ffffff",
+                    "secondary-fixed": "#bcece6",
+                    "secondary": "#396662",
+                    "primary-fixed": "#ffdad3",
+                    "on-tertiary-container": "#1b2f28",
+                    "error-container": "#ffdad6",
+                    "background": "#fef8f0",
+                    "on-tertiary-fixed-variant": "#374b43",
+                    "secondary-container": "#bcece6",
+                    "on-primary": "#ffffff",
+                    "surface-container-lowest": "#ffffff",
+                    "on-secondary-container": "#3f6c68",
+                    "surface-tint": "#9f402d",
+                    "surface-bright": "#fef8f0",
+                    "outline": "#89726d",
+                    "on-secondary-fixed": "#00201e",
+                    "primary-fixed-dim": "#ffb4a5",
+                    "on-tertiary": "#ffffff",
+                    "tertiary": "#4e635a",
+                    "on-primary-fixed": "#3e0500",
+                    "surface-container-highest": "#e7e2da",
+                    "surface-container-high": "#ede7e0",
+                    "surface-container": "#f3ede5",
+                    "on-surface-variant": "#56423e",
+                    "inverse-on-surface": "#f6f0e8",
+                    "on-primary-container": "#5a0d02",
+                    "on-secondary-fixed-variant": "#204e4a",
+                    "tertiary-fixed-dim": "#b5ccc1",
+                    "outline-variant": "#ddc0ba",
+                    "on-error-container": "#93000a",
+                    "on-tertiary-fixed": "#0b1f18",
+                    "on-background": "#1d1b17",
+                    "surface-variant": "#e7e2da",
+                    "surface-dim": "#dfd9d2",
+                    "error": "#ba1a1a",
+                    "inverse-primary": "#ffb4a5",
+                    "on-secondary": "#ffffff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "unit": "4px",
+                    "sm": "8px",
+                    "xs": "4px",
+                    "margin-mobile": "16px",
+                    "gutter": "20px",
+                    "xxl": "48px",
+                    "lg": "24px",
+                    "xl": "32px",
+                    "container-max": "1200px",
+                    "md": "16px"
+            },
+            "fontFamily": {
+                    "headline-md": ["Montserrat"],
+                    "headline-xl": ["Montserrat"],
+                    "headline-lg": ["Montserrat"],
+                    "body-md": ["Open Sans"],
+                    "label-md": ["Open Sans"],
+                    "label-sm": ["Open Sans"],
+                    "body-lg": ["Open Sans"]
+            },
+            "fontSize": {
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "headline-xl": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .ambient-card-shadow {
+            box-shadow: 0 4px 12px rgba(226, 114, 91, 0.08);
+        }
+        .map-container {
+            filter: sepia(0.2) contrast(0.9) brightness(1.05);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen flex flex-col font-body-md">
+<!-- TopNavBar -->
+<header class="bg-surface/80 backdrop-blur-md sticky top-0 z-50 shadow-sm shadow-primary/5">
+<div class="flex justify-between items-center px-lg py-md max-w-container-max mx-auto w-full">
+<div class="flex items-center gap-xl">
+<a class="font-headline-md text-headline-md font-bold text-primary" href="#">Adoptia</a>
+<nav class="hidden md:flex gap-lg items-center">
+<a class="text-on-surface-variant font-label-md hover:text-primary transition-colors" href="#">Adoptar</a>
+<a class="text-on-surface-variant font-label-md hover:text-primary transition-colors" href="#">Protectoras</a>
+<a class="text-on-surface-variant font-label-md hover:text-primary transition-colors" href="#">Sobre nosotros</a>
+<a class="text-primary border-b-2 border-primary font-bold pb-1" href="#">Perdidos</a>
+</nav>
+</div>
+<div class="flex gap-md items-center">
+<button class="hidden sm:block text-on-surface-variant font-label-md hover:text-primary px-md py-sm">Iniciar sesión</button>
+<button class="bg-primary text-on-primary px-lg py-sm rounded-xl font-label-md hover:bg-primary/90 transition-all active:scale-95">Registrarse</button>
+<button class="md:hidden p-sm text-on-surface-variant">
+<span class="material-symbols-outlined">menu</span>
+</button>
+</div>
+</div>
+</header>
+<main class="flex-grow">
+<!-- Breadcrumbs & Hero -->
+<section class="max-w-container-max mx-auto px-lg py-xl">
+<nav class="flex items-center gap-xs text-on-surface-variant font-label-sm mb-lg">
+<a class="hover:text-primary" href="#">Inicio</a>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<span class="text-primary font-bold">Perdidos y encontrados</span>
+</nav>
+<div class="flex flex-col md:flex-row justify-between items-end gap-lg mb-xl">
+<div class="max-w-2xl">
+<h1 class="font-headline-xl text-headline-xl text-primary mb-md">Animales Perdidos y Encontrados</h1>
+<p class="text-body-lg text-on-surface-variant">Cada aviso es una oportunidad para reunir a una familia. Únete a nuestra comunidad activa para ayudar a que todos los peludos vuelvan a casa sanos y salvos.</p>
+</div>
+<button class="bg-primary text-on-primary flex items-center gap-sm px-xl py-md rounded-xl font-label-md hover:bg-primary/90 transition-all active:scale-95 h-[56px] shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined">add_circle</span>
+                    Publicar aviso
+                </button>
+</div>
+<!-- Filters -->
+<div class="flex flex-wrap gap-sm mb-lg">
+<button class="px-lg py-sm bg-primary text-on-primary rounded-full font-label-md transition-all">Todos</button>
+<button class="px-lg py-sm bg-surface-container-high text-on-surface-variant rounded-full font-label-md hover:bg-surface-container-highest transition-all">Perdidos</button>
+<button class="px-lg py-sm bg-surface-container-high text-on-surface-variant rounded-full font-label-md hover:bg-surface-container-highest transition-all">Encontrados</button>
+</div>
+<!-- Map View -->
+<div class="relative w-full h-[400px] rounded-xl overflow-hidden ambient-card-shadow mb-xxl border border-outline-variant/30">
+<div class="absolute inset-0 z-0 map-container" data-location="Spain" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuABco0aL1M0H9--TFrqCejCBrSTaTavWX5r_BpcxWq8FoJ_ooQvDy0pLZBN2nETFiNqm9xWu_0ipmiBmcOPNkc_lxUrwnkaFvUNEjoxDYpqs3IbVd45ocRhnPHsCcpuq15C29Zzlrykr8lsVTtrk7CxGATC_6Tr4D6Q8knTj-fycPFbFslI6FO9XXE5is--1CtMwdJ14Eop-km2haq6OgziTYIP8luV-XqyQW4MNP3MbcDFmjU1u5W5dEsJ6n8glLgRQNdOXD0EZCEC')">
+</div>
+<!-- Map UI Overlays -->
+<div class="absolute top-md right-md flex flex-col gap-sm z-10">
+<button class="bg-surface p-sm rounded-lg shadow-md hover:bg-surface-container transition-all">
+<span class="material-symbols-outlined">add</span>
+</button>
+<button class="bg-surface p-sm rounded-lg shadow-md hover:bg-surface-container transition-all">
+<span class="material-symbols-outlined">remove</span>
+</button>
+</div>
+<div class="absolute bottom-md left-md bg-surface/90 backdrop-blur-sm px-md py-sm rounded-lg text-label-sm text-on-surface-variant z-10 border border-outline-variant/20">
+                    Por privacidad, la ubicación es aproximada (unos 200m).
+                </div>
+<!-- Interactive Markers (Simulated) -->
+<div class="absolute top-1/2 left-1/3 z-10 cursor-pointer group">
+<div class="bg-primary text-on-primary p-xs rounded-full shadow-lg transform transition-transform group-hover:scale-110">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">location_on</span>
+</div>
+</div>
+<div class="absolute top-[40%] right-1/4 z-10 cursor-pointer group">
+<div class="bg-secondary text-on-secondary p-xs rounded-full shadow-lg transform transition-transform group-hover:scale-110">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">location_on</span>
+</div>
+</div>
+</div>
+<!-- Grid Layout -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-lg">
+<!-- Card 1 (Perdido) -->
+<div class="bg-surface-container-low rounded-xl overflow-hidden ambient-card-shadow hover:-translate-y-1 transition-all duration-300 flex flex-col">
+<div class="aspect-square w-full relative">
+<img class="object-cover w-full h-full" data-alt="A warm, high-quality photograph of a golden retriever puppy looking sad but hopeful, captured in soft natural evening light. The dog is the main subject against a slightly blurred residential street background, following a modern lifestyle aesthetic with earthy tones and soft shadows." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCDQznMj8AX0f4739mBdPQ6imykCE84BgnS1puBPB8pluI66nG2iTJpPhPH_oDGzMGuAJ5CTjMaJGGrkrP_fab2inkmjcdMABk3Xjw1SsXNiipJoNWvIcwp9WPLdR3ZlFWIiHgV56IIOts93ZKiPQzHuYu2eddgsP3VuS5hAdE4DSzkw7BKzikJwEjziNxk03f1kDH_-JyTd1BV94I-hLxG1be4XZczQe1wHF2FsDgXc7ErMONgkYHAXkWj5D2govX5zio_DA_ZGtzn"/>
+<span class="absolute top-md left-md bg-primary text-on-primary px-md py-xs rounded-full text-label-sm font-bold shadow-sm">Perdido</span>
+</div>
+<div class="p-lg flex flex-col gap-sm">
+<h3 class="font-headline-md text-on-surface">Lupi</h3>
+<div class="flex items-center gap-sm text-on-surface-variant text-body-md">
+<span class="material-symbols-outlined text-[18px]">location_on</span>
+                            Madrid
+                        </div>
+<p class="text-label-sm text-on-surface-variant/70 mt-xs">Publicado el 13 de julio</p>
+</div>
+</div>
+<!-- Card 2 (Encontrado) -->
+<div class="bg-surface-container-low rounded-xl overflow-hidden ambient-card-shadow hover:-translate-y-1 transition-all duration-300 flex flex-col">
+<div class="aspect-square w-full relative">
+<img class="object-cover w-full h-full" data-alt="A clear, professional studio-style portrait of a black and white tuxedo cat sitting calmly on a sand-colored surface. The lighting is soft and ambient, emphasizing the cat's bright green eyes. The background is a minimalist, warm-toned neutral, creating a clean and supportive atmosphere for a found pet notice." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA_xC6NJoHQ5-S275iDG-tn8I_ZydMiGLaoKfoN2rGbK5ATo_rGfSSlSPFvX6pQFZiuH1GPMtbYWZKEAJwUHmwDo6uHUIYOskTHw36Yjnzc8EveSOXazFwgAckNVpx2tXHWEBkbr0uFgbVrweWlIr8DJZpAdlb-NSFbsO8Gk0e6yJv0cMb0IRpxzogrsOK4hUyLRq3Yh0XGSr_P5-iwY750a24i6Do1m81ygiQwuLujAwu40eXqbT3qMVI93bCX3kPzv1yj7P77wzjD"/>
+<span class="absolute top-md left-md bg-secondary text-on-secondary px-md py-xs rounded-full text-label-sm font-bold shadow-sm">Encontrado</span>
+</div>
+<div class="p-lg flex flex-col gap-sm">
+<h3 class="font-headline-md text-on-surface">Milo</h3>
+<div class="flex items-center gap-sm text-on-surface-variant text-body-md">
+<span class="material-symbols-outlined text-[18px]">location_on</span>
+                            Barcelona
+                        </div>
+<p class="text-label-sm text-on-surface-variant/70 mt-xs">Publicado el 10 de julio</p>
+</div>
+</div>
+<!-- Card 3 (Perdido) -->
+<div class="bg-surface-container-low rounded-xl overflow-hidden ambient-card-shadow hover:-translate-y-1 transition-all duration-300 flex flex-col">
+<div class="aspect-square w-full relative">
+<img class="object-cover w-full h-full" data-alt="A soulful close-up photo of a grey tabby kitten with wide blue eyes, peeking out from behind a soft beige blanket. The image uses shallow depth of field and warm, natural sunlight to create an emotional connection. The style is minimalist and home-focused, aligning with the compassionate Adoptia brand identity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAEYEqQLRurLu70Z7Bi4v4vqAnKmArnLaDPmYedHdrOmxZ9GnCykIZ2gRLj-ccpMTiKIX1YfhkQTuD_CQiGDJCg9kwPApJxFYaGu_4vvhNHSuTcqG8A8cna4GJ9gq3w9-j1ih5eFiM3eVKMG2GoPVyUYaPcSNIVcUdlpzBGr9AQROSECwLLSHDGpn_IgsAB67HNbDhItCsdVUz8ZVzPHx_C0dzFkNc10xmf7iQzjWYLGOCq8UmLTkS8yTNwxFMFUASZjfpVeIvnwOCg"/>
+<span class="absolute top-md left-md bg-primary text-on-primary px-md py-xs rounded-full text-label-sm font-bold shadow-sm">Perdido</span>
+</div>
+<div class="p-lg flex flex-col gap-sm">
+<h3 class="font-headline-md text-on-surface">Pelusa</h3>
+<div class="flex items-center gap-sm text-on-surface-variant text-body-md">
+<span class="material-symbols-outlined text-[18px]">location_on</span>
+                            Valencia
+                        </div>
+<p class="text-label-sm text-on-surface-variant/70 mt-xs">Publicado el 08 de julio</p>
+</div>
+</div>
+<!-- Card 4 (Encontrado) -->
+<div class="bg-surface-container-low rounded-xl overflow-hidden ambient-card-shadow hover:-translate-y-1 transition-all duration-300 flex flex-col">
+<div class="aspect-square w-full relative">
+<img class="object-cover w-full h-full" data-alt="A portrait of a small brown terrier mix dog wearing a red collar, sitting patiently on a park bench during golden hour. The sunlight creates a warm halo effect around the dog. The photography is sharp and cinematic, maintaining a soft, earthy color palette of terracotta and sage tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuADqeiEkIgF6jxcrZOMoMpnoTSZGdmWVQlIsE3KplzMTGybhejXHIi89Zy6lY12VXhrVOZIxD-sJYeoS0vXCaYRLluBn3lEWmYMbQcbpg4buLEl2iQAVx29R1PhV1mzY2t_kGUBDpTwUX0jAfWezEO8JefjWtZ57Lprs7gnfx0X2HqJ3YMnNnNTdpJKdUBJDwhuAiKn32dBkNgH7oWUGSJnm-iUz9YmZLRhF4O2_YsgIaiuQh3irM-JEvY7WYG8fKrdPe_pC3QbpAhs"/>
+<span class="absolute top-md left-md bg-secondary text-on-secondary px-md py-xs rounded-full text-label-sm font-bold shadow-sm">Encontrado</span>
+</div>
+<div class="p-lg flex flex-col gap-sm">
+<h3 class="font-headline-md text-on-surface">Buddy</h3>
+<div class="flex items-center gap-sm text-on-surface-variant text-body-md">
+<span class="material-symbols-outlined text-[18px]">location_on</span>
+                            Sevilla
+                        </div>
+<p class="text-label-sm text-on-surface-variant/70 mt-xs">Publicado el 05 de julio</p>
+</div>
+</div>
+</div>
+<!-- Pagination/Load More -->
+<div class="flex justify-center mt-xxl mb-xl">
+<button class="bg-surface border-2 border-primary/20 text-primary px-xl py-md rounded-xl font-label-md hover:bg-primary/5 transition-all">Ver más avisos</button>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-high mt-xxl">
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center px-lg py-xl max-w-container-max mx-auto w-full gap-lg">
+<div class="flex flex-col gap-sm">
+<span class="font-headline-md text-headline-md font-bold text-primary">Adoptia</span>
+<p class="text-on-surface-variant text-label-sm">© 2024 Adoptia. Naciendo de la conexión.</p>
+</div>
+<nav class="flex flex-wrap gap-lg">
+<a class="text-on-surface-variant font-label-sm hover:text-primary hover:underline decoration-primary underline-offset-4 transition-all" href="#">Privacidad</a>
+<a class="text-on-surface-variant font-label-sm hover:text-primary hover:underline decoration-primary underline-offset-4 transition-all" href="#">Términos y condiciones</a>
+<a class="text-on-surface-variant font-label-sm hover:text-primary hover:underline decoration-primary underline-offset-4 transition-all" href="#">Contacto</a>
+<a class="text-primary font-bold font-label-sm hover:underline decoration-primary underline-offset-4 transition-all" href="#">Donar</a>
+</nav>
+</div>
+</footer>
+<script>
+        // Simple micro-interaction for active filter states
+        const filterButtons = document.querySelectorAll('.flex.gap-sm.mb-lg button');
+        filterButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterButtons.forEach(b => {
+                    b.classList.remove('bg-primary', 'text-on-primary');
+                    b.classList.add('bg-surface-container-high', 'text-on-surface-variant');
+                });
+                btn.classList.add('bg-primary', 'text-on-primary');
+                btn.classList.remove('bg-surface-container-high', 'text-on-surface-variant');
+            });
+        });
+    </script>
+</body></html>

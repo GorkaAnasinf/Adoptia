@@ -991,8 +991,8 @@
     "soloPublicados": "Solo disponible para fichas publicadas"
   },
   "perdidos": {
-    "title": "Perdidos y encontrados",
-    "subtitle": "Avisos de la comunidad: animales perdidos y animales encontrados, sobre el mapa.",
+    "title": "Animales perdidos y encontrados",
+    "subtitle": "Cada aviso es una oportunidad para reunir a una familia. Únete a la comunidad para ayudar a que todos los peludos vuelvan a casa sanos y salvos.",
     "publicar": "Publicar aviso",
     "filtroTodos": "Todos",
     "filtroLost": "Perdidos",
@@ -1141,8 +1141,9 @@
     "vacioFiltros": "Ningún aviso encaja con estos filtros. Prueba a quitar alguno.",
     "masFiltros": "Más filtros",
     "recientesTitulo": "Avisos recientes",
-    "verTodosAvisos": "Ver todos",
-    "verDetalles": "Ver detalles",
+    "verTodosAvisos": "Ver más avisos",
+    "perdidoEl": "Perdido el {fecha}",
+    "contadorAvisos": "{count, plural, =0 {Ningún aviso} one {# aviso} other {# avisos}}",
     "breadcrumbLabel": "Estás en",
     "breadcrumbInicio": "Inicio",
     "compartir": "Compartir aviso",

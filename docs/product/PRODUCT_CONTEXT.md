@@ -117,5 +117,6 @@ _Nada en desarrollo en este momento._
 
 #### 🗓️ Previsto
 
+- Rediseño de Perdidos y encontrados según wireframe Stitch (tanda, pantalla 5) — hito 0.5 ([FEATURE-038](../planning/items/FEATURE-038.md))
 - Historias felices — social proof de adopciones en la home — hito sin asignar ([FEATURE-035](../planning/items/FEATURE-035.md))
 <!-- RENDER:END -->

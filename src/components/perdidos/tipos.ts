@@ -34,6 +34,16 @@ export type DatosIdentificativos = {
   occurred_on: string;
 };
 
+/**
+ * Color por tipo de aviso, compartido por badge y marcador del mapa
+ * (FEATURE-038): granate = perdido, teal = encontrado — roles del design
+ * system en lugar del rojo/verde genérico de FEATURE-012.
+ */
+export const COLOR_AVISO: Record<AvisoMapa["type"], string> = {
+  lost: "#9f402d",
+  found: "#396662",
+};
+
 export type AvisoMapa = DatosIdentificativos & {
   id: string;
   type: "lost" | "found";

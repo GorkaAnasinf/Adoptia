@@ -1,10 +1,13 @@
 "use client";
 
+import { MapPin } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { useFormatter, useTranslations } from "next-intl";
 import { esImagenValida } from "@/lib/animal-search";
+import { Reveal } from "@/components/ui/Reveal";
+import { cn } from "@/lib/utils";
 import { MapaAvisos } from "./MapaAvisos";
 import type { AvisoMapa, Especie, Tamano } from "./tipos";
 
@@ -13,7 +16,7 @@ type FiltroEspecie = "all" | Especie;
 type FiltroTamano = "all" | Tamano;
 type FiltroFecha = "all" | "7" | "30";
 
-/** Tarjetas visibles antes de pulsar «Ver todos» (FEATURE-025). */
+/** Tarjetas visibles antes de pulsar «Ver más avisos» (FEATURE-025). */
 const RECIENTES = 8;
 
 /**
@@ -32,7 +35,7 @@ export function PerdidosView({ avisos }: { avisos: AvisoMapa[] }) {
   const [tamano, setTamano] = useState<FiltroTamano>("all");
   const [fecha, setFecha] = useState<FiltroFecha>("all");
   // FEATURE-025: los selects viven tras «Más filtros» (colapsados por defecto)
-  // y la lista enseña los 8 más recientes hasta pulsar «Ver todos».
+  // y la lista enseña los 8 más recientes hasta pulsar «Ver más avisos».
   const [filtrosAbiertos, setFiltrosAbiertos] = useState(false);
   const [verTodos, setVerTodos] = useState(false);
 
@@ -65,37 +68,46 @@ export function PerdidosView({ avisos }: { avisos: AvisoMapa[] }) {
 
   return (
     <div className="flex flex-col gap-6">
-      <div className="flex flex-wrap items-center justify-between gap-2">
-        <div className="flex flex-wrap gap-2" role="group" aria-label={t("title")}>
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div className="flex flex-wrap items-center gap-2" role="group" aria-label={t("title")}>
           {chips.map(({ key, etiqueta }) => (
             <button
               key={key}
               type="button"
               aria-pressed={filtro === key}
               onClick={() => setFiltro(key)}
-              className={`rounded-full border px-4 py-1.5 text-sm font-medium ${
+              className={cn(
+                "min-h-9 rounded-full px-4 py-1.5 text-sm transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary motion-safe:active:scale-95",
                 filtro === key
-                  ? "border-primary bg-primary text-primary-foreground"
-                  : "border-border bg-card hover:border-primary/50"
-              }`}
+                  ? "bg-primary font-semibold text-primary-foreground"
+                  : "bg-surface-container-high text-foreground hover:bg-surface-container-highest",
+              )}
             >
               {etiqueta}
             </button>
           ))}
+          {/* Sin esto, un lector de pantalla no se entera de que filtrar cambió
+              la lista (detalle añadido en FEATURE-038). */}
+          <p aria-live="polite" className="ml-1 text-sm font-medium text-primary">
+            {t("contadorAvisos", { count: visibles.length })}
+          </p>
         </div>
         <button
           type="button"
           aria-expanded={filtrosAbiertos}
           aria-controls="perdidos-mas-filtros"
           onClick={() => setFiltrosAbiertos((v) => !v)}
-          className="rounded-full border border-border bg-card px-4 py-1.5 text-sm font-medium hover:border-primary/50"
+          className="min-h-9 rounded-full bg-surface-container-high px-4 py-1.5 text-sm text-foreground transition hover:bg-surface-container-highest focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary motion-safe:active:scale-95"
         >
           {t("masFiltros")}
         </button>
       </div>
 
       {filtrosAbiertos && (
-        <div id="perdidos-mas-filtros" className="flex flex-wrap gap-4">
+        <div
+          id="perdidos-mas-filtros"
+          className="flex flex-wrap gap-4 rounded-3xl bg-surface-container-low p-4 shadow-soft"
+        >
           <div className="flex flex-col gap-1">
             <label className="text-xs font-medium text-muted-foreground" htmlFor="filtro-especie">
               {t("filtroEspecie")}
@@ -148,13 +160,18 @@ export function PerdidosView({ avisos }: { avisos: AvisoMapa[] }) {
         </div>
       )}
 
-      <div className="h-[420px]">
+      <div className="relative h-[400px] overflow-hidden rounded-3xl shadow-soft">
         <MapaAvisos avisos={visibles} />
+        {/* Overlay del wireframe: la nota RGPD vive dentro del mapa, siempre
+            legible y sin bloquear la interacción (z sobre los panes de
+            Leaflet). */}
+        <p className="pointer-events-none absolute bottom-3 left-3 z-[1000] rounded-lg bg-background/90 px-3 py-1.5 text-xs text-muted-foreground backdrop-blur-sm">
+          {t("avisoPrivacidad")}
+        </p>
       </div>
-      <p className="text-xs text-muted-foreground">{t("avisoPrivacidad")}</p>
 
       {visibles.length === 0 ? (
-        <p className="rounded-2xl border border-border bg-card px-6 py-10 text-center text-muted-foreground">
+        <p className="rounded-3xl bg-surface-container-low px-6 py-10 text-center text-muted-foreground shadow-soft">
           {/* No es lo mismo «no hay avisos» (ojalá) que «tus filtros no dejan
               ver ninguno» (quita alguno). */}
           {hayFiltros && avisos.length > 0 ? t("vacioFiltros") : t("vacio")}
@@ -163,64 +180,69 @@ export function PerdidosView({ avisos }: { avisos: AvisoMapa[] }) {
         <section aria-label={t("recientesTitulo")} className="flex flex-col gap-4">
           <h2 className="font-heading text-2xl font-bold">{t("recientesTitulo")}</h2>
           <ul className="grid grid-cols-2 gap-4 lg:grid-cols-4">
-            {tarjetas.map((a) => {
+            {tarjetas.map((a, i) => {
               const titulo = a.name ?? t(a.type === "lost" ? "tipoLost" : "tipoFound");
               return (
                 <li
                   key={a.id}
-                  className="flex flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-sm"
+                  className="group relative flex flex-col overflow-hidden rounded-2xl bg-surface-container-lowest shadow-soft transition focus-within:ring-2 focus-within:ring-primary hover:shadow-soft-lg motion-safe:hover:-translate-y-1"
                 >
-                  <div className="relative aspect-4/3 bg-muted">
-                    {esImagenValida(a.cover_url) ? (
-                      <Image
-                        src={a.cover_url!}
-                        alt=""
-                        fill
-                        sizes="(max-width: 1024px) 50vw, 25vw"
-                        className="object-cover"
-                      />
-                    ) : (
-                      <span aria-hidden className="flex h-full items-center justify-center text-4xl">
-                        🐾
+                  <Reveal delayMs={(i % 4) * 60} className="flex h-full flex-col">
+                    <div className="relative aspect-square bg-muted">
+                      {esImagenValida(a.cover_url) ? (
+                        <Image
+                          src={a.cover_url!}
+                          alt=""
+                          fill
+                          sizes="(max-width: 1024px) 50vw, 25vw"
+                          className="object-cover"
+                        />
+                      ) : (
+                        <span aria-hidden className="flex h-full items-center justify-center text-4xl">
+                          🐾
+                        </span>
+                      )}
+                      <span
+                        className={cn(
+                          "absolute left-3 top-3 rounded-full px-3 py-1 text-xs font-semibold shadow-sm",
+                          a.type === "lost"
+                            ? "bg-primary text-primary-foreground"
+                            : "bg-secondary text-secondary-foreground",
+                        )}
+                      >
+                        {t(a.type === "lost" ? "tipoLost" : "tipoFound")}
                       </span>
-                    )}
-                    <span
-                      className={`absolute left-2 top-2 rounded-full px-2.5 py-0.5 text-xs font-semibold uppercase ${
-                        a.type === "lost" ? "bg-rose-100 text-rose-800" : "bg-emerald-100 text-emerald-800"
-                      }`}
-                    >
-                      {t(a.type === "lost" ? "tipoLost" : "tipoFound")}
-                    </span>
-                  </div>
-                  <div className="flex flex-1 flex-col gap-1 p-4">
-                    <div className="flex flex-wrap items-baseline justify-between gap-x-2">
+                    </div>
+                    <div className="flex flex-1 flex-col gap-1 p-4">
+                      {/* Enlace extendido: toda la tarjeta lleva a la ficha sin
+                          duplicar enlaces para el lector de pantalla. */}
                       <Link
                         href={`/perdidos-encontrados/${a.id}`}
-                        className="font-heading text-lg font-semibold hover:underline"
+                        className="font-heading text-lg font-semibold after:absolute after:inset-0 focus-visible:outline-none group-hover:text-primary"
                       >
                         {titulo}
                       </Link>
-                      <span className="text-xs text-muted-foreground">
-                        {format.relativeTime(new Date(a.occurred_on))}
-                      </span>
+                      {a.city && (
+                        <p className="flex items-center gap-1.5 text-sm text-muted-foreground">
+                          <MapPin aria-hidden className="h-4 w-4 shrink-0" />
+                          <span>{a.city}</span>
+                        </p>
+                      )}
+                      {(a.breed || a.color) && (
+                        <p className="truncate text-sm text-muted-foreground">
+                          {[a.breed, a.color].filter(Boolean).join(" · ")}
+                        </p>
+                      )}
+                      <p className="mt-auto pt-1 text-xs text-muted-foreground">
+                        {t(a.type === "lost" ? "perdidoEl" : "encontradoEl", {
+                          fecha: format.dateTime(new Date(a.occurred_on), {
+                            day: "numeric",
+                            month: "long",
+                          }),
+                        })}
+                      </p>
                     </div>
-                    {a.city && (
-                      <p className="text-sm text-muted-foreground">
-                        <span aria-hidden>📍</span> <span>{a.city}</span>
-                      </p>
-                    )}
-                    {(a.breed || a.color) && (
-                      <p className="truncate text-sm text-muted-foreground">
-                        {[a.breed, a.color].filter(Boolean).join(" · ")}
-                      </p>
-                    )}
-                    <Link
-                      href={`/perdidos-encontrados/${a.id}`}
-                      className="mt-auto rounded-full border border-border px-4 py-2.5 text-center text-sm font-medium hover:border-primary/50"
-                    >
-                      {t("verDetalles")}
-                    </Link>
-                  </div>
+                  </Reveal>
                 </li>
               );
             })}
@@ -229,7 +251,7 @@ export function PerdidosView({ avisos }: { avisos: AvisoMapa[] }) {
             <button
               type="button"
               onClick={() => setVerTodos(true)}
-              className="self-center rounded-full border border-border bg-card px-6 py-2.5 text-sm font-medium hover:border-primary/50"
+              className="self-center rounded-full border-2 border-primary/30 px-6 py-2.5 text-sm font-semibold text-primary transition hover:bg-primary/5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary motion-safe:active:scale-95"
             >
               {t("verTodosAvisos")}
             </button>
