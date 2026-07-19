@@ -1,8 +1,10 @@
 "use client";
 
+import { ArrowRight, MapPin, PawPrint } from "lucide-react";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
+import { formatDistancia } from "./popup";
 
 export interface ShelterMapResult {
   id: string;
@@ -13,11 +15,6 @@ export interface ShelterMapResult {
   animal_count: number;
   lat: number;
   lng: number;
-}
-
-function formatDistancia(m: number | null): string | null {
-  if (m === null) return null;
-  return m < 1000 ? `${Math.round(m)} m` : `${(m / 1000).toFixed(1)} km`;
 }
 
 export function ListaProtectoras({
@@ -48,22 +45,28 @@ export function ListaProtectoras({
               onMouseLeave={() => onHover?.(null)}
               aria-pressed={selectedId === s.id}
               className={cn(
-                "w-full rounded-2xl border bg-white p-4 text-left shadow-sm transition hover:border-primary hover:ring-1 hover:ring-primary",
-                selectedId === s.id || hoveredId === s.id ? "border-primary ring-1 ring-primary" : "border-black/5",
+                "w-full rounded-2xl bg-surface-container-lowest p-4 text-left shadow-soft transition hover:ring-2 hover:ring-primary/60 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary",
+                (selectedId === s.id || hoveredId === s.id) && "ring-2 ring-primary",
               )}
             >
-              <p className="font-heading font-semibold text-foreground">{s.name}</p>
-              <p className="text-sm text-muted-foreground">
-                {s.city}
-                {distancia ? ` · ${distancia}` : ""}
+              <p className="font-heading font-semibold text-primary">{s.name}</p>
+              {(s.city || distancia) && (
+                <p className="mt-0.5 flex items-center gap-1.5 text-sm text-muted-foreground">
+                  <MapPin className="size-4 shrink-0" aria-hidden="true" />
+                  {[s.city, distancia].filter(Boolean).join(" · ")}
+                </p>
+              )}
+              <p className="mt-2 inline-flex items-center gap-1.5 rounded-full bg-tertiary/10 px-2.5 py-1 text-xs font-medium text-tertiary">
+                <PawPrint className="size-3.5" aria-hidden="true" />
+                {t("animales", { count: s.animal_count })}
               </p>
-              <p className="text-sm text-muted-foreground">{t("animales", { count: s.animal_count })}</p>
               <Link
                 href={`/protectoras/${s.slug}`}
                 onClick={(e) => e.stopPropagation()}
-                className="mt-2 inline-block text-sm font-medium text-primary underline-offset-4 hover:underline"
+                className="mt-2 flex items-center gap-1.5 text-sm font-semibold text-primary underline-offset-4 hover:underline"
               >
                 {t("verProtectora")}
+                <ArrowRight className="size-4" aria-hidden="true" />
               </Link>
             </button>
           </li>

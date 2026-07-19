@@ -468,6 +468,7 @@
   "mapa": {
     "title": "Protectoras cerca de ti",
     "subtitle": "Encuentra protectoras verificadas y descubre qué hay cerca de ti.",
+    "panelLabel": "Filtros y listado de protectoras",
     "filtros": "Filtros",
     "perros": "Perros",
     "gatos": "Gatos",

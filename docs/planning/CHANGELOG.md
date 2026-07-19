@@ -2,6 +2,12 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/es/) adaptado. Versionado 0.x hasta el MVP.
 
+## [0.0.74] — 2026-07-19
+
+### Cambiado
+
+- **El mapa de protectoras se viste con el diseño nuevo (IMPROVEMENT-028)**: cuarta pantalla de la tanda, esta sin wireframe — orden puro con el lenguaje ya asentado. El panel de filtros pasa a la superficie crema con los chips de la tanda (activo granate), «Usar mi ubicación» y el buscador de ciudad adoptan el patrón del resto de la web, y las tarjetas de la lista estrenan nombre en terracota, distancia con icono y chip de animales. La estrella: el **popup del mapa** deja de ser texto plano — ahora muestra nombre, ciudad **con distancia**, animales y un botón granate «Ver protectora», en un globo redondeado con la sombra de la marca. La mecánica del mapa (filtros, clusters, hoja inferior móvil) no se toca. QA: suite 1133/1133 con RLS, E2E del mapa verde.
+
 ## [0.0.73] — 2026-07-19
 
 ### Cambiado

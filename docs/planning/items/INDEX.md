@@ -77,3 +77,4 @@
 | [IMPROVEMENT-025](IMPROVEMENT-025.md) | Acogidas visibles en la navegación del usuario | improvement | hecho | 0.5 |
 | [IMPROVEMENT-026](IMPROVEMENT-026.md) | Sincronizar el estado del animal con su propuesta de acogida | improvement | hecho | 0.5 |
 | [IMPROVEMENT-027](IMPROVEMENT-027.md) | Vida y micro-interacciones en la web (cursor, count-up, reveal, header compacto, huellas) | improvement | hecho | 0.5 |
+| [IMPROVEMENT-028](IMPROVEMENT-028.md) | El mapa de protectoras se alinea con el lenguaje de la tanda (sin wireframe) | improvement | hecho | 0.5 |
