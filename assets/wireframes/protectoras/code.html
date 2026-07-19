@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Adoptia | Nuestras protectoras colaboradoras</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Open+Sans:wght@400;500;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100..900&family=Open+Sans:wght@100..900&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "outline-variant": "#ddc0ba",
+                    "on-primary": "#ffffff",
+                    "inverse-on-surface": "#f6f0e8",
+                    "tertiary-fixed": "#d1e8dd",
+                    "surface-tint": "#9f402d",
+                    "surface-container": "#f3ede5",
+                    "inverse-primary": "#ffb4a5",
+                    "on-tertiary": "#ffffff",
+                    "error": "#ba1a1a",
+                    "on-primary-fixed": "#3e0500",
+                    "tertiary-container": "#81978d",
+                    "tertiary": "#4e635a",
+                    "on-primary-container": "#5a0d02",
+                    "on-tertiary-fixed": "#0b1f18",
+                    "error-container": "#ffdad6",
+                    "tertiary-fixed-dim": "#b5ccc1",
+                    "on-surface": "#1d1b17",
+                    "secondary-fixed": "#bcece6",
+                    "on-tertiary-container": "#1b2f28",
+                    "primary-container": "#e2725b",
+                    "surface-variant": "#e7e2da",
+                    "surface": "#fef8f0",
+                    "secondary-container": "#bcece6",
+                    "on-secondary-fixed": "#00201e",
+                    "surface-dim": "#dfd9d2",
+                    "secondary-fixed-dim": "#a1cfca",
+                    "on-secondary": "#ffffff",
+                    "background": "#fef8f0",
+                    "outline": "#89726d",
+                    "surface-bright": "#fef8f0",
+                    "primary": "#9f402d",
+                    "on-error-container": "#93000a",
+                    "secondary": "#396662",
+                    "on-surface-variant": "#56423e",
+                    "surface-container-highest": "#e7e2da",
+                    "on-secondary-fixed-variant": "#204e4a",
+                    "on-primary-fixed-variant": "#802918",
+                    "on-error": "#ffffff",
+                    "on-tertiary-fixed-variant": "#374b43",
+                    "inverse-surface": "#32302b",
+                    "primary-fixed": "#ffdad3",
+                    "surface-container-low": "#f9f3eb",
+                    "primary-fixed-dim": "#ffb4a5",
+                    "on-secondary-container": "#3f6c68",
+                    "surface-container-high": "#ede7e0",
+                    "on-background": "#1d1b17",
+                    "surface-container-lowest": "#ffffff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "md": "16px",
+                    "margin-mobile": "16px",
+                    "unit": "4px",
+                    "xs": "4px",
+                    "xl": "32px",
+                    "container-max": "1200px",
+                    "gutter": "20px",
+                    "xxl": "48px",
+                    "sm": "8px",
+                    "lg": "24px"
+            },
+            "fontFamily": {
+                    "label-md": ["Open Sans"],
+                    "label-sm": ["Open Sans"],
+                    "headline-xl": ["Montserrat"],
+                    "headline-lg": ["Montserrat"],
+                    "body-lg": ["Open Sans"],
+                    "headline-md": ["Montserrat"],
+                    "headline-lg-mobile": ["Montserrat"],
+                    "body-md": ["Open Sans"]
+            },
+            "fontSize": {
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                    "headline-xl": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .soft-shadow {
+            box-shadow: 0 4px 12px rgba(226, 114, 91, 0.08);
+        }
+        .glass-nav {
+            background: rgba(254, 248, 240, 0.8);
+            backdrop-filter: blur(12px);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md selection:bg-primary/20">
+<!-- Top Navigation Bar -->
+<header class="fixed top-0 w-full z-50 glass-nav shadow-sm shadow-primary/5">
+<div class="flex justify-between items-center px-lg py-md max-w-container-max mx-auto">
+<div class="font-headline-md text-headline-md font-bold text-primary flex items-center gap-2">
+<span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">pets</span>
+                Adoptia
+            </div>
+<nav class="hidden md:flex items-center gap-xl">
+<a class="text-on-surface-variant font-label-md hover:text-primary transition-colors duration-200" href="#">Find Pets</a>
+<a class="text-primary font-bold border-b-2 border-primary pb-1 font-label-md" href="#">Shelters</a>
+<a class="text-on-surface-variant font-label-md hover:text-primary transition-colors duration-200" href="#">Success Stories</a>
+<a class="text-on-surface-variant font-label-md hover:text-primary transition-colors duration-200" href="#">About Us</a>
+</nav>
+<div class="flex items-center gap-md">
+<button class="text-primary font-label-md px-md py-sm hover:bg-primary/5 rounded-xl transition-all">Log In</button>
+<button class="bg-primary text-on-primary font-label-md px-lg py-sm rounded-xl hover:opacity-90 active:scale-95 transition-all">Adoptar</button>
+</div>
+</div>
+</header>
+<main class="pt-xxl pb-xxl px-margin-mobile md:px-lg max-w-container-max mx-auto">
+<!-- Hero Section -->
+<section class="mt-xl mb-xxl text-center max-w-3xl mx-auto">
+<h1 class="font-headline-xl text-headline-xl text-on-surface mb-md">Nuestras protectoras colaboradoras</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant">
+                Encuentra refugios y protectoras cerca de ti que cuidan de animales esperando un hogar.
+            </p>
+</section>
+<!-- Search & Filter Bar -->
+<section class="mb-xl">
+<div class="flex flex-col lg:flex-row gap-lg items-center justify-between">
+<!-- Search Box -->
+<div class="relative w-full lg:max-w-xl group">
+<span class="material-symbols-outlined absolute left-md top-1/2 -translate-y-1/2 text-outline group-focus-within:text-primary transition-colors">search</span>
+<input class="w-full pl-xl pr-md py-md bg-surface-container-low border-none rounded-xl focus:ring-2 focus:ring-tertiary transition-all placeholder:text-outline-variant" placeholder="Buscar protectora por nombre, ciudad o provincia..." type="text"/>
+</div>
+<!-- Map Button & View Options -->
+<div class="flex gap-md w-full lg:w-auto">
+<button class="flex-1 lg:flex-none flex items-center justify-center gap-2 bg-secondary text-on-secondary px-lg py-md rounded-xl font-label-md hover:opacity-90 active:scale-95 transition-all shadow-lg shadow-secondary/20">
+<span class="material-symbols-outlined">map</span>
+                        Ver mapa
+                    </button>
+<button class="flex items-center justify-center bg-surface-container-high text-on-surface px-md py-md rounded-xl hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined">tune</span>
+</button>
+</div>
+</div>
+<!-- Filter Chips -->
+<div class="flex flex-wrap gap-sm mt-lg overflow-x-auto pb-2 no-scrollbar">
+<button class="px-lg py-sm rounded-full bg-primary text-on-primary font-label-md whitespace-nowrap">Todas</button>
+<button class="px-lg py-sm rounded-full bg-surface-container-high text-on-surface-variant hover:bg-primary-fixed transition-colors font-label-md whitespace-nowrap">Con animales en adopción</button>
+<button class="px-lg py-sm rounded-full bg-surface-container-high text-on-surface-variant hover:bg-primary-fixed transition-colors font-label-md whitespace-nowrap">Aceptan voluntarios</button>
+<button class="px-lg py-sm rounded-full bg-surface-container-high text-on-surface-variant hover:bg-primary-fixed transition-colors font-label-md whitespace-nowrap">Centros de acogida</button>
+</div>
+</section>
+<!-- Shelter Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-xl">
+<!-- Shelter Card 1 -->
+<article class="bg-surface-container-lowest rounded-xl overflow-hidden soft-shadow group hover:-translate-y-1 transition-all duration-300">
+<div class="relative h-48">
+<div class="w-full h-full bg-cover bg-center" data-alt="A professional, high-resolution photograph of a sunlit animal shelter courtyard with clean facilities and happy dogs playing. The lighting is warm and golden, reflecting a nurturing and caring environment. The overall aesthetic is clean, minimalist, and welcoming, featuring earthy tones consistent with the Adoptia brand identity." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCa46j_7jn33pBnP-_KzajcBy9Vj5b3230CNN_-jplXTm09iIzr24mPCoARPpjhB1DeYjv93OVjEy8wvc7YbCsJo-qOQgN_9D11Y66CyZrEROfouJxnCh8oLSmclSpf9bCE9GAXwni8eeatFYfPdIsjwG-D7H4KLa3hZfHZlqMTKSn9I4_3fgqMQ2l87_puraplh3kRD5nD0CdxA_vMYqqSbiaPAMvEpjM0SPiL7U9eEqaopvr_QqXzkLxiwRxdshSpZ1M1rFGudVPA')"></div>
+<div class="absolute top-4 right-4 bg-secondary/90 backdrop-blur-md text-white px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">verified</span>
+                        Verificada
+                    </div>
+<!-- Avatar Overlay -->
+<div class="absolute -bottom-6 left-6 w-16 h-16 rounded-full border-4 border-surface-container-lowest overflow-hidden shadow-md">
+<img class="w-full h-full object-cover" data-alt="A minimalist logo for a pet shelter named Huellas de Esperanza, featuring a stylized paw print merged with a heart. The color palette uses soft terracotta and charcoal on a clean cream background, embodying a compassionate and modern design language." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA88QDAGKj8SwY4Fc_DwoNUZORn7q6qw0RzqXlgYw2FKIz7DFzejpQBNMvtDhL2Jl0e7M-1Zg_W9kcfNvRIOiBC5gKXos3ff_RPHBvgLjk5n25VIKE4-t6IWts7ASxmCfz7Dk7NhhLFeao-in_nRizG8GJdvxdTgLMppLF80cu-PTsG0nYrEPvED-NL-YfqJvhgaSGXBG9yD_oEXIysHBvODa9OW75Vc8rdO_zuwWNK0-eVYinlonfP3gqUx3jH5ePZEeSaFtpDdCma"/>
+</div>
+</div>
+<div class="pt-10 pb-lg px-lg">
+<div class="flex justify-between items-start mb-sm">
+<div>
+<h3 class="font-headline-md text-on-surface">Huellas de Esperanza</h3>
+<div class="flex items-center gap-1 text-on-surface-variant text-sm mt-1">
+<span class="material-symbols-outlined text-md">location_on</span>
+                                Bilbao, Vizcaya
+                            </div>
+</div>
+</div>
+<!-- Stats -->
+<div class="grid grid-cols-2 gap-md py-md border-y border-surface-container my-md">
+<div class="text-center border-r border-surface-container">
+<span class="block font-bold text-primary">42</span>
+<span class="text-xs text-on-surface-variant uppercase tracking-wider font-semibold">Animales</span>
+</div>
+<div class="text-center">
+<span class="block font-bold text-primary">150+</span>
+<span class="text-xs text-on-surface-variant uppercase tracking-wider font-semibold">Adopciones</span>
+</div>
+</div>
+<!-- Tags -->
+<div class="flex flex-wrap gap-xs mb-lg">
+<span class="bg-tertiary-fixed text-on-tertiary-container px-sm py-1 rounded-lg text-xs font-semibold">Voluntariado</span>
+<span class="bg-secondary-fixed text-on-secondary-container px-sm py-1 rounded-lg text-xs font-semibold">Acogida</span>
+<span class="bg-error-container text-on-error-container px-sm py-1 rounded-lg text-xs font-semibold">Urgente</span>
+</div>
+<button class="w-full bg-primary text-on-primary font-label-md py-md rounded-xl hover:opacity-90 transition-all flex items-center justify-center gap-2">
+                        Ver perfil
+                        <span class="material-symbols-outlined text-md">arrow_forward</span>
+</button>
+</div>
+</article>
+<!-- Shelter Card 2 -->
+<article class="bg-surface-container-lowest rounded-xl overflow-hidden soft-shadow group hover:-translate-y-1 transition-all duration-300">
+<div class="relative h-48">
+<div class="w-full h-full bg-cover bg-center" data-alt="A heartwarming close-up photo of a volunteer hugging a rescued golden retriever at a spacious, bright outdoor shelter. The background shows a modern, eco-friendly wooden structure. The light is soft and natural, emphasizing the deep emotional connection between humans and animals in a premium, homestyle digital environment." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuB2KcYLEFWjIgGu56uBp0QJH1JlAg-NPPSQUK7_F2ujEMDmEhqpzR3W6IYECKrkzzrJjzgQtLo9PFwzecohmHfD9fXdXMI_b-oK8QW51kGxOD0ycSZnsaDcv30K2XnVf3uipfq6z2KZs1LebMkv_5nKS30m3Oh7mCcwS1y-yxnDOSkc3dBq1JS2TE-3MhkdT53142mAhOKLQgYQiZRt2H9ms4HSba1nt4ErLVFScsG0CNVNec9gDW14HQbyZnTngrIoz5cvu9ao0ja5')"></div>
+<div class="absolute top-4 right-4 bg-secondary/90 backdrop-blur-md text-white px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">verified</span>
+                        Verificada
+                    </div>
+<div class="absolute -bottom-6 left-6 w-16 h-16 rounded-full border-4 border-surface-container-lowest overflow-hidden shadow-md">
+<img class="w-full h-full object-cover" data-alt="A clean and friendly circular logo for El Amigo Fiel shelter, depicting a dog and cat silhouette in profile. The design uses earthy charcoal and sage green tones on a soft sand-colored background, maintaining the modern minimalist aesthetic of the Adoptia brand." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCqWgQOLJRruKXrHyuABtXozUTTrG0LiTGG2lLPyAjA1b7mUrAhax1sYOeHxoPmMRDNEPv70DUU2ygvLfnv63daQQrnXg5O6VSaLvHn-sGuMTSmTz91zB_bnRrfsk-qjX_8YSt1XxH5UmwPF7j411xQWybuIl0DXasQ3Ipt-Y30ZXGkjbKdlrL5_DC0a5LZdWvbsBHEvM63soV0RVSRxz-jlFfHO7TmNw9GF5AyiQQRzvfB5v21bs0hZb-QB8uGCrUpdjl7MTx0h3Cz"/>
+</div>
+</div>
+<div class="pt-10 pb-lg px-lg">
+<div class="flex justify-between items-start mb-sm">
+<div>
+<h3 class="font-headline-md text-on-surface">Refugio El Amigo Fiel</h3>
+<div class="flex items-center gap-1 text-on-surface-variant text-sm mt-1">
+<span class="material-symbols-outlined text-md">location_on</span>
+                                Madrid, Comunidad de Madrid
+                            </div>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-md py-md border-y border-surface-container my-md">
+<div class="text-center border-r border-surface-container">
+<span class="block font-bold text-primary">28</span>
+<span class="text-xs text-on-surface-variant uppercase tracking-wider font-semibold">Animales</span>
+</div>
+<div class="text-center">
+<span class="block font-bold text-primary">312</span>
+<span class="text-xs text-on-surface-variant uppercase tracking-wider font-semibold">Adopciones</span>
+</div>
+</div>
+<div class="flex flex-wrap gap-xs mb-lg">
+<span class="bg-tertiary-fixed text-on-tertiary-container px-sm py-1 rounded-lg text-xs font-semibold">Voluntariado</span>
+<span class="bg-secondary-fixed text-on-secondary-container px-sm py-1 rounded-lg text-xs font-semibold">Acogida</span>
+</div>
+<button class="w-full bg-primary text-on-primary font-label-md py-md rounded-xl hover:opacity-90 transition-all flex items-center justify-center gap-2">
+                        Ver perfil
+                        <span class="material-symbols-outlined text-md">arrow_forward</span>
+</button>
+</div>
+</article>
+<!-- Shelter Card 3 -->
+<article class="bg-surface-container-lowest rounded-xl overflow-hidden soft-shadow group hover:-translate-y-1 transition-all duration-300">
+<div class="relative h-48">
+<div class="w-full h-full bg-cover bg-center" data-alt="An expansive view of a modern feline sanctuary with climbing structures and large glass windows overlooking a garden. Several cats are visible lounging in sunbeams. The scene is peaceful, clean, and filled with natural light, showcasing the high standard of care provided by the sanctuary within a warm, organic color palette." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAiRDFk8iAJdvc0x8M3GcdNXMSHYzXKISB73B_QByP6UmPFBbhDB1vZaq_iJsxuzDcAobM0hFrVV8Wq3NZovn-uv3QUmXW96tISqRemw0kb8W8JjfbpZpQT5lUZzUpArWN0KjH7dgTQkQ0q7T39-hQjHTCdLRxzEONcroOcxnqBkQnBfzE-ttKxuLWIpoDyN7OvmiLPt2nQeexpPqRf4INrmeNVZfFQlruX7M7Xe14iAvJu6CANWUktWi6eZQ60XPVjBW_rHKV7vlTN')"></div>
+<div class="absolute top-4 right-4 bg-secondary/90 backdrop-blur-md text-white px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">verified</span>
+                        Verificada
+                    </div>
+<div class="absolute -bottom-6 left-6 w-16 h-16 rounded-full border-4 border-surface-container-lowest overflow-hidden shadow-md">
+<img class="w-full h-full object-cover" data-alt="A sophisticated minimalist logo for Santuario Gatuno, featuring an elegant line art cat silhouette curled around a small leaf. The palette includes muted terracotta and cream, designed to evoke feelings of quiet joy and safety, aligning with the core mission of the Adoptia platform." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCs6XvAB3D1rpFZ74J-CdhPabq9-I8HRZP86E5qwGxVaFiBdQJqC7wmg2wjy9R9fuwHq8hd5r6Uy_lLiNkRgbU11E50E4k5dg88lYWFCTmpNKCnAKThbkbVVV0jqlYr6nZyaatdHa7p2PP7bVpSFe1z5J06m7bv6KLfxRRcziwl03H5qZtiwwoVbkSyKCSXsQqC1M-3DrS2xx9flpC83rwRgG2-1Pg_trNIYSKvB0ZSICVrRSYDtFiaaoRsrvju-nCm6TI_OW3C0w8A"/>
+</div>
+</div>
+<div class="pt-10 pb-lg px-lg">
+<div class="flex justify-between items-start mb-sm">
+<div>
+<h3 class="font-headline-md text-on-surface">Santuario Gatuno</h3>
+<div class="flex items-center gap-1 text-on-surface-variant text-sm mt-1">
+<span class="material-symbols-outlined text-md">location_on</span>
+                                Valencia, Valencia
+                            </div>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-md py-md border-y border-surface-container my-md">
+<div class="text-center border-r border-surface-container">
+<span class="block font-bold text-primary">56</span>
+<span class="text-xs text-on-surface-variant uppercase tracking-wider font-semibold">Animales</span>
+</div>
+<div class="text-center">
+<span class="block font-bold text-primary">89</span>
+<span class="text-xs text-on-surface-variant uppercase tracking-wider font-semibold">Adopciones</span>
+</div>
+</div>
+<div class="flex flex-wrap gap-xs mb-lg">
+<span class="bg-secondary-fixed text-on-secondary-container px-sm py-1 rounded-lg text-xs font-semibold">Acogida</span>
+<span class="bg-error-container text-on-error-container px-sm py-1 rounded-lg text-xs font-semibold">Urgente</span>
+</div>
+<button class="w-full bg-primary text-on-primary font-label-md py-md rounded-xl hover:opacity-90 transition-all flex items-center justify-center gap-2">
+                        Ver perfil
+                        <span class="material-symbols-outlined text-md">arrow_forward</span>
+</button>
+</div>
+</article>
+<!-- Additional Cards for Grid Rhythm -->
+<!-- ... Repeat structure with different data ... -->
+</div>
+<!-- Pagination -->
+<div class="mt-xxl flex justify-center items-center gap-md">
+<button class="w-10 h-10 rounded-full flex items-center justify-center border border-outline-variant text-outline hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined">chevron_left</span>
+</button>
+<span class="text-on-surface-variant font-label-md">Página 1 de 8</span>
+<button class="w-10 h-10 rounded-full flex items-center justify-center border border-outline-variant text-outline hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container dark:bg-surface-dim">
+<div class="flex flex-col md:flex-row justify-between items-center px-lg py-xl max-w-container-max mx-auto gap-md">
+<div class="flex flex-col gap-2">
+<div class="font-headline-md text-headline-md text-on-surface font-bold">Adoptia</div>
+<p class="text-on-surface-variant font-label-sm">© 2024 Adoptia. Nurturing Connection.</p>
+</div>
+<div class="flex gap-lg">
+<a class="text-on-surface-variant font-label-sm hover:text-secondary transition-colors" href="#">Privacy Policy</a>
+<a class="text-on-surface-variant font-label-sm hover:text-secondary transition-colors" href="#">Terms of Service</a>
+<a class="text-on-surface-variant font-label-sm hover:text-secondary transition-colors" href="#">Donar</a>
+<a class="text-on-surface-variant font-label-sm hover:text-secondary transition-colors" href="#">Volunteer</a>
+</div>
+</div>
+</footer>
+<!-- Interactive Search Bar Placeholder Script -->
+<script>
+        document.querySelector('input').addEventListener('focus', function() {
+            this.parentElement.classList.add('shadow-md');
+        });
+        document.querySelector('input').addEventListener('blur', function() {
+            this.parentElement.classList.remove('shadow-md');
+        });
+    </script>
+</body></html>

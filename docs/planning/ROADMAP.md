@@ -81,7 +81,7 @@ Para centrar el desarrollo en un lado de la app cada vez, el 0.2 se aborda en do
 | [FEATURE-015](items/FEATURE-015.md) | Contenido educativo sobre adopción responsable | hecho | baja |
 | [FEATURE-016](items/FEATURE-016.md) | Registro de casas de acogida | hecho | baja |
 
-### Hito 0.5 — 100% completado (33/33)
+### Hito 0.5 — 100% completado (34/34)
 
 | Item | Título | Estado | Prioridad |
 |------|--------|--------|-----------|
@@ -97,6 +97,7 @@ Para centrar el desarrollo en un lado de la app cada vez, el 0.2 se aborda en do
 | [FEATURE-028](items/FEATURE-028.md) | Rediseño del perfil público de protectora (mockup nuevo) | hecho | alta |
 | [FEATURE-034](items/FEATURE-034.md) | Rediseño de la home según wireframe Stitch (tanda de rediseño, pantalla 1) | hecho | alta |
 | [FEATURE-036](items/FEATURE-036.md) | Rediseño del listado de animales según wireframe Stitch (tanda, pantalla 2) | hecho | alta |
+| [FEATURE-037](items/FEATURE-037.md) | Rediseño del directorio de protectoras según wireframe Stitch (tanda, pantalla 3) | hecho | alta |
 | [IMPROVEMENT-016](items/IMPROVEMENT-016.md) | Redirección post-login según rol (protectora al panel, admin a admin) | hecho | alta |
 | [IMPROVEMENT-020](items/IMPROVEMENT-020.md) | Rediseño de la ficha pública de animal | hecho | alta |
 | [IMPROVEMENT-027](items/IMPROVEMENT-027.md) | Vida y micro-interacciones en la web (cursor, count-up, reveal, header compacto, huellas) | hecho | alta |
