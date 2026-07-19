@@ -2,7 +2,7 @@
 id: FEATURE-038
 tipo: feature
 titulo: Rediseño de Perdidos y encontrados según wireframe Stitch (tanda, pantalla 5)
-estado: desarrollo
+estado: hecho
 prioridad: alta
 hito: "0.5"
 duplicado_de: null
@@ -81,14 +81,24 @@ Pantalla comunitaria con más tráfico potencial de no-registrados. Instrucción
 
 ## Criterios de aceptación / Casuística a cubrir
 
-- [ ] Breadcrumbs reales + hero del mock (H1 terracota, subtítulo, CTA granate con icono `motion-safe:active:scale-95`).
-- [ ] Chips Todos/Perdidos/Encontrados tonales, activa granate rellena, `aria-pressed` intacto — tests existentes verdes.
-- [ ] «Más filtros» conservado y funcional (especie/tamaño/fecha combinables) en panel tonal — tests existentes verdes.
-- [ ] Mapa: mecánica intacta, marcadores granate/teal, overlay de privacidad legible dentro del mapa — tests.
-- [ ] Tarjetas: aspect-square, badge granate/teal, nombre Montserrat como enlace único (stretched-link, foco visible), ciudad con icono, raza·color conservado, fecha absoluta del suceso con etiqueta de tipo — tests.
-- [ ] 8 recientes + «Ver más avisos» outline granate; con ≤8 no aparece — test existente adaptado.
-- [ ] Vacíos diferenciados intactos (sin avisos / filtros sin resultados) — tests existentes verdes.
-- [ ] Contador «N avisos» con `aria-live="polite"` actualizado al filtrar — test.
-- [ ] Reveal escalonado `motion-safe`; grid 2 móvil / 4 desktop.
-- [ ] Cero literales — claves nuevas en `perdidos.*`.
-- [ ] QA: suite completa con RLS verde, E2E área pública verdes, lint y tsc limpios; capturas comparadas con `screen.png`.
+- [x] Breadcrumbs reales + hero del mock (H1 terracota, subtítulo, CTA granate con icono `motion-safe:active:scale-95`).
+- [x] Chips Todos/Perdidos/Encontrados tonales, activa granate rellena, `aria-pressed` intacto — tests existentes verdes.
+- [x] «Más filtros» conservado y funcional (especie/tamaño/fecha combinables) en panel tonal — tests existentes verdes.
+- [x] Mapa: mecánica intacta, marcadores granate/teal, overlay de privacidad legible dentro del mapa — tests.
+- [x] Tarjetas: aspect-square, badge granate/teal, nombre Montserrat como enlace único (stretched-link, foco visible), ciudad con icono, raza·color conservado, fecha absoluta del suceso con etiqueta de tipo — tests.
+- [x] 8 recientes + «Ver más avisos» outline granate; con ≤8 no aparece — test existente adaptado.
+- [x] Vacíos diferenciados intactos (sin avisos / filtros sin resultados) — tests existentes verdes.
+- [x] Contador «N avisos» con `aria-live="polite"` actualizado al filtrar — test.
+- [x] Reveal escalonado `motion-safe`; grid 2 móvil / 4 desktop.
+- [x] Cero literales — claves nuevas en `perdidos.*`.
+- [x] QA: suite completa con RLS verde, E2E área pública verdes, lint y tsc limpios; capturas comparadas con `screen.png`.
+
+## Cierre (2026-07-19)
+
+- Listado alineado al wireframe conservando toda la funcionalidad que el mock no dibuja: «Más filtros» (panel tonal), vacíos diferenciados, 8 recientes + «Ver más avisos», raza·color.
+- La fecha de tarjeta pasa a absoluta con la semántica de FEATURE-023 intacta: «Perdido/Encontrado el {fecha del suceso}» — el copy del mock («Publicado el») habría reintroducido aquel bug.
+- Badge y marcador del mapa comparten ahora `COLOR_AVISO` (granate/teal) — fuera el rojo/verde genérico de FEATURE-012, misma distinción con los roles del design system.
+- Detalle añadido no pedido por el mock: contador «N avisos» con `aria-live="polite"` junto a los chips.
+- Hallazgo colateral: el token `surface-container-highest` figuraba en `docs/technical/DESIGN.md` y lo usaba el hover de los chips del mapa (IMPROVEMENT-028), pero **no existía en `globals.css`** — hover no-op silencioso. Añadido el token; el hover de MapaFiltros funciona ahora sin tocar su código.
+- QA: suite **1138/1138 con RLS**, cobertura 82,7 %, E2E perdidos + área pública **11/11** (+1 skip conocido del arrastre táctil), lint y tsc limpios. Capturas desktop/móvil contra `screen.png`.
+- Lección de verificación visual: una captura `fullPage` sin scroll deja las tarjetas con `Reveal` en blanco (el IntersectionObserver nunca dispara) — hay que scrollear antes de capturar; no es un bug de la página.

@@ -2,6 +2,12 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/es/) adaptado. Versionado 0.x hasta el MVP.
 
+## [0.0.75] — 2026-07-19
+
+### Cambiado
+
+- **Perdidos y encontrados estrena el diseño nuevo (FEATURE-038)**: quinta pantalla de la tanda Stitch. Hero con título terracota y botón granate «Publicar aviso» con icono, chips tonales (activo granate), y la nota de privacidad ahora vive **dentro del mapa** como en el wireframe. Las tarjetas pasan a foto cuadrada con **badge granate «Perdido» / teal «Encontrado»** — los marcadores del mapa adoptan los mismos colores para contar la misma historia — y **toda la tarjeta es clicable** (adiós al botón «Ver detalles»). La fecha muestra el día del suceso en absoluto: «Perdido el 13 de julio». Detalle invisible pero importante: al filtrar, un contador «N avisos» avisa a los lectores de pantalla de que la lista cambió. Los filtros avanzados, los estados vacíos y la mecánica del mapa no se tocan. QA: suite 1138/1138 con RLS, E2E 11/11.
+
 ## [0.0.74] — 2026-07-19
 
 ### Cambiado
