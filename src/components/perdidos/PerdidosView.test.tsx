@@ -168,6 +168,49 @@ describe("PerdidosView", () => {
     expect(screen.getByText(messages.perdidos.vacio)).toBeInTheDocument();
   });
 
+  // FEATURE-038 — rediseño Stitch: badges con roles del design system, fecha
+  // absoluta del suceso, tarjeta clicable entera y contador accesible.
+  it("los badges usan granate para perdido y teal para encontrado", () => {
+    renderVista();
+    const lost = screen.getAllByText(messages.perdidos.tipoLost);
+    const found = screen.getAllByText(messages.perdidos.tipoFound);
+    expect(lost.some((b) => b.className.includes("bg-primary"))).toBe(true);
+    expect(found.some((b) => b.className.includes("bg-secondary"))).toBe(true);
+  });
+
+  it("muestra la fecha del suceso en absoluto, no la de publicación", () => {
+    renderVista();
+    const fmt = new Intl.DateTimeFormat("es", { day: "numeric", month: "long" });
+    // p1 se publicó el 1 de julio, pero el suceso fue hace 2 días: manda el
+    // suceso (la lección de FEATURE-023).
+    expect(
+      screen.getByText(`Perdido el ${fmt.format(new Date(hace(2)))}`),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(`Encontrado el ${fmt.format(new Date(hace(20)))}`),
+    ).toBeInTheDocument();
+  });
+
+  it("la tarjeta entera es clicable: un único enlace extendido y sin «Ver detalles»", () => {
+    renderVista();
+    const enlace = screen.getByRole("link", { name: "Rocky" });
+    expect(enlace).toHaveAttribute("href", "/perdidos-encontrados/p1");
+    expect(enlace.className).toContain("after:absolute");
+    const alaFicha = screen
+      .getAllByRole("link")
+      .filter((l) => l.getAttribute("href") === "/perdidos-encontrados/p1");
+    expect(alaFicha).toHaveLength(1);
+  });
+
+  it("anuncia cuántos avisos quedan al filtrar (aria-live)", async () => {
+    const user = userEvent.setup();
+    renderVista();
+    const contador = screen.getByText("2 avisos");
+    expect(contador).toHaveAttribute("aria-live", "polite");
+    await user.click(screen.getByRole("button", { name: messages.perdidos.filtroLost }));
+    expect(screen.getByText("1 aviso")).toBeInTheDocument();
+  });
+
   // FEATURE-025 — rediseño: filtros colapsados, tarjetas verticales, «Ver todos»
   it("los filtros avanzados están colapsados tras «Más filtros»", async () => {
     const user = userEvent.setup();
@@ -181,15 +224,12 @@ describe("PerdidosView", () => {
     expect(screen.getByLabelText(messages.perdidos.filtroEspecie)).toBeInTheDocument();
   });
 
-  it("la tarjeta enlaza a la ficha con «Ver detalles» y sin foto cae al placeholder", () => {
+  it("sin foto la tarjeta cae al placeholder, nunca imagen rota", () => {
     renderVista();
-    const enlaces = screen.getAllByRole("link", { name: messages.perdidos.verDetalles });
-    expect(enlaces[0]).toHaveAttribute("href", "/perdidos-encontrados/p1");
-    // Ningún aviso de prueba tiene foto: placeholder 🐾, nunca imagen rota.
     expect(screen.getAllByText("🐾")).toHaveLength(2);
   });
 
-  it("con más de 8 avisos, «Ver todos» despliega el resto", async () => {
+  it("con más de 8 avisos, «Ver más avisos» despliega el resto", async () => {
     const user = userEvent.setup();
     const muchos = Array.from({ length: 10 }, (_, i) => ({
       ...AVISOS[0],
@@ -197,10 +237,10 @@ describe("PerdidosView", () => {
       name: `Aviso ${i}`,
     }));
     renderVista(muchos);
-    expect(screen.getAllByRole("link", { name: messages.perdidos.verDetalles })).toHaveLength(8);
+    expect(screen.getAllByRole("listitem")).toHaveLength(8);
 
     await user.click(screen.getByRole("button", { name: messages.perdidos.verTodosAvisos }));
-    expect(screen.getAllByRole("link", { name: messages.perdidos.verDetalles })).toHaveLength(10);
+    expect(screen.getAllByRole("listitem")).toHaveLength(10);
   });
 
   it("con 8 avisos o menos no hay botón «Ver todos»", () => {

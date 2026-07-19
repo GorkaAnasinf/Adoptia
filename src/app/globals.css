@@ -38,6 +38,7 @@
   --surface-container-low: #f9f3eb;
   --surface-container: #f3ede5;
   --surface-container-high: #ede7e0;
+  --surface-container-highest: #e7e2da;
 
   /* Bordes y focos */
   --border: #e5ddd0;
@@ -77,6 +78,7 @@
   --color-surface-container-low: var(--surface-container-low);
   --color-surface-container: var(--surface-container);
   --color-surface-container-high: var(--surface-container-high);
+  --color-surface-container-highest: var(--surface-container-highest);
 
   /* Sombra ambiente con tinte terracota (elevación baja del design system) */
   --shadow-soft: 0 4px 12px rgba(226, 114, 91, 0.08);
