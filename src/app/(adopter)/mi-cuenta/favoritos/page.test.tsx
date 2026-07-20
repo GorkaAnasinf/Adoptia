@@ -15,15 +15,24 @@ vi.mock("@/lib/supabase/server", () => ({
   })),
 }));
 
+// El corazón (FavoritoButton) consulta sesión y estado al montar: stub que no rompe.
 vi.mock("@/lib/supabase/client", () => ({
-  createClient: vi.fn(() => ({})),
+  createClient: vi.fn(() => ({
+    auth: { getUser: vi.fn(async () => ({ data: { user: { id: "u1" } } })) },
+    from: vi.fn(() => ({
+      select: vi.fn(() => ({
+        eq: vi.fn(() => ({ maybeSingle: vi.fn(async () => ({ data: { animal_id: "a1" } })) })),
+      })),
+      delete: vi.fn(() => ({ eq: vi.fn(async () => ({ error: null })) })),
+    })),
+  })),
 }));
 
 vi.mock("next/navigation", () => ({
   redirect: vi.fn((url: string) => {
     throw new Error(`REDIRECT:${url}`);
   }),
-  useRouter: () => ({ refresh: vi.fn() }),
+  useRouter: () => ({ refresh: vi.fn(), push: vi.fn() }),
 }));
 
 vi.mock("next-intl/server", () => ({
@@ -38,12 +47,18 @@ import FavoritosPage from "./page";
 const FAVORITO = {
   animal_id: "a1",
   animals: {
+    id: "a1",
     name: "Luna",
     slug: "luna-demo",
     status: "available",
+    species: "cat",
+    sex: "female",
+    size: "small",
+    breed: null,
+    birth_date_approx: "2025-01-01",
     published_at: "2026-07-01T00:00:00Z",
     animal_media: [],
-    shelters: { name: "Protectora Bilbao" },
+    shelters: { name: "Protectora Bilbao", slug: "protectora-bilbao" },
   },
 };
 
@@ -67,30 +82,39 @@ describe("Favoritos (adoptante)", () => {
     await expect(FavoritosPage()).rejects.toThrow("REDIRECT:/login");
   });
 
-  it("lista el favorito con enlace a la ficha y botón de quitar", async () => {
+  it("lista el favorito como tarjeta con enlace a la ficha", async () => {
     await renderPagina();
-    expect(screen.getByRole("link", { name: "Luna" })).toHaveAttribute(
+    expect(screen.getByRole("link", { name: /Luna/ })).toHaveAttribute(
       "href",
       "/animales/luna-demo",
     );
-    expect(
-      screen.getByRole("button", { name: messages.account.quitarFavorito }),
-    ).toBeInTheDocument();
-    expect(screen.queryByText(messages.account.favoritoAdoptado)).not.toBeInTheDocument();
   });
 
-  it("un favorito adoptado se marca visualmente", async () => {
+  it("muestra el contador, vaciar favoritos y el banner de alerta", async () => {
+    await renderPagina();
+    expect(
+      screen.getByRole("button", { name: messages.account.favoritosVaciar }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("link", { name: messages.account.favoritosAlertaCta }),
+    ).toHaveAttribute("href", "/animales");
+  });
+
+  it("un favorito adoptado muestra su estado en la tarjeta", async () => {
     orderMock.mockResolvedValue({
       data: [{ ...FAVORITO, animals: { ...FAVORITO.animals, status: "adopted" } }],
       error: null,
     });
     await renderPagina();
-    expect(screen.getByText(messages.account.favoritoAdoptado)).toBeInTheDocument();
+    expect(screen.getByText(messages.animales.statusAdopted)).toBeInTheDocument();
   });
 
-  it("sin favoritos muestra estado vacío", async () => {
+  it("sin favoritos muestra estado vacío con CTA al listado", async () => {
     orderMock.mockResolvedValue({ data: [], error: null });
     await renderPagina();
     expect(screen.getByText(messages.account.favoritosEmptyTitle)).toBeInTheDocument();
+    expect(
+      screen.getByRole("link", { name: messages.account.favoritosEmptyCta }),
+    ).toHaveAttribute("href", "/animales");
   });
 });
