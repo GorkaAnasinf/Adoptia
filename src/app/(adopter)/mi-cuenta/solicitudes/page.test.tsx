@@ -84,6 +84,13 @@ describe("Mis solicitudes (adoptante)", () => {
     expect(screen.getByText(/Enviada el/)).toBeInTheDocument();
   });
 
+  it("muestra el banner de ayuda con enlace a las guías cuando hay solicitudes", async () => {
+    await renderPagina();
+    expect(
+      screen.getByRole("link", { name: messages.account.solicitudAyudaCta }),
+    ).toHaveAttribute("href", "/guias");
+  });
+
   it("una solicitud pendiente ofrece el botón de retirar", async () => {
     await renderPagina();
     expect(screen.getByRole("button", { name: messages.account.retirar })).toBeInTheDocument();
@@ -117,8 +124,12 @@ describe("Mis solicitudes (adoptante)", () => {
       error: null,
     });
     await renderPagina();
-    expect(screen.getByText(/Visita:/)).toBeInTheDocument();
+    // La fecha de la cita se muestra en el chip teal (día de la semana + hora).
+    expect(screen.getByText(/agosto/)).toBeInTheDocument();
     expect(screen.getByRole("button", { name: messages.citas.cancelarCita })).toBeInTheDocument();
+    expect(
+      screen.getByRole("link", { name: messages.account.solicitudContactarRefugio }),
+    ).toHaveAttribute("href", "/protectoras/protectora-ultima-oportunidad");
     expect(screen.queryByRole("link", { name: messages.citas.reservarVisita })).not.toBeInTheDocument();
   });
 
