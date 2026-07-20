@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Adoptia | Panel de Adoptante</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&amp;family=Open+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container-low": "#f9f3eb",
+                    "error": "#ba1a1a",
+                    "secondary-container": "#bcece6",
+                    "tertiary-fixed": "#d1e8dd",
+                    "surface-container-highest": "#e7e2da",
+                    "tertiary": "#4e635a",
+                    "on-primary-container": "#5a0d02",
+                    "surface-container": "#f3ede5",
+                    "on-background": "#1d1b17",
+                    "inverse-surface": "#32302b",
+                    "primary-container": "#e2725b",
+                    "primary-fixed-dim": "#ffb4a5",
+                    "on-tertiary": "#ffffff",
+                    "on-secondary-fixed-variant": "#204e4a",
+                    "surface-dim": "#dfd9d2",
+                    "on-tertiary-fixed": "#0b1f18",
+                    "outline-variant": "#ddc0ba",
+                    "on-surface-variant": "#56423e",
+                    "on-error-container": "#93000a",
+                    "surface-container-high": "#ede7e0",
+                    "secondary": "#396662",
+                    "outline": "#89726d",
+                    "primary": "#9f402d",
+                    "tertiary-fixed-dim": "#b5ccc1",
+                    "surface": "#fef8f0",
+                    "primary-fixed": "#ffdad3",
+                    "background": "#fef8f0",
+                    "on-primary": "#ffffff",
+                    "surface-container-lowest": "#ffffff",
+                    "tertiary-container": "#81978d",
+                    "on-error": "#ffffff",
+                    "on-primary-fixed": "#3e0500",
+                    "surface-bright": "#fef8f0",
+                    "on-primary-fixed-variant": "#802918",
+                    "secondary-fixed-dim": "#a1cfca",
+                    "error-container": "#ffdad6",
+                    "on-secondary": "#ffffff",
+                    "on-tertiary-container": "#1b2f28",
+                    "on-tertiary-fixed-variant": "#374b43",
+                    "on-surface": "#1d1b17",
+                    "on-secondary-fixed": "#00201e",
+                    "inverse-on-surface": "#f6f0e8",
+                    "on-secondary-container": "#3f6c68",
+                    "secondary-fixed": "#bcece6",
+                    "inverse-primary": "#ffb4a5",
+                    "surface-variant": "#e7e2da",
+                    "surface-tint": "#9f402d"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "12px",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "gutter": "20px",
+                    "sm": "8px",
+                    "md": "16px",
+                    "unit": "4px",
+                    "xs": "4px",
+                    "xxl": "48px",
+                    "xl": "32px",
+                    "container-max": "1200px",
+                    "margin-mobile": "16px",
+                    "lg": "24px"
+            },
+            "fontFamily": {
+                    "headline-xl": ["Montserrat"],
+                    "headline-lg": ["Montserrat"],
+                    "body-lg": ["Open Sans"],
+                    "headline-lg-mobile": ["Montserrat"],
+                    "headline-md": ["Montserrat"],
+                    "label-sm": ["Open Sans"],
+                    "body-md": ["Open Sans"],
+                    "label-md": ["Open Sans"]
+            },
+            "fontSize": {
+                    "headline-xl": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #fef8f0;
+            color: #1d1b17;
+            -webkit-font-smoothing: antialiased;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #e7e2da;
+            border-radius: 10px;
+        }
+        .glass-nav {
+            background: rgba(254, 248, 240, 0.8);
+            backdrop-filter: blur(12px);
+        }
+        .soft-card-shadow {
+            box-shadow: 0 4px 12px rgba(226, 114, 91, 0.08);
+        }
+    </style>
+</head>
+<body class="font-body-md text-body-md overflow-x-hidden">
+<!-- SideNavBar Anchor -->
+<aside class="h-screen w-64 fixed left-0 top-0 bg-surface-container dark:bg-inverse-surface shadow-sm z-50 hidden md:flex flex-col p-4 border-r-0">
+<div class="mb-10 px-4">
+<span class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed-dim">Adoptia</span>
+<p class="text-on-surface-variant font-label-sm mt-1">Nurturing connections</p>
+</div>
+<nav class="flex-1 space-y-2">
+<a class="flex items-center gap-3 px-4 py-3 bg-primary-container dark:bg-on-primary-fixed-variant text-on-primary-container dark:text-primary-fixed rounded-xl transition-colors active:scale-95 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="pets">pets</span>
+<span class="font-label-md">Mis Adopciones</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-highest dark:hover:bg-surface-container-low transition-colors active:scale-95 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="favorite">favorite</span>
+<span class="font-label-md">Favoritos</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-highest dark:hover:bg-surface-container-low transition-colors active:scale-95 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="volunteer_activism">volunteer_activism</span>
+<span class="font-label-md">Mis Donaciones</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-highest dark:hover:bg-surface-container-low transition-colors active:scale-95 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="chat">chat</span>
+<span class="font-label-md">Mensajes</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-highest dark:hover:bg-surface-container-low transition-colors active:scale-95 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-label-md">Ajustes</span>
+</a>
+</nav>
+<div class="mt-auto p-4 bg-surface-container-high dark:bg-surface-dim rounded-2xl">
+<div class="flex items-center gap-3 mb-4">
+<img class="w-10 h-10 rounded-full object-cover" data-alt="A warm and professional portrait of a woman in her 30s smiling gently, set against a soft cream-colored background with natural lighting to match the Adoptia brand aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDeyzFKICW2Jqzly8b4jDteZ6Si5OgnzIWZkSMvft3zzpI1ZBRyx9rgT2xWmwN0Wuqy-AE2r47USMK0uVxoFxXt5nd1y4nCmDxil9RNEg8Mb24Zk7L9p5gAVkQTF95d99yNl1nJms7I7WomIewUF6ZdgB-0t644NnVeUDc4ub6WkuCE8zx45WCbz0Nio4BZK5qjd5KZb7p4PLcIm3D843F86Q78z7GGVaVQhNaimgsbLeIBdEXQzXbci8G_J0LEK9MQQSb0fRqPI78R"/>
+<div>
+<p class="font-label-md text-on-surface">Elena García</p>
+<p class="text-[11px] text-on-surface-variant">Adoptante Silver</p>
+</div>
+</div>
+<button class="w-full py-2 bg-secondary text-on-secondary rounded-lg font-label-md hover:opacity-90 transition-opacity active:scale-95">
+                Find a Pet
+            </button>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="md:ml-64 min-h-screen">
+<!-- TopAppBar Anchor -->
+<header class="fixed top-0 right-0 w-full md:w-[calc(100%-16rem)] z-40 bg-surface/80 backdrop-blur-md flex justify-between items-center px-8 py-4">
+<div class="flex items-center bg-surface-container-low px-4 py-2 rounded-full w-96 max-w-[50%]">
+<span class="material-symbols-outlined text-on-surface-variant mr-2" data-icon="search">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-body-md w-full placeholder:text-on-surface-variant/50" placeholder="Buscar mascotas o refugios..." type="text"/>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 hover:bg-surface-container-highest rounded-full transition-colors text-on-surface-variant relative">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-primary rounded-full"></span>
+</button>
+<button class="p-2 hover:bg-surface-container-highest rounded-full transition-colors text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+</button>
+<div class="h-8 w-[1px] bg-outline-variant mx-2"></div>
+<img class="w-10 h-10 rounded-full object-cover border-2 border-surface-container-high" data-alt="A warm and professional portrait of a woman in her 30s smiling gently, set against a soft cream-colored background with natural lighting to match the Adoptia brand aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCq5EfYUaw1ir7iEdEg0NgqKCnhOp7fv5sBv3ONDXM8X4RKqML6j_yjLtVGrHjSiDirWqdewnyR2l5egZnGm_XQPUSYfoQSlovlzn9TFSrYdZL32jaTE1ID66__0C5RON7didbKwcgEM2_E8tGbEaCYd2nfNHBOPLDPUM86tMCKCi6swe0pgnE7bCGhkP9haDeW-97Yyuf1fNiDTKvhP46aHmue-rp4RfLDA32mztDaPJUKUYHnS4ZSP2dHEqfR0_VWsJK_Pt5JK1Tc"/>
+</div>
+</header>
+<div class="pt-24 px-8 pb-12 max-w-container-max mx-auto space-y-lg">
+<!-- Welcome Banner -->
+<section class="relative overflow-hidden bg-secondary-container rounded-xxl p-8 md:p-12 flex flex-col md:flex-row items-center justify-between">
+<div class="relative z-10 max-w-xl">
+<h1 class="font-headline-xl text-headline-xl text-on-secondary-container mb-4">¡Hola, Elena!</h1>
+<p class="font-body-lg text-body-lg text-on-secondary-container/80">Gracias por ser parte de Adoptia. Tu compromiso está cambiando vidas hoy mismo.</p>
+<div class="mt-8 flex gap-4">
+<button class="bg-primary text-on-primary px-6 py-3 rounded-xl font-label-md hover:shadow-lg transition-all active:scale-95">Explorar Adopciones</button>
+<button class="bg-surface/50 backdrop-blur text-secondary px-6 py-3 rounded-xl font-label-md hover:bg-surface transition-all">Ver mis trámites</button>
+</div>
+</div>
+<div class="hidden lg:block absolute right-[-40px] bottom-[-40px] w-80 h-80 opacity-20">
+<span class="material-symbols-outlined text-[320px]" data-icon="pets">pets</span>
+</div>
+</section>
+<!-- Stats Row -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-lg">
+<div class="bg-surface-container-lowest p-6 rounded-xl soft-card-shadow border border-surface-variant/30 flex items-center gap-4">
+<div class="p-3 bg-primary-fixed rounded-xl text-primary">
+<span class="material-symbols-outlined" data-icon="favorite">favorite</span>
+</div>
+<div>
+<p class="text-on-surface-variant font-label-sm">Mascotas Favoritas</p>
+<p class="text-headline-md font-headline-md">12</p>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-xl soft-card-shadow border border-surface-variant/30 flex items-center gap-4">
+<div class="p-3 bg-secondary-fixed rounded-xl text-secondary">
+<span class="material-symbols-outlined" data-icon="description">description</span>
+</div>
+<div>
+<p class="text-on-surface-variant font-label-sm">Solicitudes en curso</p>
+<p class="text-headline-md font-headline-md">2</p>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-xl soft-card-shadow border border-surface-variant/30 flex items-center gap-4">
+<div class="p-3 bg-tertiary-fixed rounded-xl text-tertiary">
+<span class="material-symbols-outlined" data-icon="volunteer_activism">volunteer_activism</span>
+</div>
+<div>
+<p class="text-on-surface-variant font-label-sm">Donaciones realizadas</p>
+<p class="text-headline-md font-headline-md">€150</p>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-lg">
+<!-- Main Activity Column -->
+<div class="lg:col-span-2 space-y-lg">
+<!-- Adopciones Recientes -->
+<section>
+<div class="flex justify-between items-end mb-6">
+<h2 class="font-headline-md text-headline-md text-on-surface">Solicitudes de Adopción Recientes</h2>
+<button class="text-primary font-label-md flex items-center gap-1 hover:underline">
+                                Ver todas <span class="material-symbols-outlined text-sm" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+<div class="space-y-4">
+<!-- Card 1 -->
+<div class="bg-surface-container-lowest p-4 rounded-xl soft-card-shadow flex items-center justify-between group cursor-pointer hover:bg-surface-container-low transition-colors">
+<div class="flex items-center gap-4">
+<div class="w-16 h-16 rounded-lg overflow-hidden shrink-0">
+<img class="w-full h-full object-cover" data-alt="A close-up portrait of a friendly Golden Retriever puppy with soft amber eyes and fluffy golden fur, shot in a sun-drenched garden with a shallow depth of field. The style is warm, cinematic, and professional." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD0VfHePq-rJIesJr1xfaR5JzvzPvX_0N_bR6z2-GiYjFNUwKA6RhRfsKOsY5UkhiilPzIXeoT5r_GHJgHP24rCtax-nnfJy4hUyAD4HPyTP-m46XlozcP253YTVzusX6Uhn8ozpWTwDjhSvNo2L7Ca9AS4-iiCw38gJi6duAAR4PTBeuW0vDdS9v2Yc1SbCHEweEMHodZIeiGIngqSN8xWepyHnbAC-UEfigAHeQ5wvfJusI3QCkMbf9Gim8U93BH4SzEILBOiBJtr"/>
+</div>
+<div>
+<h3 class="font-label-md text-on-surface">Bruno</h3>
+<p class="text-label-sm text-on-surface-variant">Solicitado el 12 de Oct, 2023</p>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="text-right hidden sm:block">
+<span class="px-3 py-1 bg-secondary-container text-on-secondary-container text-[11px] font-bold rounded-full uppercase tracking-wider">En revisión</span>
+</div>
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors" data-icon="chevron_right">chevron_right</span>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="bg-surface-container-lowest p-4 rounded-xl soft-card-shadow flex items-center justify-between group cursor-pointer hover:bg-surface-container-low transition-colors">
+<div class="flex items-center gap-4">
+<div class="w-16 h-16 rounded-lg overflow-hidden shrink-0">
+<img class="w-full h-full object-cover" data-alt="A graceful calico cat sitting elegantly on a soft woven rug in a modern living room filled with plants. The image has a calm, domestic, and homey feel with warm natural light filtering through a window." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD2lfjJ6Z9LkrYb9GqX6DzYpvKZ2ljLr1ShUut6hyCTUozY13A5-I3ISTYb1yxMVmcPY1W1baEMqTu8LQuzvU-O3AVpGEFcWTk3oKcZXIzAEdwNk_lk9ndYwvdCGvIV_qLIstIN6wCrmQPTgGONP4kocRIg4b98R-7DpvJqUmJyREimT5GjE6GOTvHcnw5BEIQdl7hIvQciQqTu9-VoOP31uF4D2UZy3sCY756e41n3_ER4lOYSVY_L2Dk0ypKqhr1tVgwjI7dWQFXE"/>
+</div>
+<div>
+<h3 class="font-label-md text-on-surface">Luna</h3>
+<p class="text-label-sm text-on-surface-variant">Solicitado el 5 de Oct, 2023</p>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="text-right hidden sm:block">
+<span class="px-3 py-1 bg-tertiary-fixed text-on-tertiary-fixed-variant text-[11px] font-bold rounded-full uppercase tracking-wider">Cita programada</span>
+</div>
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors" data-icon="chevron_right">chevron_right</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Mis Favoritos -->
+<section>
+<div class="flex justify-between items-end mb-6">
+<h2 class="font-headline-md text-headline-md text-on-surface">Mis Favoritos</h2>
+</div>
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-md">
+<!-- Favorite items -->
+<div class="relative aspect-square rounded-xl overflow-hidden group cursor-pointer">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="A portrait of a small, fluffy white Maltese dog wearing a cute blue bandana, sitting on a park bench. The lighting is bright and cheerful, emphasizing the clean white fur and warm outdoor setting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDv3HsD_rm8kZf2Jc4CvLMYZYWiF__wAEatpSQeckNUg1BYB3u3Dj2HWYeqZfl81NVjtoWaFYhJLoP-QSpJz7S0plzNyoXkRBQcm-NL4pc5LjIqk9Q1aiVBAICtfwef9O4E-LdT8FK-Pldw5TItqDyr5dAGHka3NyT6qf0uC0DjrM65durl8tKH3qB82Zl0sMn-BPA1PmGfp11DlM2uR4_NwloiqYg2m6hymJY83GJvxO-b0xxqhwoJPyenInV42pHZpqgsth3YLYN7"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex flex-col justify-end p-3">
+<p class="text-white font-label-md">Copito</p>
+<p class="text-white/80 text-[10px]">2 años • Madrid</p>
+</div>
+<button class="absolute top-2 right-2 w-8 h-8 bg-white/20 backdrop-blur rounded-full flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-sm" data-icon="favorite" style="font-variation-settings: 'FILL' 1;">favorite</span>
+</button>
+</div>
+<div class="relative aspect-square rounded-xl overflow-hidden group cursor-pointer">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="A sleek black Labrador sitting patiently in front of a wooden farmhouse door. The lighting is golden hour, casting long soft shadows and highlighting the shiny black coat of the dog. Warm, loyal atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAOGBHu7CejdFTR9zECvlzEJl5x21YnCqjxqjenc1WqPAd4Zjxdyb-JQocNZN-h6PB1aM1blqpuVKzuRykbyAlS_VpErytVSwyNmGc4YSMSia8V47SgNSLTL07n928Oq2D-q6EXXDc6Ez17SPIWUMpqsNgotogUGXnwFpNsxkO-oY82BzTYay8WfQqWfOFMAdwVt6YrTj1If5t9TzC9kw1QFrme24JKfYo_O0dqdeR_HojNCl95ydxXI7Ikng3judJRiD5Yhj09ASQH"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex flex-col justify-end p-3">
+<p class="text-white font-label-md">Sombra</p>
+<p class="text-white/80 text-[10px]">4 años • Barcelona</p>
+</div>
+<button class="absolute top-2 right-2 w-8 h-8 bg-white/20 backdrop-blur rounded-full flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-sm" data-icon="favorite" style="font-variation-settings: 'FILL' 1;">favorite</span>
+</button>
+</div>
+<div class="relative aspect-square rounded-xl overflow-hidden group cursor-pointer">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="A pair of bonded rescue kittens, one ginger and one gray, curled up together in a soft nest. The style is cozy and heartwarming, with a soft-focus background of a sunlit nursery or bedroom." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDVAUkXfdT24wr8-pr7h7VABIv0ZsUomP19xUviMTQ6GxRMJYIR2Sshz2I0gEJHGOtGlQ4RW8s5BP9CYq7xu7NiHdt8-0W2CG87mUazalQDGzG7afvWqRg-mwJk7ANObppJnydewB69hVtPBTtsyJhufhaukSVCzpCpR7jGb0Zy9nmiCfxQbtFlBG5KeQfIzIKarrr__s-XH3s4iLiO1qWBZXlzZQWJYy6DaEseBOm2BQrZenh-Jn70IMR2IimBSVBNC2eu3ZPPYsNW"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex flex-col justify-end p-3">
+<p class="text-white font-label-md">Milo &amp; Otis</p>
+<p class="text-white/80 text-[10px]">3 meses • Valencia</p>
+</div>
+<button class="absolute top-2 right-2 w-8 h-8 bg-white/20 backdrop-blur rounded-full flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-sm" data-icon="favorite" style="font-variation-settings: 'FILL' 1;">favorite</span>
+</button>
+</div>
+<div class="bg-surface-container-high border-2 border-dashed border-outline-variant rounded-xl flex flex-col items-center justify-center text-on-surface-variant hover:border-primary hover:text-primary transition-all cursor-pointer group">
+<span class="material-symbols-outlined text-3xl mb-1 group-hover:scale-110 transition-transform" data-icon="add_circle">add_circle</span>
+<span class="text-[11px] font-bold uppercase tracking-tighter">Explorar</span>
+</div>
+</div>
+</section>
+</div>
+<!-- Side Info Column -->
+<div class="space-y-lg">
+<!-- Impacto Card -->
+<section class="bg-primary text-on-primary p-6 rounded-xxl relative overflow-hidden soft-card-shadow">
+<div class="relative z-10">
+<div class="flex items-center gap-3 mb-4">
+<div class="p-2 bg-white/20 rounded-lg">
+<span class="material-symbols-outlined" data-icon="volunteer_activism">volunteer_activism</span>
+</div>
+<h3 class="font-headline-md text-xl">Tu Impacto</h3>
+</div>
+<p class="font-body-md text-on-primary/90 mb-6 italic">"Pequeñas acciones, grandes huellas."</p>
+<div class="space-y-4">
+<div class="bg-white/10 p-4 rounded-xl">
+<p class="text-3xl font-bold mb-1">5</p>
+<p class="text-sm opacity-80">Peludos alimentados este mes gracias a tus donaciones.</p>
+</div>
+<div class="bg-white/10 p-4 rounded-xl">
+<p class="text-3xl font-bold mb-1">120kg</p>
+<p class="text-sm opacity-80">De alimento donado en total este año.</p>
+</div>
+</div>
+<button class="w-full mt-6 bg-white text-primary py-3 rounded-xl font-label-md hover:bg-surface-container-lowest transition-colors active:scale-95">
+                                Donar de nuevo
+                            </button>
+</div>
+<!-- Background decoration -->
+<div class="absolute top-[-20px] right-[-20px] opacity-10">
+<span class="material-symbols-outlined text-[150px]" data-icon="heart_plus">heart_plus</span>
+</div>
+</section>
+<!-- Upcoming Reminders -->
+<section class="bg-surface-container-low p-6 rounded-xxl">
+<h3 class="font-label-md text-on-surface mb-4">Recordatorios</h3>
+<div class="space-y-4">
+<div class="flex gap-3">
+<div class="shrink-0 w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-lg" data-icon="calendar_today">calendar_today</span>
+</div>
+<div>
+<p class="text-label-md text-on-surface">Cita con Luna</p>
+<p class="text-[12px] text-on-surface-variant">Mañana, 16:30 - Refugio La Esperanza</p>
+</div>
+</div>
+<div class="flex gap-3">
+<div class="shrink-0 w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined text-lg" data-icon="upload_file">upload_file</span>
+</div>
+<div>
+<p class="text-label-md text-on-surface">Subir contrato firmado</p>
+<p class="text-[12px] text-on-surface-variant">Pendiente para el trámite de Bruno</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Monthly Featured Pet -->
+<section class="bg-surface-container-highest/30 p-2 rounded-xxl overflow-hidden">
+<div class="relative h-48 rounded-xl overflow-hidden mb-3">
+<img class="w-full h-full object-cover" data-alt="A majestic elderly Siberian Husky with striking blue eyes and salt-and-pepper fur, resting calmly in the snow with a dignified expression. The lighting is cool but clear, evoking a sense of wisdom and peace. High-end animal photography." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD80IGOEToAzWo0vTPpsTCmB2gdi8Oi_VkR53tP77fOqPgqMIbLygmOpr-1a1Ftb6ATDCbckXJobknzpFOOB9itXwcQ0L_7COFRJPJMEw8m13MimfekONcWPrnASw40aJOYDcdrHkirxr1aH7ErnTjbHaoUbKr6tzpo2m5DQK2qdN1QHakHpKu1Hr_vIKmPPVdxKOAX4_k-iyZFijXx-uU4liBuH2YFFg5PHKWRvxLmaCzp_wuMzPIQD5HXQM7YDeSSkm9jMiOlf0wr"/>
+<div class="absolute top-2 left-2 px-2 py-1 bg-primary text-[10px] text-white font-bold rounded uppercase">Caso Urgente</div>
+</div>
+<div class="px-3 pb-3">
+<h4 class="font-label-md text-on-surface">Koda busca hogar</h4>
+<p class="text-[12px] text-on-surface-variant mb-4">Lleva 200 días esperando a una familia que valore su tranquilidad.</p>
+<button class="text-primary font-bold text-xs hover:tracking-widest transition-all uppercase">Conocer a Koda</button>
+</div>
+</section>
+</div>
+</div>
+</div>
+</main>
+<!-- Mobile Bottom Navigation (Hidden on desktop) -->
+<nav class="md:hidden fixed bottom-0 left-0 right-0 glass-nav border-t border-surface-variant/20 px-4 py-2 flex justify-between items-center z-50">
+<a class="flex flex-col items-center gap-1 p-2 text-primary" href="#">
+<span class="material-symbols-outlined" data-icon="home" style="font-variation-settings: 'FILL' 1;">home</span>
+<span class="text-[10px] font-medium">Inicio</span>
+</a>
+<a class="flex flex-col items-center gap-1 p-2 text-on-surface-variant" href="#">
+<span class="material-symbols-outlined" data-icon="search">search</span>
+<span class="text-[10px] font-medium">Explorar</span>
+</a>
+<a class="flex flex-col items-center gap-1 p-2 text-on-surface-variant" href="#">
+<span class="material-symbols-outlined" data-icon="favorite">favorite</span>
+<span class="text-[10px] font-medium">Favoritos</span>
+</a>
+<a class="flex flex-col items-center gap-1 p-2 text-on-surface-variant" href="#">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="text-[10px] font-medium">Perfil</span>
+</a>
+</nav>
+<script>
+        // Micro-interactions and effects
+        document.querySelectorAll('button, a').forEach(el => {
+            el.addEventListener('mousedown', () => {
+                el.style.transform = 'scale(0.96)';
+            });
+            el.addEventListener('mouseup', () => {
+                el.style.transform = '';
+            });
+            el.addEventListener('mouseleave', () => {
+                el.style.transform = '';
+            });
+        });
+
+        // Simple scroll effect for top bar
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 20) {
+                header.classList.add('shadow-sm');
+            } else {
+                header.classList.remove('shadow-sm');
+            }
+        });
+    </script>
+</body></html>

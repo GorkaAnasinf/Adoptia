@@ -3,6 +3,7 @@
 import { Menu, PawPrint } from "lucide-react";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
+import { inicioDeRol } from "@/lib/inicio-rol";
 import { Breadcrumbs, type Crumb } from "./Breadcrumbs";
 import { StatusBadge, type ShelterStatus } from "./StatusBadge";
 import { UserMenu, type UserRole } from "./UserMenu";
@@ -37,7 +38,7 @@ export function AppHeader({ role, shelterName, status, crumbs, onMenuClick }: Pr
         </button>
 
         {/* Marca (visible sobre todo en móvil; en desktop el sidebar ya la lleva) */}
-        <Link href="/panel" className="flex items-center gap-2 lg:hidden">
+        <Link href={inicioDeRol(role)} className="flex items-center gap-2 lg:hidden">
           <span className="flex size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
             <PawPrint className="size-5" aria-hidden="true" />
           </span>
