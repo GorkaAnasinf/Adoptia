@@ -2,6 +2,12 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/es/) adaptado. Versionado 0.x hasta el MVP.
 
+## [0.0.76] — 2026-07-20
+
+### Cambiado
+
+- **El popup del mapa de perdidos se pone al día (IMPROVEMENT-029)**: pedido tras liberar FEATURE-038, ahora luce el mismo lenguaje que el popup del mapa de protectoras — nombre en terracota (o el tipo si no lo sabemos), ciudad y fecha del suceso, un chip tonal granate/teal y un botón «Ver aviso» granate a todo el ancho, en vez del texto plano con enlace subrayado de antes.
+
 ## [0.0.75] — 2026-07-19
 
 ### Cambiado
