@@ -43,7 +43,12 @@ const CITA = {
   starts_at: futura,
   cancel_reason: null,
   adoption_requests: {
-    animals: { name: "Pipa", slug: "pipa", shelters: { name: "Protectora Bilbao", slug: "pb" } },
+    animals: {
+      name: "Pipa",
+      slug: "pipa",
+      animal_media: [],
+      shelters: { name: "Protectora Bilbao", slug: "pb" },
+    },
   },
 };
 
@@ -71,6 +76,14 @@ describe("Mis citas (adoptante)", () => {
     expect(screen.getByRole("link", { name: "Pipa" })).toHaveAttribute("href", "/animales/pipa");
     expect(screen.getByText("Protectora Bilbao")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: messages.citas.cancelarCita })).toBeInTheDocument();
+  });
+
+  it("agrupa en Próximas y muestra el banner de ayuda hacia las guías", async () => {
+    await renderPagina();
+    expect(screen.getByText(messages.account.citasProximas)).toBeInTheDocument();
+    expect(
+      screen.getByRole("link", { name: messages.account.citasAyudaCta }),
+    ).toHaveAttribute("href", "/guias");
   });
 
   it("una cita cancelada muestra el motivo y no ofrece cancelar", async () => {
