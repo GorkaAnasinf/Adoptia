@@ -2,6 +2,16 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/es/) adaptado. Versionado 0.x hasta el MVP.
 
+## [0.0.78] — 2026-07-20
+
+### Cambiado
+
+- **«Mis alertas» estrena el diseño nuevo (FEATURE-040)**: séptima pantalla de la tanda Stitch. Las búsquedas guardadas dejan de ser filas planas con un resumen pobre (solo especie y distancia) y pasan a una **rejilla de tarjetas** con un chip por cada filtro real —especie, tamaño, sexo y **«a N km»** o **«Toda España»** si no fijaste ubicación—, un **interruptor** que activa o pausa la alerta de un vistazo, «Ver resultados» que te lleva al listado con esos filtros ya puestos, y «Eliminar» con confirmación. Cierra la rejilla una **tarjeta punteada «Nueva alerta»** y la cabecera gana un botón «Crear nueva alerta»; ambos llevan al listado, que es donde se guardan. Lo que el mock inventaba y el producto no tiene se cae en vez de fingirse: las miniaturas «+5/+12» de peludos casados, el «último encontrado hace X», el chip «Urgente» y la sección con la estadística del «40% con IA» —sustituida por un aviso honesto de cómo sacar partido a las alertas—. `AlertaAcciones` se retira: lo absorbe la nueva tarjeta.
+
+### Corregido
+
+- **Auditoría de la tanda: cobertura ausente y suite en rojo de commits sin QA**: las pantallas de «mis citas» y «mis favoritos» se mergearon sin pasar QA. Se añaden los tests que faltaban (tabs Próximas/Pasadas, filtro por día del calendario y navegación de mes en `MisCitasCliente`; confirm/borrado/redirect en `VaciarFavoritosButton`) y se endurece el guard anti-hardcode de i18n, cuya regex casaba un arrow `=>` con un `<` posterior y marcaba código como copy —dos falsos positivos que dejaban la suite en rojo en develop—.
+
 ## [0.0.77] — 2026-07-20
 
 ### Cambiado

@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Open+Sans:wght@400;500;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100..900&family=Open+Sans:wght@100..900&display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .active-nav-shadow {
+            box-shadow: 0 4px 12px rgba(226, 114, 91, 0.15);
+        }
+        .soft-card-shadow {
+            box-shadow: 0 10px 25px -5px rgba(226, 114, 91, 0.08), 0 8px 10px -6px rgba(226, 114, 91, 0.08);
+        }
+        /* Custom Toggle Switch Style */
+        .toggle-checkbox:checked + .toggle-label {
+            background-color: #e2725b;
+        }
+        .toggle-checkbox:checked + .toggle-label .toggle-dot {
+            transform: translateX(100%);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-fixed-dim": "#a1cfca",
+                        "on-tertiary-container": "#1b2f28",
+                        "outline-variant": "#ddc0ba",
+                        "on-surface": "#1d1b17",
+                        "on-tertiary-fixed": "#0b1f18",
+                        "tertiary": "#4e635a",
+                        "error": "#ba1a1a",
+                        "background": "#fef8f0",
+                        "surface-container-low": "#f9f3eb",
+                        "on-primary-fixed-variant": "#802918",
+                        "primary": "#9f402d",
+                        "surface-container-highest": "#e7e2da",
+                        "surface-dim": "#dfd9d2",
+                        "tertiary-fixed": "#d1e8dd",
+                        "surface-container": "#f3ede5",
+                        "primary-container": "#e2725b",
+                        "inverse-surface": "#32302b",
+                        "surface-container-high": "#ede7e0",
+                        "on-primary": "#ffffff",
+                        "surface-bright": "#fef8f0",
+                        "error-container": "#ffdad6",
+                        "tertiary-container": "#81978d",
+                        "primary-fixed-dim": "#ffb4a5",
+                        "inverse-on-surface": "#f6f0e8",
+                        "on-secondary": "#ffffff",
+                        "on-error": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "secondary": "#396662",
+                        "secondary-fixed": "#bcece6",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary-fixed-variant": "#204e4a",
+                        "surface-tint": "#9f402d",
+                        "inverse-primary": "#ffb4a5",
+                        "surface": "#fef8f0",
+                        "surface-variant": "#e7e2da",
+                        "surface-container-lowest": "#ffffff",
+                        "tertiary-fixed-dim": "#b5ccc1",
+                        "on-primary-container": "#5a0d02",
+                        "primary-fixed": "#ffdad3",
+                        "on-surface-variant": "#56423e",
+                        "on-primary-fixed": "#3e0500",
+                        "outline": "#89726d",
+                        "on-tertiary-fixed-variant": "#374b43",
+                        "on-secondary-fixed": "#00201e",
+                        "on-secondary-container": "#3f6c68",
+                        "secondary-container": "#bcece6",
+                        "on-background": "#1d1b17"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "8px",
+                        "xl": "12px",
+                        "xxl": "16px",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "container-max": "1200px",
+                        "sm": "8px",
+                        "xxl": "48px",
+                        "md": "16px",
+                        "unit": "4px",
+                        "margin-mobile": "16px",
+                        "gutter": "20px",
+                        "lg": "24px",
+                        "xs": "4px",
+                        "xl": "32px"
+                    },
+                    "fontFamily": {
+                        "headline-xl": ["Montserrat"],
+                        "label-md": ["Open Sans"],
+                        "headline-lg": ["Montserrat"],
+                        "body-md": ["Open Sans"],
+                        "headline-md": ["Montserrat"],
+                        "label-sm": ["Open Sans"],
+                        "body-lg": ["Open Sans"]
+                    },
+                    "fontSize": {
+                        "headline-xl": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background font-body-md text-on-surface overflow-x-hidden antialiased">
+<!-- App Shell Sidebar -->
+<aside class="h-screen w-64 fixed left-0 top-0 bg-surface-container dark:bg-inverse-surface shadow-sm flex flex-col p-4 border-r-0 z-50" id="sidebar">
+<div class="mb-8 px-4">
+<h1 class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed-dim">Adoptia</h1>
+</div>
+<div class="flex flex-col gap-6 mb-auto overflow-y-auto">
+<div class="flex flex-col gap-2">
+<div class="px-4 py-2">
+<p class="text-on-surface-variant font-label-sm uppercase tracking-wider text-[10px]">Gestión</p>
+</div>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-highest dark:hover:bg-surface-container-low transition-colors active:scale-95 duration-200 rounded-xl" href="#">
+<span class="material-symbols-outlined">pets</span>
+<span class="font-body-md text-body-md">My Adoptions</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-highest dark:hover:bg-surface-container-low transition-colors active:scale-95 duration-200 rounded-xl" href="#">
+<span class="material-symbols-outlined">favorite</span>
+<span class="font-body-md text-body-md">Favorites</span>
+</a>
+<!-- ACTIVE TAB: My Alerts (Translated to Mis Alertas for the prompt's context but keeping JSON structure intent) -->
+<a class="flex items-center gap-3 px-4 py-3 bg-primary-container dark:bg-on-primary-fixed-variant text-on-primary-container dark:text-primary-fixed rounded-xl active-nav-shadow transition-all" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">notifications_active</span>
+<span class="font-body-md text-body-md font-semibold">Mis Alertas</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-highest dark:hover:bg-surface-container-low transition-colors active:scale-95 duration-200 rounded-xl" href="#">
+<span class="material-symbols-outlined">volunteer_activism</span>
+<span class="font-body-md text-body-md">My Donations</span>
+</a>
+</div>
+<div class="flex flex-col gap-2">
+<div class="px-4 py-2">
+<p class="text-on-surface-variant font-label-sm uppercase tracking-wider text-[10px]">Cuenta</p>
+</div>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-highest dark:hover:bg-surface-container-low transition-colors active:scale-95 duration-200 rounded-xl" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-body-md text-body-md">Profile Settings</span>
+</a>
+</div>
+</div>
+<div class="mt-auto pt-6 border-t border-outline-variant/30 flex flex-col gap-4">
+<div class="flex items-center gap-3 px-4">
+<div class="w-10 h-10 rounded-full overflow-hidden border-2 border-primary-container">
+<img class="w-full h-full object-cover" data-alt="A warm, professional profile portrait of a kind-looking woman in her 30s, smiling gently. She has soft lighting on her face, and the background is a blurred, cozy living room with hints of terracotta and sage green colors, reflecting the Adoptia brand aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBhvJN4-CC9mBl-c-K3H_2DX5lqbmwelX6fbRJpAsFsUmAhKEtHYmAH3buZONpKw_-HoQ2Ilqeu-xgQnnsCLv5jrgWYpvLG2RANrsjcVXz3d2CUHVp0ZK6C253fP5isVDs_93kfLBmaAloeW93mec_m2exWkFoIooC7MLFzgk2IBCLC_FqtpGgL7_8xMs3IgRMHoC9P0GUWUFGO8o28gZusf9V7HDSb4BuPVTrlmuJMfxiwLLJL4sXW-_Mpvcn_-oQ6Gy2HtYjRCSnn"/>
+</div>
+<div class="flex flex-col overflow-hidden">
+<span class="font-label-md text-on-surface truncate">Marta Sánchez</span>
+<span class="text-[11px] text-on-surface-variant truncate">Nurturing connections</span>
+</div>
+</div>
+<button class="w-full bg-secondary text-on-secondary font-semibold py-3 rounded-xxl hover:bg-on-secondary-fixed-variant transition-all active:scale-95 flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[20px]">search</span>
+<span>Find a Pet</span>
+</button>
+</div>
+</aside>
+<!-- Top App Bar -->
+<header class="fixed top-0 right-0 w-[calc(100%-16rem)] z-40 bg-surface/80 dark:bg-background/80 backdrop-blur-md flex justify-between items-center px-8 py-4">
+<div class="flex items-center gap-4">
+<span class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed-dim">Mis Alertas</span>
+</div>
+<div class="flex items-center gap-6">
+<div class="relative flex items-center bg-surface-container-high dark:bg-surface-dim px-4 py-2 rounded-full w-64 focus-within:ring-2 focus-within:ring-primary/20 transition-all">
+<span class="material-symbols-outlined text-on-surface-variant">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-body-md w-full ml-2 placeholder:text-on-surface-variant/60" placeholder="Buscar en mis alertas..." type="text"/>
+</div>
+<div class="flex items-center gap-2">
+<button class="p-2 text-on-surface-variant hover:text-primary hover:bg-surface-container-highest rounded-full transition-colors active:opacity-80">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:text-primary hover:bg-surface-container-highest rounded-full transition-colors active:opacity-80">
+<span class="material-symbols-outlined">help</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="ml-64 pt-24 min-h-screen">
+<div class="max-w-container-max mx-auto px-8 py-8">
+<!-- Page Header Section -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+<div class="max-w-2xl">
+<nav class="flex items-center gap-2 text-label-sm text-on-surface-variant mb-4">
+<span>Panel de Control</span>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<span class="text-primary font-semibold">Mis Alertas</span>
+</nav>
+<h2 class="font-headline-xl text-headline-xl text-on-surface mb-4">Mis Alertas</h2>
+<p class="text-body-lg text-on-surface-variant leading-relaxed">
+                        Gestiona tus filtros de búsqueda personalizada. Te avisaremos en cuanto aparezca un peludo que encaje con tus criterios para que seas el primero en conocerlo.
+                    </p>
+</div>
+<div>
+<button class="flex items-center gap-3 bg-primary-container text-white px-8 py-4 rounded-xxl font-bold shadow-md hover:shadow-xl hover:translate-y-[-2px] transition-all active:scale-95 active:shadow-sm">
+<span class="material-symbols-outlined">add_alert</span>
+<span>Crear nueva alerta</span>
+</button>
+</div>
+</div>
+<!-- Alerts Grid (Asymmetric layout) -->
+<div class="grid grid-cols-1 xl:grid-cols-2 gap-8 mb-16">
+<!-- Alert Card 1 -->
+<div class="bg-surface-container-lowest p-8 rounded-xxl soft-card-shadow border border-outline-variant/10 relative overflow-hidden group">
+<div class="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-bl-full -mr-8 -mt-8 transition-transform group-hover:scale-110"></div>
+<div class="flex flex-col h-full">
+<div class="flex justify-between items-start mb-6">
+<div>
+<h3 class="font-headline-md text-on-surface mb-2">Perros medianos en Madrid</h3>
+<p class="text-label-sm text-on-tertiary-fixed-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">schedule</span>
+                                    Último peludo encontrado: hace 2 días
+                                </p>
+</div>
+<div class="flex items-center gap-4">
+<span class="text-label-sm text-on-surface-variant font-medium">Activa</span>
+<label class="inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only toggle-checkbox" type="checkbox"/>
+<div class="relative w-12 h-6 bg-surface-container-highest rounded-full transition-colors toggle-label">
+<div class="absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition-transform toggle-dot"></div>
+</div>
+</label>
+</div>
+</div>
+<div class="flex flex-wrap gap-2 mb-8">
+<span class="px-4 py-1.5 bg-secondary-container text-on-secondary-container rounded-full text-label-sm flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px]">pets</span>
+                                Especie: Perro
+                            </span>
+<span class="px-4 py-1.5 bg-secondary-container text-on-secondary-container rounded-full text-label-sm flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px]">straighten</span>
+                                Tamaño: Mediano
+                            </span>
+<span class="px-4 py-1.5 bg-secondary-container text-on-secondary-container rounded-full text-label-sm flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px]">location_on</span>
+                                Madrid
+                            </span>
+<span class="px-4 py-1.5 bg-tertiary-fixed text-on-tertiary-fixed-variant rounded-full text-label-sm flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px]">calendar_today</span>
+                                Edad: Cualquiera
+                            </span>
+</div>
+<div class="mt-auto flex items-center justify-between pt-6 border-t border-outline-variant/20">
+<div class="flex items-center gap-2">
+<button class="flex items-center gap-2 px-4 py-2 rounded-xl text-on-surface-variant hover:bg-surface-container-high transition-colors font-semibold">
+<span class="material-symbols-outlined">edit</span>
+                                    Editar
+                                </button>
+<button class="flex items-center gap-2 px-4 py-2 rounded-xl text-error hover:bg-error-container/30 transition-colors font-semibold">
+<span class="material-symbols-outlined">delete</span>
+                                    Eliminar
+                                </button>
+</div>
+<div class="flex -space-x-3">
+<div class="w-10 h-10 rounded-full border-2 border-white overflow-hidden bg-surface-container">
+<img class="w-full h-full object-cover" data-alt="A portrait photo of a friendly, golden-colored medium-sized dog looking directly at the camera with expressive eyes. The background is a soft, warm autumn park scene, maintaining the Adoptia brand's tactile softness and nurturing connection vibe." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAl6CziNwtAsISU_vtUeGPICn2q8umus1YuIAbQr-p1AAOt00Mqubi0zuCjaYIE9Uash_gLsYNXz9yMqvVKumLpJeqU1nkqnR3wg5o7ks3GQsUMOlAX8Gs6vLJqLaEadHCKB6PUVy5_XwtGwMmIcVcS2Ar5fJ4C5wRUXM10zNsbuLiZHZgH7SHGKPLspIYCwmWE25wAczxrXBz_Xdcdibadnnfv-3hGOplURLwgBx3rhRj-Z2I9CPDXVV0SNlqyq0y_lydqcoUp76Th"/>
+</div>
+<div class="w-10 h-10 rounded-full border-2 border-white overflow-hidden bg-surface-container">
+<img class="w-full h-full object-cover" data-alt="A cute black and white border collie puppy playing on a soft cream rug. The lighting is bright and airy, and the overall mood is joyful and welcoming, perfect for a pet adoption platform's visual identity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCIbgNCfTllWX3tn5uVN4zze87GwmKX1MBbqj-XHlrIAZmPHGAi2AMc3NBYy5O6V5VCbRdP1eG6g1CrqfBW7KbmiC2f9cteWGXwt3yCmYnP940Wyhs5UuJH9GrgcjvGbQZoqO7_EaNLMEtEWdHqp-RZX1Y0Gbsy26DiEnoV00gOHlFRMBDP8DUUdrz_oK-OlGZSL-j_s2YCYSjTunj8NwMuduR4yMqrINl9LBSbe0y_gd8q6AE_oQP2Tfh9tEgLfzxr6QJCJpIE9RDC"/>
+</div>
+<div class="w-10 h-10 rounded-full border-2 border-white bg-primary-container text-white flex items-center justify-center text-label-sm font-bold">
+                                    +5
+                                </div>
+</div>
+</div>
+</div>
+</div>
+<!-- Alert Card 2 -->
+<div class="bg-surface-container-lowest p-8 rounded-xxl soft-card-shadow border border-outline-variant/10 relative overflow-hidden group">
+<div class="absolute top-0 right-0 w-32 h-32 bg-secondary/5 rounded-bl-full -mr-8 -mt-8 transition-transform group-hover:scale-110"></div>
+<div class="flex flex-col h-full">
+<div class="flex justify-between items-start mb-6">
+<div>
+<h3 class="font-headline-md text-on-surface mb-2">Gatitos Cachorros</h3>
+<p class="text-label-sm text-on-tertiary-fixed-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">schedule</span>
+                                    Último peludo encontrado: hace 5 horas
+                                </p>
+</div>
+<div class="flex items-center gap-4">
+<span class="text-label-sm text-on-surface-variant font-medium">Activa</span>
+<label class="inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only toggle-checkbox" type="checkbox"/>
+<div class="relative w-12 h-6 bg-surface-container-highest rounded-full transition-colors toggle-label">
+<div class="absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition-transform toggle-dot"></div>
+</div>
+</label>
+</div>
+</div>
+<div class="flex flex-wrap gap-2 mb-8">
+<span class="px-4 py-1.5 bg-secondary-container text-on-secondary-container rounded-full text-label-sm flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px]">pets</span>
+                                Especie: Gato
+                            </span>
+<span class="px-4 py-1.5 bg-secondary-container text-on-secondary-container rounded-full text-label-sm flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px]">child_care</span>
+                                Edad: Cachorro
+                            </span>
+<span class="px-4 py-1.5 bg-secondary-container text-on-secondary-container rounded-full text-label-sm flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px]">location_on</span>
+                                Toda España
+                            </span>
+</div>
+<div class="mt-auto flex items-center justify-between pt-6 border-t border-outline-variant/20">
+<div class="flex items-center gap-2">
+<button class="flex items-center gap-2 px-4 py-2 rounded-xl text-on-surface-variant hover:bg-surface-container-high transition-colors font-semibold">
+<span class="material-symbols-outlined">edit</span>
+                                    Editar
+                                </button>
+<button class="flex items-center gap-2 px-4 py-2 rounded-xl text-error hover:bg-error-container/30 transition-colors font-semibold">
+<span class="material-symbols-outlined">delete</span>
+                                    Eliminar
+                                </button>
+</div>
+<div class="flex -space-x-3">
+<div class="w-10 h-10 rounded-full border-2 border-white overflow-hidden bg-surface-container">
+<img class="w-full h-full object-cover" data-alt="A close-up shot of a tiny ginger kitten with bright blue eyes, sitting comfortably on a soft beige woolen blanket. The image has a very tactile, soft quality with ambient warm lighting, evoking a sense of home and comfort." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDTvptjKdtmXlYKXiVz2EoP6THxcluJq5MO1f-qJCOaO6Og3skI9jvQoELktXnFhxDvDUWjWVq6eaDzskzXVVj2Nw6tTVTY2OsbBGld3FO7IGco2SBPvMDIN33OXCQA5BjqKDV0oor8QFjmR19SRfn_iklgMjK6tl2V8iicVXEC4--y1s-LFImvDdrdhDPWNDMQGUq-qsfOInE_SWSeXM5VJ64h2qXJBD6ze_xbpgZ_66psgOgRH2uuukgn5T73nRB5F3SY8Vxcxa8M"/>
+</div>
+<div class="w-10 h-10 rounded-full border-2 border-white bg-primary-container text-white flex items-center justify-center text-label-sm font-bold">
+                                    +12
+                                </div>
+</div>
+</div>
+</div>
+</div>
+<!-- Alert Card 3 (Pausada) -->
+<div class="bg-surface-container-high/40 p-8 rounded-xxl border border-outline-variant/20 relative overflow-hidden grayscale">
+<div class="flex flex-col h-full opacity-70">
+<div class="flex justify-between items-start mb-6">
+<div>
+<h3 class="font-headline-md text-on-surface mb-2">Senior Dogs (Urgent)</h3>
+<p class="text-label-sm text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">pause_circle</span>
+                                    Alerta pausada hace 1 semana
+                                </p>
+</div>
+<div class="flex items-center gap-4">
+<span class="text-label-sm text-on-surface-variant font-medium">Pausada</span>
+<label class="inline-flex items-center cursor-pointer">
+<input class="sr-only toggle-checkbox" type="checkbox"/>
+<div class="relative w-12 h-6 bg-surface-container-highest rounded-full transition-colors toggle-label">
+<div class="absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition-transform toggle-dot"></div>
+</div>
+</label>
+</div>
+</div>
+<div class="flex flex-wrap gap-2 mb-8">
+<span class="px-4 py-1.5 bg-surface-variant text-on-surface-variant rounded-full text-label-sm flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px]">pets</span>
+                                Perro
+                            </span>
+<span class="px-4 py-1.5 bg-surface-variant text-on-surface-variant rounded-full text-label-sm flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px]">elderly</span>
+                                Senior
+                            </span>
+<span class="px-4 py-1.5 bg-error-container/20 text-error rounded-full text-label-sm flex items-center gap-1.5 font-bold">
+<span class="material-symbols-outlined text-[16px]">priority_high</span>
+                                Urgente
+                            </span>
+</div>
+<div class="mt-auto flex items-center justify-between pt-6 border-t border-outline-variant/20">
+<div class="flex items-center gap-2">
+<button class="flex items-center gap-2 px-4 py-2 rounded-xl text-on-surface-variant hover:bg-surface-container-high transition-colors font-semibold">
+<span class="material-symbols-outlined">edit</span>
+                                    Editar
+                                </button>
+<button class="flex items-center gap-2 px-4 py-2 rounded-xl text-error hover:bg-error-container/30 transition-colors font-semibold">
+<span class="material-symbols-outlined">delete</span>
+                                    Eliminar
+                                </button>
+</div>
+</div>
+</div>
+</div>
+<!-- Add Alert Button Card (Alternative style) -->
+<button class="bg-transparent border-2 border-dashed border-primary/30 p-8 rounded-xxl flex flex-col items-center justify-center gap-4 hover:border-primary hover:bg-primary/5 transition-all group text-primary h-full min-h-[250px]">
+<div class="w-16 h-16 rounded-full bg-primary-container/10 flex items-center justify-center group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-[40px]">add_alert</span>
+</div>
+<div class="text-center">
+<p class="font-headline-md mb-1">Nueva Alerta</p>
+<p class="text-label-sm text-on-surface-variant">Configura un nuevo filtro de búsqueda</p>
+</div>
+</button>
+</div>
+<!-- Suggestion / Educational Section -->
+<section class="bg-secondary-container/20 rounded-xxl p-10 flex flex-col md:flex-row items-center gap-10">
+<div class="flex-1">
+<h3 class="font-headline-md text-on-secondary-container mb-4">¿Sabías que el 40% de las adopciones exitosas empiezan con una alerta?</h3>
+<p class="text-body-md text-on-secondary-container/80 mb-6 max-w-xl">
+                        Nuestra IA analiza miles de perfiles diariamente para encontrar el peludo ideal para ti. Mantener tus alertas activas y específicas aumenta drásticamente tus posibilidades de encontrar a tu nuevo mejor amigo.
+                    </p>
+<button class="text-secondary font-bold flex items-center gap-2 hover:gap-3 transition-all">
+                        Cómo optimizar mis alertas <span class="material-symbols-outlined">arrow_right_alt</span>
+</button>
+</div>
+<div class="w-full md:w-1/3 aspect-video md:aspect-square rounded-xxl overflow-hidden shadow-lg border-4 border-white">
+<img class="w-full h-full object-cover" data-alt="A lifestyle photography shot of a family sitting on a bright patio, looking at a smartphone together with happy expressions. A friendly Labrador dog sits beside them, looking at the screen as well. The setting is sunny, with lots of greenery, perfectly embodying the joy of finding a pet through a smart platform." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAJDvz1KI2TUCZTHd8-u-ahuQ0uNrnThvoloizYQKatIq8RheLUa8tXImbJZv_yqhfRYdCDQbp5MGXujVCrHTq-01C9QdVHsBBFTI9n75PCkDDfaDl1jX9szOY0lH8HK3YeADi8pMoevnnFYXr5AtXxEaGz0vLNMp3n6DrA5ZlGhLcHgMNv2GrFpmnk4N_MI1cQYaEdeVVWxZXimI4BlKDxWXhyyy0DRswuCI6Qe-gZKiFheTJR4_vJTP-yd2cf-qSXtHTZ5X2AebAX"/>
+</div>
+</section>
+</div>
+</main>
+<!-- Footer for quick access / Small touch -->
+<footer class="ml-64 bg-surface-container-lowest py-8 px-8 border-t border-outline-variant/10">
+<div class="max-w-container-max mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+<p class="text-label-sm text-on-surface-variant">© 2024 Adoptia - Nurturing Connections with compassion.</p>
+<div class="flex items-center gap-8">
+<a class="text-label-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Términos y Condiciones</a>
+<a class="text-label-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Política de Privacidad</a>
+<a class="text-label-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Contacto</a>
+</div>
+</div>
+</footer>
+<!-- Micro-interaction script for the toggles and active states -->
+<script>
+        document.querySelectorAll('.toggle-checkbox').forEach(toggle => {
+            toggle.addEventListener('change', function() {
+                const card = this.closest('.rounded-xxl');
+                const statusLabel = this.closest('div').previousElementSibling;
+                
+                if(this.checked) {
+                    card.classList.remove('grayscale', 'opacity-70', 'bg-surface-container-high/40');
+                    card.classList.add('bg-surface-container-lowest', 'soft-card-shadow');
+                    card.querySelector('.opacity-70')?.classList.remove('opacity-70');
+                    if(statusLabel) statusLabel.textContent = 'Activa';
+                } else {
+                    card.classList.add('grayscale', 'bg-surface-container-high/40');
+                    card.classList.remove('soft-card-shadow');
+                    if(statusLabel) statusLabel.textContent = 'Pausada';
+                }
+            });
+        });
+
+        // Simple smooth scroll behavior for the sidebar navigation
+        document.querySelectorAll('#sidebar a').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                if(this.getAttribute('href') === '#') e.preventDefault();
+            });
+        });
+    </script>
+</body></html>
