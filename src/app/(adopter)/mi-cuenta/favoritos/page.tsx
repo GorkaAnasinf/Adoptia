@@ -131,17 +131,19 @@ export default async function FavoritosPage() {
 
       {favoritos.length > 0 && (
         <Reveal className="mt-10">
-          <aside className="flex flex-col gap-4 rounded-2xl bg-tertiary p-6 text-on-tertiary sm:flex-row sm:items-center sm:gap-6">
-            <span className="flex size-14 shrink-0 items-center justify-center rounded-full bg-white/15">
+          <aside className="flex flex-col gap-4 rounded-2xl bg-surface-container p-6 sm:flex-row sm:items-center sm:gap-6">
+            <span className="flex size-14 shrink-0 items-center justify-center rounded-full bg-secondary/15 text-secondary">
               <BellPlus className="size-7" aria-hidden="true" />
             </span>
             <div className="flex-1">
-              <h2 className="font-heading text-xl font-semibold">{t("favoritosAlertaTitulo")}</h2>
-              <p className="mt-1 text-sm text-on-tertiary/85">{t("favoritosAlertaTexto")}</p>
+              <h2 className="font-heading text-xl font-semibold text-secondary">
+                {t("favoritosAlertaTitulo")}
+              </h2>
+              <p className="mt-1 text-sm text-muted-foreground">{t("favoritosAlertaTexto")}</p>
             </div>
             <Link
               href="/animales"
-              className="inline-flex min-h-11 shrink-0 items-center rounded-full bg-white/95 px-5 text-sm font-semibold text-tertiary hover:bg-white"
+              className="inline-flex min-h-11 shrink-0 items-center rounded-full border border-secondary/40 px-5 text-sm font-semibold text-secondary hover:bg-secondary/10"
             >
               {t("favoritosAlertaCta")}
             </Link>
