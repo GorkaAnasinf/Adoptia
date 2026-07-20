@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Adoptia - Mis Citas</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&amp;family=Open+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "background": "#fef8f0",
+                    "on-tertiary": "#ffffff",
+                    "tertiary-fixed": "#d1e8dd",
+                    "primary-container": "#e2725b",
+                    "inverse-primary": "#ffb4a5",
+                    "on-tertiary-fixed": "#0b1f18",
+                    "on-secondary-fixed-variant": "#204e4a",
+                    "outline": "#89726d",
+                    "secondary-fixed-dim": "#a1cfca",
+                    "on-primary": "#ffffff",
+                    "error-container": "#ffdad6",
+                    "tertiary-container": "#81978d",
+                    "secondary-fixed": "#bcece6",
+                    "on-secondary-container": "#3f6c68",
+                    "surface-variant": "#e7e2da",
+                    "on-surface-variant": "#56423e",
+                    "primary-fixed": "#ffdad3",
+                    "on-primary-fixed": "#3e0500",
+                    "secondary-container": "#bcece6",
+                    "surface-container-low": "#f9f3eb",
+                    "on-tertiary-fixed-variant": "#374b43",
+                    "primary": "#9f402d",
+                    "tertiary": "#4e635a",
+                    "on-error": "#ffffff",
+                    "on-surface": "#1d1b17",
+                    "on-secondary-fixed": "#00201e",
+                    "inverse-surface": "#32302b",
+                    "on-background": "#1d1b17",
+                    "surface-container": "#f3ede5",
+                    "on-tertiary-container": "#1b2f28",
+                    "surface-container-highest": "#e7e2da",
+                    "on-secondary": "#ffffff",
+                    "surface-bright": "#fef8f0",
+                    "surface-dim": "#dfd9d2",
+                    "surface-tint": "#9f402d",
+                    "surface": "#fef8f0",
+                    "outline-variant": "#ddc0ba",
+                    "on-error-container": "#93000a",
+                    "primary-fixed-dim": "#ffb4a5",
+                    "tertiary-fixed-dim": "#b5ccc1",
+                    "on-primary-container": "#5a0d02",
+                    "inverse-on-surface": "#f6f0e8",
+                    "secondary": "#396662",
+                    "on-primary-fixed-variant": "#802918",
+                    "surface-container-lowest": "#ffffff",
+                    "error": "#ba1a1a",
+                    "surface-container-high": "#ede7e0"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "xl": "32px",
+                    "container-max": "1200px",
+                    "lg": "24px",
+                    "margin-mobile": "16px",
+                    "gutter": "20px",
+                    "xs": "4px",
+                    "xxl": "48px",
+                    "unit": "4px",
+                    "md": "16px",
+                    "sm": "8px"
+            },
+            "fontFamily": {
+                    "body-lg": ["Open Sans"],
+                    "label-sm": ["Open Sans"],
+                    "headline-lg": ["Montserrat"],
+                    "headline-md": ["Montserrat"],
+                    "label-md": ["Open Sans"],
+                    "headline-xl": ["Montserrat"],
+                    "headline-lg-mobile": ["Montserrat"],
+                    "body-md": ["Open Sans"]
+            },
+            "fontSize": {
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                    "headline-xl": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        .active-dot {
+            position: relative;
+        }
+        .active-dot::after {
+            content: '';
+            position: absolute;
+            bottom: 4px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 4px;
+            background-color: #e2725b;
+            border-radius: 50%;
+        }
+        .glass-nav {
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen">
+<!-- Shell: SideNavBar -->
+<aside class="h-screen w-64 fixed left-0 top-0 bg-surface-container dark:bg-inverse-surface shadow-sm z-50 flex flex-col p-4 border-r-0">
+<div class="mb-xl">
+<h1 class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed-dim">Adoptia</h1>
+<p class="text-on-surface-variant font-label-sm mt-1">Nurturing connections</p>
+</div>
+<nav class="flex-1 space-y-2">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-highest dark:hover:bg-surface-container-low transition-colors active:scale-95 duration-200 rounded-xl" href="#">
+<span class="material-symbols-outlined">pets</span>
+<span class="font-label-md">My Adoptions</span>
+</a>
+<!-- Active State: My Appointments (Mis Citas / Favorites fallback in JSON labels) -->
+<a class="flex items-center gap-3 px-4 py-3 bg-primary-container dark:bg-on-primary-fixed-variant text-on-primary-container dark:text-primary-fixed rounded-xl transition-colors active:scale-95 duration-200 shadow-sm" href="#">
+<span class="material-symbols-outlined">favorite</span>
+<span class="font-label-md">Mis Citas</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-highest dark:hover:bg-surface-container-low transition-colors active:scale-95 duration-200 rounded-xl" href="#">
+<span class="material-symbols-outlined">volunteer_activism</span>
+<span class="font-label-md">My Donations</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-highest dark:hover:bg-surface-container-low transition-colors active:scale-95 duration-200 rounded-xl" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-md">Profile Settings</span>
+</a>
+</nav>
+<div class="mt-auto pt-lg border-t border-outline-variant">
+<div class="flex items-center gap-3 mb-md">
+<div class="w-10 h-10 rounded-full bg-tertiary-fixed overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A warm and welcoming close-up portrait of a kind-faced woman in her late 30s, softly lit with golden hour sunlight, against a blurred background of a cozy, earth-toned home interior. The photograph is clean and professional, matching the soft minimalist and nurturing brand identity of the platform." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBW7tXYI04VqXciyoVivCjYtYKKJPS5JSskaVlsInDczzsGgLYYqsHT3gKCjqQ5z0j3w8rbisEwFXRo-2q7iif92pdfpn6cRmTisYlSFwSeEi0lWOIg_DFBf0IEFa7BaGmYgeWVpOHZ8V0U1vO5kcxbYuJ2BrXHVoeO5ann7wEk2sdGY5OaoM4pXJaY0_uTxMCzMhCgsk2ELbEjtyfQokIgeM33o_ezAEEIl4NUiwYxjY8bZXQB889av-TyhdQYtvcF9-IBDUdxlDZi"/>
+</div>
+<div>
+<p class="font-label-md text-on-surface">Elena García</p>
+<p class="text-xs text-on-surface-variant">Welcome back!</p>
+</div>
+</div>
+<button class="w-full py-3 bg-secondary text-on-secondary rounded-xl font-label-md hover:opacity-90 transition-opacity active:scale-95">
+                Find a Pet
+            </button>
+</div>
+</aside>
+<!-- Shell: TopAppBar -->
+<header class="fixed top-0 right-0 w-[calc(100%-16rem)] z-40 bg-surface/80 dark:bg-background/80 backdrop-blur-md flex justify-between items-center px-8 py-4">
+<div class="flex items-center gap-4">
+<span class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed-dim">Mis Citas</span>
+</div>
+<div class="flex items-center gap-6">
+<div class="relative group">
+<input class="bg-surface-container-low border-none rounded-full py-2 px-10 text-on-surface focus:ring-2 focus:ring-secondary/50 w-64 transition-all" placeholder="Buscar citas..." type="text"/>
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">help</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="ml-64 pt-24 px-8 pb-12 min-h-screen">
+<div class="max-w-container-max mx-auto grid grid-cols-12 gap-gutter">
+<!-- Left: Main Content -->
+<div class="col-span-12 lg:col-span-8">
+<header class="mb-lg">
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Gestiona tus encuentros</h2>
+<p class="text-on-surface-variant font-body-md mt-2">Aquí puedes ver y administrar las visitas programadas a los refugios para conocer a tus futuros mejores amigos.</p>
+</header>
+<!-- Tabs/Toggle -->
+<div class="flex gap-4 mb-xl border-b border-outline-variant pb-xs">
+<button class="px-6 py-2 font-label-md text-primary border-b-2 border-primary transition-colors">Próximas</button>
+<button class="px-6 py-2 font-label-md text-on-surface-variant hover:text-primary transition-colors">Pasadas</button>
+</div>
+<!-- Appointment List -->
+<div class="space-y-gutter">
+<!-- Card 1 -->
+<div class="bg-surface-container-lowest rounded-xl p-6 shadow-[0px_4px_12px_rgba(226,114,91,0.08)] flex gap-6 group hover:shadow-[0px_8px_24px_rgba(226,114,91,0.12)] transition-all">
+<div class="w-24 h-24 rounded-2xl overflow-hidden flex-shrink-0">
+<img class="w-full h-full object-cover" data-alt="A high-quality, soulful portrait of a golden retriever puppy looking up with warm, expressive eyes. The background is a soft-focus garden with organic earthy tones and gentle sage greenery. The lighting is soft and natural, emphasizing the puppy's gentle fur texture and friendly demeanor, consistent with a nurturing brand identity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAiWNCCVeWaFbnngYT0DfMR5B9rh_bJjOn2ZQF9LZw1nA1PgqtPcOqYJmCQ9jwUB-_P3KMzNyhyblIe3kcZAdK7VvAohUh6WeHkJpzXNmJ5ous7qHfxFGuD6NvWuKMmxI7n1VFaiSg7hGcAgKjhrNWV_i30gUEdh0tW8kpjBxCEcCAlB7B8MLjVlu1icRqibEiW3_YrZqcKk1tFj8EuQFFLhImd5x7pBwtkU_6xICvaJjqAtly45H0vftBFp-jzaV3wecZeRjsBX0jg"/>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start mb-2">
+<div>
+<h3 class="font-headline-md text-on-surface">Oliver</h3>
+<p class="text-on-surface-variant text-label-md">Refugio Huellas de Esperanza</p>
+</div>
+<span class="bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">Confirmada</span>
+</div>
+<div class="grid grid-cols-2 gap-4 mt-4 text-on-surface-variant">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary scale-90">calendar_today</span>
+<span class="text-label-md font-semibold text-on-surface">Mañana, 14 Oct</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary scale-90">schedule</span>
+<span class="text-label-md font-semibold text-on-surface">10:30 AM</span>
+</div>
+<div class="col-span-2 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary scale-90">location_on</span>
+<span class="text-body-md">Av. de los Olivos 45, Las Condes</span>
+</div>
+</div>
+<div class="flex items-center gap-6 mt-6 border-t border-outline-variant pt-4">
+<button class="flex items-center gap-2 text-secondary font-label-md hover:underline decoration-2 underline-offset-4">
+<span class="material-symbols-outlined text-sm">map</span>
+                                    Ver mapa
+                                </button>
+<button class="flex items-center gap-2 text-secondary font-label-md hover:underline decoration-2 underline-offset-4">
+<span class="material-symbols-outlined text-sm">event</span>
+                                    Añadir al calendario
+                                </button>
+<button class="ml-auto text-on-surface-variant text-label-sm hover:text-error transition-colors">
+                                    Cancelar cita
+                                </button>
+</div>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="bg-surface-container-lowest rounded-xl p-6 shadow-[0px_4px_12px_rgba(226,114,91,0.08)] flex gap-6 group hover:shadow-[0px_8px_24px_rgba(226,114,91,0.12)] transition-all">
+<div class="w-24 h-24 rounded-2xl overflow-hidden flex-shrink-0">
+<img class="w-full h-full object-cover" data-alt="A serene close-up of a sleek black and white tuxedo cat resting peacefully in a pool of soft morning light. The setting is clean and minimalist with cream-colored textiles and soft shadows. The image captures a sense of quiet joy and companionship, featuring tactile softness and a warm, homestyle digital environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAauejbh7-MY9AGgXCMM5_4d_fPbNPXg2slOOBOhe498mL5KSS_oWSMPz7o6nLhZLAhguWlVcVo2eG5OOOaO1puePbleqOuYWPnRj6TFZ2JXdl--zXmbbL8aksb1gnPkHIBVcSS6mKdJFZ1lEkL9wwzBbcW9lj8JcwkISJ_eMTO86ZAM8ds5uReDBEvCqdQhPh-chwQAt6gprvwUEfm5f_x5kyPwAr8ZqT_WcOuLOhnKi8NdjNZ3eJfS4GNMP85OQiubrYl9dxH2iz2"/>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start mb-2">
+<div>
+<h3 class="font-headline-md text-on-surface">Luna</h3>
+<p class="text-on-surface-variant text-label-md">Centro de Rescate Gatuno</p>
+</div>
+<span class="bg-surface-variant text-on-surface-variant px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">Pendiente</span>
+</div>
+<div class="grid grid-cols-2 gap-4 mt-4 text-on-surface-variant">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary scale-90">calendar_today</span>
+<span class="text-label-md font-semibold text-on-surface">Viernes, 18 Oct</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary scale-90">schedule</span>
+<span class="text-label-md font-semibold text-on-surface">17:00 PM</span>
+</div>
+<div class="col-span-2 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary scale-90">location_on</span>
+<span class="text-body-md">Calle Goya 12, Chamberí</span>
+</div>
+</div>
+<div class="flex items-center gap-6 mt-6 border-t border-outline-variant pt-4">
+<button class="flex items-center gap-2 text-secondary font-label-md hover:underline decoration-2 underline-offset-4">
+<span class="material-symbols-outlined text-sm">map</span>
+                                    Ver mapa
+                                </button>
+<button class="flex items-center gap-2 text-secondary font-label-md hover:underline decoration-2 underline-offset-4">
+<span class="material-symbols-outlined text-sm">event</span>
+                                    Añadir al calendario
+                                </button>
+<button class="ml-auto text-on-surface-variant text-label-sm hover:text-error transition-colors">
+                                    Cancelar cita
+                                </button>
+</div>
+</div>
+</div>
+</div>
+<!-- Help Section (Similar to Mis Solicitudes) -->
+<section class="mt-xxl bg-tertiary-fixed/30 rounded-2xl p-lg border border-tertiary-fixed flex items-center gap-6">
+<div class="w-16 h-16 bg-tertiary rounded-full flex items-center justify-center text-on-tertiary flex-shrink-0">
+<span class="material-symbols-outlined text-3xl">support_agent</span>
+</div>
+<div>
+<h4 class="font-headline-md text-on-tertiary-fixed mb-1">¿Necesitas ayuda con tus citas?</h4>
+<p class="text-on-tertiary-fixed-variant text-body-md">Si tienes problemas para asistir o necesitas reprogramar, nuestro equipo está aquí para ayudarte.</p>
+<button class="mt-4 px-6 py-2 bg-tertiary text-on-tertiary rounded-xl font-label-md hover:bg-tertiary/90 transition-all">
+                            Hablar con Soporte
+                        </button>
+</div>
+</section>
+</div>
+<!-- Right: Sidebar Panel (Mini Calendar) -->
+<aside class="col-span-12 lg:col-span-4 flex flex-col gap-gutter">
+<div class="bg-surface-container rounded-2xl p-6">
+<div class="flex items-center justify-between mb-lg">
+<h3 class="font-headline-md text-on-surface">Octubre 2023</h3>
+<div class="flex gap-2">
+<button class="p-1 hover:bg-surface-container-highest rounded-full transition-colors"><span class="material-symbols-outlined">chevron_left</span></button>
+<button class="p-1 hover:bg-surface-container-highest rounded-full transition-colors"><span class="material-symbols-outlined">chevron_right</span></button>
+</div>
+</div>
+<div class="grid grid-cols-7 gap-y-4 text-center text-xs font-label-md mb-2">
+<span class="text-on-surface-variant">LU</span>
+<span class="text-on-surface-variant">MA</span>
+<span class="text-on-surface-variant">MI</span>
+<span class="text-on-surface-variant">JU</span>
+<span class="text-on-surface-variant">VI</span>
+<span class="text-on-surface-variant">SA</span>
+<span class="text-on-surface-variant">DO</span>
+</div>
+<div class="grid grid-cols-7 gap-y-4 text-center">
+<!-- Simplified October Calendar Rendering -->
+<span class="text-on-surface-variant opacity-30 py-2">25</span>
+<span class="text-on-surface-variant opacity-30 py-2">26</span>
+<span class="text-on-surface-variant opacity-30 py-2">27</span>
+<span class="text-on-surface-variant opacity-30 py-2">28</span>
+<span class="text-on-surface-variant opacity-30 py-2">29</span>
+<span class="text-on-surface-variant opacity-30 py-2">30</span>
+<span class="text-on-surface py-2">1</span>
+<!-- Row 2 -->
+<span class="text-on-surface py-2">2</span>
+<span class="text-on-surface py-2">3</span>
+<span class="text-on-surface py-2">4</span>
+<span class="text-on-surface py-2">5</span>
+<span class="text-on-surface py-2">6</span>
+<span class="text-on-surface py-2">7</span>
+<span class="text-on-surface py-2">8</span>
+<!-- Row 3 -->
+<span class="text-on-surface py-2">9</span>
+<span class="text-on-surface py-2">10</span>
+<span class="text-on-surface py-2">11</span>
+<span class="text-on-surface py-2">12</span>
+<span class="text-on-surface py-2 font-bold bg-primary text-on-primary rounded-lg">13</span>
+<span class="text-on-surface py-2 active-dot font-semibold">14</span>
+<span class="text-on-surface py-2">15</span>
+<!-- Row 4 -->
+<span class="text-on-surface py-2">16</span>
+<span class="text-on-surface py-2">17</span>
+<span class="text-on-surface py-2 active-dot font-semibold">18</span>
+<span class="text-on-surface py-2">19</span>
+<span class="text-on-surface py-2">20</span>
+<span class="text-on-surface py-2">21</span>
+<span class="text-on-surface py-2">22</span>
+<!-- Remaining days implied -->
+</div>
+<div class="mt-lg pt-lg border-t border-outline-variant space-y-4">
+<div class="flex items-center gap-3">
+<div class="w-2 h-2 rounded-full bg-primary"></div>
+<span class="text-label-md text-on-surface">Hoy</span>
+</div>
+<div class="flex items-center gap-3">
+<div class="w-2 h-2 rounded-full bg-primary-container"></div>
+<span class="text-label-md text-on-surface">Cita programada</span>
+</div>
+</div>
+</div>
+<div class="bg-primary-container/10 border border-primary-container/20 rounded-2xl p-6">
+<h4 class="font-headline-md text-primary mb-2">Consejos para tu visita</h4>
+<ul class="space-y-3">
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary text-lg">check_circle</span>
+<p class="text-on-surface-variant text-label-md">Llega 5 minutos antes para el registro.</p>
+</li>
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary text-lg">check_circle</span>
+<p class="text-on-surface-variant text-label-md">Trae ropa cómoda que no te importe ensuciar un poco.</p>
+</li>
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary text-lg">check_circle</span>
+<p class="text-on-surface-variant text-label-md">No olvides tu documento de identidad.</p>
+</li>
+</ul>
+</div>
+</aside>
+</div>
+</main>
+<!-- Map Modal Logic Placeholder (Standard UI improvement) -->
+<script>
+        // Simple micro-interaction for tabs
+        const tabButtons = document.querySelectorAll('button[class*="px-6 py-2"]');
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                tabButtons.forEach(btn => {
+                    btn.classList.remove('text-primary', 'border-b-2', 'border-primary');
+                    btn.classList.add('text-on-surface-variant');
+                });
+                button.classList.add('text-primary', 'border-b-2', 'border-primary');
+                button.classList.remove('text-on-surface-variant');
+            });
+        });
+    </script>
+</body></html>
