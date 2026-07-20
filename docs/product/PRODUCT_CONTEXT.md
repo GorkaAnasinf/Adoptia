@@ -119,5 +119,6 @@ _Nada en desarrollo en este momento._
 
 #### 🗓️ Previsto
 
+- Rediseño de Mi cuenta como dashboard del adoptante (tanda, pantalla 6) — hito 0.5 ([FEATURE-039](../planning/items/FEATURE-039.md))
 - Historias felices — social proof de adopciones en la home — hito sin asignar ([FEATURE-035](../planning/items/FEATURE-035.md))
 <!-- RENDER:END -->

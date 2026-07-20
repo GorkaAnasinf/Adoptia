@@ -19,6 +19,12 @@
 Los items `hecho`/`descartado` no aparecen aquí — su histórico vive en [CHANGELOG](CHANGELOG.md) y git.
 
 <!-- RENDER:START -->
+### ✅ Listo para desarrollo (1)
+
+| Item | Título | Prioridad | Hito |
+|------|--------|-----------|------|
+| [FEATURE-039](items/FEATURE-039.md) | Rediseño de Mi cuenta como dashboard del adoptante (tanda, pantalla 6) | alta | 0.5 |
+
 ### 📥 Recibido (1)
 
 | Item | Título | Prioridad | Hito |

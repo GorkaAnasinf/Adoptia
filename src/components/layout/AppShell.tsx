@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { crumbsFromPathname } from "@/lib/breadcrumbs";
+import { inicioDeRol } from "@/lib/inicio-rol";
 import { AppHeader } from "./AppHeader";
 import { AppSidebar } from "./AppSidebar";
 import { type ShelterStatus } from "./StatusBadge";
@@ -22,10 +23,10 @@ type Props = {
   children: React.ReactNode;
 };
 
-function Marca({ shelterName }: { shelterName?: string | null }) {
+function Marca({ role, shelterName }: { role: Props["role"]; shelterName?: string | null }) {
   const t = useTranslations("common");
   return (
-    <Link href="/panel" className="flex items-center gap-2.5 px-3 py-4">
+    <Link href={inicioDeRol(role)} className="flex items-center gap-2.5 px-3 py-4">
       <span className="flex size-10 items-center justify-center rounded-xl bg-primary text-primary-foreground">
         <PawPrint className="size-6" aria-hidden="true" />
       </span>
@@ -98,7 +99,7 @@ export function AppShell({
       </a>
       {/* Sidebar fijo (desktop) */}
       <aside className="fixed inset-y-0 left-0 hidden w-64 flex-col border-r border-border bg-muted lg:flex">
-        <Marca shelterName={shelterName} />
+        <Marca role={role} shelterName={shelterName} />
         <div className="flex-1 overflow-y-auto">
           <AppSidebar role={role} onboarding={onboarding} pathname={pathname} badges={badges} />
         </div>
@@ -119,7 +120,7 @@ export function AppShell({
             className="absolute inset-y-0 left-0 flex w-72 flex-col bg-muted shadow-xl"
           >
             <div className="flex items-center justify-between pr-2">
-              <Marca shelterName={shelterName} />
+              <Marca role={role} shelterName={shelterName} />
               <button
                 ref={cerrarRef}
                 type="button"

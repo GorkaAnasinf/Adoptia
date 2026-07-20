@@ -25,6 +25,12 @@ vi.mock("next-intl/server", () => ({
   }),
 }));
 
+vi.mock("next/navigation", () => ({
+  redirect: vi.fn((url: string) => {
+    throw new Error(`REDIRECT:${url}`);
+  }),
+}));
+
 vi.mock("@/lib/supabase/server", () => ({
   createClient: vi.fn(async () => ({
     auth: { getUser: vi.fn(async () => ({ data: { user: null } })) },
@@ -110,19 +116,10 @@ describe("páginas de auth y paneles", () => {
     ).toBeInTheDocument();
   });
 
-  it("mi cuenta muestra su título", () => {
-    conIntl(<MiCuentaPage />);
-    expect(
-      screen.getByRole("heading", { name: messages.account.title }),
-    ).toBeInTheDocument();
-  });
-
-  it("mi cuenta muestra un estado vacío con CTA para explorar animales", () => {
-    conIntl(<MiCuentaPage />);
-    expect(screen.getByText(messages.account.emptyText)).toBeInTheDocument();
-    expect(
-      screen.getByRole("link", { name: messages.account.emptyCta }),
-    ).toBeInTheDocument();
+  // El dashboard de mi cuenta (FEATURE-039) tiene su propia suite con los
+  // datos mockeados; aquí solo se comprueba que sin sesión no se pinta nada.
+  it("mi cuenta manda al login si no hay sesión", async () => {
+    await expect(MiCuentaPage()).rejects.toThrow("REDIRECT:/login");
   });
 
   it("la página de registro incluye Google y el subtítulo del wireframe", () => {
