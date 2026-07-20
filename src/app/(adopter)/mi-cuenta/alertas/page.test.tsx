@@ -41,8 +41,8 @@ import AlertasPage from "./page";
 
 const ALERTA = {
   id: "al1",
-  name: "Perro",
-  filters: { especie: "dog", radio_km: 50 },
+  name: "Perros en Madrid",
+  filters: { especie: "dog", lat: 40.4, lng: -3.7, radio_km: 50 },
   active: true,
   created_at: "2026-07-01T00:00:00Z",
 };
@@ -67,22 +67,23 @@ describe("Mis alertas (adoptante)", () => {
     await expect(AlertasPage()).rejects.toThrow("REDIRECT:/login");
   });
 
-  it("lista la alerta con resumen de filtros, estado y acciones", async () => {
+  it("monta la tarjeta con chips de filtros, estado, interruptor y acciones", async () => {
     await renderPagina();
-    expect(screen.getByText("Perro")).toBeInTheDocument();
+    expect(screen.getByText("Perros en Madrid")).toBeInTheDocument();
     expect(screen.getByText(/a 50 km/)).toBeInTheDocument();
     expect(screen.getByText(messages.account.alertaActiva)).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: messages.account.alertaPausar })).toBeInTheDocument();
+    expect(screen.getByRole("switch")).toBeChecked();
+    expect(
+      screen.getByRole("link", { name: messages.account.alertaVerResultados }).getAttribute("href"),
+    ).toContain("especie=dog");
     expect(screen.getByRole("button", { name: messages.account.alertaBorrar })).toBeInTheDocument();
   });
 
-  it("una alerta pausada ofrece reactivar", async () => {
+  it("una alerta pausada muestra el interruptor apagado", async () => {
     orderMock.mockResolvedValue({ data: [{ ...ALERTA, active: false }], error: null });
     await renderPagina();
     expect(screen.getByText(messages.account.alertaPausada)).toBeInTheDocument();
-    expect(
-      screen.getByRole("button", { name: messages.account.alertaActivar }),
-    ).toBeInTheDocument();
+    expect(screen.getByRole("switch")).not.toBeChecked();
   });
 
   it("con 5 alertas avisa del tope", async () => {
