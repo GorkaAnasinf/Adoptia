@@ -2,7 +2,7 @@
 id: FEATURE-039
 tipo: feature
 titulo: Rediseño de Mi cuenta como dashboard del adoptante (tanda, pantalla 6)
-estado: listo
+estado: hecho
 prioridad: alta
 hito: "0.5"
 duplicado_de: null
@@ -97,20 +97,37 @@ Es la pantalla de aterrizaje tras el login de todo adoptante (`post-login`), la 
 
 ## Criterios de aceptación / Casuística a cubrir
 
-- [ ] `/mi-cuenta` muestra hero con «¡Hola, {nombre}!»; sin `full_name`, un saludo sin nombre (nunca «¡Hola, undefined!» ni el email crudo).
-- [ ] Tres métricas correctas: favoritos (nº de `favorites`), solicitudes en curso (`pending` + `approved`), citas próximas (futuras `pending`/`confirmed`). Cada tarjeta enlaza a su subpágina.
-- [ ] «Solicitudes recientes»: hasta 3, más nuevas primero, con foto de portada, nombre del animal, fecha de envío y chip del estado real; enlace «Ver todas» a `/mi-cuenta/solicitudes`.
-- [ ] Solicitud cuyo animal fue despublicado (`animals` null o `published_at` null): la fila se muestra sin romper, con el texto de «animal ya no publicado» que ya existe.
-- [ ] «Mis favoritos»: hasta 3 miniaturas + tile «Explorar» a `/animales`. Animal sin foto válida → placeholder de huella, nunca imagen rota.
-- [ ] Panel «Tu aportación»: contadores reales de ofrecimientos activos, acogida y alertas; con 0 en una fila, invitación a activarla; sin importes ni kilos inventados en ningún caso.
-- [ ] Recordatorios: próxima cita con fecha/hora en `Europe/Madrid` y protectora; solicitud aprobada sin cita con enlace a reservar; propuesta de acogida pendiente. Sin ninguno, el bloque no aparece.
-- [ ] Caso destacado: animal `available` publicado con `published_at` más antiguo, con días de espera; excluye favoritos del usuario; si no hay ninguno publicado, el bloque no aparece.
-- [ ] Usuario recién registrado (0 favoritos, 0 solicitudes, 0 citas): «Primeros pasos» con los 3 pasos enlazados; sin métricas a cero.
-- [ ] Sin sesión: redirección a `/login` (no fuga de la plantilla del dashboard).
-- [ ] RLS: la página no usa cliente admin; un usuario nunca ve solicitudes, citas, favoritos, alertas ni propuestas de otro (test de RLS existente cubre las tablas; el test de página verifica que solo se consulta con el cliente SSR).
-- [ ] Todos los textos desde `messages/es.json`; `npm run lint` sin literales nuevos.
-- [ ] A11y: un solo `h1`, jerarquía `h2` por bloque, contraste AA en hero teal y panel granate, foco visible en enlaces-tarjeta, huella e iconos decorativos con `aria-hidden`, área táctil ≥ 44 px.
-- [ ] Responsive: 1 columna en móvil (métricas apiladas, lateral debajo), 3 métricas en fila y lateral a la derecha en desktop; sin scroll horizontal.
-- [ ] `prefers-reduced-motion`: sin animaciones de entrada.
-- [ ] Logo de `AppShell` lleva al inicio del rol correcto.
-- [ ] Suite completa verde con RLS y `npx tsc --noEmit` limpio.
+- [x] `/mi-cuenta` muestra hero con «¡Hola, {nombre}!»; sin `full_name`, un saludo sin nombre (nunca «¡Hola, undefined!» ni el email crudo).
+- [x] Tres métricas correctas: favoritos (nº de `favorites`), solicitudes en curso (`pending` + `approved`), citas próximas (futuras `pending`/`confirmed`). Cada tarjeta enlaza a su subpágina.
+- [x] «Solicitudes recientes»: hasta 3, más nuevas primero, con foto de portada, nombre del animal, fecha de envío y chip del estado real; enlace «Ver todas» a `/mi-cuenta/solicitudes`.
+- [x] Solicitud cuyo animal fue despublicado (`animals` null o `published_at` null): la fila se muestra sin romper, con el texto de «animal ya no publicado» que ya existe.
+- [x] «Mis favoritos»: hasta 3 miniaturas + tile «Explorar» a `/animales`. Animal sin foto válida → placeholder de huella, nunca imagen rota.
+- [x] Panel «Tu aportación»: contadores reales de ofrecimientos activos, acogida y alertas; con 0 en una fila, invitación a activarla; sin importes ni kilos inventados en ningún caso.
+- [x] Recordatorios: próxima cita con fecha/hora en `Europe/Madrid` y protectora; solicitud aprobada sin cita con enlace a reservar; propuesta de acogida pendiente. Sin ninguno, el bloque no aparece.
+- [x] Caso destacado: animal `available` publicado con `published_at` más antiguo, con días de espera; excluye favoritos del usuario; si no hay ninguno publicado, el bloque no aparece.
+- [x] Usuario recién registrado (0 favoritos, 0 solicitudes, 0 citas): «Primeros pasos» con los 3 pasos enlazados; sin métricas a cero.
+- [x] Sin sesión: redirección a `/login` (no fuga de la plantilla del dashboard).
+- [x] RLS: la página no usa cliente admin; un usuario nunca ve solicitudes, citas, favoritos, alertas ni propuestas de otro (test de RLS existente cubre las tablas; el test de página verifica que solo se consulta con el cliente SSR).
+- [x] Todos los textos desde `messages/es.json`; `npm run lint` sin literales nuevos.
+- [x] A11y: un solo `h1`, jerarquía `h2` por bloque, contraste AA en hero teal y panel granate, foco visible en enlaces-tarjeta, huella e iconos decorativos con `aria-hidden`, área táctil ≥ 44 px.
+- [x] Responsive: 1 columna en móvil (métricas apiladas, lateral debajo), 3 métricas en fila y lateral a la derecha en desktop; sin scroll horizontal.
+- [x] `prefers-reduced-motion`: sin animaciones de entrada.
+- [x] Logo de `AppShell` lleva al inicio del rol correcto.
+- [x] Suite completa verde con RLS y `npx tsc --noEmit` limpio.
+
+## Cierre
+
+Ramas/commits: `feature/FEATURE-039-dashboard-mi-cuenta` — `a920761` (dashboard) + `f6a8ad0` (hallazgos de QA).
+
+QA (Scooby): primera pasada **rechazada** con dos hallazgos mayores, ambos corregidos con test rojo previo:
+
+1. **Propuestas de acogida sin filtro de destinatario** — la política de `foster_proposals` deja leer la fila al acogedor *y* a la protectora que la envía, así que un usuario con protectora propia veía como recordatorio suyo una propuesta que había mandado él. Se añade `.eq("foster_user_id", user.id)` (decisión 44 de DECISIONS).
+2. **El estado vacío ignoraba tres formas de actividad** — quien acoge, tiene alertas o ha ofrecido donaciones caía en «todavía no tienes actividad», que además le escondía el panel que precisamente cuenta lo suyo.
+
+Menores corregidos en la misma pasada: `Reveal` escalonado en las tarjetas de métrica (estaba en el plan y faltaba) y test del marcador de huella en la tira de favoritos. De propina, el mock de Supabase de los tests pasa a aplicar los `.eq()` de verdad, para que un filtro olvidado rompa el test en vez de pasar desapercibido.
+
+Segunda pasada **aprobada**: 18/18 criterios, suite **1183/1183 con RLS**, `lint` y `tsc --noEmit` limpios, build de producción correcto. Cobertura: 83% global, 96,7% en `src/lib/`, 100% de sentencias en los siete ficheros nuevos.
+
+Sin migraciones. Efecto colateral corregido: el logo de la app privada llevaba siempre a `/panel`, también para adoptantes y admin (`src/lib/inicio-rol.ts`).
+
+Candidatos a item detectados y no implementados: buscador global en la cabecera del área privada (lo dibujaba el wireframe, es feature nueva) y alineación de las seis subpáginas de `/mi-cuenta` con el lenguaje del dashboard.
