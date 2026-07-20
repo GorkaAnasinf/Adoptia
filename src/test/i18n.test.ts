@@ -9,8 +9,11 @@ import { describe, expect, it } from "vitest";
 const RAICES = ["src/app", "src/components"];
 const IGNORAR = [/\.test\.tsx?$/, /components[\\/]+ui[\\/]/];
 
-// Texto visible: contenido JSX que empiece por letra (no expresiones {t(...)})
-const TEXTO_JSX = />\s*([A-Za-zÁÉÍÓÚÑáéíóúñ¿¡][^<>{}]*)</g;
+// Texto visible: contenido JSX que empiece por letra (no expresiones {t(...)}).
+// Se excluyen los caracteres típicos de código —`()`, `;`, `=`, backtick— para
+// que un arrow `=>` no encadene con un `<` posterior (p. ej. `useState<T>`) y
+// capture una expresión como si fuera copy. El copy real de UI no los usa.
+const TEXTO_JSX = />\s*([A-Za-zÁÉÍÓÚÑáéíóúñ¿¡][^<>{}();=`]*)</g;
 
 function ficherosTsx(dir: string): string[] {
   return readdirSync(dir).flatMap((nombre) => {
