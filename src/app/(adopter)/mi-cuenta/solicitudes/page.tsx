@@ -1,3 +1,4 @@
+import { BookOpen, CalendarCheck } from "lucide-react";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
@@ -5,8 +6,10 @@ import { redirect } from "next/navigation";
 import { getFormatter, getTranslations } from "next-intl/server";
 import { CancelarCitaButton } from "@/components/citas/CancelarCitaButton";
 import { RetirarSolicitudButton } from "@/components/solicitudes/RetirarSolicitudButton";
+import { Reveal } from "@/components/ui/Reveal";
 import { esImagenValida } from "@/lib/animal-search";
 import { createClient } from "@/lib/supabase/server";
+import { cn } from "@/lib/utils";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("account");
@@ -29,6 +32,7 @@ type Solicitud = {
   } | null;
 };
 
+/** Chip de estado (mismos tonos que el dashboard, para coherencia visual). */
 const BADGE_POR_ESTADO: Record<Solicitud["status"], string> = {
   pending: "bg-amber-100 text-amber-800",
   approved: "bg-emerald-100 text-emerald-800",
@@ -44,6 +48,9 @@ const CLAVE_POR_ESTADO: Record<Solicitud["status"], string> = {
   withdrawn: "statusWithdrawn",
   completed: "statusCompleted",
 };
+
+/** Estados que se muestran "apagados": ya no hay nada que hacer en ellos. */
+const APAGADOS: Solicitud["status"][] = ["rejected", "withdrawn"];
 
 function portadaDe(solicitud: Solicitud): string | null {
   const media = (solicitud.animals?.animal_media ?? [])
@@ -62,6 +69,7 @@ export default async function MisSolicitudesPage() {
   if (!user) redirect("/login");
 
   const t = await getTranslations("account");
+  const tCitas = await getTranslations("citas");
   const format = await getFormatter();
 
   const [{ data }, { data: citasData }] = await Promise.all([
@@ -86,16 +94,20 @@ export default async function MisSolicitudesPage() {
       []
     ).map((c) => [c.request_id, c]),
   );
-  const tCitas = await getTranslations("citas");
 
   return (
-    <section className="mx-auto max-w-4xl px-4 py-12">
+    <section className="mx-auto max-w-6xl px-4 py-8">
       <h1 className="font-heading text-3xl font-bold">{t("solicitudesTitle")}</h1>
-      <p className="mt-2 text-muted-foreground">{t("solicitudesSubtitle")}</p>
+      <p className="mt-2 max-w-2xl text-muted-foreground">{t("solicitudesSubtitle")}</p>
 
       {solicitudes.length === 0 ? (
-        <div className="mt-8 flex flex-col items-center rounded-2xl border border-border bg-card px-6 py-14 text-center">
-          <h2 className="font-heading text-xl font-semibold">{t("solicitudesEmptyTitle")}</h2>
+        <div className="mt-8 flex flex-col items-center rounded-2xl border border-border bg-card px-6 py-14 text-center shadow-soft">
+          <span aria-hidden="true" className="text-4xl">
+            🐾
+          </span>
+          <h2 className="mt-4 font-heading text-xl font-semibold">
+            {t("solicitudesEmptyTitle")}
+          </h2>
           <p className="mt-2 max-w-md text-muted-foreground">{t("solicitudesEmptyText")}</p>
           <Link
             href="/animales"
@@ -105,113 +117,187 @@ export default async function MisSolicitudesPage() {
           </Link>
         </div>
       ) : (
-        <ul className="mt-8 flex flex-col gap-4">
-          {solicitudes.map((solicitud) => {
+        <ul className="mt-8 grid gap-6 md:grid-cols-2">
+          {solicitudes.map((solicitud, i) => {
             const animal = solicitud.animals;
             const portada = portadaDe(solicitud);
+            const cita = citaPorSolicitud.get(solicitud.id);
+            const apagada = APAGADOS.includes(solicitud.status);
+            const nombreAnimal = animal?.name ?? t("animalSinNombre");
+
+            // Mensaje contextual según el estado (y si ya hay cita agendada).
+            const mensaje =
+              solicitud.status === "approved"
+                ? cita
+                  ? t("solicitudMsgApprovedCita", { animal: nombreAnimal })
+                  : t("solicitudMsgApproved")
+                : solicitud.status === "pending"
+                  ? t("solicitudMsgPending", { animal: nombreAnimal })
+                  : solicitud.status === "rejected"
+                    ? t("solicitudMsgRejected")
+                    : solicitud.status === "withdrawn"
+                      ? t("solicitudMsgWithdrawn")
+                      : t("solicitudMsgCompleted", { animal: nombreAnimal });
+
             return (
-              <li
-                key={solicitud.id}
-                className="flex gap-4 rounded-2xl border border-border bg-card p-4"
-              >
-                <div className="relative size-20 shrink-0 overflow-hidden rounded-xl bg-muted sm:size-24">
-                  {portada ? (
-                    <Image
-                      src={portada}
-                      alt=""
-                      fill
-                      sizes="96px"
-                      className="object-cover"
-                    />
-                  ) : (
-                    <span
-                      aria-hidden="true"
-                      className="flex h-full items-center justify-center text-3xl"
-                    >
-                      🐾
-                    </span>
-                  )}
-                </div>
-
-                <div className="flex min-w-0 flex-1 flex-col gap-1">
-                  <div className="flex flex-wrap items-center gap-2">
-                    {animal ? (
-                      <Link
-                        href={`/animales/${animal.slug}`}
-                        className="font-heading text-lg font-semibold hover:underline"
-                      >
-                        {animal.name}
-                      </Link>
-                    ) : (
-                      <span className="font-heading text-lg font-semibold">—</span>
+              <li key={solicitud.id}>
+                <Reveal delayMs={(i % 2) * 80}>
+                  <article
+                    className={cn(
+                      "flex h-full overflow-hidden rounded-2xl border border-border",
+                      apagada ? "bg-muted/40" : "bg-card shadow-soft",
                     )}
-                    <span
-                      className={`rounded-full px-2.5 py-0.5 text-xs font-semibold ${BADGE_POR_ESTADO[solicitud.status]}`}
-                    >
-                      {t(CLAVE_POR_ESTADO[solicitud.status])}
-                    </span>
-                  </div>
-                  {animal?.shelters && (
-                    <Link
-                      href={`/protectoras/${animal.shelters.slug}`}
-                      className="text-sm text-muted-foreground hover:underline"
-                    >
-                      {animal.shelters.name}
-                    </Link>
-                  )}
-                  <p className="text-sm text-muted-foreground">
-                    {t("solicitudEnviadaEl", {
-                      fecha: format.dateTime(new Date(solicitud.created_at), {
-                        day: "numeric",
-                        month: "long",
-                        year: "numeric",
-                      }),
-                    })}
-                  </p>
-                  {animal && !animal.published_at && (
-                    <p className="text-sm text-muted-foreground">
-                      {t("solicitudAnimalNoDisponible")}
-                    </p>
-                  )}
+                  >
+                    {/* Franja de foto con el chip de estado superpuesto */}
+                    <div className="relative w-28 shrink-0 bg-muted sm:w-32">
+                      {portada ? (
+                        <Image
+                          src={portada}
+                          alt=""
+                          fill
+                          sizes="128px"
+                          className={cn("object-cover", apagada && "grayscale")}
+                        />
+                      ) : (
+                        <span
+                          aria-hidden="true"
+                          className="flex h-full items-center justify-center text-3xl"
+                        >
+                          🐾
+                        </span>
+                      )}
+                      <span
+                        className={cn(
+                          "absolute left-2 top-2 rounded-full px-2.5 py-0.5 text-xs font-semibold shadow-sm ring-1 ring-black/5",
+                          BADGE_POR_ESTADO[solicitud.status],
+                        )}
+                      >
+                        {t(CLAVE_POR_ESTADO[solicitud.status])}
+                      </span>
+                    </div>
 
-                  {/* Cita (FEATURE-009): reservar si está aprobada; ver/cancelar si ya hay */}
-                  {solicitud.status === "approved" &&
-                    (citaPorSolicitud.has(solicitud.id) ? (
-                      <div className="mt-2 flex flex-col gap-2">
-                        <p className="text-sm font-medium text-secondary">
-                          {tCitas("citaProxima", {
-                            fecha: format.dateTime(
-                              new Date(citaPorSolicitud.get(solicitud.id)!.starts_at),
-                              {
-                                weekday: "long",
-                                day: "numeric",
-                                month: "long",
-                                hour: "2-digit",
-                                minute: "2-digit",
-                                timeZone: "Europe/Madrid",
-                              },
-                            ),
+                    {/* Contenido */}
+                    <div className="flex min-w-0 flex-1 flex-col gap-3 p-5">
+                      <div className="flex items-start justify-between gap-3">
+                        {animal ? (
+                          <Link
+                            href={`/animales/${animal.slug}`}
+                            className="font-heading text-xl font-semibold hover:underline"
+                          >
+                            {animal.name}
+                          </Link>
+                        ) : (
+                          <span className="font-heading text-xl font-semibold">—</span>
+                        )}
+                        <span className="shrink-0 whitespace-nowrap pt-1 text-xs text-muted-foreground">
+                          {t("solicitudEnviadaEl", {
+                            fecha: format.dateTime(new Date(solicitud.created_at), {
+                              day: "numeric",
+                              month: "short",
+                              year: "numeric",
+                            }),
+                          })}
+                        </span>
+                      </div>
+
+                      {animal?.shelters && (
+                        <Link
+                          href={`/protectoras/${animal.shelters.slug}`}
+                          className="-mt-2 w-fit text-sm text-muted-foreground hover:underline"
+                        >
+                          {animal.shelters.name}
+                        </Link>
+                      )}
+
+                      {/* Cita confirmada: destaca fecha y hora en chip teal */}
+                      {solicitud.status === "approved" && cita && (
+                        <p className="inline-flex w-fit items-center gap-2 rounded-full bg-secondary/15 px-3 py-1.5 text-sm font-semibold text-secondary">
+                          <CalendarCheck className="size-4" aria-hidden="true" />
+                          {format.dateTime(new Date(cita.starts_at), {
+                            weekday: "long",
+                            day: "numeric",
+                            month: "long",
+                            hour: "2-digit",
+                            minute: "2-digit",
+                            timeZone: "Europe/Madrid",
                           })}
                         </p>
-                        <CancelarCitaButton citaId={citaPorSolicitud.get(solicitud.id)!.id} />
-                      </div>
-                    ) : (
-                      <Link
-                        href={`/mi-cuenta/citas/nueva/${solicitud.id}`}
-                        className="mt-2 inline-flex w-fit rounded-full bg-secondary px-4 py-1.5 text-sm font-semibold text-secondary-foreground hover:bg-secondary/90"
-                      >
-                        {tCitas("reservarVisita")}
-                      </Link>
-                    ))}
-                </div>
+                      )}
 
-                {solicitud.status === "pending" && (
-                  <RetirarSolicitudButton solicitudId={solicitud.id} />
-                )}
+                      <p className="text-sm text-muted-foreground">{mensaje}</p>
+
+                      {animal && !animal.published_at && (
+                        <p className="text-sm text-muted-foreground">
+                          {t("solicitudAnimalNoDisponible")}
+                        </p>
+                      )}
+
+                      {/* Acciones según estado */}
+                      <div className="mt-auto flex flex-wrap items-center gap-2 pt-1">
+                        {solicitud.status === "approved" &&
+                          (cita ? (
+                            <>
+                              <CancelarCitaButton citaId={cita.id} />
+                              {animal?.shelters && (
+                                <Link
+                                  href={`/protectoras/${animal.shelters.slug}`}
+                                  className="inline-flex min-h-11 items-center rounded-full border border-border px-5 text-sm font-semibold hover:bg-accent"
+                                >
+                                  {t("solicitudContactarRefugio")}
+                                </Link>
+                              )}
+                            </>
+                          ) : (
+                            <Link
+                              href={`/mi-cuenta/citas/nueva/${solicitud.id}`}
+                              className="inline-flex min-h-11 items-center rounded-full bg-secondary px-5 text-sm font-semibold text-secondary-foreground hover:bg-secondary/90"
+                            >
+                              {tCitas("reservarVisita")}
+                            </Link>
+                          ))}
+
+                        {solicitud.status === "pending" && (
+                          <RetirarSolicitudButton solicitudId={solicitud.id} />
+                        )}
+
+                        {animal && (
+                          <Link
+                            href={`/animales/${animal.slug}`}
+                            className="inline-flex min-h-11 items-center rounded-full border border-border px-5 text-sm font-semibold hover:bg-accent"
+                          >
+                            {t("solicitudVerDetalles")}
+                          </Link>
+                        )}
+                      </div>
+                    </div>
+                  </article>
+                </Reveal>
               </li>
             );
           })}
         </ul>
+      )}
+
+      {solicitudes.length > 0 && (
+        <Reveal className="mt-10">
+          <aside className="flex flex-col gap-4 rounded-2xl bg-surface-container p-6 sm:flex-row sm:items-center sm:gap-6">
+            <span className="flex size-14 shrink-0 items-center justify-center rounded-full bg-secondary/15 text-secondary">
+              <BookOpen className="size-7" aria-hidden="true" />
+            </span>
+            <div className="flex-1">
+              <h2 className="font-heading text-xl font-semibold text-secondary">
+                {t("solicitudAyudaTitulo")}
+              </h2>
+              <p className="mt-1 text-sm text-muted-foreground">{t("solicitudAyudaTexto")}</p>
+            </div>
+            <Link
+              href="/guias"
+              className="inline-flex min-h-11 shrink-0 items-center rounded-full border border-secondary/40 px-5 text-sm font-semibold text-secondary hover:bg-secondary/10"
+            >
+              {t("solicitudAyudaCta")}
+            </Link>
+          </aside>
+        </Reveal>
       )}
     </section>
   );

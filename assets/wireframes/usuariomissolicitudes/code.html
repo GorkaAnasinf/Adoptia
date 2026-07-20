@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Mis Solicitudes de Adopción | Adoptia</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&amp;family=Open+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-primary": "#ffffff",
+                    "error-container": "#ffdad6",
+                    "surface-variant": "#e7e2da",
+                    "on-surface-variant": "#56423e",
+                    "tertiary-container": "#81978d",
+                    "secondary-fixed": "#bcece6",
+                    "on-secondary-container": "#3f6c68",
+                    "primary-fixed": "#ffdad3",
+                    "on-primary-fixed": "#3e0500",
+                    "secondary-container": "#bcece6",
+                    "surface-container-low": "#f9f3eb",
+                    "on-tertiary-fixed-variant": "#374b43",
+                    "on-tertiary": "#ffffff",
+                    "background": "#fef8f0",
+                    "tertiary-fixed": "#d1e8dd",
+                    "primary-container": "#e2725b",
+                    "inverse-primary": "#ffb4a5",
+                    "on-tertiary-fixed": "#0b1f18",
+                    "on-secondary-fixed-variant": "#204e4a",
+                    "outline": "#89726d",
+                    "secondary-fixed-dim": "#a1cfca",
+                    "surface-bright": "#fef8f0",
+                    "surface-tint": "#9f402d",
+                    "surface-dim": "#dfd9d2",
+                    "on-error-container": "#93000a",
+                    "surface": "#fef8f0",
+                    "outline-variant": "#ddc0ba",
+                    "tertiary-fixed-dim": "#b5ccc1",
+                    "on-primary-container": "#5a0d02",
+                    "inverse-on-surface": "#f6f0e8",
+                    "primary-fixed-dim": "#ffb4a5",
+                    "secondary": "#396662",
+                    "on-primary-fixed-variant": "#802918",
+                    "surface-container-high": "#ede7e0",
+                    "surface-container-lowest": "#ffffff",
+                    "error": "#ba1a1a",
+                    "primary": "#9f402d",
+                    "tertiary": "#4e635a",
+                    "on-error": "#ffffff",
+                    "on-surface": "#1d1b17",
+                    "on-secondary-fixed": "#00201e",
+                    "inverse-surface": "#32302b",
+                    "surface-container": "#f3ede5",
+                    "on-background": "#1d1b17",
+                    "surface-container-highest": "#e7e2da",
+                    "on-tertiary-container": "#1b2f28",
+                    "on-secondary": "#ffffff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "margin-mobile": "16px",
+                    "gutter": "20px",
+                    "xs": "4px",
+                    "xl": "32px",
+                    "container-max": "1200px",
+                    "lg": "24px",
+                    "md": "16px",
+                    "sm": "8px",
+                    "xxl": "48px",
+                    "unit": "4px"
+            },
+            "fontFamily": {
+                    "label-md": ["Open Sans"],
+                    "headline-xl": ["Montserrat"],
+                    "headline-lg-mobile": ["Montserrat"],
+                    "body-md": ["Open Sans"],
+                    "body-lg": ["Open Sans"],
+                    "label-sm": ["Open Sans"],
+                    "headline-lg": ["Montserrat"],
+                    "headline-md": ["Montserrat"]
+            },
+            "fontSize": {
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                    "headline-xl": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #fef8f0;
+            color: #1d1b17;
+            -webkit-font-smoothing: antialiased;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .app-shadow {
+            box-shadow: 0 4px 12px rgba(226, 114, 91, 0.08);
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #fef8f0;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #ddc0ba;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #89726d;
+        }
+    </style>
+</head>
+<body class="font-body-md text-body-md min-h-screen overflow-x-hidden">
+<!-- SideNavBar Anchor -->
+<aside class="h-screen w-64 fixed left-0 top-0 bg-surface-container dark:bg-inverse-surface flex flex-col p-4 z-50 transition-all duration-300">
+<div class="mb-8 px-2">
+<h1 class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed-dim">Adoptia</h1>
+<p class="text-xs text-on-surface-variant font-label-sm mt-1 uppercase tracking-wider">Nurturing connections</p>
+</div>
+<div class="flex flex-col gap-2 flex-grow">
+<!-- Active: My Adoptions -->
+<a class="flex items-center gap-3 px-4 py-3 bg-primary-container dark:bg-on-primary-fixed-variant text-on-primary-container dark:text-primary-fixed rounded-xl active:scale-95 duration-200 transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="pets">pets</span>
+<span class="font-label-md text-label-md">My Adoptions</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-highest dark:hover:bg-surface-container-low transition-colors active:scale-95 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="favorite">favorite</span>
+<span class="font-label-md text-label-md">Favorites</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-highest dark:hover:bg-surface-container-low transition-colors active:scale-95 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="volunteer_activism">volunteer_activism</span>
+<span class="font-label-md text-label-md">My Donations</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-highest dark:hover:bg-surface-container-low transition-colors active:scale-95 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-label-md text-label-md">Profile Settings</span>
+</a>
+</div>
+<div class="mt-auto p-4 bg-surface-container-high dark:bg-surface-dim rounded-2xl flex flex-col gap-3">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full overflow-hidden bg-outline-variant">
+<img class="w-full h-full object-cover" data-alt="A warm, cinematic portrait of a smiling woman in her 30s with a kind expression, wearing a soft cream-colored sweater. The background is a cozy, brightly lit living room with subtle earthy tones and a blurred indoor plant, reflecting the nurturing and compassionate brand identity of an animal lover." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCtNkd7LwjmAEUTYFIOTUGSimv2aydlY6TYZhF3hYdNlZduyrdEAZaFHMkqNtFv-YIKl77Ah-4-WOqJ6NExyEvH7JZuSACQ8CanHGNaGudyO9VxOHCsc-OnaZ9Hi_0sCOmBfToRbFGU-0ju3ebJJsOxOa8-tjP1sDpLpCop35n-Z3FKyrn5Jx7T5zkaym4WHvGsJIPQ1uXqrfGDeIgE4Sc5OJfJ2Qrd3uA9y7UEHCbLmzU6FIZU7GaBalxOfaFSRA2CL9kJOmbjVe2K"/>
+</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface">Welcome back!</p>
+<p class="text-[10px] text-on-surface-variant uppercase font-bold">Volunteer Member</p>
+</div>
+</div>
+<button class="w-full bg-secondary text-on-secondary py-2.5 rounded-xl font-label-md text-label-md active:scale-95 transition-transform">
+                Find a Pet
+            </button>
+</div>
+</aside>
+<!-- TopAppBar Anchor -->
+<header class="fixed top-0 right-0 w-[calc(100%-16rem)] z-40 bg-surface/80 dark:bg-background/80 backdrop-blur-md transition-colors">
+<div class="flex justify-between items-center px-8 py-4 w-full">
+<div class="flex items-center gap-4">
+<h2 class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed-dim">Mis Solicitudes</h2>
+</div>
+<div class="flex items-center gap-6">
+<!-- Search on right -->
+<div class="relative hidden lg:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="pl-10 pr-4 py-2 bg-surface-container-low border-none rounded-full w-64 focus:ring-2 focus:ring-secondary/20 transition-all text-sm" placeholder="Buscar mi mascota..." type="text"/>
+</div>
+<div class="flex items-center gap-3">
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container-highest transition-colors relative">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="notifications">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-primary rounded-full border-2 border-surface"></span>
+</button>
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container-highest transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="help">help</span>
+</button>
+<div class="h-8 w-[1px] bg-outline-variant mx-2"></div>
+<img class="w-8 h-8 rounded-full object-cover" data-alt="Close-up profile avatar of a friendly woman with dark hair and a warm smile, set against a soft bokeh background of a sunny garden. The lighting is natural and golden, emphasizing a nurturing and inviting personality suitable for a pet adoption platform's user profile." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBRu9HLz6GZInUuH8RCyLa_TJgQt8bqAyu7pR_T7P7pJ2Z4C6tGg52UshCkwUvt-eJrWG6Iu45TWlkqBFZ_2ClPvLUyoxxwIxcN6nbshLoEzzO_jnyxDEcZxUsb_WNnygmcHqh48hNzk8fiqe3d71sFJbPvJATcb0X0cNUPKGl2RK-zz3gZYzh2QrKClaNkfkVhVZ5nQZNLbf_GetfkZ04_HkBk9Ud7bgDsmLZMeUrG4-SDDpmEHpDrEm_Nm4fMcJKI2UZgoxje6lRS"/>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="ml-64 pt-24 px-8 pb-12 min-h-screen max-w-[1200px] mx-auto">
+<header class="mb-10">
+<h1 class="font-headline-xl text-headline-xl text-on-surface mb-2">Mis Solicitudes de Adopción</h1>
+<p class="text-on-surface-variant font-body-lg text-body-lg max-w-2xl">Sigue el estado de tus procesos de adopción y encuentra a tu próximo mejor amigo. Estamos aquí para guiarte en cada paso.</p>
+</header>
+<!-- Bento Grid Layout for Applications -->
+<div class="grid grid-cols-1 xl:grid-cols-2 gap-8">
+<!-- Application Card 1: ACEPTADA -->
+<div class="bg-surface-container-lowest rounded-2xl overflow-hidden app-shadow border border-surface-container transition-all hover:scale-[1.01] duration-300">
+<div class="flex flex-col md:flex-row h-full">
+<div class="md:w-48 h-48 md:h-auto relative overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A professional, high-quality photograph of a golden Labrador named Bruno with intelligent, soulful eyes looking directly into the camera. The setting is a bright, airy indoor space with soft natural morning light and minimal earthy-toned decor, creating a peaceful and welcoming atmosphere in a modern minimalist style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC0G9Hepztg6JJAta_em1TSJZtRWoNdFS1q1vO4HDCNBshYQsRI7uDQMuI0MwOPI1Zen4Zl1fKm7VJM9kjrX9nN0TU_9dUVH4osdcALC5hWA6EAefViI3IAYDMuxbGPEzUT3FQthBqMy_2pbVW4oXFVWNGAIOP4-71tmKFR_e8iufSHW6XK4LIzoKTWRKqA8oQtcNrUWbkNqcK-si0HSW-TZmDfoLj2gX45NeWENYUkR4Em6YinRatGTKCjQxjUUHzOygNrfCxIq2nL"/>
+<div class="absolute top-4 left-4">
+<span class="px-3 py-1 bg-secondary-container text-on-secondary-container text-xs font-bold rounded-full uppercase tracking-widest shadow-sm">ACEPTADA</span>
+</div>
+</div>
+<div class="flex-grow p-6 flex flex-col justify-between">
+<div>
+<div class="flex justify-between items-start mb-2">
+<h3 class="font-headline-md text-headline-md text-on-surface">Bruno</h3>
+<span class="text-on-surface-variant font-label-sm text-label-sm">Iniciada: 12 Oct 2023</span>
+</div>
+<div class="flex items-center gap-2 text-on-surface-variant mb-4">
+<span class="material-symbols-outlined text-sm">location_on</span>
+<span class="text-sm font-label-md">Refugio Huellas Amigas, Madrid</span>
+</div>
+<p class="text-on-surface-variant text-sm mb-4 leading-relaxed">¡Felicidades! Tu solicitud ha sido aprobada. El siguiente paso es conocernos en persona para asegurar el mejor match.</p>
+</div>
+<div class="flex flex-wrap gap-3 mt-4">
+<button class="px-6 py-2.5 bg-primary text-on-primary rounded-xl font-label-md text-label-md active:scale-95 transition-all shadow-md">Agendar Cita</button>
+<button class="px-6 py-2.5 border border-outline-variant text-on-surface-variant rounded-xl font-label-md text-label-md hover:bg-surface-container-high transition-colors">Ver detalles</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Application Card 2: CITA PROGRAMADA -->
+<div class="bg-surface-container-lowest rounded-2xl overflow-hidden app-shadow border border-surface-container transition-all hover:scale-[1.01] duration-300">
+<div class="flex flex-col md:flex-row h-full">
+<div class="md:w-48 h-48 md:h-auto relative overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A charming portrait of a fluffy grey and white cat named Luna with striking green eyes, sitting gracefully on a cream-colored rug. The scene is illuminated by soft, diffused daylight, highlighting the texture of her fur. The aesthetic is modern and cozy, using a warm neutral color palette to evoke a sense of home and comfort." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCPzoJ7jAXLhAAtjDOfRpYrgUW1-2MV51nXhtypHEAPRs81CaXJ6QvlAeESPr-baMK9l1Z-oy8VzHTpFK2hkaIBYt0uhCe-1jq9c4J1h-v4O9Psxpih-lHxIv5xpjHHQeJ4hs_GyYbHd-uFXyK06KEuxL-QHlLfbp4_oF6V73ni6orvkwJKsUrWpxNfk-_yuRSzvy7WU667WUKPRdD_mx6vigzsCvV_rJI6_Bbmu1QtSVouP5KP_o9oNz_MOx-lp2mfzDRT6sooQFz4"/>
+<div class="absolute top-4 left-4">
+<span class="px-3 py-1 bg-secondary text-white text-xs font-bold rounded-full uppercase tracking-widest shadow-sm">CITA PROGRAMADA</span>
+</div>
+</div>
+<div class="flex-grow p-6 flex flex-col justify-between">
+<div>
+<div class="flex justify-between items-start mb-2">
+<h3 class="font-headline-md text-headline-md text-on-surface">Luna</h3>
+<span class="text-on-surface-variant font-label-sm text-label-sm">Iniciada: 05 Oct 2023</span>
+</div>
+<div class="inline-flex items-center gap-3 px-4 py-2 bg-secondary-fixed text-on-secondary-fixed-variant rounded-lg mb-4">
+<span class="material-symbols-outlined text-lg">event</span>
+<span class="font-label-md text-label-md">Viernes, 27 de Octubre • 16:30</span>
+</div>
+<p class="text-on-surface-variant text-sm mb-4 leading-relaxed">Tu visita al refugio está confirmada. Recuerda traer una identificación oficial y espacio en tu corazón.</p>
+</div>
+<div class="flex flex-wrap gap-3 mt-4">
+<button class="px-6 py-2.5 border border-error/30 text-error rounded-xl font-label-md text-label-md hover:bg-error-container transition-colors">Cancelar Cita</button>
+<button class="px-6 py-2.5 border border-outline-variant text-on-surface-variant rounded-xl font-label-md text-label-md hover:bg-surface-container-high transition-colors">Contactar refugio</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Application Card 3: EN REVISIÓN -->
+<div class="bg-surface-container-lowest rounded-2xl overflow-hidden app-shadow border border-surface-container transition-all hover:scale-[1.01] duration-300">
+<div class="flex flex-col md:flex-row h-full">
+<div class="md:w-48 h-48 md:h-auto relative overflow-hidden grayscale-[50%]">
+<img class="w-full h-full object-cover" data-alt="A focused close-up of a loyal Border Collie named Koda with alert ears and a playful gaze, set against a blurred background of a sun-drenched park with warm green and amber tones. The lighting is golden hour, creating a tactile and soft feel that emphasizes the connection between pets and their future owners in a premium lifestyle photography style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBJge0qAAI-GH1IAL54rDNeaoHD7wc3FRdJPv2HrQWVWxxoAxNQjtanYudvF3n6LCS2yavyA5xDJr4WFtcAvdQ1S5OWQSpv1MM65kicszza5ari6dI4-4271iypUDxQTbRDupnqgpnuumBpn4cbWf7aXF0CNIBqROHNhcobtK4VJEwMpC7baWiahyeh4BLOU2JU9k_XBkWxeYo_YrRhypy8GfP93FuFIb62N0JKUOdcudpA0Hh42SubvRxxT0e2UkCH1Bit8WTBQc8U"/>
+<div class="absolute top-4 left-4">
+<span class="px-3 py-1 bg-surface-variant text-on-surface-variant text-xs font-bold rounded-full uppercase tracking-widest shadow-sm">EN REVISIÓN</span>
+</div>
+</div>
+<div class="flex-grow p-6 flex flex-col justify-between">
+<div>
+<div class="flex justify-between items-start mb-2">
+<h3 class="font-headline-md text-headline-md text-on-surface">Koda</h3>
+<span class="text-on-surface-variant font-label-sm text-label-sm">Iniciada: 18 Oct 2023</span>
+</div>
+<div class="flex items-center gap-2 text-on-surface-variant mb-4">
+<span class="material-symbols-outlined text-sm">history</span>
+<span class="text-sm font-label-md">Tiempo estimado: 3-5 días hábiles</span>
+</div>
+<p class="text-on-surface-variant text-sm mb-4 leading-relaxed">Estamos analizando tu perfil para asegurar que Koda encuentre el hogar perfecto. Te notificaremos pronto.</p>
+</div>
+<div class="flex flex-wrap gap-3 mt-4">
+<button class="px-6 py-2.5 border border-outline-variant text-on-surface-variant rounded-xl font-label-md text-label-md hover:bg-surface-container-high transition-colors flex-grow text-center">Ver Detalles del Proceso</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Application Card 4: RECHAZADA -->
+<div class="bg-surface-container/50 rounded-2xl overflow-hidden opacity-80 border border-transparent grayscale">
+<div class="flex flex-col md:flex-row h-full">
+<div class="md:w-48 h-48 md:h-auto relative overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A black and tan dachshund named Toby looking curiously to the side, photographed in a high-key studio setting with a soft cream background. The image is crisp and professional, part of a collection of pet portraits that celebrate individual personalities while maintaining a clean, modern aesthetic consistent with a nurturing adoption platform." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC-2Hq3Qcp_Zs0AlJ_r_5bdQ0Eg3Hprm8A3ns7-oQwOspqJbfL7ycLTfx4mXkzGO_nzCPvekzjG4fVqVvEN2XUihIQbXdwAO7Vvo8LwCNRXFaKPdeLzNrMl2PPEU6MtWS2tFUcUqjA5BANCq4CK5aG_t1WXrLAg8Oxv5sZuLJYY4zy-A1IO-ejD_Q2B6QiCgRay40jMN97yDyGv0bO-rL7Ego9B5xWwZVJlarEGPBK2cz64rd0LO-wWtyxzGfliuv25aBsSQLrnLXsv"/>
+<div class="absolute top-4 left-4">
+<span class="px-3 py-1 bg-error-container text-on-error-container text-xs font-bold rounded-full uppercase tracking-widest shadow-sm">RECHAZADA</span>
+</div>
+</div>
+<div class="flex-grow p-6 flex flex-col justify-between">
+<div>
+<div class="flex justify-between items-start mb-2">
+<h3 class="font-headline-md text-headline-md text-on-surface">Toby</h3>
+<span class="text-on-surface-variant font-label-sm text-label-sm">Iniciada: 20 Sep 2023</span>
+</div>
+<p class="text-on-surface-variant text-sm mb-4 leading-relaxed">Lamentablemente, el refugio ha decidido no avanzar con esta solicitud. No te desanimes, hay muchos otros amigos esperando.</p>
+</div>
+<div class="flex flex-wrap gap-3 mt-4">
+<button class="px-6 py-2.5 border border-outline-variant text-on-surface-variant rounded-xl font-label-md text-label-md hover:bg-surface-container-high transition-colors">Ver Motivo</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Section: Suggestions / Help -->
+<section class="mt-16 bg-tertiary-container/10 p-8 rounded-[2rem] flex flex-col md:flex-row items-center gap-8 border border-tertiary-container/20">
+<div class="md:w-1/3">
+<img class="w-full h-48 object-cover rounded-2xl shadow-lg rotate-2" data-alt="A high-end lifestyle image of a person’s hands gently petting a small ginger dog in a sunlit garden. The focus is on the connection and the tactile softness of the interaction, with a shallow depth of field. The lighting is warm and organic, perfectly capturing the theme of nurturing connection in a modern, compassionate way." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCcilV9yFLOoc86msb7KU6W6R4KRSDihCcjFRgS1YFkj1C7swZnWfxjix7eQxbjXHKpYQ-o8EKv-UxubJjWjKX664AECOLuq-mkIIPahKShSj7dGHcm78KHgHtT_q-E0_mB4VzeeQ_sPp-PtNzUEiQ_F8gJVmm7Vs8mRRE44Kqvyh8XeFq9gYv_jL7cvmDNjU_Evdyj0EiCCIs6twrVl7aRQswcsC0lu2sTFnZcCUhGYarJh7llQklWTRp-p2eHG3F0TnWyJshxyxtx"/>
+</div>
+<div class="flex-grow">
+<h3 class="font-headline-lg text-headline-lg text-secondary mb-4">¿Necesitas ayuda con tu trámite?</h3>
+<p class="text-on-surface-variant font-body-md text-body-md mb-6 leading-relaxed">
+                    Sabemos que el proceso de adopción puede generar dudas. Nuestro equipo de soporte y los refugios asociados están para ayudarte a que la integración de tu nuevo miembro sea perfecta.
+                </p>
+<div class="flex gap-4">
+<button class="flex items-center gap-2 text-primary font-bold hover:underline">
+<span class="material-symbols-outlined">menu_book</span>
+                        Guía del Adoptante
+                    </button>
+<button class="flex items-center gap-2 text-primary font-bold hover:underline">
+<span class="material-symbols-outlined">support_agent</span>
+                        Chat de Soporte
+                    </button>
+</div>
+</div>
+</section>
+</main>
+<!-- Success Message Snackbar (Logic-driven UI) -->
+<div class="fixed bottom-8 left-1/2 -translate-x-1/2 bg-inverse-surface text-inverse-on-surface px-6 py-4 rounded-xl shadow-2xl flex items-center gap-4 translate-y-24 opacity-0 transition-all duration-500 z-[100]" id="snackbar">
+<span class="material-symbols-outlined text-tertiary-fixed">check_circle</span>
+<p class="font-label-md text-label-md">Tu cita ha sido agendada con éxito. Revisa tu correo.</p>
+</div>
+<script>
+        // Micro-interactions and simulation
+        document.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('click', function() {
+                if (this.innerText.includes('Agendar Cita')) {
+                    const snackbar = document.getElementById('snackbar');
+                    snackbar.classList.remove('translate-y-24', 'opacity-0');
+                    snackbar.classList.add('translate-y-0', 'opacity-100');
+                    
+                    setTimeout(() => {
+                        snackbar.classList.add('translate-y-24', 'opacity-0');
+                        snackbar.classList.remove('translate-y-0', 'opacity-100');
+                    }, 4000);
+                }
+            });
+        });
+
+        // Hover animations for cards
+        const cards = document.querySelectorAll('.app-shadow');
+        cards.forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.boxShadow = '0 12px 24px rgba(226, 114, 91, 0.12)';
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.boxShadow = '0 4px 12px rgba(226, 114, 91, 0.08)';
+            });
+        });
+    </script>
+</body></html>
