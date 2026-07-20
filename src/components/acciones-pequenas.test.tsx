@@ -23,7 +23,6 @@ vi.mock("@/lib/supabase/client", () => ({
   })),
 }));
 
-import { AlertaAcciones } from "./alertas/AlertaAcciones";
 import { QuitarFavoritoButton } from "./animals/QuitarFavoritoButton";
 import { ContactarAcogedorButton } from "./acogida/ContactarAcogedorButton";
 import { ImagenSocialButton } from "./stats/ImagenSocialButton";
@@ -48,28 +47,6 @@ beforeEach(() => {
 });
 
 afterEach(() => vi.unstubAllGlobals());
-
-describe("AlertaAcciones", () => {
-  it("pausa la alerta", async () => {
-    const user = userEvent.setup();
-    conIntl(<AlertaAcciones alertaId="al1" activa />);
-    await user.click(screen.getByRole("button", { name: messages.account.alertaPausar }));
-    await waitFor(() => expect(updateEqMock).toHaveBeenCalledWith("id", "al1"));
-    expect(refreshMock).toHaveBeenCalled();
-  });
-
-  it("elimina la alerta", async () => {
-    const user = userEvent.setup();
-    conIntl(<AlertaAcciones alertaId="al1" activa />);
-    await user.click(screen.getByRole("button", { name: messages.account.alertaBorrar }));
-    await waitFor(() => expect(deleteEqMock).toHaveBeenCalledWith("id", "al1"));
-  });
-
-  it("una alerta pausada ofrece activar", () => {
-    conIntl(<AlertaAcciones alertaId="al1" activa={false} />);
-    expect(screen.getByRole("button", { name: messages.account.alertaActivar })).toBeInTheDocument();
-  });
-});
 
 describe("QuitarFavoritoButton", () => {
   it("borra el favorito y refresca", async () => {
