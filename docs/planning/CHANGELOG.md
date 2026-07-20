@@ -2,6 +2,12 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/es/) adaptado. Versionado 0.x hasta el MVP.
 
+## [0.0.77] — 2026-07-20
+
+### Cambiado
+
+- **«Mi cuenta» deja de estar vacía y se convierte en el panel del adoptante (FEATURE-039)**: sexta pantalla de la tanda Stitch. Hasta hoy la pantalla de aterrizaje tras el login mostraba un cartel fijo y ni una sola consulta a datos; ahora recibe con un saludo por tu nombre y te enseña lo tuyo — cuántos favoritos tienes, cuántas solicitudes siguen vivas y cuántas citas te esperan, las tres últimas solicitudes con su estado real, una tira de favoritos y el bloque **Recordatorios**, que saca a la luz lo que antes se perdía: la cita de mañana, la propuesta de acogida sin responder y, sobre todo, **la solicitud ya aprobada a la que aún no le has reservado visita**. Cierra la columna un panel con las formas de ayudar que ya tienes en marcha y el animal que más tiempo lleva esperando familia. Las cifras que el wireframe pedía y el producto no tiene (euros y kilos donados, niveles de usuario, mensajería) se sustituyen por datos reales en vez de inventarse. De paso, el logo de la app privada llevaba siempre al panel de protectora: un adoptante que lo pulsaba acababa donde no debía. QA: suite 1183/1183 con RLS; sin migraciones.
+
 ## [0.0.76] — 2026-07-20
 
 ### Cambiado

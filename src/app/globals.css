@@ -14,6 +14,10 @@
   --on-primary-container: #5a0d02;
   --secondary: #396662; /* teal — CTAs de alta prioridad */
   --secondary-foreground: #ffffff;
+  --secondary-container: #bcece6; /* teal pastel — superficies de bienvenida (hero de /mi-cuenta) */
+  /* DESIGN.md propone #3f6c68 sobre este pastel, pero el par se queda en ~3.4:1
+     y no llega a AA para texto normal: usamos su variante oscura (~6:1). */
+  --on-secondary-container: #204e4a;
   --tertiary: #4e635a; /* salvia — éxito, etiquetas */
   --tertiary-foreground: #ffffff;
 
@@ -59,6 +63,8 @@
   --color-on-primary-container: var(--on-primary-container);
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary-container: var(--secondary-container);
+  --color-on-secondary-container: var(--on-secondary-container);
   --color-tertiary: var(--tertiary);
   --color-tertiary-foreground: var(--tertiary-foreground);
   --color-card: var(--card);

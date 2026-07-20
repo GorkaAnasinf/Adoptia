@@ -34,6 +34,31 @@ describe("AppShell", () => {
     expect(screen.getByText(messages.shell.statusVerified)).toBeInTheDocument();
   });
 
+  it("el logo lleva al inicio del rol: la protectora a su panel y el adoptante a su cuenta", () => {
+    const { unmount } = render(
+      <NextIntlClientProvider locale="es" messages={messages}>
+        <AppShell role="shelter" onboarding={false} status="verified">
+          <p>x</p>
+        </AppShell>
+      </NextIntlClientProvider>,
+    );
+    for (const enlace of screen.getAllByRole("link", { name: new RegExp(messages.common.appName) })) {
+      expect(enlace).toHaveAttribute("href", "/panel");
+    }
+    unmount();
+
+    render(
+      <NextIntlClientProvider locale="es" messages={messages}>
+        <AppShell role="adopter" onboarding={false} status={null}>
+          <p>x</p>
+        </AppShell>
+      </NextIntlClientProvider>,
+    );
+    for (const enlace of screen.getAllByRole("link", { name: new RegExp(messages.common.appName) })) {
+      expect(enlace).toHaveAttribute("href", "/mi-cuenta");
+    }
+  });
+
   it("ofrece un enlace de saltar al contenido que apunta al main", () => {
     renderShell();
     const salto = screen.getByRole("link", { name: messages.shell.skipToContent });
