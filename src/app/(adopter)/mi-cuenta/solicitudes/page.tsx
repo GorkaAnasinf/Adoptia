@@ -147,8 +147,8 @@ export default async function MisSolicitudesPage() {
                       : t("solicitudMsgCompleted", { animal: nombreAnimal });
 
             return (
-              <li key={solicitud.id}>
-                <Reveal delayMs={(i % 2) * 80}>
+              <li key={solicitud.id} className="h-full">
+                <Reveal delayMs={(i % 2) * 80} className="h-full">
                   <article
                     className={cn(
                       "flex h-full overflow-hidden rounded-2xl border border-border",
