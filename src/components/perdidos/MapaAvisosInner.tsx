@@ -1,17 +1,13 @@
 "use client";
 
 import "leaflet/dist/leaflet.css";
-import { useRouter } from "next/navigation";
-import { useTranslations } from "next-intl";
 import { CircleMarker, MapContainer, Popup, TileLayer } from "react-leaflet";
+import { PopupAviso } from "./PopupAviso";
 import { type AvisoMapa, COLOR_AVISO as COLOR } from "./tipos";
 
 const ESPANA_CENTER: [number, number] = [40.4165, -3.7026];
 
 export default function MapaAvisosInner({ avisos }: { avisos: AvisoMapa[] }) {
-  const t = useTranslations("perdidos");
-  const router = useRouter();
-
   return (
     <MapContainer
       center={ESPANA_CENTER}
@@ -31,20 +27,7 @@ export default function MapaAvisosInner({ avisos }: { avisos: AvisoMapa[] }) {
           pathOptions={{ color: COLOR[a.type], fillColor: COLOR[a.type], fillOpacity: 0.7 }}
         >
           <Popup>
-            <div className="flex flex-col gap-1">
-              <strong>
-                {t(a.type === "lost" ? "tipoLost" : "tipoFound")}
-                {a.name ? ` — ${a.name}` : ""}
-              </strong>
-              {a.city && <span>{a.city}</span>}
-              <button
-                type="button"
-                onClick={() => router.push(`/perdidos-encontrados/${a.id}`)}
-                className="mt-1 text-left font-semibold text-primary underline"
-              >
-                {t("verAviso")}
-              </button>
-            </div>
+            <PopupAviso aviso={a} />
           </Popup>
         </CircleMarker>
       ))}
