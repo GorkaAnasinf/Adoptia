@@ -1,4 +1,4 @@
-import { BookOpen, CalendarCheck } from "lucide-react";
+import { ArrowRight, BookOpen, CalendarCheck, CalendarPlus, MessageCircle } from "lucide-react";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
@@ -51,6 +51,13 @@ const CLAVE_POR_ESTADO: Record<Solicitud["status"], string> = {
 
 /** Estados que se muestran "apagados": ya no hay nada que hacer en ellos. */
 const APAGADOS: Solicitud["status"][] = ["rejected", "withdrawn"];
+
+/** Estilos de botón de acción (jerarquía compartida en toda la tarjeta). */
+const ACCION_BASE =
+  "inline-flex min-h-11 items-center gap-2 rounded-full px-5 text-sm font-semibold transition-colors motion-safe:active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2";
+const ACCION_PRIMARIA = `${ACCION_BASE} bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/90`;
+const ACCION_OUTLINE = `${ACCION_BASE} border border-border hover:bg-accent`;
+const ACCION_GHOST = `${ACCION_BASE} px-4 text-primary hover:bg-primary/5`;
 
 function portadaDe(solicitud: Solicitud): string | null {
   const media = (solicitud.animals?.animal_media ?? [])
@@ -166,13 +173,16 @@ export default async function MisSolicitudesPage() {
                           🐾
                         </span>
                       )}
+                      {/* Ancho fijo e igual para todos los estados: coherencia visual */}
                       <span
                         className={cn(
-                          "absolute left-2 top-2 rounded-full px-2.5 py-0.5 text-xs font-semibold shadow-sm ring-1 ring-black/5",
+                          "absolute left-2 top-2 inline-flex w-24 justify-center rounded-full px-2 py-0.5 text-center text-xs font-semibold shadow-sm ring-1 ring-black/5",
                           BADGE_POR_ESTADO[solicitud.status],
                         )}
                       >
-                        {t(CLAVE_POR_ESTADO[solicitud.status])}
+                        {solicitud.status === "completed"
+                          ? t("statusCompletedChip")
+                          : t(CLAVE_POR_ESTADO[solicitud.status])}
                       </span>
                     </div>
 
@@ -232,7 +242,8 @@ export default async function MisSolicitudesPage() {
                         </p>
                       )}
 
-                      {/* Acciones según estado */}
+                      {/* Acciones según estado. Jerarquía: acción principal
+                          rellena, secundarias outline, "Ver detalles" en ghost. */}
                       <div className="mt-auto flex flex-wrap items-center gap-2 pt-1">
                         {solicitud.status === "approved" &&
                           (cita ? (
@@ -241,8 +252,9 @@ export default async function MisSolicitudesPage() {
                               {animal?.shelters && (
                                 <Link
                                   href={`/protectoras/${animal.shelters.slug}`}
-                                  className="inline-flex min-h-11 items-center rounded-full border border-border px-5 text-sm font-semibold hover:bg-accent"
+                                  className={ACCION_OUTLINE}
                                 >
+                                  <MessageCircle className="size-4" aria-hidden="true" />
                                   {t("solicitudContactarRefugio")}
                                 </Link>
                               )}
@@ -250,8 +262,9 @@ export default async function MisSolicitudesPage() {
                           ) : (
                             <Link
                               href={`/mi-cuenta/citas/nueva/${solicitud.id}`}
-                              className="inline-flex min-h-11 items-center rounded-full bg-secondary px-5 text-sm font-semibold text-secondary-foreground hover:bg-secondary/90"
+                              className={ACCION_PRIMARIA}
                             >
+                              <CalendarPlus className="size-4" aria-hidden="true" />
                               {tCitas("reservarVisita")}
                             </Link>
                           ))}
@@ -261,11 +274,9 @@ export default async function MisSolicitudesPage() {
                         )}
 
                         {animal && (
-                          <Link
-                            href={`/animales/${animal.slug}`}
-                            className="inline-flex min-h-11 items-center rounded-full border border-border px-5 text-sm font-semibold hover:bg-accent"
-                          >
+                          <Link href={`/animales/${animal.slug}`} className={ACCION_GHOST}>
                             {t("solicitudVerDetalles")}
+                            <ArrowRight className="size-4" aria-hidden="true" />
                           </Link>
                         )}
                       </div>

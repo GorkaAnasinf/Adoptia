@@ -1,5 +1,6 @@
 "use client";
 
+import { Undo2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useTranslations } from "next-intl";
@@ -36,8 +37,9 @@ export function RetirarSolicitudButton({ solicitudId }: { solicitudId: string })
         type="button"
         onClick={retirar}
         disabled={enviando}
-        className="rounded-full border border-destructive/40 px-4 py-1.5 text-sm font-medium text-destructive transition-colors hover:bg-destructive/10 disabled:opacity-50"
+        className="inline-flex min-h-11 items-center gap-2 rounded-full border border-destructive/40 px-5 text-sm font-semibold text-destructive transition-colors hover:bg-destructive/10 disabled:opacity-50 motion-safe:active:scale-95"
       >
+        <Undo2 className="size-4" aria-hidden="true" />
         {t("retirar")}
       </button>
       {error && <p className="text-xs text-destructive">{t("retirarError")}</p>}
