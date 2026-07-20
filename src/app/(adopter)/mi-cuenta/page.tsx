@@ -9,6 +9,7 @@ import { HeroCuenta } from "@/components/cuenta/HeroCuenta";
 import { PanelAportacion } from "@/components/cuenta/PanelAportacion";
 import { Recordatorios } from "@/components/cuenta/Recordatorios";
 import { TarjetaMetrica } from "@/components/cuenta/TarjetaMetrica";
+import { Reveal } from "@/components/ui/Reveal";
 import { esImagenValida } from "@/lib/animal-search";
 import { componerRecordatorios } from "@/lib/cuenta/recordatorios";
 import { createClient } from "@/lib/supabase/server";
@@ -105,6 +106,10 @@ export default async function MiCuentaPage() {
     supabase
       .from("foster_proposals")
       .select("id, animals (name), shelters (name)")
+      // RLS deja leer la propuesta al acogedor Y a la protectora que la envía:
+      // sin este filtro, un usuario con protectora propia vería como
+      // recordatorio suyo una propuesta que mandó él.
+      .eq("foster_user_id", user.id)
       .eq("status", "enviada")
       .order("created_at", { ascending: false }),
     supabase.from("donation_offers").select("id").eq("status", "abierta"),
@@ -126,7 +131,15 @@ export default async function MiCuentaPage() {
   const donaciones = ((donData.data as { id: string }[] | null) ?? []).length;
 
   const enCurso = solicitudes.filter((s) => EN_CURSO.includes(s.status));
-  const sinActividad = favoritos.length === 0 && solicitudes.length === 0 && citas.length === 0;
+  // «Sin actividad» es sin NADA: quien acoge, tiene alertas u ofrece donaciones
+  // ya está participando, aunque no haya guardado un favorito en su vida.
+  const sinActividad =
+    favoritos.length === 0 &&
+    solicitudes.length === 0 &&
+    citas.length === 0 &&
+    alertas === 0 &&
+    donaciones === 0 &&
+    !acogida;
 
   const nombre = (user.user_metadata?.full_name as string | undefined)?.trim() || null;
 
@@ -172,27 +185,33 @@ export default async function MiCuentaPage() {
       <HeroCuenta nombre={nombre} />
 
       <div className="grid gap-4 sm:grid-cols-3">
-        <TarjetaMetrica
-          icono={Heart}
-          etiqueta={t("metricaFavoritos")}
-          valor={favoritos.length}
-          href="/mi-cuenta/favoritos"
-          tono="primary"
-        />
-        <TarjetaMetrica
-          icono={FileText}
-          etiqueta={t("metricaSolicitudes")}
-          valor={enCurso.length}
-          href="/mi-cuenta/solicitudes"
-          tono="secondary"
-        />
-        <TarjetaMetrica
-          icono={CalendarHeart}
-          etiqueta={t("metricaCitas")}
-          valor={citas.length}
-          href="/mi-cuenta/citas"
-          tono="tertiary"
-        />
+        <Reveal>
+          <TarjetaMetrica
+            icono={Heart}
+            etiqueta={t("metricaFavoritos")}
+            valor={favoritos.length}
+            href="/mi-cuenta/favoritos"
+            tono="primary"
+          />
+        </Reveal>
+        <Reveal delayMs={80}>
+          <TarjetaMetrica
+            icono={FileText}
+            etiqueta={t("metricaSolicitudes")}
+            valor={enCurso.length}
+            href="/mi-cuenta/solicitudes"
+            tono="secondary"
+          />
+        </Reveal>
+        <Reveal delayMs={160}>
+          <TarjetaMetrica
+            icono={CalendarHeart}
+            etiqueta={t("metricaCitas")}
+            valor={citas.length}
+            href="/mi-cuenta/citas"
+            tono="tertiary"
+          />
+        </Reveal>
       </div>
 
       <div className="grid gap-6 lg:grid-cols-[1fr_20rem]">

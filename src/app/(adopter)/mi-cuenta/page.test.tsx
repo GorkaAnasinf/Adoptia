@@ -57,12 +57,26 @@ vi.mock("@/lib/supabase/server", () => {
     animals: () => ({ data: state.animals }),
   };
   const builder = (table: string) => {
+    // Los `.eq()` se aplican de verdad sobre las filas que los traen: así un
+    // filtro que la página olvide (p. ej. el destinatario de una propuesta)
+    // hace fallar el test en vez de pasar desapercibido.
+    const filtros: [string, unknown][] = [];
     const b: Record<string, unknown> = {};
-    for (const m of ["select", "eq", "neq", "in", "gte", "lt", "not", "order", "limit"]) {
+    for (const m of ["select", "neq", "in", "gte", "lt", "not", "order", "limit"]) {
       b[m] = () => b;
     }
+    b.eq = (columna: string, valor: unknown) => {
+      filtros.push([columna, valor]);
+      return b;
+    };
     b.maybeSingle = async () => ({ data: table === "foster_homes" ? state.fosterHome : null });
-    b.then = (resolve: (v: unknown) => void) => resolve(datos[table]?.() ?? { data: [] });
+    b.then = (resolve: (v: unknown) => void) => {
+      const bruto = (datos[table]?.() ?? { data: [] }) as { data: Array<Record<string, unknown>> };
+      const data = (bruto.data ?? []).filter((fila) =>
+        filtros.every(([col, val]) => !(col in fila) || fila[col] === val),
+      );
+      resolve({ data });
+    };
     return b;
   };
   return {
@@ -142,6 +156,27 @@ describe("MiCuentaPage — dashboard del adoptante", () => {
     expect(screen.queryByText(messages.account.metricaFavoritos)).not.toBeInTheDocument();
   });
 
+  it("no da por vacío a quien ayuda por otras vías aunque no tenga favoritos ni solicitudes", async () => {
+    state.fosterHome = { user_id: "u1", active: true };
+    state.savedSearches = [{ id: "b1" }];
+    conIntl(await MiCuentaPage());
+    expect(screen.queryByText(messages.account.primerosPasosTitulo)).not.toBeInTheDocument();
+    expect(screen.getByText(messages.account.aportacionAcogida)).toBeInTheDocument();
+  });
+
+  it("solo cuenta como recordatorio la propuesta de acogida dirigida al usuario", async () => {
+    state.requests = [solicitud("s1", "pending", "Bruno")];
+    state.proposals = [
+      { id: "p1", foster_user_id: "u1", animals: { name: "Copito" }, shelters: { name: "Refugio Dos" } },
+      // Enviada por una protectora del propio usuario: RLS se la deja leer,
+      // pero él no es el destinatario y no debe salirle como recordatorio.
+      { id: "p2", foster_user_id: "otro", animals: { name: "Nala" }, shelters: { name: "Refugio Tres" } },
+    ];
+    conIntl(await MiCuentaPage());
+    expect(screen.getByText(/Copito/)).toBeInTheDocument();
+    expect(screen.queryByText(/Nala/)).not.toBeInTheDocument();
+  });
+
   it("cuenta favoritos, solicitudes en curso y citas próximas", async () => {
     state.favorites = [
       { animal_id: "a1", animals: animal("Copito") },
@@ -200,6 +235,18 @@ describe("MiCuentaPage — dashboard del adoptante", () => {
       "href",
       "/animales",
     );
+  });
+
+  it("cae al marcador de huella cuando el favorito no tiene foto válida", async () => {
+    state.favorites = [
+      { animal_id: "a1", animals: { ...animal("Copito"), animal_media: [] } },
+      { animal_id: "a2", animals: { ...animal("Sombra"), animal_media: [{ url: "", is_cover: true, sort_order: 0 }] } },
+    ];
+    conIntl(await MiCuentaPage());
+    // Ninguna imagen rota: los dos favoritos se pintan sin <img>
+    expect(screen.queryAllByRole("img")).toHaveLength(0);
+    expect(screen.getByText("Copito")).toBeInTheDocument();
+    expect(screen.getByText("Sombra")).toBeInTheDocument();
   });
 
   it("recuerda reservar la visita de una solicitud aprobada sin cita", async () => {
