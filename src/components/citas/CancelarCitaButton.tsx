@@ -1,5 +1,6 @@
 "use client";
 
+import { X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useTranslations } from "next-intl";
@@ -41,8 +42,9 @@ export function CancelarCitaButton({ citaId }: { citaId: string }) {
       <button
         type="button"
         onClick={() => setAbierto(true)}
-        className="rounded-full border border-destructive/40 px-4 py-1.5 text-sm font-medium text-destructive hover:bg-destructive/10"
+        className="inline-flex min-h-11 items-center gap-2 rounded-full border border-destructive/40 px-5 text-sm font-semibold text-destructive transition-colors hover:bg-destructive/10 motion-safe:active:scale-95"
       >
+        <X className="size-4" aria-hidden="true" />
         {t("cancelarCita")}
       </button>
     );

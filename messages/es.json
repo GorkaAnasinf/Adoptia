@@ -747,6 +747,7 @@
     "statusRejected": "Rechazada",
     "statusWithdrawn": "Retirada",
     "statusCompleted": "Adopción completada",
+    "statusCompletedChip": "Completada",
     "favoritosTitle": "Favoritos",
     "favoritosSubtitle": "Los animales que has guardado. Te avisaremos si encuentran hogar.",
     "favoritosEmptyTitle": "Aún no tienes favoritos",
