@@ -2,6 +2,12 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/es/) adaptado. Versionado 0.x hasta el MVP.
 
+## [0.0.80] — 2026-07-21
+
+### Cambiado
+
+- **«Mis acogidas» se divide en dos pestañas (FEATURE-042)**: octava pantalla de la tanda Stitch. Hasta hoy el formulario de alta como casa de acogida y las propuestas que te llegan compartían una sola columna, empujándose entre sí. Ahora la vista se parte en dos pestañas —como «mis citas»—: **Propuestas recibidas**, con un badge **«N nuevas»** de las que aún no has respondido, y **Mi registro de acogida**, con el alta/edición de tus datos, pausar (vacaciones) y darte de baja. Al entrar se abre la pestaña que te toca: si ya estás registrado, las propuestas; si no, el registro (primero das tus datos). Las tarjetas de propuesta se reestilan al lenguaje de la tanda y estrenan **«Contactar refugio»**, que lleva al perfil de la protectora; «Necesito relevo» sigue en las aceptadas. El formulario ya cubría todos los campos del wireframe (qué acoges, vivienda, jardín, convivencia, disponibilidad, zona y mapa), así que no se inventó nada: es reorganización y coherencia visual. Sin cambios de modelo ni de RLS. QA: suite 1038 verde; sin migraciones.
+
 ## [0.0.79] — 2026-07-21
 
 ### Añadido

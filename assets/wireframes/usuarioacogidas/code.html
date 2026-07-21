@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Adoptia - Mis Acogidas</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Open+Sans:wght@400;500;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100..900&family=Open+Sans:wght@100..900&display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+            text-transform: none;
+            letter-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            direction: ltr;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f3ede5;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #ddc0ba;
+            border-radius: 10px;
+        }
+        .glass-header {
+            background: rgba(254, 248, 240, 0.8);
+            backdrop-filter: blur(12px);
+        }
+        .soft-shadow {
+            box-shadow: 0 4px 12px rgba(226, 114, 91, 0.08);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-fixed-variant": "#802918",
+                        "on-error-container": "#93000a",
+                        "tertiary": "#4e635a",
+                        "on-surface-variant": "#56423e",
+                        "on-primary": "#ffffff",
+                        "outline": "#89726d",
+                        "primary": "#9f402d",
+                        "on-secondary-fixed-variant": "#204e4a",
+                        "surface-tint": "#9f402d",
+                        "surface-container-highest": "#e7e2da",
+                        "surface-bright": "#fef8f0",
+                        "surface": "#fef8f0",
+                        "inverse-primary": "#ffb4a5",
+                        "error": "#ba1a1a",
+                        "surface-container-high": "#ede7e0",
+                        "outline-variant": "#ddc0ba",
+                        "on-tertiary": "#ffffff",
+                        "on-error": "#ffffff",
+                        "secondary-fixed-dim": "#a1cfca",
+                        "on-background": "#1d1b17",
+                        "surface-dim": "#dfd9d2",
+                        "on-primary-container": "#5a0d02",
+                        "primary-fixed-dim": "#ffb4a5",
+                        "inverse-on-surface": "#f6f0e8",
+                        "on-tertiary-fixed-variant": "#374b43",
+                        "on-secondary-container": "#3f6c68",
+                        "secondary-fixed": "#bcece6",
+                        "secondary": "#396662",
+                        "on-secondary": "#ffffff",
+                        "surface-variant": "#e7e2da",
+                        "tertiary-fixed-dim": "#b5ccc1",
+                        "on-primary-fixed": "#3e0500",
+                        "background": "#fef8f0",
+                        "surface-container-low": "#f9f3eb",
+                        "error-container": "#ffdad6",
+                        "tertiary-fixed": "#d1e8dd",
+                        "on-tertiary-container": "#1b2f28",
+                        "on-secondary-fixed": "#00201e",
+                        "surface-container": "#f3ede5",
+                        "primary-container": "#e2725b",
+                        "on-surface": "#1d1b17",
+                        "primary-fixed": "#ffdad3",
+                        "on-tertiary-fixed": "#0b1f18",
+                        "tertiary-container": "#81978d",
+                        "surface-container-lowest": "#ffffff",
+                        "inverse-surface": "#32302b",
+                        "secondary-container": "#bcece6"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "sm": "8px",
+                        "margin-mobile": "16px",
+                        "gutter": "20px",
+                        "xl": "32px",
+                        "xs": "4px",
+                        "md": "16px",
+                        "lg": "24px",
+                        "unit": "4px",
+                        "container-max": "1200px",
+                        "xxl": "48px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Open Sans"],
+                        "label-md": ["Open Sans"],
+                        "headline-xl": ["Montserrat"],
+                        "label-sm": ["Open Sans"],
+                        "headline-lg": ["Montserrat"],
+                        "body-md": ["Open Sans"],
+                        "headline-md": ["Montserrat"],
+                        "headline-lg-mobile": ["Montserrat"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                        "headline-xl": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface font-body-md min-h-screen selection:bg-primary-container selection:text-on-primary-container">
+<!-- SideNavBar Anchor -->
+<aside class="h-screen w-64 fixed left-0 top-0 flex flex-col p-4 border-r-0 bg-surface-container shadow-sm z-50">
+<div class="mb-8 px-4">
+<h1 class="font-headline-md text-headline-md font-bold text-primary">Adoptia</h1>
+<p class="text-on-surface-variant text-sm mt-1">Nurturing connections</p>
+</div>
+<nav class="flex-1 space-y-2">
+<!-- Active Navigation for "My Adoptions" / "Mis Acogidas" -->
+<a class="flex items-center gap-3 px-4 py-3 bg-primary-container text-on-primary-container rounded-xl transition-all active:scale-95 duration-200" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">pets</span>
+<span class="font-label-md text-label-md">My Adoptions</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-highest transition-colors active:scale-95 duration-200 rounded-xl" href="#">
+<span class="material-symbols-outlined">favorite</span>
+<span class="font-label-md text-label-md">Favorites</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-highest transition-colors active:scale-95 duration-200 rounded-xl" href="#">
+<span class="material-symbols-outlined">volunteer_activism</span>
+<span class="font-label-md text-label-md">My Donations</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-highest transition-colors active:scale-95 duration-200 rounded-xl" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-md text-label-md">Profile Settings</span>
+</a>
+</nav>
+<div class="mt-auto pt-6 border-t border-outline-variant/30 px-4">
+<button class="w-full py-3 px-4 bg-secondary text-on-secondary rounded-xl font-label-md transition-all hover:bg-on-secondary-fixed-variant active:scale-95">
+                Find a Pet
+            </button>
+</div>
+</aside>
+<!-- TopAppBar Anchor -->
+<header class="fixed top-0 right-0 w-[calc(100%-16rem)] z-40 bg-surface/80 backdrop-blur-md flex justify-between items-center px-8 py-4">
+<h2 class="font-headline-md text-headline-md font-bold text-primary">Mis Acogidas</h2>
+<div class="flex items-center gap-6">
+<div class="relative flex items-center bg-surface-container rounded-full px-4 py-2 w-64">
+<span class="material-symbols-outlined text-on-surface-variant text-sm mr-2">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-sm w-full p-0" placeholder="Buscar mensajes..." type="text"/>
+</div>
+<div class="flex gap-4 text-on-surface-variant">
+<button class="hover:text-primary transition-colors active:opacity-80">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="hover:text-primary transition-colors active:opacity-80">
+<span class="material-symbols-outlined">help</span>
+</button>
+</div>
+<div class="w-10 h-10 rounded-full overflow-hidden bg-surface-container-highest ring-2 ring-primary/10">
+<img class="w-full h-full object-cover" data-alt="A warm and professional portrait of a smiling woman in her early 30s, natural daylight, soft earthy background tones, high-resolution photography, reflecting a caring and compassionate persona for the animal adoption platform." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDPLHXhIYjuzhn-hPnVHur5M1uIVxm932ELfGyIelESWIs2iCR01Fqz2o1H97_zN1FXgCJIK_ZFX22oyqKlxXafwq2LpifzFhYd7w1g0riZ9FFHLNQZ5dVD02wfeGd3YPCfH_OYDKCiOQe-ykNA7ebx88yjo-9MWzU2HyRAqIGq2ACjAkWpAeAToI108Gw4unc_KL11CPpZDZceJRmODQs2FGAIY8K6XfisNlvaXY5DEom3dEG5CW31Uw7atBlR69zP5v-Mkw9pn38Q"/>
+</div>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="ml-64 pt-24 pb-12 px-8 max-w-[1200px] mx-auto">
+<!-- Propuestas Recibidas Section -->
+<section class="mb-xxl">
+<div class="flex items-center justify-between mb-lg">
+<h3 class="font-headline-lg text-headline-lg text-on-surface">Propuestas recibidas</h3>
+<span class="bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full text-label-sm">2 Nuevas</span>
+</div>
+<div class="grid grid-cols-1 gap-lg">
+<!-- Proposal Card -->
+<div class="bg-surface-container-low rounded-xl p-6 soft-shadow border-l-4 border-primary-container">
+<div class="flex justify-between items-start mb-md">
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 rounded-full bg-surface-container-highest overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A professional logo for a pet shelter named Patas del Norte, featuring a minimalist paw print intertwined with a mountain peak, in earthy terracotta and deep teal colors, clean vector style on a warm cream background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAKsAc5UFfOCWVR09igCKMe0S6gTfoUxH1AfK1TdiCqNbXPhnQnCci0TkgZ-3bqQ8jIV_xLkVMJ8nwx51_UG630uy9fLLFELCUeDS86e0Uwnz5ULGNY5F6g4JMWqVTkCoWiAibiWRtXOZGgbQxMk8TOAdMNFJoygsnucHpIMD7e4_t0iEgOt8ZYpB1KP_AKCnhs-l2zwqT6Z1BzPZP2Rer_b6maTW5FyJp0hNjfXno6Abm54pFx9RYdhv_YFU4qMKrTYXIRHPWNK_TM"/>
+</div>
+<div>
+<h4 class="font-label-md text-label-md">De Patas del Norte</h4>
+<p class="text-on-surface-variant text-sm">Abril • 1 mes</p>
+</div>
+</div>
+<div class="flex flex-col items-end gap-2">
+<span class="text-xs text-on-surface-variant">20 jul</span>
+<span class="bg-tertiary-fixed text-on-tertiary-fixed px-3 py-1 rounded-full text-label-sm font-semibold">Aceptada</span>
+</div>
+</div>
+<p class="text-on-surface-variant font-body-md mb-lg">
+                        Hola, tenemos un animal que necesita una acogida temporal mientras encuentra una familia definitiva. Nos encantaría contar contigo, ¿tendrías disponibilidad?
+                    </p>
+<div class="flex gap-4">
+<button class="px-6 py-2 border border-primary text-primary rounded-xl font-label-md hover:bg-primary/5 transition-all active:scale-95">
+                            Necesito relevo
+                        </button>
+<button class="px-6 py-2 bg-primary text-on-primary rounded-xl font-label-md hover:opacity-90 transition-all active:scale-95 shadow-sm">
+                            Contactar refugio
+                        </button>
+</div>
+</div>
+</div>
+</section>
+<!-- Registro de Acogida Form Section -->
+<section class="bg-surface-container-lowest rounded-xxl p-8 soft-shadow">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-md mb-xl">
+<div>
+<h3 class="font-headline-lg text-headline-lg text-on-surface">Ya estás en el registro de acogida</h3>
+<div class="flex items-center gap-2 mt-2">
+<span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
+<span class="text-secondary font-semibold text-sm">Disponible para acoger</span>
+</div>
+</div>
+<div class="flex gap-3">
+<button class="px-6 py-2.5 border border-outline rounded-xl font-label-md text-on-surface-variant hover:bg-surface-container transition-all active:scale-95">
+                        Pausar (vacaciones)
+                    </button>
+<button class="px-6 py-2.5 border border-error text-error rounded-xl font-label-md hover:bg-error/5 transition-all active:scale-95">
+                        Darme de baja y borrar mis datos
+                    </button>
+</div>
+</div>
+<form class="space-y-xl">
+<!-- What can you foster? Chips -->
+<div class="space-y-sm">
+<label class="font-label-md text-on-surface block">¿Qué puedes acoger?</label>
+<div class="flex flex-wrap gap-3">
+<button class="px-8 py-3 rounded-xl border border-outline text-on-surface-variant hover:border-primary-container transition-all" type="button">Perros</button>
+<button class="px-8 py-3 rounded-xl bg-primary-container text-on-primary-container border-2 border-primary transition-all font-semibold shadow-sm" type="button">Gatos</button>
+<button class="px-8 py-3 rounded-xl border border-outline text-on-surface-variant hover:border-primary-container transition-all" type="button">Otros</button>
+</div>
+</div>
+<!-- Housing & Garden -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-lg items-end">
+<div class="space-y-sm">
+<label class="font-label-md text-on-surface block">Tipo de vivienda</label>
+<select class="w-full bg-surface rounded-xl border-outline-variant p-4 focus:ring-2 focus:ring-secondary focus:border-secondary transition-all outline-none appearance-none cursor-pointer">
+<option>Piso</option>
+<option>Casa adosada</option>
+<option>Chalet / Villa</option>
+<option>Estudio</option>
+</select>
+</div>
+<div class="flex items-center gap-3 pb-4">
+<div class="relative flex items-center">
+<input class="w-6 h-6 rounded-md border-outline text-primary focus:ring-primary-container bg-surface transition-all cursor-pointer" id="jardin" type="checkbox"/>
+</div>
+<label class="font-body-md text-on-surface-variant cursor-pointer select-none" for="jardin">Tengo jardín o terraza</label>
+</div>
+</div>
+<!-- Living with other animals -->
+<div class="space-y-sm">
+<label class="font-label-md text-on-surface block">¿Convives con otros animales?</label>
+<input class="w-full bg-surface rounded-xl border-outline-variant p-4 focus:ring-2 focus:ring-secondary focus:border-secondary transition-all outline-none" placeholder="Describe brevemente tus mascotas actuales..." type="text" value="No tenemos otros animales en casa."/>
+</div>
+<!-- Availability and Details -->
+<div class="space-y-sm">
+<label class="font-label-md text-on-surface block">Disponibilidad y detalles</label>
+<textarea class="w-full bg-surface rounded-xl border-outline-variant p-4 focus:ring-2 focus:ring-secondary focus:border-secondary transition-all outline-none resize-none" placeholder="Cuéntanos sobre tu horario, experiencia previa, etc..." rows="4">Disponibilidad para acogidas de larga duración.</textarea>
+</div>
+<!-- Location and Distance -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-lg">
+<div class="space-y-sm">
+<label class="font-label-md text-on-surface block">Ciudad o zona</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant">location_on</span>
+<input class="w-full bg-surface rounded-xl border-outline-variant pl-12 pr-4 py-4 focus:ring-2 focus:ring-secondary focus:border-secondary transition-all outline-none" type="text" value="Madrid"/>
+</div>
+</div>
+<div class="space-y-sm">
+<label class="font-label-md text-on-surface block">¿Hasta qué distancia te avisamos?</label>
+<select class="w-full bg-surface rounded-xl border-outline-variant p-4 focus:ring-2 focus:ring-secondary focus:border-secondary transition-all outline-none appearance-none cursor-pointer">
+<option>5 km</option>
+<option>10 km</option>
+<option selected="">25 km</option>
+<option>50 km</option>
+</select>
+</div>
+</div>
+<!-- Interactive Map Section -->
+<div class="space-y-sm">
+<label class="font-label-md text-on-surface block">Marca tu zona en el mapa</label>
+<div class="relative h-[400px] rounded-xxl overflow-hidden border-2 border-surface-container-high soft-shadow">
+<img class="w-full h-full object-cover" data-location="Madrid" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDuP6s7at2MiB8xvmFmwZetT5t-mYFlB67WcQtC0IeeiyYGvkHfASuqEnAQ1qdy7un1FScuLgXTun38ME8_biVLg-FogsqN2PFMzeD5VfbgESNHhiTLJGWsjOlN6DlJLbETU-S2sDPKIjUQ_1eyheY78K6SeN8tSTjUQQTric28USSvod4lrurKt1Cd951gEl6tJy4LCOs-fVwaHqIuRwwgrYpemjP0am-gNVSZ9quw3HhNKA_jaQVfvGt7mYUuJtFlkr75l58VwX_w"/>
+<!-- Simulated Map UI Elements -->
+<div class="absolute top-4 left-4 flex flex-col gap-2">
+<button class="w-10 h-10 bg-white rounded-lg shadow-md flex items-center justify-center text-on-surface hover:bg-surface-container-lowest transition-colors" type="button">
+<span class="material-symbols-outlined">add</span>
+</button>
+<button class="w-10 h-10 bg-white rounded-lg shadow-md flex items-center justify-center text-on-surface hover:bg-surface-container-lowest transition-colors" type="button">
+<span class="material-symbols-outlined">remove</span>
+</button>
+</div>
+<div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+<div class="flex flex-col items-center">
+<span class="material-symbols-outlined text-primary text-5xl drop-shadow-lg" style="font-variation-settings: 'FILL' 1;">location_on</span>
+<div class="bg-white/90 backdrop-blur px-3 py-1 rounded-full shadow-sm mt-1">
+<span class="text-xs font-bold text-on-surface uppercase tracking-wider">Tu Zona</span>
+</div>
+</div>
+</div>
+<div class="absolute bottom-4 right-4 bg-white/90 backdrop-blur-md px-4 py-2 rounded-xl shadow-md flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-sm">my_location</span>
+<span class="text-xs font-semibold text-on-surface">Usar mi ubicación actual</span>
+</div>
+</div>
+<p class="text-xs text-on-surface-variant italic mt-2 flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">info</span>
+                        Tu ubicación exacta no será pública hasta que aceptes una propuesta de acogida.
+                    </p>
+</div>
+<!-- Form Submit -->
+<div class="pt-8 flex justify-end">
+<button class="bg-primary text-on-primary px-12 py-4 rounded-xl font-headline-md shadow-lg shadow-primary/20 hover:scale-[1.02] transition-all active:scale-95" type="submit">
+                        Guardar cambios en el registro
+                    </button>
+</div>
+</form>
+</section>
+</main>
+<!-- Simple Micro-interactions Script -->
+<script>
+        // Chip selection logic
+        document.querySelectorAll('button[type="button"]').forEach(button => {
+            if (button.innerText === 'Perros' || button.innerText === 'Gatos' || button.innerText === 'Otros') {
+                button.addEventListener('click', () => {
+                    // Reset others in the group
+                    button.parentElement.querySelectorAll('button').forEach(b => {
+                        b.classList.remove('bg-primary-container', 'text-on-primary-container', 'border-primary', 'border-2', 'font-semibold');
+                        b.classList.add('border-outline', 'text-on-surface-variant');
+                        b.classList.remove('shadow-sm');
+                    });
+                    // Set active
+                    button.classList.add('bg-primary-container', 'text-on-primary-container', 'border-primary', 'border-2', 'font-semibold', 'shadow-sm');
+                    button.classList.remove('border-outline', 'text-on-surface-variant');
+                });
+            }
+        });
+
+        // Form submission prevent default for demo
+        document.querySelector('form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('¡Cambios guardados con éxito!');
+        });
+    </script>
+</body></html>

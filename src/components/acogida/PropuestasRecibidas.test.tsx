@@ -15,7 +15,7 @@ const PROPUESTA: PropuestaRecibida = {
   mensaje: "Camada de cachorros, ¿puedes ayudarnos?",
   status: "enviada",
   created_at: "2026-07-15T10:00:00Z",
-  shelters: { name: "Protectora Bilbao" },
+  shelters: { name: "Protectora Bilbao", slug: "protectora-bilbao" },
   animals: { name: "Trufa" },
 };
 
@@ -28,14 +28,16 @@ function renderBloque(propuestas: PropuestaRecibida[]) {
 }
 
 describe("PropuestasRecibidas", () => {
-  it("lista protectora, animal, duración, mensaje y estado", () => {
+  it("lista protectora, animal, duración, mensaje, estado y contactar refugio", () => {
     renderBloque([PROPUESTA]);
-    expect(screen.getByText(messages.acogida.recibidasTitulo)).toBeInTheDocument();
     expect(screen.getByText(/Protectora Bilbao/)).toBeInTheDocument();
     expect(screen.getByText(/Trufa/)).toBeInTheDocument();
     expect(screen.getByText(/2 semanas/)).toBeInTheDocument();
     expect(screen.getByText(/Camada de cachorros/)).toBeInTheDocument();
     expect(screen.getByText(messages.acogida.estadoPropuestaEnviada)).toBeInTheDocument();
+    expect(
+      screen.getByRole("link", { name: messages.acogida.contactarRefugio }),
+    ).toHaveAttribute("href", "/protectoras/protectora-bilbao");
   });
 
   it("sin animal concreto lo indica", () => {
