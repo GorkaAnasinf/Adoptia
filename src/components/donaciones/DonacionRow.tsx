@@ -4,7 +4,8 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { createClient } from "@/lib/supabase/client";
-import { DonacionForm, type Donacion } from "./DonacionForm";
+import { cn } from "@/lib/utils";
+import type { Donacion } from "./DonacionForm";
 
 const BADGE: Record<Donacion["status"], string> = {
   abierta: "bg-emerald-100 text-emerald-800",
@@ -12,11 +13,20 @@ const BADGE: Record<Donacion["status"], string> = {
   caducada: "bg-amber-100 text-amber-800",
 };
 
-/** Oferta del donante: editar inline, marcar entregada, renovar o borrar. */
-export function DonacionRow({ oferta, userId }: { oferta: Donacion; userId: string }) {
+const ACCION = "inline-flex min-h-9 items-center rounded-full px-4 text-sm font-semibold transition-colors disabled:opacity-50";
+const ACCION_OUTLINE = `${ACCION} border border-border hover:bg-accent`;
+const ACCION_BORRAR = `${ACCION} border border-destructive/40 text-destructive hover:bg-destructive/10`;
+
+/** Oferta del donante: editar (reutiliza el formulario), entregar, renovar o borrar. */
+export function DonacionRow({
+  oferta,
+  onEditar,
+}: {
+  oferta: Donacion;
+  onEditar: (oferta: Donacion) => void;
+}) {
   const t = useTranslations("donaciones");
   const router = useRouter();
-  const [editando, setEditando] = useState(false);
   const [guardando, setGuardando] = useState(false);
 
   async function actualizar(cambios: Record<string, unknown>) {
@@ -36,43 +46,36 @@ export function DonacionRow({ oferta, userId }: { oferta: Donacion; userId: stri
     router.refresh();
   }
 
-  if (editando) {
-    return (
-      <li>
-        <DonacionForm userId={userId} existente={oferta} onCerrar={() => setEditando(false)} />
-      </li>
-    );
-  }
-
   const estado = `estado${oferta.status.charAt(0).toUpperCase()}${oferta.status.slice(1)}` as
     | "estadoAbierta"
     | "estadoEntregada"
     | "estadoCaducada";
 
   return (
-    <li className="flex flex-wrap items-center gap-2 rounded-xl border border-border bg-card px-4 py-3 text-sm">
-      <span className="rounded-full bg-muted px-2.5 py-0.5 text-xs font-medium">
-        {t(`cat${oferta.categoria.charAt(0).toUpperCase()}${oferta.categoria.slice(1)}`)}
-      </span>
-      <span className={`rounded-full px-2.5 py-0.5 text-xs font-semibold ${BADGE[oferta.status]}`}>
-        {t(estado)}
-      </span>
-      <span className="min-w-0 flex-1">{oferta.descripcion}</span>
-      <span className="flex gap-2">
+    <li className="flex flex-col gap-3 rounded-2xl border border-border bg-card p-5 shadow-soft">
+      <div className="flex flex-wrap items-center gap-2">
+        <span className="rounded-full bg-muted px-2.5 py-0.5 text-xs font-medium">
+          {t(`cat${oferta.categoria.charAt(0).toUpperCase()}${oferta.categoria.slice(1)}`)}
+        </span>
+        <span className={cn("rounded-full px-2.5 py-0.5 text-xs font-semibold", BADGE[oferta.status])}>
+          {t(estado)}
+        </span>
+        {oferta.city && <span className="text-xs text-muted-foreground">{oferta.city}</span>}
+      </div>
+
+      <p className="text-sm text-foreground">{oferta.descripcion}</p>
+
+      <div className="flex flex-wrap gap-2 border-t border-border pt-3">
         {oferta.status === "abierta" && (
           <>
-            <button
-              type="button"
-              onClick={() => setEditando(true)}
-              className="rounded-full border border-border px-3 py-1 text-xs font-medium hover:bg-accent"
-            >
+            <button type="button" onClick={() => onEditar(oferta)} className={ACCION_OUTLINE}>
               {t("editar")}
             </button>
             <button
               type="button"
               disabled={guardando}
               onClick={() => actualizar({ status: "entregada" })}
-              className="rounded-full border border-border px-3 py-1 text-xs font-medium hover:bg-accent disabled:opacity-50"
+              className={ACCION_OUTLINE}
             >
               {t("entregar")}
             </button>
@@ -82,23 +85,16 @@ export function DonacionRow({ oferta, userId }: { oferta: Donacion; userId: stri
           <button
             type="button"
             disabled={guardando}
-            onClick={() =>
-              actualizar({ status: "abierta", renovada_at: new Date().toISOString() })
-            }
-            className="rounded-full border border-border px-3 py-1 text-xs font-medium hover:bg-accent disabled:opacity-50"
+            onClick={() => actualizar({ status: "abierta", renovada_at: new Date().toISOString() })}
+            className={ACCION_OUTLINE}
           >
             {t("renovar")}
           </button>
         )}
-        <button
-          type="button"
-          disabled={guardando}
-          onClick={borrar}
-          className="rounded-full border border-destructive/40 px-3 py-1 text-xs font-medium text-destructive hover:bg-destructive/10 disabled:opacity-50"
-        >
+        <button type="button" disabled={guardando} onClick={borrar} className={ACCION_BORRAR}>
           {t("borrar")}
         </button>
-      </span>
+      </div>
     </li>
   );
 }

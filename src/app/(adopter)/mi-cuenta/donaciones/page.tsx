@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { getTranslations } from "next-intl/server";
-import { DonacionForm, type Donacion } from "@/components/donaciones/DonacionForm";
-import { DonacionRow } from "@/components/donaciones/DonacionRow";
+import { type Donacion } from "@/components/donaciones/DonacionForm";
+import { MisDonacionesCliente } from "@/components/donaciones/MisDonacionesCliente";
 import { createClient } from "@/lib/supabase/server";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -27,29 +27,11 @@ export default async function DonacionesPage() {
   const ofertas = (data as Donacion[] | null) ?? [];
 
   return (
-    <section className="mx-auto max-w-4xl px-4 py-12">
+    <section className="mx-auto max-w-6xl px-4 py-12">
       <h1 className="font-heading text-3xl font-bold">{t("title")}</h1>
       <p className="mt-2 text-muted-foreground">{t("subtitle")}</p>
 
-      <h2 className="mt-8 font-heading text-xl font-bold">{t("nuevaOferta")}</h2>
-      <div className="mt-3">
-        <DonacionForm userId={user.id} />
-      </div>
-
-      {ofertas.length === 0 ? (
-        <p className="mt-8 rounded-xl border-2 border-dashed border-border p-8 text-center text-muted-foreground">
-          {t("miEmpty")}
-        </p>
-      ) : (
-        <>
-          <ul className="mt-8 flex flex-col gap-2">
-            {ofertas.map((o) => (
-              <DonacionRow key={o.id} oferta={o} userId={user.id} />
-            ))}
-          </ul>
-          <p className="mt-3 text-sm text-muted-foreground">{t("caducaInfo")}</p>
-        </>
-      )}
+      <MisDonacionesCliente userId={user.id} ofertas={ofertas} />
     </section>
   );
 }

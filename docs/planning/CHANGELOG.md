@@ -2,6 +2,18 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/es/) adaptado. Versionado 0.x hasta el MVP.
 
+## [0.0.83] — 2026-07-21
+
+### Cambiado
+
+- **«Mis donaciones» adopta el patrón base y arregla la edición duplicada (FEATURE-044)**: la vista del donante recibe el mismo lenguaje que acogida —se ensancha a `max-w-6xl`, se divide en dos pestañas («Publicar donación» / «Mis donaciones») y el formulario pasa a **tarjeta por secciones** con la categoría y la distancia como **chips**—. Y sobre todo se corrige un punto molesto: al pulsar «Editar» en una oferta publicada se abría **un segundo formulario idéntico** al de alta que ya estaba en pantalla. Ahora hay **un único formulario reutilizado**: editar carga la oferta en él y cambia a la pestaña de publicar; guardar o cancelar vuelve al modo alta. Las filas se reestilan a tarjeta con botones homogéneos y conservan entregar / renovar / borrar. Sin cambios de datos: mismo modelo y misma RLS. QA: suite verde; sin migraciones.
+
+## [0.0.82] — 2026-07-21
+
+### Cambiado
+
+- **Aire al inicio del formulario de alta (sobre FEATURE-043)**: la primera sección quedaba pegada al borde superior de la tarjeta. Se corrige en el primitivo `FormSection`, así que el respiro se hereda en cualquier formulario que lo reutilice.
+
 ## [0.0.81] — 2026-07-21
 
 ### Cambiado
