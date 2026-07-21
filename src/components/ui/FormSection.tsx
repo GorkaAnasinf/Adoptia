@@ -19,7 +19,7 @@ export function FormSection({
   className?: string;
 }) {
   return (
-    <section className={cn("flex flex-col gap-4 py-6 first:pt-0", className)}>
+    <section className={cn("flex flex-col gap-4 py-6", className)}>
       <header className="flex items-start gap-3">
         <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
           <Icon className="size-5" aria-hidden="true" />
