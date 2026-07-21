@@ -54,6 +54,7 @@
 | [FEATURE-039](FEATURE-039.md) | Rediseño de Mi cuenta como dashboard del adoptante (tanda, pantalla 6) | feature | hecho | 0.5 |
 | [FEATURE-040](FEATURE-040.md) | Rediseño de "Mis alertas" según wireframe Stitch (tanda, pantalla 7) | feature | hecho | 0.5 |
 | [FEATURE-041](FEATURE-041.md) | Crear alerta desde el listado con resultados (no solo en el estado vacío) | feature | hecho | 0.5 |
+| [FEATURE-042](FEATURE-042.md) | Rediseño de "Mis acogidas" en dos pestañas (registro / propuestas) | feature | hecho | 0.5 |
 | [IMPROVEMENT-001](IMPROVEMENT-001.md) | De-duplicar el slug de protectora (nombres repetidos) | improvement | hecho | — |
 | [IMPROVEMENT-002](IMPROVEMENT-002.md) | Rediseño UX del wizard de alta de protectora (+ fix del mapa gris) | improvement | hecho | 0.2 |
 | [IMPROVEMENT-003](IMPROVEMENT-003.md) | Pulido del shell chrome (sidebar + cabecera) hacia el mockup de Stitch | improvement | hecho | 0.2 |
