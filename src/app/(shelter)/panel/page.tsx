@@ -363,7 +363,8 @@ export default async function PanelPage() {
                           className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-shadow hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                         >
                           <span className="relative block aspect-square bg-muted">
-                            <FotoAnimal url={portada(a.animal_media)} alt={a.name} />
+                            {/* Nombre visible junto a la foto: la imagen es decorativa para lectores de pantalla */}
+                            <FotoAnimal url={portada(a.animal_media)} alt="" />
                             <span className="absolute left-2 top-2">
                               <AnimalStatusBadge status={a.status} />
                             </span>
