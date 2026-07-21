@@ -1,10 +1,12 @@
-import { ArrowRight, CalendarDays, CheckCircle2, ChevronRight, Clock, Heart, PawPrint, Plus, Sprout } from "lucide-react";
+import { ArrowRight, CalendarDays, CheckCircle2, ChevronRight, Clock, Heart, ImagePlus, PawPrint, Plus, Sprout } from "lucide-react";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import { AnimalStatusBadge } from "@/components/animals/AnimalStatusBadge";
 import type { AnimalStatus } from "@/lib/schemas/animal";
+import type { EstadoSolicitud } from "@/lib/schemas/solicitud";
+import { edadAproximada } from "@/lib/animal-search";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 import { cn } from "@/lib/utils";
@@ -20,6 +22,8 @@ type AnimalRow = {
   name: string;
   slug: string;
   status: AnimalStatus;
+  breed: string | null;
+  birth_date_approx: string | null;
   published_at: string | null;
   updated_at: string;
   animal_media: MediaRow[];
@@ -27,6 +31,8 @@ type AnimalRow = {
 type RequestRow = {
   id: string;
   created_at: string;
+  status: EstadoSolicitud;
+  adopter_id: string;
   animal: { name: string; slug: string } | null;
 };
 type CitaRow = {
@@ -51,6 +57,24 @@ const DIA_MADRID = new Intl.DateTimeFormat("es-ES", {
 const MES_CORTO_MADRID = new Intl.DateTimeFormat("es-ES", { month: "short", timeZone: "Europe/Madrid" });
 const DIA_NUM_MADRID = new Intl.DateTimeFormat("es-ES", { day: "numeric", timeZone: "Europe/Madrid" });
 
+const FECHA_CORTA_MADRID = new Intl.DateTimeFormat("es-ES", {
+  day: "numeric",
+  month: "short",
+  timeZone: "Europe/Madrid",
+});
+
+const CHIP_SOLICITUD: Record<EstadoSolicitud, string> = {
+  pending: "bg-amber-50 text-amber-800",
+  approved: "bg-tertiary/10 text-tertiary",
+  rejected: "bg-destructive/10 text-destructive",
+  withdrawn: "bg-muted text-muted-foreground",
+  completed: "bg-primary/10 text-primary",
+};
+
+function capitaliza(s: string): string {
+  return s.charAt(0).toUpperCase() + s.slice(1);
+}
+
 function portada(media: MediaRow[]): string | null {
   if (media.length === 0) return null;
   return (media.find((m) => m.is_cover) ?? [...media].sort((a, b) => a.sort_order - b.sort_order)[0]).url;
@@ -60,6 +84,8 @@ export default async function PanelPage() {
   const t = await getTranslations("panel");
   const to = await getTranslations("onboarding");
   const tc = await getTranslations("citas");
+  const ts = await getTranslations("solicitudesPanel");
+  const tb = await getTranslations("busqueda");
 
   const supabase = await createClient();
   const {
@@ -77,13 +103,13 @@ export default async function PanelPage() {
   let pendingCount = 0;
   let solicitudes7 = 0;
   let solicitudesPrev7 = 0;
-  let recentRequests: RequestRow[] = [];
+  let recentRequests: (RequestRow & { adopterName: string | null })[] = [];
   let proximasCitas: (CitaRow & { adopterName: string | null })[] = [];
 
   if (shelter) {
     const { data: a } = await supabase
       .from("animals")
-      .select("id,name,slug,status,published_at,updated_at,animal_media(url,is_cover,sort_order)")
+      .select("id,name,slug,status,breed,birth_date_approx,published_at,updated_at,animal_media(url,is_cover,sort_order)")
       .eq("shelter_id", shelter.id)
       .order("updated_at", { ascending: false });
     animals = (a as AnimalRow[] | null) ?? [];
@@ -111,11 +137,10 @@ export default async function PanelPage() {
 
     const { data: r } = await supabase
       .from("adoption_requests")
-      .select("id,created_at,animal:animals(name,slug)")
-      .eq("status", "pending")
+      .select("id,created_at,status,adopter_id,animal:animals(name,slug)")
       .order("created_at", { ascending: false })
       .limit(5);
-    recentRequests = (r as RequestRow[] | null) ?? [];
+    recentRequests = ((r as RequestRow[] | null) ?? []) as (RequestRow & { adopterName: string | null })[];
 
     const { data: citas } = await supabase
       .from("appointments")
@@ -129,7 +154,9 @@ export default async function PanelPage() {
 
     // El nombre del adoptante vive en profiles (RLS: solo su dueño); mismo
     // bypass acotado que en la agenda de citas.
-    const ids = [...new Set(filas.map((c) => c.adopter_id))];
+    const ids = [
+      ...new Set([...filas.map((c) => c.adopter_id), ...recentRequests.map((r) => r.adopter_id)]),
+    ];
     const { data: perfiles } = ids.length
       ? await createAdminClient().from("profiles").select("id, full_name").in("id", ids)
       : { data: [] };
@@ -137,6 +164,7 @@ export default async function PanelPage() {
       ((perfiles as { id: string; full_name: string | null }[] | null) ?? []).map((p) => [p.id, p.full_name]),
     );
     proximasCitas = filas.map((c) => ({ ...c, adopterName: nombres.get(c.adopter_id) ?? null }));
+    recentRequests = recentRequests.map((r) => ({ ...r, adopterName: nombres.get(r.adopter_id) ?? null }));
   }
 
   const hoy = DIA_MADRID.format(new Date());
@@ -311,7 +339,7 @@ export default async function PanelPage() {
                 )}
               </div>
 
-              {/* Animales recientes */}
+              {/* Tus animales — rejilla de tarjetas */}
               <div className="rounded-2xl border border-border bg-card p-5">
                 <div className="mb-4 flex items-center justify-between">
                   <h2 className="font-heading text-lg font-semibold">{t("recentAnimals")}</h2>
@@ -319,19 +347,47 @@ export default async function PanelPage() {
                     {t("viewAll")}
                   </Link>
                 </div>
-                <ul className="flex flex-col divide-y divide-border">
-                  {animals.slice(0, 5).map((a) => (
-                    <li key={a.id}>
-                      <Link
-                        href={`/panel/animales/${a.id}`}
-                        className="-mx-2 flex items-center gap-3 rounded-lg px-2 py-2.5 hover:bg-accent/40"
-                      >
-                        <Miniatura url={portada(a.animal_media)} alt={a.name} />
-                        <span className="min-w-0 flex-1 truncate font-medium">{a.name}</span>
-                        <AnimalStatusBadge status={a.status} />
-                      </Link>
-                    </li>
-                  ))}
+                <ul className="grid grid-cols-2 gap-4 sm:grid-cols-3">
+                  {animals.slice(0, 5).map((a) => {
+                    const edad = edadAproximada(a.birth_date_approx);
+                    const subtitulo = [
+                      a.breed,
+                      edad ? tb(edad.unidad === "anios" ? "edadAnios" : "edadMeses", { n: edad.n }) : null,
+                    ]
+                      .filter(Boolean)
+                      .join(" · ");
+                    return (
+                      <li key={a.id}>
+                        <Link
+                          href={`/panel/animales/${a.id}`}
+                          className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-shadow hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                        >
+                          <span className="relative block aspect-square bg-muted">
+                            {/* Nombre visible junto a la foto: la imagen es decorativa para lectores de pantalla */}
+                            <FotoAnimal url={portada(a.animal_media)} alt="" />
+                            <span className="absolute left-2 top-2">
+                              <AnimalStatusBadge status={a.status} />
+                            </span>
+                          </span>
+                          <span className="flex flex-col gap-0.5 p-3">
+                            <span className="truncate font-heading font-semibold text-primary">{a.name}</span>
+                            {subtitulo && (
+                              <span className="truncate text-sm text-muted-foreground">{subtitulo}</span>
+                            )}
+                          </span>
+                        </Link>
+                      </li>
+                    );
+                  })}
+                  <li>
+                    <Link
+                      href="/panel/animales/nueva"
+                      className="flex h-full min-h-48 flex-col items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-border text-sm font-semibold text-muted-foreground transition-colors hover:border-primary/40 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                    >
+                      <ImagePlus className="size-6" aria-hidden="true" />
+                      {t("addAnimalCard")}
+                    </Link>
+                  </li>
                 </ul>
               </div>
             </div>
@@ -354,11 +410,18 @@ export default async function PanelPage() {
                     <li key={r.id}>
                       <Link
                         href="/panel/solicitudes"
-                        className="flex items-center justify-between gap-2 py-2.5 text-sm hover:opacity-80"
+                        className="flex items-center justify-between gap-2 py-2.5 hover:opacity-80"
                       >
-                        <span className="min-w-0 truncate font-medium">{r.animal?.name ?? "—"}</span>
-                        <span className="shrink-0 rounded-full bg-amber-50 px-2 py-0.5 text-xs font-semibold text-amber-800">
-                          {t("requestPending")}
+                        <span className="flex min-w-0 flex-col">
+                          <span className="truncate text-sm font-semibold">{r.animal?.name ?? "—"}</span>
+                          <span className="truncate text-xs text-muted-foreground">
+                            {`${r.adopterName ?? "—"} · ${FECHA_CORTA_MADRID.format(new Date(r.created_at))}`}
+                          </span>
+                        </span>
+                        <span
+                          className={`shrink-0 rounded-full px-2 py-0.5 text-xs font-semibold ${CHIP_SOLICITUD[r.status]}`}
+                        >
+                          {ts(`status${capitaliza(r.status)}`)}
                         </span>
                       </Link>
                     </li>
@@ -392,15 +455,15 @@ function AvatarAnimal({ url, alt }: { url: string | null; alt: string }) {
   );
 }
 
-function Miniatura({ url, alt }: { url: string | null; alt: string }) {
+function FotoAnimal({ url, alt }: { url: string | null; alt: string }) {
   if (!url) {
     return (
-      <span className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-muted text-muted-foreground">
-        <PawPrint className="size-5" aria-hidden="true" />
+      <span className="flex size-full items-center justify-center text-muted-foreground">
+        <PawPrint className="size-8" aria-hidden="true" />
       </span>
     );
   }
-  return <Image src={url} alt={alt} width={40} height={40} className="size-10 shrink-0 rounded-lg object-cover" />;
+  return <Image src={url} alt={alt} fill sizes="(max-width: 640px) 50vw, 12rem" className="object-cover" />;
 }
 
 function PrimerosPasos({

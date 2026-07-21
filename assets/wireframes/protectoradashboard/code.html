@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Adoptia | Panel de Refugio</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Open+Sans:wght@400;500;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100..900&family=Open+Sans:wght@100..900&display=swap" rel="stylesheet"/>
+<!-- Theme Configuration -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface": "#fef8f0",
+                    "on-secondary-container": "#3f6c68",
+                    "on-tertiary": "#ffffff",
+                    "on-background": "#1d1b17",
+                    "surface-container-highest": "#e7e2da",
+                    "error": "#ba1a1a",
+                    "secondary-fixed": "#bcece6",
+                    "on-primary-fixed": "#3e0500",
+                    "on-tertiary-fixed-variant": "#374b43",
+                    "on-surface-variant": "#56423e",
+                    "on-error": "#ffffff",
+                    "on-tertiary-fixed": "#0b1f18",
+                    "surface-dim": "#dfd9d2",
+                    "on-primary-container": "#5a0d02",
+                    "background": "#fef8f0",
+                    "primary-fixed-dim": "#ffb4a5",
+                    "primary-fixed": "#ffdad3",
+                    "on-error-container": "#93000a",
+                    "surface-bright": "#fef8f0",
+                    "on-secondary": "#ffffff",
+                    "surface-container-low": "#f9f3eb",
+                    "surface-container-high": "#ede7e0",
+                    "outline": "#89726d",
+                    "on-secondary-fixed": "#00201e",
+                    "error-container": "#ffdad6",
+                    "tertiary-container": "#81978d",
+                    "surface-container": "#f3ede5",
+                    "secondary": "#396662",
+                    "tertiary-fixed-dim": "#b5ccc1",
+                    "outline-variant": "#ddc0ba",
+                    "on-surface": "#1d1b17",
+                    "inverse-primary": "#ffb4a5",
+                    "on-secondary-fixed-variant": "#204e4a",
+                    "on-primary-fixed-variant": "#802918",
+                    "tertiary": "#4e635a",
+                    "surface-tint": "#9f402d",
+                    "primary": "#9f402d",
+                    "on-primary": "#ffffff",
+                    "tertiary-fixed": "#d1e8dd",
+                    "primary-container": "#e2725b",
+                    "surface-variant": "#e7e2da",
+                    "inverse-surface": "#32302b",
+                    "surface-container-lowest": "#ffffff",
+                    "secondary-container": "#bcece6",
+                    "inverse-on-surface": "#f6f0e8",
+                    "on-tertiary-container": "#1b2f28",
+                    "secondary-fixed-dim": "#a1cfca"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "xs": "4px",
+                    "xxl": "48px",
+                    "sm": "8px",
+                    "md": "16px",
+                    "lg": "24px",
+                    "xl": "32px",
+                    "margin-mobile": "16px",
+                    "container-max": "1200px",
+                    "gutter": "20px",
+                    "unit": "4px"
+            },
+            "fontFamily": {
+                    "headline-md": ["Montserrat"],
+                    "headline-lg-mobile": ["Montserrat"],
+                    "body-lg": ["Open Sans"],
+                    "label-sm": ["Open Sans"],
+                    "body-md": ["Open Sans"],
+                    "label-md": ["Open Sans"],
+                    "headline-xl": ["Montserrat"],
+                    "headline-lg": ["Montserrat"]
+            },
+            "fontSize": {
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                    "headline-xl": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .filled-icon {
+            font-variation-settings: 'FILL' 1;
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f9f3eb;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #e7e2da;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #ddc0ba;
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body-md selection:bg-primary/20 selection:text-primary overflow-x-hidden">
+<!-- TopNavBar (Shell Component) -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-gutter py-md bg-surface/80 dark:bg-surface-dim/80 backdrop-blur-md shadow-sm dark:shadow-none lg:pl-[280px]">
+<div class="flex items-center gap-4">
+<span class="lg:hidden material-symbols-outlined cursor-pointer p-2 hover:bg-surface-container-high rounded-full transition-colors">menu</span>
+<span class="font-headline-md text-headline-md font-bold text-primary">Adoptia</span>
+</div>
+<div class="flex items-center gap-md">
+<div class="hidden md:flex gap-lg items-center mr-lg">
+<span class="font-label-md text-label-md text-primary border-b-2 border-primary pb-1 cursor-pointer">Panel de Control</span>
+<span class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors cursor-pointer">Comunidad</span>
+</div>
+<div class="flex gap-sm">
+<span class="material-symbols-outlined text-primary cursor-pointer active:scale-95 transition-transform p-2">help</span>
+<span class="material-symbols-outlined text-primary cursor-pointer active:scale-95 transition-transform p-2 relative">
+                    notifications
+                    <span class="absolute top-2 right-2 w-2 h-2 bg-error rounded-full"></span>
+</span>
+</div>
+<div class="w-10 h-10 rounded-full overflow-hidden bg-surface-container-high cursor-pointer ring-2 ring-primary/10 hover:ring-primary/30 transition-all">
+<img class="w-full h-full object-cover" data-alt="Close-up professional portrait of a kind-looking woman with gray hair and glasses, representing a shelter manager, in a warm, sunlit office filled with plants and animal care posters. Soft lighting, modern photography style, empathetic and welcoming mood." src="https://lh3.googleusercontent.com/aida-public/AB6AXuChiHcTGMUaiTfV5QdBwjiYcs_Rdvrql7g9dAU80ayyjyiKqsEYiyUVFkOjr0Nc5NI-Pd9OCiW1CWZUsTFIQgz2PYtXY2dzID_mltTFegW5zDOnfmYwQMokmod7TdNOd2DJGAIKdaXvBOC4GuYuOZyg8KHpntXsOgm6mXehQoPRFKzrSOaI17sTV30SKeDIrvfi41rAUaOLPtSaiPkepcF46q4vugAq7zoI8qFC1d-_s0-ahVNIHPw4x_E6hQR0LX9GMWNU6jERihJg"/>
+</div>
+</div>
+</header>
+<!-- SideNavBar (Shell Component) -->
+<aside class="fixed left-0 top-0 h-full w-64 bg-surface-container-low dark:bg-surface-container-high hidden lg:flex flex-col border-r border-outline-variant/30 z-[60]">
+<div class="p-lg mb-md">
+<div class="flex items-center gap-3 mb-xs">
+<div class="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-[20px] filled-icon">pets</span>
+</div>
+<h1 class="font-headline-md text-headline-md text-primary text-[20px]">Adoptia</h1>
+</div>
+<div class="px-sm py-xs bg-secondary-container/30 rounded-lg inline-block">
+<p class="font-label-sm text-label-sm text-on-secondary-container flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">verified</span> Huellas de Esperanza
+                </p>
+</div>
+</div>
+<nav class="flex-1 px-md flex flex-col gap-1">
+<a class="bg-secondary-container text-on-secondary-container rounded-xl flex items-center gap-3 px-4 py-3 transition-all duration-200 font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined filled-icon">home</span> Inicio
+            </a>
+<a class="text-on-surface-variant hover:bg-surface-variant/50 flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined">pets</span> Mis animales
+            </a>
+<a class="text-on-surface-variant hover:bg-surface-variant/50 flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined">description</span> Solicitudes
+            </a>
+<a class="text-on-surface-variant hover:bg-surface-variant/50 flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined">event</span> Citas
+            </a>
+<a class="text-on-surface-variant hover:bg-surface-variant/50 flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined">calendar_today</span> Agenda
+            </a>
+<a class="text-on-surface-variant hover:bg-surface-variant/50 flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined">storefront</span> Perfil público
+            </a>
+<a class="text-on-surface-variant hover:bg-surface-variant/50 flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined">monitoring</span> Estadísticas
+            </a>
+</nav>
+<div class="p-md mt-auto">
+<button class="w-full py-3 bg-surface-variant text-on-surface-variant font-label-md text-label-md rounded-xl hover:bg-outline-variant transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[18px]">support_agent</span> Contactar soporte
+            </button>
+<p class="mt-md text-center font-label-sm text-label-sm text-outline">© 2024 Adoptia</p>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="pt-xxl pb-xxl px-margin-mobile lg:pl-[280px] lg:pr-gutter mt-md">
+<!-- Header Section -->
+<header class="flex flex-col md:flex-row md:items-center justify-between gap-md mb-xl">
+<div>
+<h2 class="font-headline-xl text-headline-xl text-on-surface mb-xs">Bienvenido, Patas del Norte</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant">Hoy es un buen día para encontrar nuevos hogares.</p>
+</div>
+<button class="bg-primary-container text-on-primary font-label-md text-label-md h-12 px-lg rounded-xl flex items-center justify-center gap-2 shadow-sm hover:opacity-90 active:scale-95 transition-all w-full md:w-auto">
+<span class="material-symbols-outlined">add_circle</span>
+                Publicar mascota
+            </button>
+</header>
+<!-- Stats Row -->
+<section class="grid grid-cols-1 md:grid-cols-3 gap-lg mb-xl">
+<!-- Pending Requests -->
+<div class="bg-primary-container/10 p-lg rounded-xl flex items-center justify-between shadow-[0_4px_12px_rgba(226,114,91,0.08)]">
+<div>
+<p class="font-label-md text-label-md text-on-primary-container mb-1 uppercase tracking-wider">Solicitudes Pendientes</p>
+<p class="font-headline-xl text-headline-xl text-primary">8</p>
+</div>
+<div class="w-12 h-12 bg-primary-container rounded-full flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-[28px] filled-icon">pending_actions</span>
+</div>
+</div>
+<!-- Appointments -->
+<div class="bg-secondary-container/30 p-lg rounded-xl flex items-center justify-between shadow-[0_4px_12px_rgba(226,114,91,0.08)]">
+<div>
+<p class="font-label-md text-label-md text-on-secondary-container mb-1 uppercase tracking-wider">Citas Hoy</p>
+<p class="font-headline-xl text-headline-xl text-secondary">3</p>
+</div>
+<div class="w-12 h-12 bg-secondary rounded-full flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-[28px] filled-icon">event_available</span>
+</div>
+</div>
+<!-- Active Profiles -->
+<div class="bg-surface-container p-lg rounded-xl flex items-center justify-between shadow-[0_4px_12px_rgba(226,114,91,0.08)]">
+<div>
+<p class="font-label-md text-label-md text-on-surface-variant mb-1 uppercase tracking-wider">Perfiles Activos</p>
+<div class="flex items-center gap-2">
+<p class="font-headline-xl text-headline-xl text-on-surface">12</p>
+<div class="flex -space-x-2 ml-4">
+<div class="w-8 h-8 rounded-full border-2 border-surface overflow-hidden"><img class="w-full h-full object-cover" data-alt="A small fluffy white terrier dog smiling directly at the camera. Bright and cheerful, high-end commercial pet photography with warm, natural sunlight in a green park background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCC5x-uCuFWTr-kDo_8KH_1Tmv0SIOYr_LPAnk-qzcc3PzrDW9PvpGEd2FCAbYig7IwnXmr3h9q9PMZwDaQYxHmtxbpI_68PjUBu8okKBlC-_dhHDdGnj8DCy8ACmZUIzvbfd669C2pK4yLx1vtQUFiEKDlB_GDE-zB_W42WYagc8Gope2gdVV1_AU1ZkpGQvjoTgqSqJCoczxiKz8QkL_xclPKgDH0rDwtVxnYBm1mMLTQA0zHbJl0AFk2sSOZ5nfsYTArQssp01Gs"/></div>
+<div class="w-8 h-8 rounded-full border-2 border-surface overflow-hidden"><img class="w-full h-full object-cover" data-alt="A sleek black and white tuxedo cat sitting elegantly on a wooden floor. Warm ambient interior lighting, high-quality professional photography with soft focus background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAge9JA5upTRC8F5F6sPb-eAsh95SehgeJ04raQt32eHbh9nrV3sZzKyS9OrlB44qHSJNnyoW9L7Fiq0SsXRgJ7bx0iFdzAb3Mw9doqembaTY5Vs84OEbWErH2xEBBNAvJMRitxaLg8V5eBU6371o-LB5H9YXyv5eq_taAniLe3sUnZfiTnMBOKQrj-ObDE5UEgMNwfvfpamOt6dzO4MzIwAVM3gJlvDjmLeS6f8ghRAaKrqOUX-u0gorPYf1Q-6rnPSr3ox5JU3Kvr"/></div>
+<div class="w-8 h-8 rounded-full border-2 border-surface overflow-hidden"><img class="w-full h-full object-cover" data-alt="A friendly golden retriever puppy playing with a ball in a sunlit garden. Sharp detail, organic textures, vibrant natural colors, warm and joyous mood." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAH_bNDHbbWHoIG6heDTVgUuwa-faDmwVuU-godKs0iJJomEr_IwYX6kYus3-FaL_rf9WAfPR93dv5-_YTVGvEAF-atqpINCkk4Iv6zjfppuTBCgTlEvNDlE-VkXL2BRRQ4PQtNNmtiPtZoYNEABFMlMyCXwlLiImslBy1d5Yb8oENZS4iHdtmudoqhCuzDYxZmk_mWgPfPdqtBHWbgz5gC0s9uetmDoc2DceawV4BtPbOoPYq0Gb9GUaXEKClW4KZvGfoeQEGSIL-W"/></div>
+</div>
+</div>
+</div>
+<div class="w-12 h-12 bg-surface-container-highest rounded-full flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined text-[28px] filled-icon">pets</span>
+</div>
+</div>
+</section>
+<!-- Main Content Grid -->
+<div class="grid grid-cols-1 xl:grid-cols-12 gap-xl">
+<!-- Left Column: Appointments & Requests -->
+<div class="xl:col-span-7 flex flex-col gap-xl">
+<!-- Upcoming Appointments -->
+<section class="bg-surface-container-lowest p-xl rounded-xl shadow-[0_4px_12px_rgba(226,114,91,0.08)]">
+<div class="flex items-center justify-between mb-lg">
+<h3 class="font-headline-md text-headline-md text-on-surface">Próximas citas</h3>
+<a class="font-label-md text-label-md text-primary hover:underline transition-all" href="#">Ver calendario</a>
+</div>
+<div class="space-y-md">
+<!-- Appt Item -->
+<div class="flex items-center justify-between p-md bg-surface hover:bg-surface-container transition-colors rounded-lg group">
+<div class="flex items-center gap-md">
+<div class="w-12 h-12 rounded-full overflow-hidden bg-surface-variant">
+<img class="w-full h-full object-cover" data-alt="Close up portrait of a golden retriever puppy. Soft focus, bright natural lighting, modern high-key pet photography aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCP2whNJYiXbYged0vOo4_OXfapG3C3sFcIkNiyOQ2s_ZwH3QwWxhOxlKZb0kcGjd5hy8CpcDXzicTUKRMuEYtPbTov8rYM8v5u6S4JRttY_NLhfOXzqIn8-r6fhEfgVo6ZzDBTETSYskzBciwPDNV45bpA_TOVcoL0jZW3aTG5xz_o4gs4hwIr_MjnLvMDe2WgtaS5j_1OgKsvzsQRaLdORqW633OfWH5BorZa-ZsObs5FYwTsUrH0UUJutl5HHyVZy4v1yHx98Iau"/>
+</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface">Max <span class="text-on-surface-variant font-normal">con</span> Clara Rivera</p>
+<p class="font-label-sm text-label-sm text-outline">Entrevista presencial</p>
+</div>
+</div>
+<div class="text-right">
+<p class="font-label-md text-label-md text-secondary">10:00 AM</p>
+<p class="font-label-sm text-label-sm text-outline">Hoy</p>
+</div>
+</div>
+<!-- Appt Item -->
+<div class="flex items-center justify-between p-md bg-surface hover:bg-surface-container transition-colors rounded-lg group">
+<div class="flex items-center gap-md">
+<div class="w-12 h-12 rounded-full overflow-hidden bg-surface-variant">
+<img class="w-full h-full object-cover" data-alt="Portrait of a beautiful calico cat with curious green eyes. Artistic low-depth of field photography, warm sunlight filtering through a window." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA67PQDlEc9O5rtpXtI2rW9wtIWkuYY6lpTJODhu_NHQjazFLvMMKAVRAG1_-PR3BHyaik4_7EZBZIF3yikO5o0zj_5NnMveO5VuXdtZ-A3Ggi3xj9w3UVpi0MlDpeHBBEuM479B9qfoMBDcdIYU27O0RSdCSka9hRTa5yZh6Fd_Ony7jg6XknrWVx6INt_qShLkUqW99O0wzHMb75NUuXON20Us3IBDiWw_yn5JmJa3AbtmEzURL95BVO6DiecMFHO8ncXUvAYUT1F"/>
+</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface">Luna <span class="text-on-surface-variant font-normal">con</span> Sergio Montes</p>
+<p class="font-label-sm text-label-sm text-outline">Visita al refugio</p>
+</div>
+</div>
+<div class="text-right">
+<p class="font-label-md text-label-md text-secondary">04:30 PM</p>
+<p class="font-label-sm text-label-sm text-outline">Hoy</p>
+</div>
+</div>
+<!-- Appt Item -->
+<div class="flex items-center justify-between p-md bg-surface hover:bg-surface-container transition-colors rounded-lg group">
+<div class="flex items-center gap-md">
+<div class="w-12 h-12 rounded-full overflow-hidden bg-surface-variant">
+<img class="w-full h-full object-cover" data-alt="A scruffy gray schnauzer looking alert and happy. High contrast pet photography, clean minimalist background with warm tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDD7Wv7IphUGOvjcAOvVSsrkWgBQZB5mld1o2Dqm27zzqvE2dTDmIakNiLp3-X0TaQ37ZmEhAO29j0VYFADrJ2TwEZTJPY5dgcDbTbrrw5z5mwJY-BeSxaFeH5kxXXu0mcvjIHVAlXIwaZhd_rLGiR-AIzWRxZZKQOZUAHf3InxaNHuwNZvahVcXoxIatMbmwk6gPgAo2fApjf_5ig4GGNqvtPEpJiayLr_IEMJM4IK2vQG69ruzW7pVKeMOPjgBblMG43wwvdy--8T"/>
+</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface">Toby <span class="text-on-surface-variant font-normal">con</span> María García</p>
+<p class="font-label-sm text-label-sm text-outline">Videollamada</p>
+</div>
+</div>
+<div class="text-right">
+<p class="font-label-md text-label-md text-secondary">09:00 AM</p>
+<p class="font-label-sm text-label-sm text-outline">Mañana</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Recent Requests -->
+<section class="bg-surface-container-lowest p-xl rounded-xl shadow-[0_4px_12px_rgba(226,114,91,0.08)]">
+<div class="flex items-center justify-between mb-lg">
+<h3 class="font-headline-md text-headline-md text-on-surface">Solicitudes recientes</h3>
+<a class="font-label-md text-label-md text-primary hover:underline transition-all" href="#">Ver todas</a>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="border-b border-surface-container-high">
+<th class="py-md font-label-md text-label-md text-outline">Adoptante</th>
+<th class="py-md font-label-md text-label-md text-outline">Mascota</th>
+<th class="py-md font-label-md text-label-md text-outline">Fecha</th>
+<th class="py-md font-label-md text-label-md text-outline">Estado</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-surface-container-high">
+<tr class="hover:bg-surface-container/30 transition-colors group">
+<td class="py-lg font-body-md text-body-md text-on-surface">Elena P.</td>
+<td class="py-lg font-body-md text-body-md text-on-surface">Bruno</td>
+<td class="py-lg font-body-md text-body-md text-on-surface-variant">24 Oct</td>
+<td class="py-lg">
+<span class="px-sm py-xs bg-primary-container/10 text-primary font-label-sm text-label-sm rounded-full">En revisión</span>
+</td>
+</tr>
+<tr class="hover:bg-surface-container/30 transition-colors group">
+<td class="py-lg font-body-md text-body-md text-on-surface">Juan Soto</td>
+<td class="py-lg font-body-md text-body-md text-on-surface">Mimi</td>
+<td class="py-lg font-body-md text-body-md text-on-surface-variant">23 Oct</td>
+<td class="py-lg">
+<span class="px-sm py-xs bg-secondary-container/30 text-secondary font-label-sm text-label-sm rounded-full">Aprobada</span>
+</td>
+</tr>
+<tr class="hover:bg-surface-container/30 transition-colors group">
+<td class="py-lg font-body-md text-body-md text-on-surface">Carla Méndez</td>
+<td class="py-lg font-body-md text-body-md text-on-surface">Max</td>
+<td class="py-lg font-body-md text-body-md text-on-surface-variant">22 Oct</td>
+<td class="py-lg">
+<span class="px-sm py-xs bg-surface-container-highest text-on-surface-variant font-label-sm text-label-sm rounded-full">Pendiente</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</div>
+<!-- Right Column: Your Animals Bento -->
+<div class="xl:col-span-5">
+<section class="bg-surface-container-lowest p-xl rounded-xl shadow-[0_4px_12px_rgba(226,114,91,0.08)] h-full">
+<div class="flex items-center justify-between mb-lg">
+<h3 class="font-headline-md text-headline-md text-on-surface">Tus animales</h3>
+<a class="font-label-md text-label-md text-primary hover:underline transition-all" href="#">Gestionar todos</a>
+</div>
+<!-- Animals Grid -->
+<div class="grid grid-cols-2 gap-md">
+<!-- Animal Card 1 -->
+<div class="group cursor-pointer">
+<div class="relative aspect-square rounded-xl overflow-hidden mb-sm shadow-sm transition-all group-hover:shadow-md">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A majestic Siberian Husky sitting in the grass, looking proud. Professional pet portrait, high-end photography, vibrant colors, warm golden hour lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuALioAQjf6JunP1zNIjtXw4avi2-34kiqNX37b-f2xcvrRC-gtoViMGpGgbhzXX02YPefsSvZaAdiCKkpq243mk-MrnRu3rheEyTEAM4jQnS9vDugvapvfpy3f8svVn9vguFQ1XN5406_a5t8OXkJRWg1hFfD3AvHlnzFMfG5KiGM-F6fkLo9Q0LYuF2yNlzxmxRBv1IQpUE57vcqIoaecAAbsfZMkxPPMVlqtQdQRuYfMSOCdoSPmmCfSIuuRY6MVYxYqiSZ-LcJCD"/>
+<div class="absolute top-2 right-2">
+<span class="px-xs py-[2px] bg-secondary text-white font-label-sm text-[10px] rounded uppercase tracking-tighter">En adopción</span>
+</div>
+</div>
+<h4 class="font-label-md text-label-md text-on-surface group-hover:text-primary transition-colors">Ghost</h4>
+<p class="font-label-sm text-label-sm text-outline">Husky • 3 años</p>
+</div>
+<!-- Animal Card 2 -->
+<div class="group cursor-pointer">
+<div class="relative aspect-square rounded-xl overflow-hidden mb-sm shadow-sm transition-all group-hover:shadow-md">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A cute ginger cat peeking out from under a blanket. Soft lighting, cozy homestyle photography, warm cream and terracotta tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBmS8YnqJYN0pkgJ-QVjKVPFo5gNeAPPpDhdXCoX8mC3jx4dpwFbFP_NZzrsGkjB8ep5S3s3R3G1Dqf10B7QeOk6tw_Dag-UYXFFNRwLBA_5ifw-vkCx1x5aQ8DCpSoxaTR3rGD8A7A0KgrMIC6WYPPrfAQASWWG-kP3RGqrvwFz5WZYtHIujDRGQ9k_4p4kDSmqZP9txyGEDiFOmZDEV0yI7sibq6kNgSEDcfjYM1Le8OZgQkqmRDg0hAg0ABVhF26T-u4F1Yycjms"/>
+<div class="absolute top-2 right-2">
+<span class="px-xs py-[2px] bg-primary text-white font-label-sm text-[10px] rounded uppercase tracking-tighter">Urgente</span>
+</div>
+</div>
+<h4 class="font-label-md text-label-md text-on-surface group-hover:text-primary transition-colors">Nala</h4>
+<p class="font-label-sm text-label-sm text-outline">Mestiza • 5 meses</p>
+</div>
+<!-- Animal Card 3 -->
+<div class="group cursor-pointer">
+<div class="relative aspect-square rounded-xl overflow-hidden mb-sm shadow-sm transition-all group-hover:shadow-md">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A small black pug with a festive collar. Minimalist background, high-quality pet studio photography, sharp focus, expressive face." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBFo4YMy-BEjp7DKXEEcMugJYApaEd7n_6SBL5buwHyo9fiw2L9ei2CyzhLZEKo14j6LRyNUMV0o3Di04lavr0Itnktx0EICX_WigUXqXMU3RuL4b0XxcMrBnlgm9FvKs_1bRh4n4ALv9fg3dfAtKeAXm7B8MUOXiefcEdl-YqFRKlbLQxIwi3g9YhaSTIOHkmNkb4O1Px-K9NCxdr4Bx4kpk4F-TPYZ_mb1OQyCYl90Ghq3kp7V_7NjubqcFgjPsOQetgvcSgzraUn"/>
+<div class="absolute top-2 right-2">
+<span class="px-xs py-[2px] bg-tertiary-container text-on-tertiary-container font-label-sm text-[10px] rounded uppercase tracking-tighter">En acogida</span>
+</div>
+</div>
+<h4 class="font-label-md text-label-md text-on-surface group-hover:text-primary transition-colors">Otto</h4>
+<p class="font-label-sm text-label-sm text-outline">Pug • 2 años</p>
+</div>
+<!-- Animal Card 4 -->
+<div class="group cursor-pointer">
+<div class="relative aspect-square rounded-xl overflow-hidden mb-sm shadow-sm transition-all group-hover:shadow-md">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A loyal-looking Border Collie sitting in a flower field. Romantic lighting, soft organic textures, high-quality nature photography." src="https://lh3.googleusercontent.com/aida-public/AB6AXuApatTw1CZtHBfUuPA7yPiVnMSYeZWID9d8072y0qFYWWzMEltR9KBpRONBpxxO4Fw78wxCXs6LGtBEZz1jghdC6volyMJWSWI9EiCn67HUG6fs1oM77dBEW5t412tUNsJ8kOBmsRvOZErd1kPONrHEkyfOy3v8s_58kMQCxxRh9LJ_9Sw4tWwpzltcqE6jgUUvg-H6fbCSUrLxDEdhM5XI7GXxDElofbuJKrHiS1PByBpYWEgv-_NpoKuG_abYKyCa2xUm77AFFGO5"/>
+<div class="absolute top-2 right-2">
+<span class="px-xs py-[2px] bg-secondary text-white font-label-sm text-[10px] rounded uppercase tracking-tighter">En adopción</span>
+</div>
+</div>
+<h4 class="font-label-md text-label-md text-on-surface group-hover:text-primary transition-colors">Lassie</h4>
+<p class="font-label-sm text-label-sm text-outline">Collie • 4 años</p>
+</div>
+<!-- Animal Card 5 (Asymmetric Add) -->
+<div class="col-span-2 group cursor-pointer mt-md border-2 border-dashed border-outline-variant rounded-xl p-lg flex flex-col items-center justify-center text-outline hover:border-primary hover:text-primary transition-all active:scale-[0.98]">
+<span class="material-symbols-outlined text-[32px] mb-xs">add_a_photo</span>
+<p class="font-label-md text-label-md">Añadir nueva mascota</p>
+</div>
+</div>
+</section>
+</div>
+</div>
+<!-- Banner Feature -->
+<section class="mt-xl relative rounded-xl overflow-hidden h-48 md:h-64 shadow-md group">
+<div class="absolute inset-0 bg-cover bg-center transition-transform duration-1000 group-hover:scale-105" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCrPNuT5ZSjM5s568-5GlPkHC5IjhO3Ev-88zJK3Uk0UfjVbZSPEtVcsa1PGJdDU9l5iCaOZoTd3wQjMuDFywKj2HbJJERg639jKksW6s_hAuu64cpkKtqk5z09uLwLza1b5_y3poQsgWWBBLLeob9jamx4qtcitZ07jgWxiikonHIefEG7Pb6G48ETwvamyi4kqUNVZlHIJI1zMZ4wrPtljt9m09unfY6CsnQQDwchu-smAHiNSf4_bwganG3GIHXrnmsXxj-rYq9w')"></div>
+<div class="absolute inset-0 bg-gradient-to-r from-black/60 to-transparent flex flex-col justify-center px-xl">
+<h3 class="font-headline-lg text-headline-lg text-white mb-xs">Campaña de Invierno</h3>
+<p class="font-body-md text-body-md text-white/90 max-w-md mb-md">Lanzamos la nueva campaña para fomentar la adopción de perros senior. ¡Ya puedes activar los distintivos!</p>
+<div>
+<button class="bg-white text-on-surface font-label-md text-label-md h-10 px-lg rounded-lg hover:bg-surface-container-low transition-colors">Explorar herramientas</button>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer (Shell Component) -->
+<footer class="lg:pl-[280px] w-full z-40 flex flex-col md:flex-row justify-between items-center px-gutter py-md bg-surface-container-lowest dark:bg-surface-container-low border-t border-outline-variant/20 mt-xxl">
+<div class="flex items-center gap-md mb-md md:mb-0">
+<span class="font-headline-md text-headline-md text-primary">Adoptia</span>
+<p class="font-label-md text-label-md text-outline">© 2024 Adoptia. Guardado automáticamente</p>
+</div>
+<div class="flex gap-lg">
+<a class="text-secondary hover:opacity-90 transition-opacity font-label-md text-label-md" href="#">Ayuda</a>
+<a class="text-secondary hover:opacity-90 transition-opacity font-label-md text-label-md" href="#">Términos</a>
+<a class="text-secondary hover:opacity-90 transition-opacity font-label-md text-label-md" href="#">Privacidad</a>
+</div>
+</footer>
+<script>
+        // Micro-interactions and Active Tab Management
+        document.addEventListener('DOMContentLoaded', () => {
+            const navLinks = document.querySelectorAll('aside nav a');
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    navLinks.forEach(l => {
+                        l.classList.remove('bg-secondary-container', 'text-on-secondary-container');
+                        l.classList.add('text-on-surface-variant');
+                        l.querySelector('.material-symbols-outlined').classList.remove('filled-icon');
+                    });
+                    link.classList.add('bg-secondary-container', 'text-on-secondary-container');
+                    link.classList.remove('text-on-surface-variant');
+                    link.querySelector('.material-symbols-outlined').classList.add('filled-icon');
+                });
+            });
+
+            // Mobile Menu Toggle Simulation
+            const menuBtn = document.querySelector('header .lg\\:hidden');
+            const sidebar = document.querySelector('aside');
+            menuBtn?.addEventListener('click', () => {
+                sidebar.classList.toggle('hidden');
+                sidebar.classList.toggle('flex');
+                sidebar.classList.toggle('w-full');
+            });
+        });
+    </script>
+</body></html>

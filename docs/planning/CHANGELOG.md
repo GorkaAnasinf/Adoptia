@@ -2,6 +2,12 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/es/) adaptado. Versionado 0.x hasta el MVP.
 
+## [0.0.84] — 2026-07-21
+
+### Cambiado
+
+- **El panel de la protectora estrena el diseño Stitch (FEATURE-045)**: el home del panel se alinea con el wireframe de Stitch tomando como base de coherencia el dashboard del adoptante. Dos mejoras sobre los bloques que ya existían. **«Tus animales»** deja de ser una lista plana y pasa a **rejilla de tarjetas** —foto cuadrada con el **estado superpuesto** (En adopción, Reservado, En acogida…) y debajo el nombre con **raza · edad**—, cerrando con una tarjeta punteada **«Añadir nueva mascota»**; el mismo lenguaje que la rejilla de favoritos del usuario. Y **«Solicitudes recientes»** deja de mostrar solo el nombre del animal con un sello fijo: ahora cada fila trae **mascota + adoptante + fecha + el estado real** (las 5 más recientes, de cualquier estado). El nombre del adoptante —que vive en `profiles` bajo RLS— se resuelve con el **mismo lookup acotado** que el panel ya usaba para las citas, sin abrir una segunda consulta con permisos elevados. Se descartan del wireframe el banner promocional (sin datos que lo alimenten) y las etiquetas de modalidad de cita (no hay campo en la base). Layout y tarjetas de métricas, intactos. Sin cambios de modelo ni de RLS. QA: suite 1048 verde; sin migraciones.
+
 ## [0.0.83] — 2026-07-21
 
 ### Cambiado

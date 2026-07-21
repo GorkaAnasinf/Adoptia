@@ -242,4 +242,49 @@ describe("PanelPage — dashboard rediseñado", () => {
       screen.getByRole("link", { name: messages.onboarding.bannerPendingEdit }),
     ).toHaveAttribute("href", "/panel/alta");
   });
+
+  it("Solicitudes recientes muestra mascota, adoptante, fecha y chip de estado", async () => {
+    state.animals = [animalPublicado(1)];
+    state.requests = [
+      {
+        id: "r1",
+        created_at: "2026-07-10T09:00:00Z",
+        status: "approved",
+        adopter_id: "adopter1",
+        animal: { name: "Bruno", slug: "bruno" },
+      },
+    ];
+    state.perfiles = [{ id: "adopter1", full_name: "Familia Martínez" }];
+    conIntl(await PanelPage());
+
+    // Sin citas en este test, así que "Familia Martínez" solo aparece en el aside.
+    expect(screen.getByText("Bruno")).toBeInTheDocument();
+    expect(screen.getByText(/Familia Martínez/)).toBeInTheDocument();
+    expect(screen.getByText(messages.solicitudesPanel.statusApproved)).toBeInTheDocument();
+  });
+
+  it("Tus animales pinta tarjetas con foto, badge de estado y tarjeta de añadir", async () => {
+    state.animals = [
+      animalPublicado(1, {
+        breed: "Husky",
+        birth_date_approx: "2021-01-01",
+        status: "available",
+        animal_media: [{ url: "https://x/f1.jpg", is_cover: true, sort_order: 0 }],
+      }),
+      animalPublicado(2, { breed: "Mestiza", birth_date_approx: null, status: "reserved" }),
+    ];
+    conIntl(await PanelPage());
+
+    // El nombre en la tarjeta es texto (el alt del avatar de la stat-card no
+    // cuenta como texto), así que closest("a") apunta al enlace de la ficha.
+    expect(screen.getByText("Animal1").closest("a")).toHaveAttribute("href", "/panel/animales/a1");
+    // Badge de estado presente (reserved → etiqueta de animales)
+    expect(screen.getByText(messages.animales.statusReserved)).toBeInTheDocument();
+    // Raza visible en el subtítulo
+    expect(screen.getByText(/Husky/)).toBeInTheDocument();
+    // Tarjeta de añadir
+    expect(
+      screen.getByRole("link", { name: messages.panel.addAnimalCard }),
+    ).toHaveAttribute("href", "/panel/animales/nueva");
+  });
 });

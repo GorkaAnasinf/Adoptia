@@ -205,13 +205,13 @@
     "recentAnimals": "Tus animales",
     "viewAll": "Ver todos",
     "noAnimalsYet": "Todavía no has añadido animales.",
+    "addAnimalCard": "Añadir nueva mascota",
     "firstStepsTitle": "Empieza por aquí",
     "firstStepsText": "Da los primeros pasos para que tu protectora reciba adopciones.",
     "stepProfile": "Completa tu perfil público",
     "stepProfileDone": "Perfil público listo",
     "stepAnimal": "Añade tu primer animal",
-    "editProfile": "Editar perfil",
-    "requestPending": "Pendiente"
+    "editProfile": "Editar perfil"
   },
   "protectorasDir": {
     "title": "Nuestras protectoras colaboradoras",
