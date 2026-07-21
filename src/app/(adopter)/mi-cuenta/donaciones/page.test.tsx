@@ -1,4 +1,5 @@
 import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { NextIntlClientProvider } from "next-intl";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import messages from "../../../../../messages/es.json";
@@ -83,9 +84,12 @@ describe("Mis donaciones", () => {
     expect(redirectMock).toHaveBeenCalledWith("/login");
   });
 
-  it("con sesión: formulario de alta y estado vacío cuidado", async () => {
+  it("sin ofertas: arranca en Publicar; la pestaña de lista muestra el vacío", async () => {
     await renderPagina();
     expect(screen.getByRole("button", { name: messages.donaciones.publicar })).toBeInTheDocument();
+    await userEvent.click(
+      screen.getByRole("tab", { name: messages.donaciones.tabMisDonaciones }),
+    );
     expect(screen.getByText(messages.donaciones.miEmpty)).toBeInTheDocument();
   });
 

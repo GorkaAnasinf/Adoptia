@@ -81,7 +81,7 @@ Para centrar el desarrollo en un lado de la app cada vez, el 0.2 se aborda en do
 | [FEATURE-015](items/FEATURE-015.md) | Contenido educativo sobre adopción responsable | hecho | baja |
 | [FEATURE-016](items/FEATURE-016.md) | Registro de casas de acogida | hecho | baja |
 
-### Hito 0.5 — 100% completado (42/42)
+### Hito 0.5 — 100% completado (43/43)
 
 | Item | Título | Estado | Prioridad |
 |------|--------|--------|-----------|
@@ -118,6 +118,7 @@ Para centrar el desarrollo en un lado de la app cada vez, el 0.2 se aborda en do
 | [FEATURE-041](items/FEATURE-041.md) | Crear alerta desde el listado con resultados (no solo en el estado vacío) | hecho | media |
 | [FEATURE-042](items/FEATURE-042.md) | Rediseño de "Mis acogidas" en dos pestañas (registro / propuestas) | hecho | media |
 | [FEATURE-043](items/FEATURE-043.md) | Rediseño del formulario de alta (patrón base) + ajustes de mis acogidas | hecho | media |
+| [FEATURE-044](items/FEATURE-044.md) | Rediseño de "Mis donaciones" (patrón base) + edición con un solo formulario | hecho | media |
 | [IMPROVEMENT-017](items/IMPROVEMENT-017.md) | Rediseño del dashboard de protectora (tarjetas de color y próximas citas) | hecho | media |
 | [IMPROVEMENT-018](items/IMPROVEMENT-018.md) | Rediseño de la home pública (hero con buscador, recién llegados, banda de stats y CTA) | hecho | media |
 | [IMPROVEMENT-019](items/IMPROVEMENT-019.md) | Rediseño del listado /animales (filtros horizontales, tarjetas con favorito y paginación numerada) | hecho | media |
