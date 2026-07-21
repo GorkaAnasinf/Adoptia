@@ -40,7 +40,7 @@ export default async function MiAcogidaPage() {
   }
 
   return (
-    <section className="mx-auto max-w-3xl px-4 py-12">
+    <section className="mx-auto max-w-6xl px-4 py-12">
       <h1 className="font-heading text-3xl font-bold">{t("title")}</h1>
       <p className="mt-2 text-muted-foreground">{t("subtitle")}</p>
       <p className="mt-3 rounded-xl bg-secondary/10 px-4 py-3 text-sm text-secondary">

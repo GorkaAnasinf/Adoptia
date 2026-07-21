@@ -2,6 +2,12 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/es/) adaptado. Versionado 0.x hasta el MVP.
 
+## [0.0.81] — 2026-07-21
+
+### Cambiado
+
+- **El formulario de alta de acogida estrena un diseño que servirá de patrón base (FEATURE-043)**: sobre «mis acogidas» recién estrenada, cuatro mejoras pedidas tras verla en producción. La vista se **ensancha** a `max-w-6xl` como el resto del área de usuario (ya no se veía más estrecha). Las **pestañas se reordenan**: primero «Mi registro de acogida», después «Propuestas recibidas». Los **botones de cada propuesta** pasan a ser coherentes —«Necesito relevo» en outline granate y «Contactar refugio» relleno granate, del mismo alto— en vez de una píldora diminuta junto a un botón grande. Y sobre todo, el **formulario de registro se rediseña en tarjeta por secciones**: cada bloque («¿Qué puedes acoger?», «Tu vivienda», «Convivencia y disponibilidad», «Tu zona») lleva icono, título y una frase de ayuda, y las opciones dejan de ser selects planos para ser **chips** (especies, distancia) y un **segmentado** (Piso/Casa). De paso salen tres piezas reutilizables —`FormSection`, `ChipGroup`, `SegmentedControl`— pensadas como base para el resto de formularios de alta de la aplicación. Sin cambios de datos: mismo modelo y misma RLS. QA: suite verde; sin migraciones.
+
 ## [0.0.80] — 2026-07-21
 
 ### Cambiado
