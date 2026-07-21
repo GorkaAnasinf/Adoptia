@@ -1308,7 +1308,6 @@
     "huecoOcupado": "Ese hueco se acaba de ocupar. Elige otro, por favor.",
     "errorReserva": "No se pudo reservar la cita. Inténtalo de nuevo.",
     "reservarVisita": "Reservar visita",
-    "citaProxima": "Visita: {fecha}",
     "cancelarCita": "Cancelar cita",
     "motivoCancelacion": "¿Por qué cancelas la cita?",
     "motivoRequerido": "Escribe un motivo: la otra parte lo recibirá con el aviso.",

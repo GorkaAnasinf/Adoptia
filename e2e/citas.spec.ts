@@ -115,9 +115,10 @@ test("solicitud aprobada → reservar hueco → agenda de la protectora → real
   await page.getByRole("button", { name: tc.confirmar }).click();
   await expect(page.getByRole("heading", { name: tc.reservadaTitle })).toBeVisible();
 
-  // La solicitud muestra ahora la cita
+  // La solicitud muestra ahora la cita reservada: aparece el botón de
+  // cancelarla (solo visible cuando hay un hueco ya agendado).
   await page.getByRole("link", { name: tc.verMisSolicitudes }).click();
-  await expect(page.getByText(/Visita:/)).toBeVisible();
+  await expect(page.getByRole("button", { name: tc.cancelarCita })).toBeVisible();
 
   // --- Protectora: ve la cita y la marca realizada ---
   await cerrarSesion(page);
