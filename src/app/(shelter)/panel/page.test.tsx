@@ -262,4 +262,29 @@ describe("PanelPage — dashboard rediseñado", () => {
     expect(screen.getByText(/Familia Martínez/)).toBeInTheDocument();
     expect(screen.getByText(messages.solicitudesPanel.statusApproved)).toBeInTheDocument();
   });
+
+  it("Tus animales pinta tarjetas con foto, badge de estado y tarjeta de añadir", async () => {
+    state.animals = [
+      animalPublicado(1, {
+        breed: "Husky",
+        birth_date_approx: "2021-01-01",
+        status: "available",
+        animal_media: [{ url: "https://x/f1.jpg", is_cover: true, sort_order: 0 }],
+      }),
+      animalPublicado(2, { breed: "Mestiza", birth_date_approx: null, status: "reserved" }),
+    ];
+    conIntl(await PanelPage());
+
+    // El nombre en la tarjeta es texto (el alt del avatar de la stat-card no
+    // cuenta como texto), así que closest("a") apunta al enlace de la ficha.
+    expect(screen.getByText("Animal1").closest("a")).toHaveAttribute("href", "/panel/animales/a1");
+    // Badge de estado presente (reserved → etiqueta de animales)
+    expect(screen.getByText(messages.animales.statusReserved)).toBeInTheDocument();
+    // Raza visible en el subtítulo
+    expect(screen.getByText(/Husky/)).toBeInTheDocument();
+    // Tarjeta de añadir
+    expect(
+      screen.getByRole("link", { name: messages.panel.addAnimalCard }),
+    ).toHaveAttribute("href", "/panel/animales/nueva");
+  });
 });

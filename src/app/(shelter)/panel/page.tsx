@@ -1,4 +1,4 @@
-import { ArrowRight, CalendarDays, CheckCircle2, ChevronRight, Clock, Heart, PawPrint, Plus, Sprout } from "lucide-react";
+import { ArrowRight, CalendarDays, CheckCircle2, ChevronRight, Clock, Heart, ImagePlus, PawPrint, Plus, Sprout } from "lucide-react";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
@@ -6,6 +6,7 @@ import { getTranslations } from "next-intl/server";
 import { AnimalStatusBadge } from "@/components/animals/AnimalStatusBadge";
 import type { AnimalStatus } from "@/lib/schemas/animal";
 import type { EstadoSolicitud } from "@/lib/schemas/solicitud";
+import { edadAproximada } from "@/lib/animal-search";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 import { cn } from "@/lib/utils";
@@ -21,6 +22,8 @@ type AnimalRow = {
   name: string;
   slug: string;
   status: AnimalStatus;
+  breed: string | null;
+  birth_date_approx: string | null;
   published_at: string | null;
   updated_at: string;
   animal_media: MediaRow[];
@@ -82,6 +85,7 @@ export default async function PanelPage() {
   const to = await getTranslations("onboarding");
   const tc = await getTranslations("citas");
   const ts = await getTranslations("solicitudesPanel");
+  const tb = await getTranslations("busqueda");
 
   const supabase = await createClient();
   const {
@@ -105,7 +109,7 @@ export default async function PanelPage() {
   if (shelter) {
     const { data: a } = await supabase
       .from("animals")
-      .select("id,name,slug,status,published_at,updated_at,animal_media(url,is_cover,sort_order)")
+      .select("id,name,slug,status,breed,birth_date_approx,published_at,updated_at,animal_media(url,is_cover,sort_order)")
       .eq("shelter_id", shelter.id)
       .order("updated_at", { ascending: false });
     animals = (a as AnimalRow[] | null) ?? [];
@@ -335,7 +339,7 @@ export default async function PanelPage() {
                 )}
               </div>
 
-              {/* Animales recientes */}
+              {/* Tus animales — rejilla de tarjetas */}
               <div className="rounded-2xl border border-border bg-card p-5">
                 <div className="mb-4 flex items-center justify-between">
                   <h2 className="font-heading text-lg font-semibold">{t("recentAnimals")}</h2>
@@ -343,19 +347,46 @@ export default async function PanelPage() {
                     {t("viewAll")}
                   </Link>
                 </div>
-                <ul className="flex flex-col divide-y divide-border">
-                  {animals.slice(0, 5).map((a) => (
-                    <li key={a.id}>
-                      <Link
-                        href={`/panel/animales/${a.id}`}
-                        className="-mx-2 flex items-center gap-3 rounded-lg px-2 py-2.5 hover:bg-accent/40"
-                      >
-                        <Miniatura url={portada(a.animal_media)} alt={a.name} />
-                        <span className="min-w-0 flex-1 truncate font-medium">{a.name}</span>
-                        <AnimalStatusBadge status={a.status} />
-                      </Link>
-                    </li>
-                  ))}
+                <ul className="grid grid-cols-2 gap-4 sm:grid-cols-3">
+                  {animals.slice(0, 5).map((a) => {
+                    const edad = edadAproximada(a.birth_date_approx);
+                    const subtitulo = [
+                      a.breed,
+                      edad ? tb(edad.unidad === "anios" ? "edadAnios" : "edadMeses", { n: edad.n }) : null,
+                    ]
+                      .filter(Boolean)
+                      .join(" · ");
+                    return (
+                      <li key={a.id}>
+                        <Link
+                          href={`/panel/animales/${a.id}`}
+                          className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-shadow hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                        >
+                          <span className="relative block aspect-square bg-muted">
+                            <FotoAnimal url={portada(a.animal_media)} alt={a.name} />
+                            <span className="absolute left-2 top-2">
+                              <AnimalStatusBadge status={a.status} />
+                            </span>
+                          </span>
+                          <span className="flex flex-col gap-0.5 p-3">
+                            <span className="truncate font-heading font-semibold text-primary">{a.name}</span>
+                            {subtitulo && (
+                              <span className="truncate text-sm text-muted-foreground">{subtitulo}</span>
+                            )}
+                          </span>
+                        </Link>
+                      </li>
+                    );
+                  })}
+                  <li>
+                    <Link
+                      href="/panel/animales/nueva"
+                      className="flex h-full min-h-48 flex-col items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-border text-sm font-semibold text-muted-foreground transition-colors hover:border-primary/40 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                    >
+                      <ImagePlus className="size-6" aria-hidden="true" />
+                      {t("addAnimalCard")}
+                    </Link>
+                  </li>
                 </ul>
               </div>
             </div>
@@ -423,15 +454,15 @@ function AvatarAnimal({ url, alt }: { url: string | null; alt: string }) {
   );
 }
 
-function Miniatura({ url, alt }: { url: string | null; alt: string }) {
+function FotoAnimal({ url, alt }: { url: string | null; alt: string }) {
   if (!url) {
     return (
-      <span className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-muted text-muted-foreground">
-        <PawPrint className="size-5" aria-hidden="true" />
+      <span className="flex size-full items-center justify-center text-muted-foreground">
+        <PawPrint className="size-8" aria-hidden="true" />
       </span>
     );
   }
-  return <Image src={url} alt={alt} width={40} height={40} className="size-10 shrink-0 rounded-lg object-cover" />;
+  return <Image src={url} alt={alt} fill sizes="(max-width: 640px) 50vw, 12rem" className="object-cover" />;
 }
 
 function PrimerosPasos({
