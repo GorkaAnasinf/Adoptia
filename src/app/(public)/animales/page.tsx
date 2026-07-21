@@ -4,6 +4,7 @@ import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import { AnimalCard, type AnimalSearchResult } from "@/components/animals/AnimalCard";
 import { AnimalSearchEmpty } from "@/components/animals/AnimalSearchEmpty";
+import { CrearAlertaButton } from "@/components/alertas/CrearAlertaButton";
 import { AnimalSearchFilters } from "@/components/animals/AnimalSearchFilters";
 import { OrdenSelect } from "@/components/animals/OrdenSelect";
 import { Reveal } from "@/components/ui/Reveal";
@@ -72,12 +73,15 @@ export default async function AnimalesPage({ searchParams }: { searchParams: Sea
           </h1>
           <p className="mt-2 font-medium text-primary">{t("resultados", { count: total })}</p>
         </div>
-        <OrdenSelect search={search} />
+        <div className="flex flex-wrap items-center gap-3">
+          <CrearAlertaButton search={search} variant="compacto" />
+          <OrdenSelect search={search} />
+        </div>
       </header>
 
       <section aria-live="polite" className="mt-6">
         {animales.length === 0 ? (
-          <AnimalSearchEmpty />
+          <AnimalSearchEmpty search={search} />
         ) : (
           <>
             <ul className="grid grid-cols-2 gap-4 lg:grid-cols-4">

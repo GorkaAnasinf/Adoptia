@@ -418,6 +418,8 @@
     "edadAll": "Todas",
     "sexoAll": "Indiferente",
     "crearAlerta": "Avisadme cuando haya animales así",
+    "crearAlertaCorto": "Crear alerta",
+    "alertaSinFiltros": "Aplica algún filtro para crear una alerta",
     "alertaNombreDefault": "Mi búsqueda",
     "alertaCreada": "¡Alerta creada! Te avisaremos por email cuando entren animales que encajen.",
     "alertaVerMis": "Ver mis alertas",
