@@ -1,11 +1,9 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { getTranslations } from "next-intl/server";
-import { AcogidaForm, type FosterHome } from "@/components/acogida/AcogidaForm";
-import {
-  PropuestasRecibidas,
-  type PropuestaRecibida,
-} from "@/components/acogida/PropuestasRecibidas";
+import { type FosterHome } from "@/components/acogida/AcogidaForm";
+import { MisAcogidasCliente } from "@/components/acogida/MisAcogidasCliente";
+import { type PropuestaRecibida } from "@/components/acogida/PropuestasRecibidas";
 import { createClient } from "@/lib/supabase/server";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -34,7 +32,7 @@ export default async function MiAcogidaPage() {
     const { data: dataPropuestas } = await supabase
       .from("foster_proposals")
       .select(
-        "id, duracion, mensaje, status, created_at, relevo_pedido_at, relevo_motivo, relevo_fecha_limite, shelters (name), animals (name)",
+        "id, duracion, mensaje, status, created_at, relevo_pedido_at, relevo_motivo, relevo_fecha_limite, shelters (name, slug), animals (name)",
       )
       .eq("foster_user_id", user.id)
       .order("created_at", { ascending: false });
@@ -42,18 +40,14 @@ export default async function MiAcogidaPage() {
   }
 
   return (
-    <section className="mx-auto max-w-2xl px-4 py-12">
+    <section className="mx-auto max-w-3xl px-4 py-12">
       <h1 className="font-heading text-3xl font-bold">{t("title")}</h1>
       <p className="mt-2 text-muted-foreground">{t("subtitle")}</p>
       <p className="mt-3 rounded-xl bg-secondary/10 px-4 py-3 text-sm text-secondary">
         {t("privacidad")}
       </p>
 
-      {existente && <PropuestasRecibidas propuestas={propuestas} />}
-
-      <div className="mt-8">
-        <AcogidaForm userId={user.id} existente={existente} />
-      </div>
+      <MisAcogidasCliente userId={user.id} existente={existente} propuestas={propuestas} />
     </section>
   );
 }

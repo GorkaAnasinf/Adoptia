@@ -35,7 +35,7 @@ export default async function AcogidaPage() {
       const { data: dataPropuestas } = await supabase
         .from("foster_proposals")
         .select(
-          "id, duracion, mensaje, status, created_at, relevo_pedido_at, relevo_motivo, relevo_fecha_limite, shelters (name), animals (name)",
+          "id, duracion, mensaje, status, created_at, relevo_pedido_at, relevo_motivo, relevo_fecha_limite, shelters (name, slug), animals (name)",
         )
         .eq("foster_user_id", user.id)
         .order("created_at", { ascending: false });
@@ -51,7 +51,12 @@ export default async function AcogidaPage() {
         {t("privacidad")}
       </p>
 
-      {user && existente && <PropuestasRecibidas propuestas={propuestas} />}
+      {user && existente && (
+        <section className="mt-10">
+          <h2 className="mb-3 font-heading text-xl font-bold">{t("recibidasTitulo")}</h2>
+          <PropuestasRecibidas propuestas={propuestas} />
+        </section>
+      )}
 
       <div className="mt-8">
         {user ? (

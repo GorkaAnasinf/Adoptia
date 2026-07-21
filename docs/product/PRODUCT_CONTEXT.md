@@ -86,6 +86,7 @@ Estado de cada capacidad en lenguaje de usuario. Se regenera con `python scripts
 - Rediseño de Mi cuenta como dashboard del adoptante (tanda, pantalla 6) ([FEATURE-039](../planning/items/FEATURE-039.md))
 - Rediseño de "Mis alertas" según wireframe Stitch (tanda, pantalla 7) ([FEATURE-040](../planning/items/FEATURE-040.md))
 - Crear alerta desde el listado con resultados (no solo en el estado vacío) ([FEATURE-041](../planning/items/FEATURE-041.md))
+- Rediseño de "Mis acogidas" en dos pestañas (registro / propuestas) ([FEATURE-042](../planning/items/FEATURE-042.md))
 - De-duplicar el slug de protectora (nombres repetidos) ([IMPROVEMENT-001](../planning/items/IMPROVEMENT-001.md))
 - Rediseño UX del wizard de alta de protectora (+ fix del mapa gris) ([IMPROVEMENT-002](../planning/items/IMPROVEMENT-002.md))
 - Pulido del shell chrome (sidebar + cabecera) hacia el mockup de Stitch ([IMPROVEMENT-003](../planning/items/IMPROVEMENT-003.md))
