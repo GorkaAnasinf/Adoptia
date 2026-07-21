@@ -1,9 +1,10 @@
 import { useTranslations } from "next-intl";
 import { PawPrint } from "lucide-react";
 import { CrearAlertaButton } from "@/components/alertas/CrearAlertaButton";
+import type { AnimalSearch } from "@/lib/animal-search";
 
 /** Estado vacío del listado público, con creación de alerta (FEATURE-010). */
-export function AnimalSearchEmpty() {
+export function AnimalSearchEmpty({ search }: { search: AnimalSearch }) {
   const t = useTranslations("busqueda");
   return (
     <div className="flex flex-col items-center gap-3 rounded-2xl bg-white px-6 py-16 text-center shadow-sm ring-1 ring-black/5">
@@ -12,7 +13,7 @@ export function AnimalSearchEmpty() {
       </div>
       <h2 className="font-heading text-lg font-semibold text-foreground">{t("vacioTitulo")}</h2>
       <p className="max-w-sm text-sm text-muted-foreground">{t("vacioTexto")}</p>
-      <CrearAlertaButton />
+      <CrearAlertaButton search={search} />
     </div>
   );
 }

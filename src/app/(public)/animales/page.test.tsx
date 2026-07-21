@@ -86,6 +86,29 @@ describe("Página /animales", () => {
     expect(screen.getByText("Golfo")).toBeInTheDocument();
   });
 
+  it("la cabecera ofrece crear alerta, deshabilitado sin filtros guardables", async () => {
+    rpcMock.mockResolvedValue({
+      data: [fila({ name: "Pipa", total_count: 1 })],
+      error: null,
+    });
+    await renderPagina();
+    expect(
+      screen.getByRole("button", { name: messages.busqueda.crearAlertaCorto }),
+    ).toBeDisabled();
+    expect(screen.getByText(messages.busqueda.alertaSinFiltros)).toBeInTheDocument();
+  });
+
+  it("con un filtro guardable la cabecera habilita crear alerta", async () => {
+    rpcMock.mockResolvedValue({
+      data: [fila({ name: "Pipa", total_count: 1 })],
+      error: null,
+    });
+    await renderPagina({ especie: "dog" });
+    expect(
+      screen.getByRole("button", { name: messages.busqueda.crearAlertaCorto }),
+    ).toBeEnabled();
+  });
+
   it("pasa los filtros de la URL al RPC", async () => {
     rpcMock.mockResolvedValue({ data: [], error: null });
     await renderPagina({ especie: "cat", pagina: "2" });

@@ -7,7 +7,6 @@ import messages from "../../../messages/es.json";
 const pushMock = vi.fn();
 vi.mock("next/navigation", () => ({
   useRouter: () => ({ push: pushMock, refresh: vi.fn() }),
-  useSearchParams: () => new URLSearchParams("especie=dog&distancia=50&lat=43.26&lng=-2.94"),
 }));
 
 const getUserMock = vi.fn();
@@ -20,11 +19,28 @@ vi.mock("@/lib/supabase/client", () => ({
 }));
 
 import { AnimalSearchEmpty } from "./AnimalSearchEmpty";
+import type { AnimalSearch } from "@/lib/animal-search";
+
+const SEARCH: AnimalSearch = {
+  q: undefined,
+  especie: "dog",
+  tamanos: [],
+  sexos: [],
+  edad: undefined,
+  ninos: undefined,
+  perros: undefined,
+  gatos: undefined,
+  distanciaKm: 50,
+  lat: 43.26,
+  lng: -2.94,
+  orden: "recientes",
+  pagina: 1,
+};
 
 function renderVacio() {
   return render(
     <NextIntlClientProvider locale="es" messages={messages}>
-      <AnimalSearchEmpty />
+      <AnimalSearchEmpty search={SEARCH} />
     </NextIntlClientProvider>,
   );
 }
