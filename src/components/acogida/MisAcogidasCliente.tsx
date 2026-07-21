@@ -26,6 +26,9 @@ export function MisAcogidasCliente({
   return (
     <div className="mt-8">
       <div role="tablist" className="flex gap-2 border-b border-border">
+        <TabBoton activa={tab === "registro"} onClick={() => setTab("registro")}>
+          {t("tabRegistro")}
+        </TabBoton>
         <TabBoton activa={tab === "propuestas"} onClick={() => setTab("propuestas")}>
           {t("tabPropuestas")}
           {nuevas > 0 && (
@@ -33,9 +36,6 @@ export function MisAcogidasCliente({
               {t("propuestasNuevas", { n: nuevas })}
             </span>
           )}
-        </TabBoton>
-        <TabBoton activa={tab === "registro"} onClick={() => setTab("registro")}>
-          {t("tabRegistro")}
         </TabBoton>
       </div>
 
