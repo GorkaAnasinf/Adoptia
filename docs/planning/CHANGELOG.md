@@ -2,6 +2,12 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/es/) adaptado. Versionado 0.x hasta el MVP.
 
+## [0.0.79] — 2026-07-21
+
+### Añadido
+
+- **Crear una alerta desde el listado con resultados (FEATURE-041)**: hasta hoy solo podías guardar una búsqueda cuando `/animales` devolvía **cero** animales (el botón vivía escondido en el estado vacío) — justo al revés de lo intuitivo, porque lo normal es querer avisos de algo que sí existe pero aún no es *tu* animal. Ahora la cabecera de resultados estrena un botón **«Crear alerta»** (píldora teal con campana, en el lenguaje del listado) siempre visible junto a «Ordenar por». Si no hay ningún filtro que la alerta sepa casar —especie, tamaño, sexo o distancia; el texto, la edad y los flags de convivencia no se guardan— el botón sale **deshabilitado con una pista** en vez de crear una alerta de «cualquier animal» que acabaría spameando. Y el nombre deja de ser solo la especie: se arma un **resumen legible de los filtros** («Perro · Mediano · a 30 km») que casa con los chips que muestra «mis alertas». El formato guardado no cambia, así que el cron de avisos y las tarjetas de FEATURE-040 siguen funcionando sin tocarse. QA: suite 1033 verde; sin migraciones.
+
 ## [0.0.78] — 2026-07-20
 
 ### Cambiado
