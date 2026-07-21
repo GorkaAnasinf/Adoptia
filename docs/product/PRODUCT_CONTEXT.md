@@ -89,6 +89,7 @@ Estado de cada capacidad en lenguaje de usuario. Se regenera con `python scripts
 - Rediseño de "Mis acogidas" en dos pestañas (registro / propuestas) ([FEATURE-042](../planning/items/FEATURE-042.md))
 - Rediseño del formulario de alta (patrón base) + ajustes de mis acogidas ([FEATURE-043](../planning/items/FEATURE-043.md))
 - Rediseño de "Mis donaciones" (patrón base) + edición con un solo formulario ([FEATURE-044](../planning/items/FEATURE-044.md))
+- Rediseño del panel de la protectora (dashboard) al patrón Stitch ([FEATURE-045](../planning/items/FEATURE-045.md))
 - De-duplicar el slug de protectora (nombres repetidos) ([IMPROVEMENT-001](../planning/items/IMPROVEMENT-001.md))
 - Rediseño UX del wizard de alta de protectora (+ fix del mapa gris) ([IMPROVEMENT-002](../planning/items/IMPROVEMENT-002.md))
 - Pulido del shell chrome (sidebar + cabecera) hacia el mockup de Stitch ([IMPROVEMENT-003](../planning/items/IMPROVEMENT-003.md))
