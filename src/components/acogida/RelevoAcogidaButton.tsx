@@ -65,7 +65,7 @@ export function RelevoAcogidaButton({
       <button
         type="button"
         onClick={() => setAbierto(true)}
-        className="self-start rounded-full border border-border px-3 py-1 text-xs font-medium hover:bg-accent"
+        className="inline-flex min-h-11 items-center rounded-full border border-primary/40 px-5 text-sm font-semibold text-primary hover:bg-primary/5"
       >
         {t("relevoNecesito")}
       </button>
