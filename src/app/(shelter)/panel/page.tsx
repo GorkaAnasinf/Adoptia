@@ -5,6 +5,7 @@ import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import { AnimalStatusBadge } from "@/components/animals/AnimalStatusBadge";
 import type { AnimalStatus } from "@/lib/schemas/animal";
+import type { EstadoSolicitud } from "@/lib/schemas/solicitud";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 import { cn } from "@/lib/utils";
@@ -27,6 +28,8 @@ type AnimalRow = {
 type RequestRow = {
   id: string;
   created_at: string;
+  status: EstadoSolicitud;
+  adopter_id: string;
   animal: { name: string; slug: string } | null;
 };
 type CitaRow = {
@@ -51,6 +54,24 @@ const DIA_MADRID = new Intl.DateTimeFormat("es-ES", {
 const MES_CORTO_MADRID = new Intl.DateTimeFormat("es-ES", { month: "short", timeZone: "Europe/Madrid" });
 const DIA_NUM_MADRID = new Intl.DateTimeFormat("es-ES", { day: "numeric", timeZone: "Europe/Madrid" });
 
+const FECHA_CORTA_MADRID = new Intl.DateTimeFormat("es-ES", {
+  day: "numeric",
+  month: "short",
+  timeZone: "Europe/Madrid",
+});
+
+const CHIP_SOLICITUD: Record<EstadoSolicitud, string> = {
+  pending: "bg-amber-50 text-amber-800",
+  approved: "bg-tertiary/10 text-tertiary",
+  rejected: "bg-destructive/10 text-destructive",
+  withdrawn: "bg-muted text-muted-foreground",
+  completed: "bg-primary/10 text-primary",
+};
+
+function capitaliza(s: string): string {
+  return s.charAt(0).toUpperCase() + s.slice(1);
+}
+
 function portada(media: MediaRow[]): string | null {
   if (media.length === 0) return null;
   return (media.find((m) => m.is_cover) ?? [...media].sort((a, b) => a.sort_order - b.sort_order)[0]).url;
@@ -60,6 +81,7 @@ export default async function PanelPage() {
   const t = await getTranslations("panel");
   const to = await getTranslations("onboarding");
   const tc = await getTranslations("citas");
+  const ts = await getTranslations("solicitudesPanel");
 
   const supabase = await createClient();
   const {
@@ -77,7 +99,7 @@ export default async function PanelPage() {
   let pendingCount = 0;
   let solicitudes7 = 0;
   let solicitudesPrev7 = 0;
-  let recentRequests: RequestRow[] = [];
+  let recentRequests: (RequestRow & { adopterName: string | null })[] = [];
   let proximasCitas: (CitaRow & { adopterName: string | null })[] = [];
 
   if (shelter) {
@@ -111,11 +133,10 @@ export default async function PanelPage() {
 
     const { data: r } = await supabase
       .from("adoption_requests")
-      .select("id,created_at,animal:animals(name,slug)")
-      .eq("status", "pending")
+      .select("id,created_at,status,adopter_id,animal:animals(name,slug)")
       .order("created_at", { ascending: false })
       .limit(5);
-    recentRequests = (r as RequestRow[] | null) ?? [];
+    recentRequests = ((r as RequestRow[] | null) ?? []) as (RequestRow & { adopterName: string | null })[];
 
     const { data: citas } = await supabase
       .from("appointments")
@@ -129,7 +150,9 @@ export default async function PanelPage() {
 
     // El nombre del adoptante vive en profiles (RLS: solo su dueño); mismo
     // bypass acotado que en la agenda de citas.
-    const ids = [...new Set(filas.map((c) => c.adopter_id))];
+    const ids = [
+      ...new Set([...filas.map((c) => c.adopter_id), ...recentRequests.map((r) => r.adopter_id)]),
+    ];
     const { data: perfiles } = ids.length
       ? await createAdminClient().from("profiles").select("id, full_name").in("id", ids)
       : { data: [] };
@@ -137,6 +160,7 @@ export default async function PanelPage() {
       ((perfiles as { id: string; full_name: string | null }[] | null) ?? []).map((p) => [p.id, p.full_name]),
     );
     proximasCitas = filas.map((c) => ({ ...c, adopterName: nombres.get(c.adopter_id) ?? null }));
+    recentRequests = recentRequests.map((r) => ({ ...r, adopterName: nombres.get(r.adopter_id) ?? null }));
   }
 
   const hoy = DIA_MADRID.format(new Date());
@@ -354,11 +378,18 @@ export default async function PanelPage() {
                     <li key={r.id}>
                       <Link
                         href="/panel/solicitudes"
-                        className="flex items-center justify-between gap-2 py-2.5 text-sm hover:opacity-80"
+                        className="flex items-center justify-between gap-2 py-2.5 hover:opacity-80"
                       >
-                        <span className="min-w-0 truncate font-medium">{r.animal?.name ?? "—"}</span>
-                        <span className="shrink-0 rounded-full bg-amber-50 px-2 py-0.5 text-xs font-semibold text-amber-800">
-                          {t("requestPending")}
+                        <span className="flex min-w-0 flex-col">
+                          <span className="truncate text-sm font-semibold">{r.animal?.name ?? "—"}</span>
+                          <span className="truncate text-xs text-muted-foreground">
+                            {`${r.adopterName ?? "—"} · ${FECHA_CORTA_MADRID.format(new Date(r.created_at))}`}
+                          </span>
+                        </span>
+                        <span
+                          className={`shrink-0 rounded-full px-2 py-0.5 text-xs font-semibold ${CHIP_SOLICITUD[r.status]}`}
+                        >
+                          {ts(`status${capitaliza(r.status)}`)}
                         </span>
                       </Link>
                     </li>

@@ -242,4 +242,24 @@ describe("PanelPage — dashboard rediseñado", () => {
       screen.getByRole("link", { name: messages.onboarding.bannerPendingEdit }),
     ).toHaveAttribute("href", "/panel/alta");
   });
+
+  it("Solicitudes recientes muestra mascota, adoptante, fecha y chip de estado", async () => {
+    state.animals = [animalPublicado(1)];
+    state.requests = [
+      {
+        id: "r1",
+        created_at: "2026-07-10T09:00:00Z",
+        status: "approved",
+        adopter_id: "adopter1",
+        animal: { name: "Bruno", slug: "bruno" },
+      },
+    ];
+    state.perfiles = [{ id: "adopter1", full_name: "Familia Martínez" }];
+    conIntl(await PanelPage());
+
+    // Sin citas en este test, así que "Familia Martínez" solo aparece en el aside.
+    expect(screen.getByText("Bruno")).toBeInTheDocument();
+    expect(screen.getByText(/Familia Martínez/)).toBeInTheDocument();
+    expect(screen.getByText(messages.solicitudesPanel.statusApproved)).toBeInTheDocument();
+  });
 });
