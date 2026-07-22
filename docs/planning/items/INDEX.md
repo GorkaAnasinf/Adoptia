@@ -62,6 +62,7 @@
 | [FEATURE-047](FEATURE-047.md) | Solicitudes recientes clicables + badge de estado legible sobre foto | feature | hecho | 0.5 |
 | [FEATURE-048](FEATURE-048.md) | Mis animales" de la protectora a rejilla de tarjetas con búsqueda y acciones | feature | hecho | 0.5 |
 | [FEATURE-049](FEATURE-049.md) | Efectos del área de usuario en el panel (Reveal, carrusel de fotos, hover) | feature | hecho | 0.5 |
+| [FEATURE-050](FEATURE-050.md) | Rediseño de "Solicitudes recibidas" (maestra/detalle) del panel | feature | hecho | 0.5 |
 | [IMPROVEMENT-001](IMPROVEMENT-001.md) | De-duplicar el slug de protectora (nombres repetidos) | improvement | hecho | — |
 | [IMPROVEMENT-002](IMPROVEMENT-002.md) | Rediseño UX del wizard de alta de protectora (+ fix del mapa gris) | improvement | hecho | 0.2 |
 | [IMPROVEMENT-003](IMPROVEMENT-003.md) | Pulido del shell chrome (sidebar + cabecera) hacia el mockup de Stitch | improvement | hecho | 0.2 |
