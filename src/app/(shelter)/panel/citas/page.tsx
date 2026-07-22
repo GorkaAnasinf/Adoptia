@@ -174,7 +174,7 @@ export default async function CitasPanelPage() {
               <p className="text-sm italic text-muted-foreground">{t("consejoTexto")}</p>
               <Link
                 href="/guias"
-                className="mt-3 inline-flex min-h-11 items-center justify-center rounded-full bg-tertiary px-4 py-2 text-sm font-semibold text-on-tertiary transition-colors hover:bg-tertiary/90"
+                className="mt-3 inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
               >
                 {t("verRecursos")}
               </Link>
