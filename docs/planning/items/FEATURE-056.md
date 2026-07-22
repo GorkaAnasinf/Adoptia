@@ -2,7 +2,7 @@
 id: FEATURE-056
 tipo: feature
 titulo: Agenda de la protectora F2b — festivos nacionales y copiar/pegar día
-estado: desarrollo
+estado: hecho
 prioridad: media
 hito: "0.5"
 duplicado_de: null

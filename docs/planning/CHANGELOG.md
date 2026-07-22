@@ -2,6 +2,12 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/es/) adaptado. Versionado 0.x hasta el MVP.
 
+## [0.0.94] — 2026-07-22
+
+### Añadido
+
+- **Más atajos en la agenda: festivos y copiar/pegar (FEATURE-056)**: la protectora puede **cerrar de un click los festivos nacionales** del año que esté viendo (los 9 fijos —Año Nuevo, Reyes, 1 de mayo, 15 de agosto, 12 de octubre, Todos los Santos, Constitución, Inmaculada y Navidad— más el **Viernes Santo**, que cae en fecha distinta cada año y se calcula solo). Y puede **copiar la configuración de un día** —cerrado o con su horario— y **pegarla** en todos los días que seleccione, sin rehacerla. Sigue sin tocar datos: reutiliza el guardado masivo de F2a. Las plantillas de horario quedan para FEATURE-057. QA: suite 1142 verde; sin migraciones.
+
 ## [0.0.93] — 2026-07-22
 
 ### Añadido
