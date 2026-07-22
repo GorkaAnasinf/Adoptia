@@ -2,6 +2,12 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/es/) adaptado. Versionado 0.x hasta el MVP.
 
+## [0.0.88] — 2026-07-22
+
+### Añadido
+
+- **El panel estrena los efectos visuales del área de usuario (FEATURE-049)**: el panel de la protectora se pone al día con los mismos detalles de movimiento que ya tenía el área de adoptante. Las tarjetas y bloques del dashboard —y las tarjetas de «Mis animales»— **entran en pantalla de forma escalonada** al cargar, en vez de aparecer de golpe. Las **tarjetas de animal** ganan un **carrusel de fotos** (flechas para pasar las imágenes del animal sin entrar a su ficha, con carga bajo demanda) y un **efecto al pasar el ratón** (la tarjeta se eleva ligeramente y la foto hace un zoom suave), igual que en la vista de favoritos del usuario. Se mantiene toda la gestión de cada tarjeta (estado, «Borrador», Editar / Ver ficha / menú de acciones); no se añade el corazón de favorito ni el nombre de la protectora porque en su propio panel no tienen sentido. Sin cambios de datos: mismo modelo y misma RLS. QA: suite 1064 verde; sin migraciones.
+
 ## [0.0.87] — 2026-07-22
 
 ### Añadido

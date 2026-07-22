@@ -93,6 +93,7 @@ Estado de cada capacidad en lenguaje de usuario. Se regenera con `python scripts
 - Layout del panel de la protectora a 2 columnas del wireframe Stitch ([FEATURE-046](../planning/items/FEATURE-046.md))
 - Solicitudes recientes clicables + badge de estado legible sobre foto ([FEATURE-047](../planning/items/FEATURE-047.md))
 - Mis animales" de la protectora a rejilla de tarjetas con búsqueda y acciones ([FEATURE-048](../planning/items/FEATURE-048.md))
+- Efectos del área de usuario en el panel (Reveal, carrusel de fotos, hover) ([FEATURE-049](../planning/items/FEATURE-049.md))
 - De-duplicar el slug de protectora (nombres repetidos) ([IMPROVEMENT-001](../planning/items/IMPROVEMENT-001.md))
 - Rediseño UX del wizard de alta de protectora (+ fix del mapa gris) ([IMPROVEMENT-002](../planning/items/IMPROVEMENT-002.md))
 - Pulido del shell chrome (sidebar + cabecera) hacia el mockup de Stitch ([IMPROVEMENT-003](../planning/items/IMPROVEMENT-003.md))
