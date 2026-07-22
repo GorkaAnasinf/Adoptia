@@ -2,7 +2,7 @@
 id: FEATURE-055
 tipo: feature
 titulo: Agenda de la protectora F3 — vistas anual (heatmap) y diaria (timeline)
-estado: desarrollo
+estado: hecho
 prioridad: media
 hito: "0.5"
 duplicado_de: null

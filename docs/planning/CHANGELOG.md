@@ -2,6 +2,12 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/es/) adaptado. Versionado 0.x hasta el MVP.
 
+## [0.0.96] — 2026-07-22
+
+### Añadido
+
+- **La agenda estrena vistas anual y diaria (FEATURE-055)**: un **selector de vista** permite alternar entre **Mensual** (editar la disponibilidad, como hasta ahora), **Anual** (un vistazo a los 12 meses en modo mapa de calor: cada día coloreado según esté configurado, cerrado o con citas; al pulsar un día se salta a ese mes) y **Diaria** (el **timeline de las citas** del día elegido con hora, animal, adoptante y estado). Arriba, tres tarjetas de resumen: **capacidad** (huecos libres), **citas pendientes hoy** y **próxima disponibilidad**. Con esto queda **completo el rediseño de la agenda de la protectora** (F1→F3). Sin cambios de datos. QA: suite 1176 verde; sin migraciones.
+
 ## [0.0.95] — 2026-07-22
 
 ### Añadido

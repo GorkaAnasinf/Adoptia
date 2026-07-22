@@ -99,6 +99,7 @@ Estado de cada capacidad en lenguaje de usuario. Se regenera con `python scripts
 - Botón "Ver recursos" con el estilo primario relleno ([FEATURE-052](../planning/items/FEATURE-052.md))
 - Agenda de la protectora F1 — calendario mensual con excepciones por día ([FEATURE-053](../planning/items/FEATURE-053.md))
 - Agenda de la protectora F2a — pintar días y cerrar rangos (batch) ([FEATURE-054](../planning/items/FEATURE-054.md))
+- Agenda de la protectora F3 — vistas anual (heatmap) y diaria (timeline) ([FEATURE-055](../planning/items/FEATURE-055.md))
 - Agenda de la protectora F2b — festivos nacionales y copiar/pegar día ([FEATURE-056](../planning/items/FEATURE-056.md))
 - Agenda de la protectora F2c — plantillas de horario ([FEATURE-057](../planning/items/FEATURE-057.md))
 - De-duplicar el slug de protectora (nombres repetidos) ([IMPROVEMENT-001](../planning/items/IMPROVEMENT-001.md))
@@ -133,7 +134,7 @@ Estado de cada capacidad en lenguaje de usuario. Se regenera con `python scripts
 
 #### 🚧 En camino (en desarrollo ahora)
 
-- Agenda de la protectora F3 — vistas anual (heatmap) y diaria (timeline) ([FEATURE-055](../planning/items/FEATURE-055.md))
+_Nada en desarrollo en este momento._
 
 #### 🗓️ Previsto
 
