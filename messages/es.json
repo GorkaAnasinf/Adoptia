@@ -401,7 +401,18 @@
     "publishErrors": "Para publicar faltan datos: especie, sexo, tamaño, descripción y al menos una foto.",
     "nameRequired": "El nombre es obligatorio.",
     "notVerifiedPublish": "Solo las protectoras verificadas pueden publicar. Puedes guardar el borrador.",
-    "errorGeneric": "Algo ha fallado. Inténtalo de nuevo."
+    "errorGeneric": "Algo ha fallado. Inténtalo de nuevo.",
+    "searchPlaceholder": "Buscar por nombre o raza…",
+    "searchEmpty": "No hay animales que coincidan con la búsqueda.",
+    "viewProfile": "Ver ficha",
+    "newAnimalCard": "Nueva mascota",
+    "newAnimalCardHelp": "Haz clic para añadir un nuevo animal al refugio.",
+    "menuLabel": "Acciones",
+    "unpublish": "Despublicar",
+    "delete": "Eliminar",
+    "deleteConfirm": "¿Eliminar a {name}? Esta acción no se puede deshacer.",
+    "publishIncomplete": "Completa la ficha para publicar.",
+    "actionError": "No se pudo completar la acción."
   },
   "busqueda": {
     "ctaAdoptar": "Adoptar",
