@@ -1446,7 +1446,22 @@
     "sinPlantillas": "Aún no tienes plantillas. Guarda un horario desde el editor de un día.",
     "aplicarPlantilla": "Aplicar",
     "borrarPlantilla": "Borrar plantilla",
-    "errorPlantilla": "No se pudo guardar la plantilla. ¿El nombre ya existe?"
+    "errorPlantilla": "No se pudo guardar la plantilla. ¿El nombre ya existe?",
+    "vistaMensual": "Mensual",
+    "vistaAnual": "Anual",
+    "vistaDiaria": "Diaria",
+    "selectorVista": "Vista de la agenda",
+    "diariaTitulo": "Citas del día",
+    "sinCitasDia": "No hay citas este día.",
+    "diariaSinDia": "Elige un día en el calendario para ver sus citas.",
+    "resumenCapacidad": "Capacidad",
+    "resumenHuecos": "{n, plural, =0 {sin huecos} one {# hueco} other {# huecos}}",
+    "resumenCitasPendientes": "Citas pendientes",
+    "resumenCitasHoy": "{n} hoy",
+    "resumenProxima": "Próxima disponibilidad",
+    "sinDatos": "—",
+    "proximaHoy": "Hoy {hora}",
+    "proximaManana": "Mañana {hora}"
   },
   "errors": {
     "missingEnv": "Faltan variables de entorno de Supabase. Copia .env.example a .env.local y rellena NEXT_PUBLIC_SUPABASE_URL y NEXT_PUBLIC_SUPABASE_ANON_KEY.",

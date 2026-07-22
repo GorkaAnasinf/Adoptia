@@ -369,4 +369,53 @@ describe("AgendaCliente", () => {
     entrarSeleccion();
     expect(screen.getByText(messages.agenda.sinPlantillas)).toBeInTheDocument();
   });
+
+  // ---------- Vistas: segmented control (F3) ----------
+
+  const citaHoy = {
+    id: "cx",
+    starts_at: "2026-08-12T09:30:00.000Z", // 11:30 Madrid
+    status: "confirmed",
+    animalName: "Luna",
+    animalSlug: "luna",
+    adopterName: "Sergio Montes",
+  };
+
+  it("por defecto muestra la vista mensual con las utilidades de edición", () => {
+    pintar();
+    expect(screen.getByRole("radio", { name: /mensual/i })).toHaveAttribute("aria-checked", "true");
+    expect(screen.getByRole("button", { name: /seleccionar días/i })).toBeInTheDocument();
+  });
+
+  it("la vista anual muestra el heatmap y oculta las utilidades de edición", () => {
+    pintar();
+    fireEvent.click(screen.getByRole("radio", { name: /anual/i }));
+    expect(screen.getByText("2026")).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /seleccionar días/i })).not.toBeInTheDocument();
+  });
+
+  it("desde la vista anual, pulsar un día salta a la mensual en esa fecha", () => {
+    pintar();
+    fireEvent.click(screen.getByRole("radio", { name: /anual/i }));
+    fireEvent.click(screen.getByRole("gridcell", { name: "2026-08-12" }));
+    // Vuelve a mensual con el día seleccionado abierto en el editor.
+    expect(screen.getByRole("radio", { name: /mensual/i })).toHaveAttribute("aria-checked", "true");
+    expect(screen.getByText(/12 de agosto/i)).toBeInTheDocument();
+  });
+
+  it("la vista diaria muestra el timeline de las citas del día", () => {
+    pintar({ citasDetalle: [citaHoy], citasPorDia: ["2026-08-12"] });
+    fireEvent.click(screen.getByRole("radio", { name: /diaria/i }));
+    // Elegir el día 12 en el calendario.
+    fireEvent.click(screen.getByRole("gridcell", { name: /^12$/ }));
+    expect(screen.getByText("11:30")).toBeInTheDocument();
+    expect(screen.getByText("Luna")).toBeInTheDocument();
+  });
+
+  it("muestra el resumen (capacidad, citas pendientes, próxima disponibilidad)", () => {
+    pintar({ capacidad: 12, citasDetalle: [citaHoy], proximaISO: "2026-08-12T07:00:00.000Z" });
+    expect(screen.getByText("12 huecos")).toBeInTheDocument();
+    expect(screen.getByText("1 hoy")).toBeInTheDocument(); // la cita de hoy está pendiente/confirmada
+    expect(screen.getByText(/Hoy 09:00/)).toBeInTheDocument();
+  });
 });

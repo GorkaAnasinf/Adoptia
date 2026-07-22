@@ -12,19 +12,31 @@ import {
   type FranjaDia,
   type FranjaSemanal,
   type IntentGuardar,
+  type CitaAgenda,
   type OverrideDia,
   type Plantilla,
 } from "@/lib/agenda";
 import { festivosNacionales } from "@/lib/festivos";
 import { plantillaSchema, type RangoCierreInput } from "@/lib/schemas/agenda";
 import { createClient } from "@/lib/supabase/client";
+import { SegmentedControl } from "@/components/ui/SegmentedControl";
 import { CalendarioMensual, type EstadoCalendario } from "./CalendarioMensual";
 import { PanelDiaEditor } from "./PanelDiaEditor";
 import { PlantillasPicker } from "./PlantillasPicker";
 import { RangoCierreDialog } from "./RangoCierreDialog";
+import { ResumenAgenda } from "./ResumenAgenda";
 import { UtilidadesBar } from "./UtilidadesBar";
+import { VistaAnual } from "./VistaAnual";
+import { VistaDiaria } from "./VistaDiaria";
 
 const FRANJA_DEFECTO: FranjaDia = { start: "10:00", end: "13:00", minutes: 30 };
+type Vista = "mensual" | "anual" | "diaria";
+const YMD_MADRID = new Intl.DateTimeFormat("en-CA", {
+  year: "numeric",
+  month: "2-digit",
+  day: "2-digit",
+  timeZone: "Europe/Madrid",
+});
 
 /**
  * Orquestador de la Agenda de la protectora (FEATURE-053 F1 + FEATURE-054 F2a).
@@ -40,6 +52,9 @@ export function AgendaCliente({
   overrides,
   citasPorDia,
   plantillas = [],
+  citasDetalle = [],
+  capacidad = 0,
+  proximaISO = null,
   hoyISO,
   anioInicial,
   mesInicial,
@@ -49,6 +64,9 @@ export function AgendaCliente({
   overrides: OverrideDia[];
   citasPorDia: string[];
   plantillas?: Plantilla[];
+  citasDetalle?: CitaAgenda[];
+  capacidad?: number;
+  proximaISO?: string | null;
   hoyISO: string;
   anioInicial: number;
   mesInicial: number; // 0-indexado
@@ -77,7 +95,25 @@ export function AgendaCliente({
   const [plantillasLocal, setPlantillasLocal] = useState(plantillas);
   const [errorPlantilla, setErrorPlantilla] = useState(false);
 
+  // Vistas (F3)
+  const [vista, setVista] = useState<Vista>("mensual");
+
   const citasSet = useMemo(() => new Set(citasPorDia), [citasPorDia]);
+  const citasDelDia = (iso: string | null) =>
+    iso ? citasDetalle.filter((c) => YMD_MADRID.format(new Date(c.starts_at)) === iso) : [];
+  const citasPendientesHoy = citasDetalle.filter(
+    (c) =>
+      (c.status === "pending" || c.status === "confirmed") &&
+      YMD_MADRID.format(new Date(c.starts_at)) === hoyISO,
+  ).length;
+
+  function irADia(iso: string) {
+    const d = new Date(`${iso}T00:00:00`);
+    setYear(d.getFullYear());
+    setMonth(d.getMonth());
+    setSeleccion(iso);
+    setVista("mensual");
+  }
 
   function patronDe(iso: string): FranjaSemanal[] {
     const weekday = new Date(`${iso}T00:00:00`).getDay();
@@ -334,16 +370,37 @@ export function AgendaCliente({
 
   return (
     <div className="flex flex-col gap-4">
-      <UtilidadesBar
-        modoSeleccion={modoSeleccion}
-        onToggleSeleccion={() => {
-          setModoSeleccion((v) => !v);
-          setSeleccionados(new Set());
-          setFranjaMasiva(null);
-          setSeleccion(null);
-        }}
-        onAbrirRango={() => setRangoAbierto(true)}
-        onCerrarFestivos={cerrarFestivos}
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <SegmentedControl
+          ariaLabel={t("selectorVista")}
+          value={vista}
+          onChange={(v) => setVista(v as Vista)}
+          options={[
+            { value: "mensual", label: t("vistaMensual") },
+            { value: "anual", label: t("vistaAnual") },
+            { value: "diaria", label: t("vistaDiaria") },
+          ]}
+        />
+        {vista === "mensual" && (
+          <UtilidadesBar
+            modoSeleccion={modoSeleccion}
+            onToggleSeleccion={() => {
+              setModoSeleccion((v) => !v);
+              setSeleccionados(new Set());
+              setFranjaMasiva(null);
+              setSeleccion(null);
+            }}
+            onAbrirRango={() => setRangoAbierto(true)}
+            onCerrarFestivos={cerrarFestivos}
+          />
+        )}
+      </div>
+
+      <ResumenAgenda
+        capacidad={capacidad}
+        citasPendientesHoy={citasPendientesHoy}
+        proximaISO={proximaISO}
+        hoyISO={hoyISO}
       />
 
       {errorGuardar && modoSeleccion && (
@@ -351,21 +408,26 @@ export function AgendaCliente({
       )}
       {errorPlantilla && <p className="text-sm text-destructive">{t("errorPlantilla")}</p>}
 
-      <div className="grid gap-6 lg:grid-cols-[1fr_22rem] lg:items-start">
-        <CalendarioMensual
-          year={year}
-          month={month}
-          todayISO={hoyISO}
-          seleccionadoISO={seleccion}
-          estadoDe={estadoDe}
-          onSelect={onDiaClick}
-          onPrev={() => navegar(-1)}
-          onNext={() => navegar(1)}
-          modoSeleccion={modoSeleccion}
-          seleccionados={seleccionados}
-        />
+      {vista === "anual" ? (
+        <VistaAnual year={year} todayISO={hoyISO} estadoDe={estadoDe} onIrADia={irADia} />
+      ) : (
+        <div className="grid gap-6 lg:grid-cols-[1fr_22rem] lg:items-start">
+          <CalendarioMensual
+            year={year}
+            month={month}
+            todayISO={hoyISO}
+            seleccionadoISO={seleccion}
+            estadoDe={estadoDe}
+            onSelect={onDiaClick}
+            onPrev={() => navegar(-1)}
+            onNext={() => navegar(1)}
+            modoSeleccion={modoSeleccion && vista === "mensual"}
+            seleccionados={seleccionados}
+          />
 
-        {modoSeleccion ? (
+          {vista === "diaria" ? (
+            <VistaDiaria fecha={seleccion} citas={citasDelDia(seleccion)} />
+          ) : modoSeleccion ? (
           <div className="flex flex-col gap-3 rounded-2xl border border-border bg-card p-5 shadow-soft">
             <p className="font-heading text-lg font-semibold">
               {t("diasSeleccionados", { n: nSeleccionados })}
@@ -464,8 +526,9 @@ export function AgendaCliente({
             onCopiar={setPortapapeles}
             onGuardarPlantilla={guardarPlantilla}
           />
-        )}
-      </div>
+          )}
+        </div>
+      )}
 
       <RangoCierreDialog
         abierto={rangoAbierto}

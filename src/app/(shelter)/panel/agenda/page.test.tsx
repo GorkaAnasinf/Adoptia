@@ -16,6 +16,8 @@ const state = vi.hoisted(() => ({
   overrides: [] as Record<string, unknown>[],
   citas: [] as Record<string, unknown>[],
   plantillas: [] as Record<string, unknown>[],
+  huecos: [] as Record<string, unknown>[],
+  perfiles: [] as Record<string, unknown>[],
 }));
 
 vi.mock("next/navigation", () => ({ useRouter: () => ({ refresh: vi.fn() }) }));
@@ -30,6 +32,7 @@ vi.mock("@/lib/supabase/server", () => {
   return {
     createClient: vi.fn(async () => ({
       auth: { getUser: vi.fn(async () => ({ data: { user: { id: "u1" } } })) },
+      rpc: vi.fn(async () => ({ data: state.huecos })),
       from: vi.fn((tabla: string) => {
         if (tabla === "shelters") {
           return {
@@ -42,6 +45,18 @@ vi.mock("@/lib/supabase/server", () => {
         return thenable({ data: state.citas });
       }),
     })),
+  };
+});
+
+vi.mock("@/lib/supabase/admin", () => {
+  const thenable = (payload: unknown) => {
+    const b: Record<string, unknown> = {};
+    for (const m of ["select", "in"]) b[m] = () => b;
+    b.then = (resolve: (v: unknown) => void) => resolve(payload);
+    return b;
+  };
+  return {
+    createAdminClient: vi.fn(() => ({ from: vi.fn(() => thenable({ data: state.perfiles })) })),
   };
 });
 
@@ -69,10 +84,20 @@ describe("Agenda de disponibilidad de la protectora", () => {
       { weekday: 3, start_time: "10:00:00", end_time: "13:00:00", slot_minutes: 30, active: true },
     ];
     state.overrides = [{ date: hoyISO, closed: true, slots: [], note: "Cerrado" }];
-    state.citas = [{ starts_at: new Date().toISOString() }];
+    state.citas = [
+      {
+        id: "c1",
+        status: "confirmed",
+        starts_at: new Date().toISOString(),
+        adopter_id: "adopter1",
+        adoption_requests: { animals: { name: "Pipa", slug: "pipa" } },
+      },
+    ];
     state.plantillas = [
       { id: "p1", nombre: "Mañanas L-V", slots: [{ start: "10:00", end: "13:00", minutes: 30 }] },
     ];
+    state.huecos = [{ starts_at: new Date().toISOString() }];
+    state.perfiles = [{ id: "adopter1", full_name: "Marta" }];
   });
 
   it("compone el calendario con el patrón, las excepciones y las citas cargadas", async () => {
@@ -92,6 +117,19 @@ describe("Agenda de disponibilidad de la protectora", () => {
     await renderPagina();
     fireEvent.click(screen.getByRole("button", { name: /seleccionar días/i }));
     expect(screen.getByText("Mañanas L-V")).toBeInTheDocument();
+  });
+
+  it("compone el resumen (capacidad de los huecos) y la vista diaria con el detalle de la cita", async () => {
+    await renderPagina();
+    // Resumen: 1 hueco del RPC (singular).
+    expect(screen.getByText("1 hueco")).toBeInTheDocument();
+    // Vista diaria: elegir el día de hoy muestra la cita con animal y adoptante.
+    fireEvent.click(screen.getByRole("radio", { name: /diaria/i }));
+    const [aa, , dd] = hoyISO.split("-");
+    void aa;
+    fireEvent.click(screen.getByRole("gridcell", { name: new RegExp(`^${Number(dd)}$`) }));
+    expect(screen.getByText("Pipa")).toBeInTheDocument();
+    expect(screen.getByText("Marta")).toBeInTheDocument();
   });
 
   it("sin franjas ni citas el calendario se muestra vacío pero navegable", async () => {

@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { AgendaCliente } from "@/components/citas/AgendaCliente";
-import type { FranjaDia, FranjaSemanal, OverrideDia, Plantilla } from "@/lib/agenda";
+import type { CitaAgenda, FranjaDia, FranjaSemanal, OverrideDia, Plantilla } from "@/lib/agenda";
+import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -37,9 +38,12 @@ export default async function AgendaPage() {
   let overrides: OverrideDia[] = [];
   let citasPorDia: string[] = [];
   let plantillas: Plantilla[] = [];
+  let citasDetalle: CitaAgenda[] = [];
+  let capacidad = 0;
+  let proximaISO: string | null = null;
 
   if (shelter) {
-    const [{ data: fr }, { data: ov }, { data: ci }, { data: pl }] = await Promise.all([
+    const [{ data: fr }, { data: ov }, { data: ci }, { data: pl }, { data: hu }] = await Promise.all([
       supabase
         .from("availability_slots")
         .select("weekday, start_time, end_time, slot_minutes, active")
@@ -52,30 +56,63 @@ export default async function AgendaPage() {
         .lte("date", hasta),
       supabase
         .from("appointments")
-        .select("starts_at")
+        .select("id, status, starts_at, adopter_id, adoption_requests(animals(name, slug))")
         .eq("shelter_id", shelter.id)
-        .in("status", ["pending", "confirmed"])
+        .in("status", ["pending", "confirmed", "done", "no_show"])
         .gte("starts_at", `${desde}T00:00:00Z`)
-        .lte("starts_at", `${hasta}T23:59:59Z`),
+        .lte("starts_at", `${hasta}T23:59:59Z`)
+        .order("starts_at", { ascending: true }),
       supabase
         .from("availability_templates")
         .select("id, nombre, slots")
         .eq("shelter_id", shelter.id)
         .order("nombre"),
+      supabase.rpc("appointment_free_slots", { p_shelter_id: shelter.id, p_days: 30 }),
     ]);
 
     franjas = (fr as FranjaSemanal[] | null) ?? [];
     overrides = ((ov as { date: string; closed: boolean; slots: FranjaDia[]; note: string | null }[] | null) ?? []).map(
       (o) => ({ date: o.date, closed: o.closed, slots: o.slots ?? [], note: o.note }),
     );
-    citasPorDia = [
-      ...new Set(((ci as { starts_at: string }[] | null) ?? []).map((c) => YMD.format(new Date(c.starts_at)))),
-    ];
     plantillas = ((pl as { id: string; nombre: string; slots: FranjaDia[] }[] | null) ?? []).map((p) => ({
       id: p.id,
       nombre: p.nombre,
       slots: p.slots ?? [],
     }));
+
+    const huecos = (hu as { starts_at: string }[] | null) ?? [];
+    capacidad = huecos.length;
+    proximaISO = huecos[0]?.starts_at ?? null;
+
+    // Citas con detalle para la vista diaria. El nombre del adoptante vive en
+    // profiles (RLS: solo su dueño); mismo bypass acotado que en la bandeja de
+    // citas — nunca se expone el contacto.
+    type CitaRow = {
+      id: string;
+      status: string;
+      starts_at: string;
+      adopter_id: string;
+      adoption_requests: { animals: { name: string; slug: string } | null } | null;
+    };
+    const filas = (ci as unknown as CitaRow[] | null) ?? [];
+    const ids = [...new Set(filas.map((c) => c.adopter_id))];
+    const admin = createAdminClient();
+    const { data: perfiles } = ids.length
+      ? await admin.from("profiles").select("id, full_name").in("id", ids)
+      : { data: [] };
+    const nombres = new Map(
+      ((perfiles as { id: string; full_name: string | null }[] | null) ?? []).map((p) => [p.id, p.full_name]),
+    );
+
+    citasDetalle = filas.map((c) => ({
+      id: c.id,
+      starts_at: c.starts_at,
+      status: c.status,
+      animalName: c.adoption_requests?.animals?.name ?? null,
+      animalSlug: c.adoption_requests?.animals?.slug ?? null,
+      adopterName: nombres.get(c.adopter_id) ?? null,
+    }));
+    citasPorDia = [...new Set(citasDetalle.map((c) => YMD.format(new Date(c.starts_at))))];
   }
 
   return (
@@ -90,6 +127,9 @@ export default async function AgendaPage() {
             overrides={overrides}
             citasPorDia={citasPorDia}
             plantillas={plantillas}
+            citasDetalle={citasDetalle}
+            capacidad={capacidad}
+            proximaISO={proximaISO}
             hoyISO={hoyISO}
             anioInicial={anio}
             mesInicial={mes - 1}

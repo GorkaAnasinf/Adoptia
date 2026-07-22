@@ -24,6 +24,16 @@ export type FranjaDia = {
   minutes: number;
 };
 
+/** Cita con el detalle que muestra la vista diaria de la agenda (FEATURE-055). */
+export type CitaAgenda = {
+  id: string;
+  starts_at: string;
+  status: string;
+  animalName: string | null;
+  animalSlug: string | null;
+  adopterName: string | null;
+};
+
 /** Plantilla de horario reutilizable (`availability_templates`). */
 export type Plantilla = {
   id: string;
