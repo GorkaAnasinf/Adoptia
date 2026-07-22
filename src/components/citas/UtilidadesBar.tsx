@@ -11,10 +11,12 @@ export function UtilidadesBar({
   modoSeleccion,
   onToggleSeleccion,
   onAbrirRango,
+  onCerrarFestivos,
 }: {
   modoSeleccion: boolean;
   onToggleSeleccion: () => void;
   onAbrirRango: () => void;
+  onCerrarFestivos: () => void;
 }) {
   const t = useTranslations("agenda");
   return (
@@ -38,6 +40,13 @@ export function UtilidadesBar({
         className="inline-flex min-h-11 items-center gap-2 rounded-full border border-border px-4 py-2 text-sm font-semibold text-foreground transition-colors hover:bg-accent"
       >
         {t("cerrarRangoAccion")}
+      </button>
+      <button
+        type="button"
+        onClick={onCerrarFestivos}
+        className="inline-flex min-h-11 items-center gap-2 rounded-full border border-border px-4 py-2 text-sm font-semibold text-foreground transition-colors hover:bg-accent"
+      >
+        {t("cerrarFestivos")}
       </button>
     </div>
   );

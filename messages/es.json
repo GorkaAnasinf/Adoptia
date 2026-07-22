@@ -1434,7 +1434,12 @@
     "rangoConfirmar": "Cerrar rango",
     "rangoInvertido": "«Hasta» debe ser igual o posterior a «Desde».",
     "rangoLargo": "El rango es demasiado largo.",
-    "errorBatch": "No se pudieron guardar los cambios. Inténtalo de nuevo."
+    "errorBatch": "No se pudieron guardar los cambios. Inténtalo de nuevo.",
+    "cerrarFestivos": "Cerrar festivos",
+    "notaFestivo": "Festivo",
+    "copiarDia": "Copiar día",
+    "diaCopiado": "Día copiado. Selecciona días y pulsa «Pegar».",
+    "pegar": "Pegar"
   },
   "errors": {
     "missingEnv": "Faltan variables de entorno de Supabase. Copia .env.example a .env.local y rellena NEXT_PUBLIC_SUPABASE_URL y NEXT_PUBLIC_SUPABASE_ANON_KEY.",

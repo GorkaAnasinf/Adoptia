@@ -7,11 +7,13 @@ import {
   diasEnRango,
   resolverDiaAgenda,
   validarFranjas,
+  type EstadoDia,
   type FranjaDia,
   type FranjaSemanal,
   type IntentGuardar,
   type OverrideDia,
 } from "@/lib/agenda";
+import { festivosNacionales } from "@/lib/festivos";
 import type { RangoCierreInput } from "@/lib/schemas/agenda";
 import { createClient } from "@/lib/supabase/client";
 import { CalendarioMensual, type EstadoCalendario } from "./CalendarioMensual";
@@ -66,6 +68,7 @@ export function AgendaCliente({
   const [seleccionados, setSeleccionados] = useState<Set<string>>(new Set());
   const [rangoAbierto, setRangoAbierto] = useState(false);
   const [franjaMasiva, setFranjaMasiva] = useState<FranjaDia | null>(null);
+  const [portapapeles, setPortapapeles] = useState<EstadoDia | null>(null);
 
   const citasSet = useMemo(() => new Set(citasPorDia), [citasPorDia]);
 
@@ -265,6 +268,38 @@ export function AgendaCliente({
     );
   }
 
+  function cerrarFestivos() {
+    ejecutarBatch(
+      festivosNacionales(year).map((date) => ({
+        date,
+        closed: true,
+        slots: [],
+        note: t("notaFestivo"),
+      })),
+    );
+  }
+
+  /** Traduce un estado copiado a la fila de override de una fecha (null = no aplicable). */
+  function estadoAOverride(estado: EstadoDia, date: string): OverrideDia | null {
+    if (estado.tipo === "cerrado") {
+      return { date, closed: true, slots: [], note: estado.note };
+    }
+    if (estado.tipo === "especial" || estado.tipo === "patron") {
+      if (!validarFranjas(estado.franjas).ok) return null;
+      const note = estado.tipo === "especial" ? estado.note : null;
+      return { date, closed: false, slots: estado.franjas, note };
+    }
+    return null; // sin_configurar
+  }
+
+  function pegar() {
+    if (!portapapeles) return;
+    const nuevos = [...seleccionados]
+      .map((date) => estadoAOverride(portapapeles, date))
+      .filter((o): o is OverrideDia => o !== null);
+    ejecutarBatch(nuevos);
+  }
+
   const nSeleccionados = seleccionados.size;
 
   return (
@@ -278,6 +313,7 @@ export function AgendaCliente({
           setSeleccion(null);
         }}
         onAbrirRango={() => setRangoAbierto(true)}
+        onCerrarFestivos={cerrarFestivos}
       />
 
       {errorGuardar && modoSeleccion && (
@@ -303,6 +339,9 @@ export function AgendaCliente({
             <p className="font-heading text-lg font-semibold">
               {t("diasSeleccionados", { n: nSeleccionados })}
             </p>
+            {portapapeles && !franjaMasiva && (
+              <p className="text-sm text-muted-foreground">{t("diaCopiado")}</p>
+            )}
             {franjaMasiva ? (
               <div className="flex flex-col gap-3">
                 <p className="text-sm font-medium">{t("aplicarFranjaTitulo")}</p>
@@ -362,6 +401,16 @@ export function AgendaCliente({
                 >
                   {t("aplicarFranjaSeleccion")}
                 </button>
+                {portapapeles && (
+                  <button
+                    type="button"
+                    onClick={pegar}
+                    disabled={guardando || nSeleccionados === 0}
+                    className="min-h-11 rounded-xl border border-secondary px-4 py-2 text-sm font-semibold text-secondary hover:bg-secondary/10 disabled:opacity-50"
+                  >
+                    {t("pegar")}
+                  </button>
+                )}
               </div>
             )}
           </div>
@@ -374,6 +423,7 @@ export function AgendaCliente({
             errorGuardar={errorGuardar}
             onGuardar={guardar}
             onResetear={resetear}
+            onCopiar={setPortapapeles}
           />
         )}
       </div>

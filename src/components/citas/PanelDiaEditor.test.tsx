@@ -159,6 +159,18 @@ describe("PanelDiaEditor", () => {
     expect(screen.getByText(mensajes.agenda.errorGuardar)).toBeInTheDocument();
   });
 
+  it("copiar el día emite su estado al padre", () => {
+    const onCopiar = vi.fn();
+    const estadoInicial: EstadoDia = {
+      tipo: "especial",
+      franjas: [{ start: "16:00", end: "18:00", minutes: 60 }],
+      note: null,
+    };
+    pintar({ estadoInicial, onCopiar });
+    fireEvent.click(screen.getByRole("button", { name: /copiar día/i }));
+    expect(onCopiar).toHaveBeenCalledWith(estadoInicial);
+  });
+
   it("resetear el día llama a onResetear", () => {
     const { onResetear } = pintar({
       estadoInicial: { tipo: "patron", franjas: [{ start: "10:00", end: "13:00", minutes: 30 }] },

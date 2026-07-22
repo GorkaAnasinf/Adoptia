@@ -240,4 +240,40 @@ describe("AgendaCliente", () => {
     expect(await screen.findByText(messages.agenda.errorBatch)).toBeInTheDocument();
     expect(refreshMock).not.toHaveBeenCalled();
   });
+
+  // ---------- Festivos y copiar/pegar (F2b) ----------
+
+  it("cerrar festivos cierra los festivos nacionales del año visible", async () => {
+    pintar(); // año 2026
+    fireEvent.click(screen.getByRole("button", { name: /cerrar festivos/i }));
+    await waitFor(() => expect(upsertMock).toHaveBeenCalledOnce());
+    const filas = upsertMock.mock.calls[0][0];
+    expect(filas).toHaveLength(10); // 9 fijos + Viernes Santo
+    expect(filas.every((f: { closed: boolean; note: string }) => f.closed && f.note === messages.agenda.notaFestivo)).toBe(
+      true,
+    );
+    expect(filas.map((f: { date: string }) => f.date)).toEqual(expect.arrayContaining(["2026-12-25", "2026-04-03"]));
+  });
+
+  it("copiar un día cerrado y pegarlo aplica el cierre a la selección", async () => {
+    const override: OverrideDia = { date: "2026-08-05", closed: true, slots: [], note: "X" };
+    pintar({ overrides: [override] });
+    fireEvent.click(screen.getByRole("gridcell", { name: /^5$/ }));
+    fireEvent.click(screen.getByRole("button", { name: /copiar día/i }));
+    entrarSeleccion();
+    fireEvent.click(screen.getByRole("gridcell", { name: /^11$/ }));
+    fireEvent.click(screen.getByRole("gridcell", { name: /^12$/ }));
+    fireEvent.click(screen.getByRole("button", { name: /^pegar$/i }));
+    await waitFor(() => expect(upsertMock).toHaveBeenCalledOnce());
+    const filas = upsertMock.mock.calls[0][0];
+    expect(filas).toHaveLength(2);
+    expect(filas.every((f: { closed: boolean }) => f.closed)).toBe(true);
+    expect(filas.map((f: { date: string }) => f.date).sort()).toEqual(["2026-08-11", "2026-08-12"]);
+  });
+
+  it("sin nada copiado, la acción «Pegar» no aparece", () => {
+    pintar();
+    entrarSeleccion();
+    expect(screen.queryByRole("button", { name: /^pegar$/i })).not.toBeInTheDocument();
+  });
 });

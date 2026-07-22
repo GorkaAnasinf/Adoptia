@@ -26,6 +26,7 @@ export function PanelDiaEditor({
   errorGuardar,
   onGuardar,
   onResetear,
+  onCopiar,
 }: {
   fecha: string | null;
   estadoInicial: EstadoDia | null;
@@ -33,6 +34,7 @@ export function PanelDiaEditor({
   errorGuardar: boolean;
   onGuardar: (intent: IntentGuardar) => void;
   onResetear: () => void;
+  onCopiar?: (estado: EstadoDia) => void;
 }) {
   const t = useTranslations("agenda");
   const tc = useTranslations("citas");
@@ -222,14 +224,25 @@ export function PanelDiaEditor({
         >
           {guardando ? t("guardando") : t("guardar")}
         </button>
-        <button
-          type="button"
-          onClick={onResetear}
-          disabled={guardando}
-          className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl border border-border px-5 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent disabled:opacity-50"
-        >
-          {t("resetear")}
-        </button>
+        <div className="flex gap-2">
+          <button
+            type="button"
+            onClick={onResetear}
+            disabled={guardando}
+            className="inline-flex min-h-11 flex-1 items-center justify-center gap-2 rounded-xl border border-border px-5 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent disabled:opacity-50"
+          >
+            {t("resetear")}
+          </button>
+          {onCopiar && estadoInicial && (
+            <button
+              type="button"
+              onClick={() => onCopiar(estadoInicial)}
+              className="inline-flex min-h-11 flex-1 items-center justify-center gap-2 rounded-xl border border-border px-5 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
+            >
+              {t("copiarDia")}
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );

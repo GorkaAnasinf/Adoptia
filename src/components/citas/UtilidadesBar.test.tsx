@@ -7,17 +7,19 @@ import { UtilidadesBar } from "./UtilidadesBar";
 function pintar(props: Partial<Parameters<typeof UtilidadesBar>[0]> = {}) {
   const onToggleSeleccion = vi.fn();
   const onAbrirRango = vi.fn();
+  const onCerrarFestivos = vi.fn();
   render(
     <NextIntlClientProvider locale="es" messages={mensajes}>
       <UtilidadesBar
         modoSeleccion={false}
         onToggleSeleccion={onToggleSeleccion}
         onAbrirRango={onAbrirRango}
+        onCerrarFestivos={onCerrarFestivos}
         {...props}
       />
     </NextIntlClientProvider>,
   );
-  return { onToggleSeleccion, onAbrirRango };
+  return { onToggleSeleccion, onAbrirRango, onCerrarFestivos };
 }
 
 describe("UtilidadesBar", () => {
@@ -36,5 +38,11 @@ describe("UtilidadesBar", () => {
     const { onAbrirRango } = pintar();
     fireEvent.click(screen.getByRole("button", { name: /cerrar rango/i }));
     expect(onAbrirRango).toHaveBeenCalledOnce();
+  });
+
+  it("cierra los festivos", () => {
+    const { onCerrarFestivos } = pintar();
+    fireEvent.click(screen.getByRole("button", { name: /cerrar festivos/i }));
+    expect(onCerrarFestivos).toHaveBeenCalledOnce();
   });
 });
