@@ -2,6 +2,12 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/es/) adaptado. Versionado 0.x hasta el MVP.
 
+## [0.0.90] — 2026-07-22
+
+### Cambiado
+
+- **La agenda de citas de la protectora se rediseña siguiendo el wireframe (FEATURE-051)**: la pantalla de citas deja de ser una lista y adopta el diseño de la tanda Stitch. Las citas se organizan en **pestañas «Próximas» y «Pasadas»**, y cada una es una **tarjeta** con la **foto del animal**, el título «Cita para conocer a…», su **estado** (Confirmada, Pendiente…), el adoptante con un **avatar de iniciales** y la fecha en lenguaje cercano («Hoy», «Mañana»). En las próximas están las acciones de siempre —marcar **Realizada**, **No se presentó** o **Cancelar**—; las pasadas quedan de solo lectura. A la derecha estrena un **mini-calendario del mes** (con el día de hoy resaltado y un punto en los días que tienen cita), un **resumen semanal** (citas de la semana, nuevas solicitudes y tasa de asistencia) y una **tarjeta de consejo** que enlaza a las guías. Como las citas las reserva el adoptante, el botón de cabecera lleva a la **agenda de disponibilidad** en vez de a «crear cita». Sin cambios de datos: mismo modelo y misma RLS. QA: suite 1067 verde; sin migraciones.
+
 ## [0.0.89] — 2026-07-22
 
 ### Cambiado

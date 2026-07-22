@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { getFormatter, getTranslations } from "next-intl/server";
-import { CitaAccionesPanel } from "@/components/citas/CitaAccionesPanel";
+import { getTranslations } from "next-intl/server";
+import { CalendarioCitas } from "@/components/citas/CalendarioCitas";
+import { CitasCliente, type CitaVista } from "@/components/citas/CitasCliente";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 
@@ -10,35 +11,34 @@ export async function generateMetadata(): Promise<Metadata> {
   return { title: t("agendaTitle") };
 }
 
+type MediaRow = { url: string; is_cover: boolean; sort_order: number };
 type Cita = {
   id: string;
-  status: "pending" | "confirmed" | "cancelled" | "done" | "no_show";
+  status: CitaVista["status"];
   starts_at: string;
   cancel_reason: string | null;
   adopter_id: string;
-  adoption_requests: { animals: { name: string; slug: string } | null } | null;
+  adoption_requests: {
+    animals: { name: string; slug: string; animal_media: MediaRow[] | null } | null;
+  } | null;
 };
 
-const CLAVE_ESTADO: Record<Cita["status"], string> = {
-  pending: "estadoConfirmada",
-  confirmed: "estadoConfirmada",
-  cancelled: "estadoCancelada",
-  done: "estadoRealizada",
-  no_show: "estadoNoShow",
-};
+function portada(media: MediaRow[] | null): string | null {
+  if (!media || media.length === 0) return null;
+  return (media.find((m) => m.is_cover) ?? [...media].sort((a, b) => a.sort_order - b.sort_order)[0]).url;
+}
 
-const BADGE_ESTADO: Record<Cita["status"], string> = {
-  pending: "bg-amber-100 text-amber-800",
-  confirmed: "bg-emerald-100 text-emerald-800",
-  cancelled: "bg-stone-200 text-stone-700",
-  done: "bg-sky-100 text-sky-800",
-  no_show: "bg-rose-100 text-rose-800",
-};
+const YMD = new Intl.DateTimeFormat("en-CA", {
+  year: "numeric",
+  month: "2-digit",
+  day: "2-digit",
+  timeZone: "Europe/Madrid",
+});
+const ymd = (d: Date) => YMD.format(d);
 
-/** Agenda de citas de la protectora: próximas con acciones + historial. */
+/** Agenda de citas de la protectora: pestañas Próximas/Pasadas + calendario y resumen. */
 export default async function CitasPanelPage() {
   const t = await getTranslations("citas");
-  const format = await getFormatter();
   const supabase = await createClient();
   const {
     data: { user },
@@ -49,130 +49,138 @@ export default async function CitasPanelPage() {
     : { data: null };
 
   let citas: (Cita & { adopterName: string | null })[] = [];
+  let nuevasSolicitudes = 0;
   if (shelter) {
     const { data } = await supabase
       .from("appointments")
-      .select("id, status, starts_at, cancel_reason, adopter_id, adoption_requests(animals(name, slug))")
+      .select(
+        "id, status, starts_at, cancel_reason, adopter_id, adoption_requests(animals(name, slug, animal_media(url, is_cover, sort_order)))",
+      )
       .eq("shelter_id", shelter.id)
       .order("starts_at", { ascending: true });
     const filas = (data as unknown as Cita[] | null) ?? [];
 
-    // El nombre del adoptante vive en profiles (RLS: solo su dueño); mismo
-    // bypass acotado que en la bandeja de solicitudes.
+    // El nombre del adoptante vive en profiles (RLS: solo su dueño); mismo bypass
+    // acotado que en la bandeja de solicitudes.
     const admin = createAdminClient();
     const ids = [...new Set(filas.map((c) => c.adopter_id))];
     const { data: perfiles } = ids.length
       ? await admin.from("profiles").select("id, full_name").in("id", ids)
       : { data: [] };
     const nombres = new Map(
-      ((perfiles as { id: string; full_name: string | null }[] | null) ?? []).map((p) => [
-        p.id,
-        p.full_name,
-      ]),
+      ((perfiles as { id: string; full_name: string | null }[] | null) ?? []).map((p) => [p.id, p.full_name]),
     );
     citas = filas.map((c) => ({ ...c, adopterName: nombres.get(c.adopter_id) ?? null }));
+
+    const { count } = await supabase
+      .from("adoption_requests")
+      .select("id", { count: "exact", head: true })
+      .eq("status", "pending");
+    nuevasSolicitudes = count ?? 0;
   }
 
-  const ahora = Date.now();
-  const activa = (c: Cita) => ["pending", "confirmed"].includes(c.status);
-  const proximas = citas.filter((c) => activa(c) && new Date(c.starts_at).getTime() >= ahora);
-  const historial = citas
-    .filter((c) => !activa(c) || new Date(c.starts_at).getTime() < ahora)
-    .reverse();
+  const ahora = new Date();
+  const [aa, mm, dd] = ymd(ahora).split("-").map(Number);
 
-  const fechaDe = (c: Cita) =>
-    format.dateTime(new Date(c.starts_at), {
-      weekday: "long",
-      day: "numeric",
-      month: "long",
-      hour: "2-digit",
-      minute: "2-digit",
-      timeZone: "Europe/Madrid",
-    });
+  // Semana ISO (Lun-Dom) que contiene hoy, por fechas de calendario (Europe/Madrid).
+  const hoyProxy = new Date(`${ymd(ahora)}T00:00:00Z`);
+  const offLun = (hoyProxy.getUTCDay() + 6) % 7;
+  const semana = new Set(
+    Array.from({ length: 7 }, (_, i) => {
+      const d = new Date(hoyProxy);
+      d.setUTCDate(d.getUTCDate() - offLun + i);
+      return d.toISOString().slice(0, 10);
+    }),
+  );
+
+  const activa = (c: Cita) => c.status === "pending" || c.status === "confirmed";
+  const enFuturo = (c: Cita) => new Date(c.starts_at).getTime() >= ahora.getTime();
+  const proximas = citas.filter((c) => activa(c) && enFuturo(c));
+  const pasadas = citas.filter((c) => !(activa(c) && enFuturo(c))).reverse();
+
+  const citasEstaSemana = citas.filter((c) => activa(c) && semana.has(ymd(new Date(c.starts_at)))).length;
+  const done = citas.filter((c) => c.status === "done").length;
+  const noShow = citas.filter((c) => c.status === "no_show").length;
+  const tasaAsistencia = done + noShow > 0 ? Math.round((done / (done + noShow)) * 100) : null;
+
+  const diasConCitas = [
+    ...new Set(
+      citas
+        .map((c) => ymd(new Date(c.starts_at)))
+        .filter((s) => Number(s.slice(0, 4)) === aa && Number(s.slice(5, 7)) === mm)
+        .map((s) => Number(s.slice(8, 10))),
+    ),
+  ];
+
+  const aVista = (c: (typeof citas)[number]): CitaVista => ({
+    id: c.id,
+    status: c.status,
+    starts_at: c.starts_at,
+    cancel_reason: c.cancel_reason,
+    adopterName: c.adopterName,
+    animal: c.adoption_requests?.animals
+      ? {
+          name: c.adoption_requests.animals.name,
+          slug: c.adoption_requests.animals.slug,
+          cover: portada(c.adoption_requests.animals.animal_media),
+        }
+      : null,
+  });
 
   return (
-    <section className="mx-auto max-w-4xl px-4 py-8">
-      <div className="flex flex-wrap items-baseline justify-between gap-3">
+    <section className="mx-auto max-w-6xl px-4 py-8">
+      <header className="flex flex-wrap items-start justify-between gap-3">
         <div>
           <h1 className="font-heading text-3xl font-bold">{t("agendaTitle")}</h1>
           <p className="mt-1 text-muted-foreground">{t("agendaSubtitle")}</p>
         </div>
         <Link
           href="/panel/agenda"
-          className="rounded-full border border-primary px-4 py-2 text-sm font-medium text-primary hover:bg-primary hover:text-primary-foreground"
+          className="inline-flex min-h-11 items-center gap-2 rounded-full border border-primary px-4 py-2 text-sm font-semibold text-primary transition-colors hover:bg-primary hover:text-primary-foreground"
         >
           {t("disponibilidadTitle")}
         </Link>
-      </div>
+      </header>
 
       {citas.length === 0 ? (
-        <div className="mt-8 rounded-2xl border border-border bg-card px-6 py-14 text-center text-muted-foreground">
+        <div className="mt-8 rounded-2xl border border-border bg-card px-6 py-14 text-center text-muted-foreground shadow-soft">
           {t("agendaEmpty")}
         </div>
       ) : (
-        <>
-          <h2 className="mt-8 font-heading text-xl font-semibold">{t("proximas")}</h2>
-          {proximas.length === 0 ? (
-            <p className="mt-3 text-muted-foreground">{t("dashboardEmpty")}</p>
-          ) : (
-            <ul className="mt-3 flex flex-col gap-3">
-              {proximas.map((c) => (
-                <li
-                  key={c.id}
-                  className="flex flex-col gap-3 rounded-2xl border border-border bg-card p-4"
-                >
-                  <div className="flex flex-wrap items-center gap-2">
-                    <span className="font-semibold capitalize">{fechaDe(c)}</span>
-                    {c.adoption_requests?.animals && (
-                      <Link
-                        href={`/animales/${c.adoption_requests.animals.slug}`}
-                        className="text-primary hover:underline"
-                      >
-                        {c.adoption_requests.animals.name}
-                      </Link>
-                    )}
-                    {c.adopterName && (
-                      <span className="text-muted-foreground">
-                        {t("conQuien", { nombre: c.adopterName })}
-                      </span>
-                    )}
-                  </div>
-                  <CitaAccionesPanel citaId={c.id} />
-                </li>
-              ))}
-            </ul>
-          )}
-
-          {historial.length > 0 && (
-            <>
-              <h2 className="mt-10 font-heading text-xl font-semibold">{t("historial")}</h2>
-              <ul className="mt-3 flex flex-col gap-2">
-                {historial.map((c) => (
-                  <li
-                    key={c.id}
-                    className="flex flex-wrap items-center gap-2 rounded-xl border border-border bg-card px-4 py-3 text-sm"
-                  >
-                    <span className="capitalize">{fechaDe(c)}</span>
-                    <span>{c.adoption_requests?.animals?.name}</span>
-                    {c.adopterName && (
-                      <span className="text-muted-foreground">
-                        {t("conQuien", { nombre: c.adopterName })}
-                      </span>
-                    )}
-                    <span
-                      className={`ml-auto rounded-full px-2.5 py-0.5 text-xs font-semibold ${BADGE_ESTADO[c.status]}`}
-                    >
-                      {t(CLAVE_ESTADO[c.status])}
-                    </span>
-                    {c.cancel_reason && (
-                      <span className="w-full text-xs text-muted-foreground">{c.cancel_reason}</span>
-                    )}
-                  </li>
-                ))}
-              </ul>
-            </>
-          )}
-        </>
+        <div className="mt-8 grid gap-6 lg:grid-cols-[1fr_20rem] lg:items-start">
+          <CitasCliente proximas={proximas.map(aVista)} pasadas={pasadas.map(aVista)} />
+          <aside className="flex flex-col gap-6">
+            <CalendarioCitas year={aa} month={mm - 1} todayDay={dd} diasConCitas={diasConCitas} />
+            <div className="rounded-2xl border border-border bg-card p-5 shadow-soft">
+              <h2 className="font-heading text-lg font-semibold">{t("resumenTitle")}</h2>
+              <dl className="mt-3 flex flex-col gap-2 text-sm">
+                <div className="flex items-center justify-between">
+                  <dt className="text-muted-foreground">{t("resumenSemana")}</dt>
+                  <dd className="font-heading text-lg font-bold tabular-nums">{citasEstaSemana}</dd>
+                </div>
+                <div className="flex items-center justify-between">
+                  <dt className="text-muted-foreground">{t("resumenSolicitudes")}</dt>
+                  <dd className="font-heading text-lg font-bold tabular-nums">{nuevasSolicitudes}</dd>
+                </div>
+                <div className="flex items-center justify-between">
+                  <dt className="text-muted-foreground">{t("resumenAsistencia")}</dt>
+                  <dd className="font-heading text-lg font-bold tabular-nums text-tertiary">
+                    {tasaAsistencia === null ? "—" : `${tasaAsistencia}%`}
+                  </dd>
+                </div>
+              </dl>
+            </div>
+            <div className="rounded-2xl border border-border bg-surface-container-low p-5 shadow-soft">
+              <p className="text-sm italic text-muted-foreground">{t("consejoTexto")}</p>
+              <Link
+                href="/guias"
+                className="mt-3 inline-flex min-h-11 items-center justify-center rounded-full bg-tertiary px-4 py-2 text-sm font-semibold text-on-tertiary transition-colors hover:bg-tertiary/90"
+              >
+                {t("verRecursos")}
+              </Link>
+            </div>
+          </aside>
+        </div>
       )}
     </section>
   );
