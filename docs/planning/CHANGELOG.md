@@ -2,6 +2,12 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/es/) adaptado. Versionado 0.x hasta el MVP.
 
+## [0.0.95] — 2026-07-22
+
+### Añadido
+
+- **Plantillas de horario en la agenda (FEATURE-057)**: la protectora puede **guardar un horario con nombre** («Mañanas L-V», «Fines de semana») desde el editor de un día y luego **aplicarlo de golpe** a todos los días que seleccione, sin volver a teclearlo. Las plantillas se listan, se aplican y se borran, y son **privadas de cada protectora** (nadie más las ve). Última utilidad de la tanda de la agenda. **Con migración** (tabla `availability_templates`). QA: suite 1160 verde.
+
 ## [0.0.94] — 2026-07-22
 
 ### Añadido

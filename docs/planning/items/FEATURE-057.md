@@ -2,7 +2,7 @@
 id: FEATURE-057
 tipo: feature
 titulo: Agenda de la protectora F2c — plantillas de horario
-estado: desarrollo
+estado: hecho
 prioridad: media
 hito: "0.5"
 duplicado_de: null

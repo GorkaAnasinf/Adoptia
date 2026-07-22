@@ -100,6 +100,7 @@ Estado de cada capacidad en lenguaje de usuario. Se regenera con `python scripts
 - Agenda de la protectora F1 — calendario mensual con excepciones por día ([FEATURE-053](../planning/items/FEATURE-053.md))
 - Agenda de la protectora F2a — pintar días y cerrar rangos (batch) ([FEATURE-054](../planning/items/FEATURE-054.md))
 - Agenda de la protectora F2b — festivos nacionales y copiar/pegar día ([FEATURE-056](../planning/items/FEATURE-056.md))
+- Agenda de la protectora F2c — plantillas de horario ([FEATURE-057](../planning/items/FEATURE-057.md))
 - De-duplicar el slug de protectora (nombres repetidos) ([IMPROVEMENT-001](../planning/items/IMPROVEMENT-001.md))
 - Rediseño UX del wizard de alta de protectora (+ fix del mapa gris) ([IMPROVEMENT-002](../planning/items/IMPROVEMENT-002.md))
 - Pulido del shell chrome (sidebar + cabecera) hacia el mockup de Stitch ([IMPROVEMENT-003](../planning/items/IMPROVEMENT-003.md))
@@ -132,7 +133,7 @@ Estado de cada capacidad en lenguaje de usuario. Se regenera con `python scripts
 
 #### 🚧 En camino (en desarrollo ahora)
 
-- Agenda de la protectora F2c — plantillas de horario ([FEATURE-057](../planning/items/FEATURE-057.md))
+_Nada en desarrollo en este momento._
 
 #### 🗓️ Previsto
 
