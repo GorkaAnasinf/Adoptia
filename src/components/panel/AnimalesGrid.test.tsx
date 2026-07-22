@@ -6,6 +6,9 @@ import { AnimalesGrid, type AnimalGridRow } from "./AnimalesGrid";
 
 const refreshMock = vi.fn();
 vi.mock("next/navigation", () => ({ useRouter: () => ({ refresh: refreshMock, push: vi.fn() }) }));
+// FotoCarrusel solo llama a Supabase al pulsar una flecha; el mock evita
+// inicializar el cliente al importar el módulo en el render de las tarjetas.
+vi.mock("@/lib/supabase/client", () => ({ createClient: vi.fn() }));
 
 function conIntl(ui: React.ReactElement) {
   return render(
@@ -80,6 +83,17 @@ describe("AnimalesGrid", () => {
     expect(window.confirm).toHaveBeenCalled();
     await waitFor(() => expect(fetch).toHaveBeenCalledWith("/api/animales/a1", expect.objectContaining({ method: "DELETE" })));
     expect(refreshMock).toHaveBeenCalled();
+  });
+
+  it("con portada monta el carrusel de fotos (flechas)", () => {
+    const conFoto: AnimalGridRow = {
+      ...base,
+      animal_media: [{ url: "https://x/f1.jpg", is_cover: true, sort_order: 0 }],
+    };
+    conIntl(<AnimalesGrid animales={[conFoto]} shelterVerified />);
+    expect(
+      screen.getByRole("button", { name: messages.busqueda.fotoSiguiente }),
+    ).toBeInTheDocument();
   });
 
   it("la tarjeta 'Nueva mascota' enlaza al alta", () => {

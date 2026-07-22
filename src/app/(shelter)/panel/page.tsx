@@ -4,6 +4,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import { AnimalStatusBadge } from "@/components/animals/AnimalStatusBadge";
+import { FotoCarrusel } from "@/components/animals/FotoCarrusel";
+import { Reveal } from "@/components/ui/Reveal";
 import type { AnimalStatus } from "@/lib/schemas/animal";
 import type { EstadoSolicitud } from "@/lib/schemas/solicitud";
 import { edadAproximada } from "@/lib/animal-search";
@@ -232,9 +234,10 @@ export default async function PanelPage() {
           {/* Tarjetas de métricas */}
           <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {/* Solicitudes pendientes — coral */}
+            <Reveal className="h-full">
             <Link
               href="/panel/solicitudes"
-              className="group relative overflow-hidden rounded-2xl bg-primary-container p-5 text-white shadow-sm transition-shadow hover:shadow-md"
+              className="group relative block h-full overflow-hidden rounded-2xl bg-primary-container p-5 text-white shadow-sm transition-shadow hover:shadow-md"
             >
               <Heart
                 className="absolute -right-3 -top-3 size-24 rotate-12 text-white/20"
@@ -247,11 +250,13 @@ export default async function PanelPage() {
               <span className="mt-2 block font-heading text-5xl font-bold tabular-nums">{pendingCount}</span>
               {deltaSemanal && <span className="mt-2 block text-sm text-white/90">{deltaSemanal}</span>}
             </Link>
+            </Reveal>
 
             {/* Citas hoy — teal */}
+            <Reveal delayMs={80} className="h-full">
             <Link
               href="/panel/citas"
-              className="group relative overflow-hidden rounded-2xl bg-secondary p-5 text-secondary-foreground shadow-sm transition-shadow hover:shadow-md"
+              className="group relative block h-full overflow-hidden rounded-2xl bg-secondary p-5 text-secondary-foreground shadow-sm transition-shadow hover:shadow-md"
             >
               <CalendarDays className="absolute -right-3 -top-3 size-24 rotate-12 text-white/10" aria-hidden="true" />
               <span className="block text-xs font-bold uppercase tracking-wider text-white/90">
@@ -264,11 +269,13 @@ export default async function PanelPage() {
                   : t("statCitasNinguna")}
               </span>
             </Link>
+            </Reveal>
 
             {/* Perfiles activos — crema */}
+            <Reveal delayMs={160} className="h-full sm:col-span-2 lg:col-span-1">
             <Link
               href="/panel/animales"
-              className="group rounded-2xl border border-border bg-card p-5 shadow-sm transition-shadow hover:shadow-md sm:col-span-2 lg:col-span-1"
+              className="group block h-full rounded-2xl border border-border bg-card p-5 shadow-sm transition-shadow hover:shadow-md"
             >
               <span className="block text-xs font-bold uppercase tracking-wider text-muted-foreground">
                 {t("statActiveProfiles")}
@@ -287,12 +294,14 @@ export default async function PanelPage() {
                 )}
               </span>
             </Link>
+            </Reveal>
           </div>
 
           <div className="mt-6 grid gap-6 lg:grid-cols-2 lg:items-start">
             {/* Columna izquierda: próximas citas + solicitudes recientes */}
             <div className="flex flex-col gap-6">
               {/* Próximas Citas */}
+              <Reveal>
               <div className="rounded-2xl border border-border bg-card p-5">
                 <div className="mb-4 flex items-center justify-between">
                   <h2 className="font-heading text-lg font-semibold">{tc("dashboardTitle")}</h2>
@@ -338,8 +347,10 @@ export default async function PanelPage() {
                   </ul>
                 )}
               </div>
+              </Reveal>
 
               {/* Solicitudes recientes — tabla */}
+              <Reveal delayMs={80}>
               <div className="rounded-2xl border border-border bg-card p-5">
                 <div className="mb-4 flex items-center justify-between">
                   <h2 className="font-heading text-lg font-semibold">{t("recentRequests")}</h2>
@@ -387,6 +398,7 @@ export default async function PanelPage() {
                   </div>
                 )}
               </div>
+              </Reveal>
             </div>
 
             {/* Columna derecha: tus animales (rejilla ancha) */}
@@ -398,7 +410,7 @@ export default async function PanelPage() {
                 </Link>
               </div>
               <ul className="grid grid-cols-2 gap-4">
-                {animals.slice(0, 5).map((a) => {
+                {animals.slice(0, 5).map((a, i) => {
                   const edad = edadAproximada(a.birth_date_approx);
                   const subtitulo = [
                     a.breed,
@@ -406,26 +418,40 @@ export default async function PanelPage() {
                   ]
                     .filter(Boolean)
                     .join(" · ");
+                  const foto = portada(a.animal_media);
                   return (
                     <li key={a.id}>
-                      <Link
-                        href={`/panel/animales/${a.id}`}
-                        className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-shadow hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-                      >
-                        <span className="relative block aspect-square bg-muted">
-                          {/* Nombre visible junto a la foto: la imagen es decorativa para lectores de pantalla */}
-                          <FotoAnimal url={portada(a.animal_media)} alt="" />
-                          <span className="absolute left-2 top-2">
-                            <AnimalStatusBadge status={a.status} onImage />
+                      <Reveal delayMs={Math.min(i, 8) * 60} className="h-full">
+                        <Link
+                          href={`/panel/animales/${a.id}`}
+                          className="group flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition duration-300 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 motion-safe:hover:-translate-y-1"
+                        >
+                          <span className="relative block aspect-square bg-muted">
+                            {/* Nombre visible junto a la foto: la imagen es decorativa para lectores de pantalla */}
+                            {foto ? (
+                              <FotoCarrusel
+                                animalId={a.id}
+                                coverUrl={foto}
+                                alt=""
+                                sizes="(max-width: 640px) 50vw, 12rem"
+                              />
+                            ) : (
+                              <span className="flex size-full items-center justify-center text-muted-foreground">
+                                <PawPrint className="size-8" aria-hidden="true" />
+                              </span>
+                            )}
+                            <span className="absolute left-2 top-2">
+                              <AnimalStatusBadge status={a.status} onImage />
+                            </span>
                           </span>
-                        </span>
-                        <span className="flex flex-col gap-0.5 p-3">
-                          <span className="truncate font-heading font-semibold text-primary">{a.name}</span>
-                          {subtitulo && (
-                            <span className="truncate text-sm text-muted-foreground">{subtitulo}</span>
-                          )}
-                        </span>
-                      </Link>
+                          <span className="flex flex-col gap-0.5 p-3">
+                            <span className="truncate font-heading font-semibold text-primary">{a.name}</span>
+                            {subtitulo && (
+                              <span className="truncate text-sm text-muted-foreground">{subtitulo}</span>
+                            )}
+                          </span>
+                        </Link>
+                      </Reveal>
                     </li>
                   );
                 })}
@@ -464,17 +490,6 @@ function AvatarAnimal({ url, alt }: { url: string | null; alt: string }) {
       className="size-8 rounded-full border-2 border-card object-cover"
     />
   );
-}
-
-function FotoAnimal({ url, alt }: { url: string | null; alt: string }) {
-  if (!url) {
-    return (
-      <span className="flex size-full items-center justify-center text-muted-foreground">
-        <PawPrint className="size-8" aria-hidden="true" />
-      </span>
-    );
-  }
-  return <Image src={url} alt={alt} fill sizes="(max-width: 640px) 50vw, 12rem" className="object-cover" />;
 }
 
 function PrimerosPasos({
