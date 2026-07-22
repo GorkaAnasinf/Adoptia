@@ -1,13 +1,14 @@
 "use client";
 
 import { ExternalLink, Mars, MoreVertical, PawPrint, Pencil, Plus, Search, Venus } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { useMemo, useState } from "react";
 import { AnimalStatusBadge } from "@/components/animals/AnimalStatusBadge";
+import { FotoCarrusel } from "@/components/animals/FotoCarrusel";
 import { Input } from "@/components/ui/input";
+import { Reveal } from "@/components/ui/Reveal";
 import { edadAproximada } from "@/lib/animal-search";
 import { ESTADOS, type AnimalStatus } from "@/lib/schemas/animal";
 import { cn } from "@/lib/utils";
@@ -139,7 +140,7 @@ export function AnimalesGrid({
       )}
 
       <ul className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-3">
-        {filtrados.map((a) => {
+        {filtrados.map((a, i) => {
           const edad = edadAproximada(a.birth_date_approx);
           const subtitulo = [
             a.breed,
@@ -150,104 +151,110 @@ export function AnimalesGrid({
           const publicado = a.published_at != null;
           const foto = portada(a.animal_media);
           return (
-            <li
-              key={a.id}
-              className="flex flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-sm"
-            >
-              <div className="relative aspect-square bg-muted">
-                {foto ? (
-                  <Image src={foto} alt="" fill sizes="(max-width: 640px) 50vw, 12rem" className="object-cover" />
-                ) : (
-                  <span className="flex size-full items-center justify-center text-muted-foreground">
-                    <PawPrint className="size-8" aria-hidden="true" />
-                  </span>
-                )}
-                <span className="absolute left-2 top-2">
-                  <AnimalStatusBadge status={a.status} onImage />
-                </span>
-                {!publicado && (
-                  <span className="absolute right-2 top-2 rounded-full bg-stone-700/90 px-2 py-0.5 text-xs font-semibold text-white shadow-sm">
-                    {t("draft")}
-                  </span>
-                )}
-              </div>
-
-              <div className="flex flex-1 flex-col gap-2 p-3">
-                <div className="flex items-start justify-between gap-2">
-                  <div className="min-w-0">
-                    <p className="flex items-center gap-1.5 truncate font-heading font-semibold text-primary">
-                      {a.name}
-                      {a.sex === "male" && <Mars className="size-4 shrink-0 text-secondary" aria-label={t("sexMale")} role="img" />}
-                      {a.sex === "female" && <Venus className="size-4 shrink-0 text-secondary" aria-label={t("sexFemale")} role="img" />}
-                    </p>
-                    {subtitulo && <p className="truncate text-sm text-muted-foreground">{subtitulo}</p>}
-                  </div>
-                  {/* Menú de acciones */}
-                  <div className="relative shrink-0">
-                    <button
-                      type="button"
-                      aria-label={t("menuLabel")}
-                      aria-haspopup="menu"
-                      aria-expanded={menuId === a.id}
-                      disabled={busyId === a.id}
-                      onClick={() => setMenuId(menuId === a.id ? null : a.id)}
-                      className="flex size-8 items-center justify-center rounded-full text-muted-foreground hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                    >
-                      <MoreVertical className="size-4" aria-hidden="true" />
-                    </button>
-                    {menuId === a.id && (
-                      <>
-                        <button
-                          type="button"
-                          aria-hidden="true"
-                          tabIndex={-1}
-                          className="fixed inset-0 z-10 cursor-default"
-                          onClick={() => setMenuId(null)}
-                        />
-                        <div
-                          role="menu"
-                          className="absolute right-0 z-20 mt-1 w-40 overflow-hidden rounded-xl border border-border bg-popover py-1 shadow-md"
-                        >
-                          {publicado ? (
-                            <MenuItem onClick={() => cambiarVisibilidad(a, "unpublish")}>{t("unpublish")}</MenuItem>
-                          ) : (
-                            <MenuItem
-                              disabled={!shelterVerified}
-                              onClick={() => cambiarVisibilidad(a, "publish")}
-                            >
-                              {t("publish")}
-                            </MenuItem>
-                          )}
-                          <MenuItem destructive onClick={() => eliminar(a)}>
-                            {t("delete")}
-                          </MenuItem>
-                        </div>
-                      </>
+            <li key={a.id}>
+              <Reveal delayMs={Math.min(i, 8) * 60} className="h-full">
+                <div className="group flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition duration-300 hover:shadow-md motion-safe:hover:-translate-y-1">
+                  <div className="relative aspect-square bg-muted">
+                    {foto ? (
+                      <FotoCarrusel
+                        animalId={a.id}
+                        coverUrl={foto}
+                        alt=""
+                        sizes="(max-width: 640px) 50vw, 12rem"
+                      />
+                    ) : (
+                      <span className="flex size-full items-center justify-center text-muted-foreground">
+                        <PawPrint className="size-8" aria-hidden="true" />
+                      </span>
+                    )}
+                    <span className="absolute left-2 top-2">
+                      <AnimalStatusBadge status={a.status} onImage />
+                    </span>
+                    {!publicado && (
+                      <span className="absolute right-2 top-2 rounded-full bg-stone-700/90 px-2 py-0.5 text-xs font-semibold text-white shadow-sm">
+                        {t("draft")}
+                      </span>
                     )}
                   </div>
-                </div>
 
-                {errorId?.id === a.id && <p className="text-xs text-destructive">{errorId.msg}</p>}
+                  <div className="flex flex-1 flex-col gap-2 p-3">
+                    <div className="flex items-start justify-between gap-2">
+                      <div className="min-w-0">
+                        <p className="flex items-center gap-1.5 truncate font-heading font-semibold text-primary">
+                          {a.name}
+                          {a.sex === "male" && <Mars className="size-4 shrink-0 text-secondary" aria-label={t("sexMale")} role="img" />}
+                          {a.sex === "female" && <Venus className="size-4 shrink-0 text-secondary" aria-label={t("sexFemale")} role="img" />}
+                        </p>
+                        {subtitulo && <p className="truncate text-sm text-muted-foreground">{subtitulo}</p>}
+                      </div>
+                      {/* Menú de acciones */}
+                      <div className="relative shrink-0">
+                        <button
+                          type="button"
+                          aria-label={t("menuLabel")}
+                          aria-haspopup="menu"
+                          aria-expanded={menuId === a.id}
+                          disabled={busyId === a.id}
+                          onClick={() => setMenuId(menuId === a.id ? null : a.id)}
+                          className="flex size-8 items-center justify-center rounded-full text-muted-foreground hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                        >
+                          <MoreVertical className="size-4" aria-hidden="true" />
+                        </button>
+                        {menuId === a.id && (
+                          <>
+                            <button
+                              type="button"
+                              aria-hidden="true"
+                              tabIndex={-1}
+                              className="fixed inset-0 z-10 cursor-default"
+                              onClick={() => setMenuId(null)}
+                            />
+                            <div
+                              role="menu"
+                              className="absolute right-0 z-20 mt-1 w-40 overflow-hidden rounded-xl border border-border bg-popover py-1 shadow-md"
+                            >
+                              {publicado ? (
+                                <MenuItem onClick={() => cambiarVisibilidad(a, "unpublish")}>{t("unpublish")}</MenuItem>
+                              ) : (
+                                <MenuItem
+                                  disabled={!shelterVerified}
+                                  onClick={() => cambiarVisibilidad(a, "publish")}
+                                >
+                                  {t("publish")}
+                                </MenuItem>
+                              )}
+                              <MenuItem destructive onClick={() => eliminar(a)}>
+                                {t("delete")}
+                              </MenuItem>
+                            </div>
+                          </>
+                        )}
+                      </div>
+                    </div>
 
-                <div className="mt-auto flex items-center gap-3 pt-1 text-sm font-semibold">
-                  <Link
-                    href={`/panel/animales/${a.id}`}
-                    className="inline-flex items-center gap-1 text-tertiary hover:underline"
-                  >
-                    <Pencil className="size-3.5" aria-hidden="true" />
-                    {t("edit")}
-                  </Link>
-                  {publicado && (
-                    <Link
-                      href={`/animales/${a.slug}`}
-                      className="inline-flex items-center gap-1 text-primary hover:underline"
-                    >
-                      {t("viewProfile")}
-                      <ExternalLink className="size-3.5" aria-hidden="true" />
-                    </Link>
-                  )}
+                    {errorId?.id === a.id && <p className="text-xs text-destructive">{errorId.msg}</p>}
+
+                    <div className="mt-auto flex items-center gap-3 pt-1 text-sm font-semibold">
+                      <Link
+                        href={`/panel/animales/${a.id}`}
+                        className="inline-flex items-center gap-1 text-tertiary hover:underline"
+                      >
+                        <Pencil className="size-3.5" aria-hidden="true" />
+                        {t("edit")}
+                      </Link>
+                      {publicado && (
+                        <Link
+                          href={`/animales/${a.slug}`}
+                          className="inline-flex items-center gap-1 text-primary hover:underline"
+                        >
+                          {t("viewProfile")}
+                          <ExternalLink className="size-3.5" aria-hidden="true" />
+                        </Link>
+                      )}
+                    </div>
+                  </div>
                 </div>
-              </div>
+              </Reveal>
             </li>
           );
         })}
