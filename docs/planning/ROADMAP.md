@@ -81,7 +81,7 @@ Para centrar el desarrollo en un lado de la app cada vez, el 0.2 se aborda en do
 | [FEATURE-015](items/FEATURE-015.md) | Contenido educativo sobre adopción responsable | hecho | baja |
 | [FEATURE-016](items/FEATURE-016.md) | Registro de casas de acogida | hecho | baja |
 
-### Hito 0.5 — 100% completado (51/51)
+### Hito 0.5 — 100% completado (56/56)
 
 | Item | Título | Estado | Prioridad |
 |------|--------|--------|-----------|
@@ -125,6 +125,11 @@ Para centrar el desarrollo en un lado de la app cada vez, el 0.2 se aborda en do
 | [FEATURE-048](items/FEATURE-048.md) | Mis animales" de la protectora a rejilla de tarjetas con búsqueda y acciones | hecho | media |
 | [FEATURE-050](items/FEATURE-050.md) | Rediseño de "Solicitudes recibidas" (maestra/detalle) del panel | hecho | media |
 | [FEATURE-051](items/FEATURE-051.md) | Rediseño de "Citas" de la protectora (wireframe Stitch) | hecho | media |
+| [FEATURE-053](items/FEATURE-053.md) | Agenda de la protectora F1 — calendario mensual con excepciones por día | hecho | media |
+| [FEATURE-054](items/FEATURE-054.md) | Agenda de la protectora F2a — pintar días y cerrar rangos (batch) | hecho | media |
+| [FEATURE-055](items/FEATURE-055.md) | Agenda de la protectora F3 — vistas anual (heatmap) y diaria (timeline) | hecho | media |
+| [FEATURE-056](items/FEATURE-056.md) | Agenda de la protectora F2b — festivos nacionales y copiar/pegar día | hecho | media |
+| [FEATURE-057](items/FEATURE-057.md) | Agenda de la protectora F2c — plantillas de horario | hecho | media |
 | [IMPROVEMENT-017](items/IMPROVEMENT-017.md) | Rediseño del dashboard de protectora (tarjetas de color y próximas citas) | hecho | media |
 | [IMPROVEMENT-018](items/IMPROVEMENT-018.md) | Rediseño de la home pública (hero con buscador, recién llegados, banda de stats y CTA) | hecho | media |
 | [IMPROVEMENT-019](items/IMPROVEMENT-019.md) | Rediseño del listado /animales (filtros horizontales, tarjetas con favorito y paginación numerada) | hecho | media |

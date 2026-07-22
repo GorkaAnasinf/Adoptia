@@ -96,6 +96,20 @@ Formato ligero tipo ADR. Toda decisión con impacto estructural se registra aqu�
 | 44 | **Las lecturas del área personal filtran por dueño en el cliente aunque RLS ya filtre**, cuando la política tiene más de un destinatario (caso `foster_proposals`: la ve el acogedor **y** la protectora que la envía) | RLS protege de ver datos ajenos, no de mezclar roles: un usuario con protectora propia veía sus propias propuestas enviadas como recordatorios recibidos. RLS responde «¿puedes verlo?», la consulta debe responder «¿es tuyo en este contexto?» | Confiar solo en RLS (correcto en seguridad, incorrecto en semántica) |
 | 45 | **`secondary-container` usa `#204e4a` como color de texto y no el `#3f6c68` de DESIGN.md** | El par propuesto se queda en 4.58:1 sobre el pastel `#bcece6` y no llega a AA para texto normal; la variante oscura del mismo tono da 7.23:1 | Mantener el valor del design system y perder el contraste AA del hero |
 
+## 2026-07-22 — FEATURE-053 (agenda de disponibilidad)
+
+| # | Decisión | Motivo | Alternativa descartada |
+|---|----------|--------|------------------------|
+| 46 | **La disponibilidad se modela como patrón semanal recurrente (`availability_slots`) + excepciones por fecha (`availability_overrides`)**, no materializando cada día del año | Es el modelo estándar (Google Calendar/Calendly): pocos datos, y las utilidades masivas (cerrar rangos, festivos) salen baratas. El calendario y el RPC `appointment_free_slots` resuelven cada fecha combinando ambos | Día a día puro (365 filas/año/protectora, duplica el patrón a mano); híbrido con materialización perezosa (complejidad innecesaria a esta escala) |
+| 47 | **La "capacidad" del wireframe es un contador informativo, no reservas simultáneas**: se mantiene 1 cita por hueco (exclusion constraint de `appointments`) | El aforo real de un refugio para visitas de adopción es 1:1; permitir N simultáneas exigiría rehacer el constraint anti-solape y el RPC sin demanda real | Capacidad N por franja (más constraint y RPC, sin caso de uso) |
+| 48 | **El CRUD de excepciones va directo por supabase-js amparado por RLS, sin Route Handler** (incluido "repetir semanalmente", que hace delete+insert+delete secuenciales) | Mismo patrón que el CRUD de franjas y ofertas de donación; a esta escala el riesgo de fallo parcial es bajo y se autocorrige al reguardar. Los batch transaccionales (rangos, festivos) se difieren a FEATURE-054 | Endpoint transaccional desde F1 (superficie de API antes de necesitarla) |
+
+## 2026-07-22 — FEATURE-054 (utilidades masivas de la agenda)
+
+| # | Decisión | Motivo | Alternativa descartada |
+|---|----------|--------|------------------------|
+| 49 | **Los batch de la agenda (cerrar rango, pintar N días) son un único `upsert` de un array por supabase-js, sin Route Handler** (resuelve lo que #48 dejaba abierto) | Un `upsert([...])` es una sola sentencia SQL: atómica (si una fila falla el `with check` de RLS, cae entera) y bajo la misma política de la dueña, sin superficie de API nueva. Un test de RLS comprueba que un array con una fila ajena se rechaza entero | Endpoint transaccional dedicado (superficie sin necesidad); N upserts en bucle (no atómico, N roundtrips) |
+
 ## Cómo añadir una decisión
 
 Nueva fila con fecha en sección nueva si cambia el mes. Si revierte una anterior, enlázala ("revierte #9") en vez de borrarla.

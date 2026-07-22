@@ -2,6 +2,36 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/es/) adaptado. Versionado 0.x hasta el MVP.
 
+## [0.0.96] — 2026-07-22
+
+### Añadido
+
+- **La agenda estrena vistas anual y diaria (FEATURE-055)**: un **selector de vista** permite alternar entre **Mensual** (editar la disponibilidad, como hasta ahora), **Anual** (un vistazo a los 12 meses en modo mapa de calor: cada día coloreado según esté configurado, cerrado o con citas; al pulsar un día se salta a ese mes) y **Diaria** (el **timeline de las citas** del día elegido con hora, animal, adoptante y estado). Arriba, tres tarjetas de resumen: **capacidad** (huecos libres), **citas pendientes hoy** y **próxima disponibilidad**. Con esto queda **completo el rediseño de la agenda de la protectora** (F1→F3). Sin cambios de datos. QA: suite 1176 verde; sin migraciones.
+
+## [0.0.95] — 2026-07-22
+
+### Añadido
+
+- **Plantillas de horario en la agenda (FEATURE-057)**: la protectora puede **guardar un horario con nombre** («Mañanas L-V», «Fines de semana») desde el editor de un día y luego **aplicarlo de golpe** a todos los días que seleccione, sin volver a teclearlo. Las plantillas se listan, se aplican y se borran, y son **privadas de cada protectora** (nadie más las ve). Última utilidad de la tanda de la agenda. **Con migración** (tabla `availability_templates`). QA: suite 1160 verde.
+
+## [0.0.94] — 2026-07-22
+
+### Añadido
+
+- **Más atajos en la agenda: festivos y copiar/pegar (FEATURE-056)**: la protectora puede **cerrar de un click los festivos nacionales** del año que esté viendo (los 9 fijos —Año Nuevo, Reyes, 1 de mayo, 15 de agosto, 12 de octubre, Todos los Santos, Constitución, Inmaculada y Navidad— más el **Viernes Santo**, que cae en fecha distinta cada año y se calcula solo). Y puede **copiar la configuración de un día** —cerrado o con su horario— y **pegarla** en todos los días que seleccione, sin rehacerla. Sigue sin tocar datos: reutiliza el guardado masivo de F2a. Las plantillas de horario quedan para FEATURE-057. QA: suite 1142 verde; sin migraciones.
+
+## [0.0.93] — 2026-07-22
+
+### Añadido
+
+- **La agenda gana utilidades para dar de alta la disponibilidad rápido (FEATURE-054)**: sobre el calendario mensual de F1, la protectora puede ahora **seleccionar varios días** de un vistazo (modo «Seleccionar días») y, con ellos marcados, **cerrarlos todos** o **aplicarles un horario** de una vez; y con **«Cerrar rango…»** cierra un tramo entero —p. ej. las vacaciones de agosto— indicando fecha desde/hasta y una nota. Todo el cambio masivo se guarda de golpe y respeta que solo la dueña puede tocar su agenda. Sin cambios de datos: reutiliza el modelo de excepciones de F1. Segunda mitad de las utilidades (festivos, plantillas y copiar/pegar) queda para FEATURE-056. QA: suite 1124 verde; sin migraciones.
+
+## [0.0.92] — 2026-07-22
+
+### Añadido
+
+- **La agenda de disponibilidad de la protectora se rediseña como un calendario mensual (FEATURE-053)**: la pantalla donde el refugio define cuándo recibe visitas deja de ser una lista de franjas semanales y pasa a ser un **calendario del mes**. Al elegir un día se abre un panel para **cerrar ese día** (vacaciones, festivos), fijarle un **horario especial** propio, o —marcando «Repetir semanalmente»— aplicar el horario a **todos los días de esa semana** (el patrón de siempre). Cada día del calendario se ve de un vistazo: disponible, cerrado o con citas. Por debajo, el patrón semanal se conserva y las excepciones se guardan aparte, así que basta una fila por día alterado. Los huecos que el adoptante ve al reservar respetan ya los cierres y horarios especiales. **Con migración** (`availability_overrides` + reescritura del cálculo de huecos libres). QA: suite 1101 verde; RLS y validaciones cubiertas.
+
 ## [0.0.91] — 2026-07-22
 
 ### Cambiado
