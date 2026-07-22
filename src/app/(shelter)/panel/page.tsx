@@ -353,34 +353,37 @@ export default async function PanelPage() {
                   <p className="text-sm text-muted-foreground">{t("noRequests")}</p>
                 ) : (
                   <div className="overflow-x-auto">
-                    <table className="w-full text-left text-sm">
-                      <thead className="border-b border-border text-xs uppercase text-muted-foreground">
-                        <tr>
-                          <th className="pb-2 pr-3 font-semibold">{t("colAdopter")}</th>
-                          <th className="pb-2 pr-3 font-semibold">{t("colAnimal")}</th>
-                          <th className="pb-2 pr-3 font-semibold">{t("colDate")}</th>
-                          <th className="pb-2 font-semibold">{t("colStatus")}</th>
-                        </tr>
-                      </thead>
-                      <tbody className="divide-y divide-border">
+                    <div className="min-w-88">
+                      {/* Cabecera de columnas (Adoptante · Mascota · Fecha · Estado) */}
+                      <div className="grid grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)_auto_auto] items-center gap-3 border-b border-border pb-2 text-xs font-semibold uppercase text-muted-foreground">
+                        <span>{t("colAdopter")}</span>
+                        <span>{t("colAnimal")}</span>
+                        <span>{t("colDate")}</span>
+                        <span>{t("colStatus")}</span>
+                      </div>
+                      {/* Cada fila enlaza al detalle de solicitudes, como las citas a su calendario */}
+                      <ul className="divide-y divide-border">
                         {recentRequests.map((r) => (
-                          <tr key={r.id} className="hover:bg-accent/30">
-                            <td className="py-2.5 pr-3 font-medium">{r.adopterName ?? "—"}</td>
-                            <td className="py-2.5 pr-3">{r.animal?.name ?? "—"}</td>
-                            <td className="whitespace-nowrap py-2.5 pr-3 text-muted-foreground">
-                              {FECHA_CORTA_MADRID.format(new Date(r.created_at))}
-                            </td>
-                            <td className="py-2.5">
+                          <li key={r.id}>
+                            <Link
+                              href="/panel/solicitudes"
+                              className="grid grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)_auto_auto] items-center gap-3 py-2.5 text-sm transition-colors hover:bg-accent/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                            >
+                              <span className="truncate font-medium">{r.adopterName ?? "—"}</span>
+                              <span className="truncate">{r.animal?.name ?? "—"}</span>
+                              <span className="whitespace-nowrap text-muted-foreground">
+                                {FECHA_CORTA_MADRID.format(new Date(r.created_at))}
+                              </span>
                               <span
-                                className={`inline-block rounded-full px-2 py-0.5 text-xs font-semibold ${CHIP_SOLICITUD[r.status]}`}
+                                className={`inline-block whitespace-nowrap rounded-full px-2 py-0.5 text-xs font-semibold ${CHIP_SOLICITUD[r.status]}`}
                               >
                                 {ts(`status${capitaliza(r.status)}`)}
                               </span>
-                            </td>
-                          </tr>
+                            </Link>
+                          </li>
                         ))}
-                      </tbody>
-                    </table>
+                      </ul>
+                    </div>
                   </div>
                 )}
               </div>
@@ -413,7 +416,7 @@ export default async function PanelPage() {
                           {/* Nombre visible junto a la foto: la imagen es decorativa para lectores de pantalla */}
                           <FotoAnimal url={portada(a.animal_media)} alt="" />
                           <span className="absolute left-2 top-2">
-                            <AnimalStatusBadge status={a.status} />
+                            <AnimalStatusBadge status={a.status} onImage />
                           </span>
                         </span>
                         <span className="flex flex-col gap-0.5 p-3">
