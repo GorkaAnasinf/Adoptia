@@ -340,6 +340,21 @@ describe("AgendaCliente", () => {
     expect(refreshMock).toHaveBeenCalled();
   });
 
+  it("si guardar la plantilla falla (nombre duplicado) avisa y no la añade", async () => {
+    insertMock.mockResolvedValue({ error: { code: "23505", message: "duplicate key" } });
+    pintar({ plantillas: [plantilla] });
+    fireEvent.click(screen.getByRole("gridcell", { name: /^12$/ }));
+    fireEvent.change(screen.getByLabelText(/nombre de la plantilla/i), {
+      target: { value: "Mañanas L-V" }, // ya existe
+    });
+    fireEvent.click(screen.getByRole("button", { name: /guardar como plantilla/i }));
+    expect(await screen.findByText(messages.agenda.errorPlantilla)).toBeInTheDocument();
+    expect(refreshMock).not.toHaveBeenCalled();
+    // La lista sigue con una sola plantilla (no se añadió la duplicada).
+    fireEvent.click(screen.getByRole("button", { name: /seleccionar días/i }));
+    expect(screen.getAllByText("Mañanas L-V")).toHaveLength(1);
+  });
+
   it("borrar una plantilla la quita de la lista", async () => {
     pintar({ plantillas: [plantilla] });
     entrarSeleccion();
