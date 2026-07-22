@@ -2,6 +2,12 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/es/) adaptado. Versionado 0.x hasta el MVP.
 
+## [0.0.86] — 2026-07-22
+
+### Cambiado
+
+- **Solicitudes recientes clicables y badge de estado legible sobre foto (FEATURE-047)**: dos remates del panel de la protectora. Ahora **cada fila de «Solicitudes recientes» es un enlace** a la lista de solicitudes —igual que las filas de «Próximas citas» llevan al calendario—, así que ya no hay filas «muertas» en el dashboard. Y el **sello de estado del animal** (En adopción, Reservado…) que se dibuja sobre la foto pasa a tener **fondo sólido de color con texto blanco y una sombra suave**: antes usaba un tinte translúcido que sobre fotos oscuras casi no se veía. El cambio del sello es opt-in (`onImage`), así que solo afecta a la rejilla del panel; el resto de sitios donde aparece el estado se mantienen igual. Sin cambios de datos: mismo modelo y misma RLS. QA: suite 1048 verde; sin migraciones.
+
 ## [0.0.85] — 2026-07-22
 
 ### Cambiado

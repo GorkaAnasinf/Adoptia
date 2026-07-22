@@ -59,6 +59,7 @@
 | [FEATURE-044](FEATURE-044.md) | Rediseño de "Mis donaciones" (patrón base) + edición con un solo formulario | feature | hecho | 0.5 |
 | [FEATURE-045](FEATURE-045.md) | Rediseño del panel de la protectora (dashboard) al patrón Stitch | feature | hecho | 0.5 |
 | [FEATURE-046](FEATURE-046.md) | Layout del panel de la protectora a 2 columnas del wireframe Stitch | feature | hecho | 0.5 |
+| [FEATURE-047](FEATURE-047.md) | Solicitudes recientes clicables + badge de estado legible sobre foto | feature | hecho | 0.5 |
 | [IMPROVEMENT-001](IMPROVEMENT-001.md) | De-duplicar el slug de protectora (nombres repetidos) | improvement | hecho | — |
 | [IMPROVEMENT-002](IMPROVEMENT-002.md) | Rediseño UX del wizard de alta de protectora (+ fix del mapa gris) | improvement | hecho | 0.2 |
 | [IMPROVEMENT-003](IMPROVEMENT-003.md) | Pulido del shell chrome (sidebar + cabecera) hacia el mockup de Stitch | improvement | hecho | 0.2 |
