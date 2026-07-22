@@ -66,8 +66,9 @@
 | [FEATURE-051](FEATURE-051.md) | Rediseño de "Citas" de la protectora (wireframe Stitch) | feature | hecho | 0.5 |
 | [FEATURE-052](FEATURE-052.md) | Botón "Ver recursos" con el estilo primario relleno | mejora | hecho | 0.5 |
 | [FEATURE-053](FEATURE-053.md) | Agenda de la protectora F1 — calendario mensual con excepciones por día | feature | hecho | 0.5 |
-| [FEATURE-054](FEATURE-054.md) | Agenda de la protectora F2 — utilidades masivas de disponibilidad | feature | recibido | 0.5 |
+| [FEATURE-054](FEATURE-054.md) | Agenda de la protectora F2a — pintar días y cerrar rangos (batch) | feature | desarrollo | 0.5 |
 | [FEATURE-055](FEATURE-055.md) | Agenda de la protectora F3 — vistas anual (heatmap) y diaria (timeline) | feature | recibido | 0.5 |
+| [FEATURE-056](FEATURE-056.md) | Agenda de la protectora F2b — festivos, plantillas y copiar/pegar | feature | recibido | 0.5 |
 | [IMPROVEMENT-001](IMPROVEMENT-001.md) | De-duplicar el slug de protectora (nombres repetidos) | improvement | hecho | — |
 | [IMPROVEMENT-002](IMPROVEMENT-002.md) | Rediseño UX del wizard de alta de protectora (+ fix del mapa gris) | improvement | hecho | 0.2 |
 | [IMPROVEMENT-003](IMPROVEMENT-003.md) | Pulido del shell chrome (sidebar + cabecera) hacia el mockup de Stitch | improvement | hecho | 0.2 |

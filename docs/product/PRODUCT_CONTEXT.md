@@ -130,11 +130,11 @@ Estado de cada capacidad en lenguaje de usuario. Se regenera con `python scripts
 
 #### 🚧 En camino (en desarrollo ahora)
 
-_Nada en desarrollo en este momento._
+- Agenda de la protectora F2a — pintar días y cerrar rangos (batch) ([FEATURE-054](../planning/items/FEATURE-054.md))
 
 #### 🗓️ Previsto
 
-- Agenda de la protectora F2 — utilidades masivas de disponibilidad — hito 0.5 ([FEATURE-054](../planning/items/FEATURE-054.md))
 - Agenda de la protectora F3 — vistas anual (heatmap) y diaria (timeline) — hito 0.5 ([FEATURE-055](../planning/items/FEATURE-055.md))
+- Agenda de la protectora F2b — festivos, plantillas y copiar/pegar — hito 0.5 ([FEATURE-056](../planning/items/FEATURE-056.md))
 - Historias felices — social proof de adopciones en la home — hito sin asignar ([FEATURE-035](../planning/items/FEATURE-035.md))
 <!-- RENDER:END -->
