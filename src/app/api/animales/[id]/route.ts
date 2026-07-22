@@ -48,6 +48,11 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
       return json({ error: { code: "forbidden", message: "Tu protectora aún no está verificada" } }, 403);
     }
     const numFotos = (animal.animal_media ?? []).filter((m) => (m.type ?? "photo") === "photo").length;
+    // Se le pasa la fila de BD tal cual: `animalPublishSchema` no es `.strict()`, así
+    // que descarta las claves extra (shelters, animal_media, …). Funciona porque los
+    // campos requeridos para publicar son de una palabra e idénticos en snake/camel
+    // (name, species, sex, size, description). Si se añade un requisito multi-palabra,
+    // habrá que mapear la fila a camelCase antes de validar.
     const { ok } = validarPublicacion(animal, numFotos);
     if (!ok) {
       return json({ error: { code: "incomplete", message: "La ficha no está lista para publicar" } }, 422);
