@@ -2,6 +2,12 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/es/) adaptado. Versionado 0.x hasta el MVP.
 
+## [0.0.91] — 2026-07-22
+
+### Cambiado
+
+- **El botón «Ver recursos» estrena el estilo primario (FEATURE-052)**: en la tarjeta de consejo de la agenda de citas, el botón «Ver recursos» pasa del verde al **granate relleno con texto blanco y esquinas redondeadas**, igual que los botones de acción principal del panel. Solo estilo.
+
 ## [0.0.90] — 2026-07-22
 
 ### Cambiado
