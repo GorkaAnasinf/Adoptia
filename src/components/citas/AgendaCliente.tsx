@@ -47,6 +47,7 @@ export function AgendaCliente({
   mesInicial: number; // 0-indexado
 }) {
   const t = useTranslations("agenda");
+  const tc = useTranslations("citas");
   const router = useRouter();
   const [year, setYear] = useState(anioInicial);
   const [month, setMonth] = useState(mesInicial);
@@ -329,7 +330,7 @@ export function AgendaCliente({
                   >
                     {[15, 30, 45, 60].map((d) => (
                       <option key={d} value={d}>
-                        {d} min
+                        {tc("minutos", { n: d })}
                       </option>
                     ))}
                   </select>

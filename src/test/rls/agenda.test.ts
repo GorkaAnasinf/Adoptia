@@ -17,7 +17,9 @@ import {
 describe.skipIf(!rlsDisponible)("FEATURE-053 agenda overrides", () => {
   const PASS = "password-de-test-123";
   let ownerId: string;
+  let otroOwnerId: string;
   let shelterId: string;
+  let otroShelterId: string;
 
   // Fecha futura fija y su weekday, para probar patrón vs override en el RPC.
   const objetivo = new Date(Date.now() + 3 * 24 * 3600 * 1000);
@@ -28,7 +30,7 @@ describe.skipIf(!rlsDisponible)("FEATURE-053 agenda overrides", () => {
     const admin = adminClient();
 
     ownerId = await ensureUser("agenda-protectora@test.com", PASS);
-    await ensureUser("agenda-otra@test.com", PASS);
+    otroOwnerId = await ensureUser("agenda-otra@test.com", PASS);
 
     const { data: shelter, error: es } = await upsertShelterFixture({
       owner_id: ownerId,
@@ -39,8 +41,18 @@ describe.skipIf(!rlsDisponible)("FEATURE-053 agenda overrides", () => {
     if (es) throw es;
     shelterId = shelter.id;
 
+    const { data: otroShelter, error: eo } = await upsertShelterFixture({
+      owner_id: otroOwnerId,
+      name: "Protectora Agenda Otra",
+      slug: "protectora-agenda-otra",
+      status: "verified",
+    });
+    if (eo) throw eo;
+    otroShelterId = otroShelter.id;
+
     await admin.from("appointments").delete().eq("shelter_id", shelterId);
     await admin.from("availability_overrides").delete().eq("shelter_id", shelterId);
+    await admin.from("availability_overrides").delete().eq("shelter_id", otroShelterId);
     await admin.from("availability_slots").delete().eq("shelter_id", shelterId);
 
     // Patrón semanal en el weekday del día objetivo: 10:00–12:00 / 30 min.
@@ -86,6 +98,26 @@ describe.skipIf(!rlsDisponible)("FEATURE-053 agenda overrides", () => {
       slots: [{ start: "10:00", end: "12:00", minutes: 5 }], // 5 < 15 → CHECK
     });
     expect(error).not.toBeNull();
+  });
+
+  it("un upsert por lotes con una fila de otra protectora se rechaza entero", async () => {
+    const owner = await signInAs("agenda-protectora@test.com", PASS);
+    const { error } = await owner.from("availability_overrides").upsert(
+      [
+        { shelter_id: shelterId, date: "2029-11-01", closed: true, slots: [] },
+        { shelter_id: otroShelterId, date: "2029-11-01", closed: true, slots: [] },
+      ],
+      { onConflict: "shelter_id,date" },
+    );
+    expect(error).not.toBeNull(); // with check fila a fila tumba el statement
+
+    // Y la fila propia tampoco se escribió (el upsert es atómico).
+    const { data } = await owner
+      .from("availability_overrides")
+      .select()
+      .eq("shelter_id", shelterId)
+      .eq("date", "2029-11-01");
+    expect(data ?? []).toHaveLength(0);
   });
 
   it("otra protectora NO puede editar overrides ajenos", async () => {

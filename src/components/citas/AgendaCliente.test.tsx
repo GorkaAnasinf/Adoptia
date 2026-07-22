@@ -202,6 +202,20 @@ describe("AgendaCliente", () => {
     expect(screen.getByRole("button", { name: /aplicar franja/i })).toBeDisabled();
   });
 
+  it("salir del modo selección limpia los días marcados", () => {
+    pintar();
+    entrarSeleccion();
+    fireEvent.click(screen.getByRole("gridcell", { name: /^11$/ }));
+    fireEvent.click(screen.getByRole("gridcell", { name: /^12$/ }));
+    expect(screen.getByText(/2 días seleccionados/i)).toBeInTheDocument();
+    // Salir del modo…
+    fireEvent.click(screen.getByRole("button", { name: /salir de selección/i }));
+    // …y volver a entrar: no queda nada marcado.
+    entrarSeleccion();
+    expect(screen.getByText(/ningún día/i)).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /^cerrar$/i })).toBeDisabled();
+  });
+
   it("cerrar un rango hace un upsert con todos los días del rango", async () => {
     pintar();
     fireEvent.click(screen.getByRole("button", { name: /cerrar rango/i }));
