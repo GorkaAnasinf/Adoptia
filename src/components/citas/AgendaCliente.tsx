@@ -13,12 +13,14 @@ import {
   type FranjaSemanal,
   type IntentGuardar,
   type OverrideDia,
+  type Plantilla,
 } from "@/lib/agenda";
 import { festivosNacionales } from "@/lib/festivos";
-import type { RangoCierreInput } from "@/lib/schemas/agenda";
+import { plantillaSchema, type RangoCierreInput } from "@/lib/schemas/agenda";
 import { createClient } from "@/lib/supabase/client";
 import { CalendarioMensual, type EstadoCalendario } from "./CalendarioMensual";
 import { PanelDiaEditor } from "./PanelDiaEditor";
+import { PlantillasPicker } from "./PlantillasPicker";
 import { RangoCierreDialog } from "./RangoCierreDialog";
 import { UtilidadesBar } from "./UtilidadesBar";
 
@@ -37,6 +39,7 @@ export function AgendaCliente({
   franjas,
   overrides,
   citasPorDia,
+  plantillas = [],
   hoyISO,
   anioInicial,
   mesInicial,
@@ -45,6 +48,7 @@ export function AgendaCliente({
   franjas: FranjaSemanal[];
   overrides: OverrideDia[];
   citasPorDia: string[];
+  plantillas?: Plantilla[];
   hoyISO: string;
   anioInicial: number;
   mesInicial: number; // 0-indexado
@@ -70,6 +74,8 @@ export function AgendaCliente({
   const [rangoAbierto, setRangoAbierto] = useState(false);
   const [franjaMasiva, setFranjaMasiva] = useState<FranjaDia | null>(null);
   const [portapapeles, setPortapapeles] = useState<EstadoDia | null>(null);
+  const [plantillasLocal, setPlantillasLocal] = useState(plantillas);
+  const [errorPlantilla, setErrorPlantilla] = useState(false);
 
   const citasSet = useMemo(() => new Set(citasPorDia), [citasPorDia]);
 
@@ -288,6 +294,42 @@ export function AgendaCliente({
     ejecutarBatch(nuevos);
   }
 
+  function aplicarPlantilla(plantilla: Plantilla) {
+    ejecutarBatch(
+      [...seleccionados].map((date) => ({ date, closed: false, slots: plantilla.slots, note: null })),
+    );
+  }
+
+  async function guardarPlantilla(nombre: string, slots: FranjaDia[]) {
+    const parsed = plantillaSchema.safeParse({ nombre, slots });
+    if (!parsed.success) {
+      setErrorPlantilla(true);
+      return;
+    }
+    setErrorPlantilla(false);
+    const supabase = createClient();
+    const { error } = await supabase
+      .from("availability_templates")
+      .insert({ shelter_id: shelterId, nombre: parsed.data.nombre, slots: parsed.data.slots });
+    if (error) {
+      setErrorPlantilla(true);
+      return;
+    }
+    setPlantillasLocal((prev) => [
+      ...prev,
+      { id: crypto.randomUUID(), nombre: parsed.data.nombre, slots: parsed.data.slots },
+    ]);
+    router.refresh();
+  }
+
+  async function borrarPlantilla(id: string) {
+    const supabase = createClient();
+    const { error } = await supabase.from("availability_templates").delete().eq("id", id);
+    if (error) return;
+    setPlantillasLocal((prev) => prev.filter((p) => p.id !== id));
+    router.refresh();
+  }
+
   const nSeleccionados = seleccionados.size;
 
   return (
@@ -307,6 +349,7 @@ export function AgendaCliente({
       {errorGuardar && modoSeleccion && (
         <p className="text-sm text-destructive">{t("errorBatch")}</p>
       )}
+      {errorPlantilla && <p className="text-sm text-destructive">{t("errorPlantilla")}</p>}
 
       <div className="grid gap-6 lg:grid-cols-[1fr_22rem] lg:items-start">
         <CalendarioMensual
@@ -399,6 +442,13 @@ export function AgendaCliente({
                     {t("pegar")}
                   </button>
                 )}
+                <PlantillasPicker
+                  plantillas={plantillasLocal}
+                  nSeleccionados={nSeleccionados}
+                  guardando={guardando}
+                  onAplicar={aplicarPlantilla}
+                  onBorrar={borrarPlantilla}
+                />
               </div>
             )}
           </div>
@@ -412,6 +462,7 @@ export function AgendaCliente({
             onGuardar={guardar}
             onResetear={resetear}
             onCopiar={setPortapapeles}
+            onGuardarPlantilla={guardarPlantilla}
           />
         )}
       </div>

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { LIMITE_RANGO_DIAS, rangoCierreSchema } from "./agenda";
+import { LIMITE_RANGO_DIAS, plantillaSchema, rangoCierreSchema } from "./agenda";
 
 const base = { desde: "2026-08-01", hasta: "2026-08-15", nota: "Vacaciones" };
 
@@ -37,6 +37,34 @@ describe("rangoCierreSchema", () => {
 
   it("rechaza una nota demasiado larga", () => {
     const r = rangoCierreSchema.safeParse({ ...base, nota: "x".repeat(201) });
+    expect(r.success).toBe(false);
+  });
+});
+
+describe("plantillaSchema", () => {
+  const franja = { start: "10:00", end: "13:00", minutes: 30 };
+
+  it("acepta una plantilla con nombre y franjas válidas", () => {
+    expect(plantillaSchema.safeParse({ nombre: "Mañanas L-V", slots: [franja] }).success).toBe(true);
+  });
+
+  it("rechaza nombre vacío", () => {
+    expect(plantillaSchema.safeParse({ nombre: "", slots: [franja] }).success).toBe(false);
+  });
+
+  it("rechaza nombre demasiado largo", () => {
+    expect(plantillaSchema.safeParse({ nombre: "x".repeat(61), slots: [franja] }).success).toBe(false);
+  });
+
+  it("rechaza sin franjas", () => {
+    expect(plantillaSchema.safeParse({ nombre: "Vacía", slots: [] }).success).toBe(false);
+  });
+
+  it("rechaza una franja con fin anterior al inicio", () => {
+    const r = plantillaSchema.safeParse({
+      nombre: "Mala",
+      slots: [{ start: "13:00", end: "10:00", minutes: 30 }],
+    });
     expect(r.success).toBe(false);
   });
 });

@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { NextIntlClientProvider } from "next-intl";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import messages from "../../../../../messages/es.json";
@@ -15,6 +15,7 @@ const state = vi.hoisted(() => ({
   franjas: [] as Record<string, unknown>[],
   overrides: [] as Record<string, unknown>[],
   citas: [] as Record<string, unknown>[],
+  plantillas: [] as Record<string, unknown>[],
 }));
 
 vi.mock("next/navigation", () => ({ useRouter: () => ({ refresh: vi.fn() }) }));
@@ -37,6 +38,7 @@ vi.mock("@/lib/supabase/server", () => {
         }
         if (tabla === "availability_slots") return thenable({ data: state.franjas });
         if (tabla === "availability_overrides") return thenable({ data: state.overrides });
+        if (tabla === "availability_templates") return thenable({ data: state.plantillas });
         return thenable({ data: state.citas });
       }),
     })),
@@ -68,6 +70,9 @@ describe("Agenda de disponibilidad de la protectora", () => {
     ];
     state.overrides = [{ date: hoyISO, closed: true, slots: [], note: "Cerrado" }];
     state.citas = [{ starts_at: new Date().toISOString() }];
+    state.plantillas = [
+      { id: "p1", nombre: "Mañanas L-V", slots: [{ start: "10:00", end: "13:00", minutes: 30 }] },
+    ];
   });
 
   it("compone el calendario con el patrón, las excepciones y las citas cargadas", async () => {
@@ -81,6 +86,12 @@ describe("Agenda de disponibilidad de la protectora", () => {
     expect(container.querySelector('[data-citas="true"]')).not.toBeNull();
     // Sin día elegido, el editor muestra el aviso.
     expect(screen.getByText(messages.agenda.sinSeleccion)).toBeInTheDocument();
+  });
+
+  it("carga las plantillas de la protectora y las muestra en el modo selección", async () => {
+    await renderPagina();
+    fireEvent.click(screen.getByRole("button", { name: /seleccionar días/i }));
+    expect(screen.getByText("Mañanas L-V")).toBeInTheDocument();
   });
 
   it("sin franjas ni citas el calendario se muestra vacío pero navegable", async () => {

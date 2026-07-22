@@ -24,6 +24,13 @@ export type FranjaDia = {
   minutes: number;
 };
 
+/** Plantilla de horario reutilizable (`availability_templates`). */
+export type Plantilla = {
+  id: string;
+  nombre: string;
+  slots: FranjaDia[];
+};
+
 /** Excepción de un día, tal como llega de `availability_overrides`. */
 export type OverrideDia = {
   date: string; // "YYYY-MM-DD"

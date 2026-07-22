@@ -159,6 +159,35 @@ describe("PanelDiaEditor", () => {
     expect(screen.getByText(mensajes.agenda.errorGuardar)).toBeInTheDocument();
   });
 
+  it("guardar como plantilla emite nombre y franjas al padre", () => {
+    const onGuardarPlantilla = vi.fn();
+    const estadoInicial: EstadoDia = {
+      tipo: "especial",
+      franjas: [{ start: "10:00", end: "13:00", minutes: 30 }],
+      note: null,
+    };
+    pintar({ estadoInicial, onGuardarPlantilla });
+    fireEvent.change(screen.getByLabelText(/nombre de la plantilla/i), {
+      target: { value: "Mañanas" },
+    });
+    fireEvent.click(screen.getByRole("button", { name: /guardar como plantilla/i }));
+    expect(onGuardarPlantilla).toHaveBeenCalledWith("Mañanas", [
+      { start: "10:00", end: "13:00", minutes: 30 },
+    ]);
+  });
+
+  it("no guarda plantilla sin nombre", () => {
+    const onGuardarPlantilla = vi.fn();
+    const estadoInicial: EstadoDia = {
+      tipo: "especial",
+      franjas: [{ start: "10:00", end: "13:00", minutes: 30 }],
+      note: null,
+    };
+    pintar({ estadoInicial, onGuardarPlantilla });
+    fireEvent.click(screen.getByRole("button", { name: /guardar como plantilla/i }));
+    expect(onGuardarPlantilla).not.toHaveBeenCalled();
+  });
+
   it("copiar el día emite su estado al padre", () => {
     const onCopiar = vi.fn();
     const estadoInicial: EstadoDia = {

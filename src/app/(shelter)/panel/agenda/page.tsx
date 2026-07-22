@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { AgendaCliente } from "@/components/citas/AgendaCliente";
-import type { FranjaDia, FranjaSemanal, OverrideDia } from "@/lib/agenda";
+import type { FranjaDia, FranjaSemanal, OverrideDia, Plantilla } from "@/lib/agenda";
 import { createClient } from "@/lib/supabase/server";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -36,9 +36,10 @@ export default async function AgendaPage() {
   let franjas: FranjaSemanal[] = [];
   let overrides: OverrideDia[] = [];
   let citasPorDia: string[] = [];
+  let plantillas: Plantilla[] = [];
 
   if (shelter) {
-    const [{ data: fr }, { data: ov }, { data: ci }] = await Promise.all([
+    const [{ data: fr }, { data: ov }, { data: ci }, { data: pl }] = await Promise.all([
       supabase
         .from("availability_slots")
         .select("weekday, start_time, end_time, slot_minutes, active")
@@ -56,6 +57,11 @@ export default async function AgendaPage() {
         .in("status", ["pending", "confirmed"])
         .gte("starts_at", `${desde}T00:00:00Z`)
         .lte("starts_at", `${hasta}T23:59:59Z`),
+      supabase
+        .from("availability_templates")
+        .select("id, nombre, slots")
+        .eq("shelter_id", shelter.id)
+        .order("nombre"),
     ]);
 
     franjas = (fr as FranjaSemanal[] | null) ?? [];
@@ -65,6 +71,11 @@ export default async function AgendaPage() {
     citasPorDia = [
       ...new Set(((ci as { starts_at: string }[] | null) ?? []).map((c) => YMD.format(new Date(c.starts_at)))),
     ];
+    plantillas = ((pl as { id: string; nombre: string; slots: FranjaDia[] }[] | null) ?? []).map((p) => ({
+      id: p.id,
+      nombre: p.nombre,
+      slots: p.slots ?? [],
+    }));
   }
 
   return (
@@ -78,6 +89,7 @@ export default async function AgendaPage() {
             franjas={franjas}
             overrides={overrides}
             citasPorDia={citasPorDia}
+            plantillas={plantillas}
             hoyISO={hoyISO}
             anioInicial={anio}
             mesInicial={mes - 1}

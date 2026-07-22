@@ -27,6 +27,7 @@ export function PanelDiaEditor({
   onGuardar,
   onResetear,
   onCopiar,
+  onGuardarPlantilla,
 }: {
   fecha: string | null;
   estadoInicial: EstadoDia | null;
@@ -35,6 +36,7 @@ export function PanelDiaEditor({
   onGuardar: (intent: IntentGuardar) => void;
   onResetear: () => void;
   onCopiar?: (estado: EstadoDia) => void;
+  onGuardarPlantilla?: (nombre: string, slots: FranjaDia[]) => void;
 }) {
   const t = useTranslations("agenda");
   const tc = useTranslations("citas");
@@ -45,6 +47,7 @@ export function PanelDiaEditor({
   );
   const [repetir, setRepetir] = useState(false);
   const [errorLocal, setErrorLocal] = useState<"horas" | "solape" | null>(null);
+  const [nombrePlantilla, setNombrePlantilla] = useState("");
 
   if (!fecha) {
     return (
@@ -195,6 +198,32 @@ export function PanelDiaEditor({
               </span>
             </span>
           </label>
+
+          {onGuardarPlantilla && franjas.length > 0 && (
+            <div className="flex flex-wrap items-end gap-2 border-t border-border pt-3">
+              <label className="flex flex-1 flex-col gap-1 text-sm font-medium">
+                {t("nombrePlantilla")}
+                <input
+                  type="text"
+                  value={nombrePlantilla}
+                  onChange={(e) => setNombrePlantilla(e.target.value)}
+                  className="rounded-lg border border-input bg-white px-3 py-2 text-sm"
+                />
+              </label>
+              <button
+                type="button"
+                onClick={() => {
+                  const nombre = nombrePlantilla.trim();
+                  if (!nombre) return;
+                  onGuardarPlantilla(nombre, franjas);
+                  setNombrePlantilla("");
+                }}
+                className="min-h-11 rounded-xl border border-border px-4 py-2 text-sm font-semibold text-foreground hover:bg-accent"
+              >
+                {t("guardarPlantilla")}
+              </button>
+            </div>
+          )}
         </div>
       )}
 

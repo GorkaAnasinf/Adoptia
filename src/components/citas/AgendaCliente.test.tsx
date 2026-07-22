@@ -18,7 +18,11 @@ vi.mock("@/lib/supabase/client", () => ({
       return {
         upsert: upsertMock,
         insert: insertMock,
-        delete: vi.fn(() => ({ eq: vi.fn(() => ({ eq: deleteEqMock })) })),
+        // `.delete().eq()` (1 clave, plantillas) es thenable; `.delete().eq().eq()`
+        // (2 claves, overrides/slots) termina en deleteEqMock.
+        delete: vi.fn(() => ({
+          eq: vi.fn(() => ({ eq: deleteEqMock, then: (r: (v: unknown) => void) => r({ error: null }) })),
+        })),
       };
     },
   })),
@@ -298,5 +302,56 @@ describe("AgendaCliente", () => {
     pintar();
     entrarSeleccion();
     expect(screen.queryByRole("button", { name: /^pegar$/i })).not.toBeInTheDocument();
+  });
+
+  // ---------- Plantillas (F2c) ----------
+
+  const plantilla = {
+    id: "p1",
+    nombre: "Mañanas L-V",
+    slots: [{ start: "10:00", end: "13:00", minutes: 30 }],
+  };
+
+  it("aplicar una plantilla a la selección crea overrides con sus franjas", async () => {
+    pintar({ plantillas: [plantilla] });
+    entrarSeleccion();
+    fireEvent.click(screen.getByRole("gridcell", { name: /^11$/ }));
+    fireEvent.click(screen.getByRole("gridcell", { name: /^12$/ }));
+    fireEvent.click(screen.getByRole("button", { name: /^aplicar$/i }));
+    await waitFor(() => expect(upsertMock).toHaveBeenCalledOnce());
+    const filas = upsertMock.mock.calls[0][0];
+    expect(filas).toHaveLength(2);
+    expect(filas[0]).toMatchObject({
+      closed: false,
+      slots: [{ start: "10:00", end: "13:00", minutes: 30 }],
+    });
+  });
+
+  it("guardar una plantilla la inserta en availability_templates", async () => {
+    pintar(); // miércoles con patrón 10:00–13:00
+    fireEvent.click(screen.getByRole("gridcell", { name: /^12$/ }));
+    fireEvent.change(screen.getByLabelText(/nombre de la plantilla/i), {
+      target: { value: "Mi horario" },
+    });
+    fireEvent.click(screen.getByRole("button", { name: /guardar como plantilla/i }));
+    await waitFor(() => expect(insertMock).toHaveBeenCalledOnce());
+    expect(fromMock).toHaveBeenCalledWith("availability_templates");
+    expect(insertMock.mock.calls[0][0]).toMatchObject({ shelter_id: "s1", nombre: "Mi horario" });
+    expect(refreshMock).toHaveBeenCalled();
+  });
+
+  it("borrar una plantilla la quita de la lista", async () => {
+    pintar({ plantillas: [plantilla] });
+    entrarSeleccion();
+    expect(screen.getByText("Mañanas L-V")).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: /borrar plantilla/i }));
+    await waitFor(() => expect(screen.queryByText("Mañanas L-V")).not.toBeInTheDocument());
+    expect(fromMock).toHaveBeenCalledWith("availability_templates");
+  });
+
+  it("sin plantillas la barra de selección muestra el estado vacío", () => {
+    pintar();
+    entrarSeleccion();
+    expect(screen.getByText(messages.agenda.sinPlantillas)).toBeInTheDocument();
   });
 });
