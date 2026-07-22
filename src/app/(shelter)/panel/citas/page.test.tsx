@@ -81,7 +81,7 @@ describe("Agenda de citas de la protectora", () => {
         starts_at: futura,
         cancel_reason: null,
         adopter_id: "adopter1",
-        adoption_requests: { animals: { name: "Pipa", slug: "pipa" } },
+        adoption_requests: { animals: { name: "Pipa", slug: "pipa", animal_media: [] } },
       },
       {
         id: "c2",
@@ -89,20 +89,19 @@ describe("Agenda de citas de la protectora", () => {
         starts_at: pasada,
         cancel_reason: null,
         adopter_id: "adopter1",
-        adoption_requests: { animals: { name: "Golfo", slug: "golfo" } },
+        adoption_requests: { animals: { name: "Golfo", slug: "golfo", animal_media: [] } },
       },
     ];
     state.perfiles = [{ id: "adopter1", full_name: "Marta" }];
   });
 
-  it("separa próximas (con acciones) e historial (con estado)", async () => {
+  it("la pestaña Próximas muestra la cita activa con acción y el resumen semanal", async () => {
     await renderPagina();
-    expect(screen.getByText(messages.citas.proximas)).toBeInTheDocument();
+    expect(screen.getByText("Cita para conocer a Pipa")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: messages.citas.marcarRealizada })).toBeInTheDocument();
-    expect(screen.getByText(messages.citas.historial)).toBeInTheDocument();
-    // "No se presentó" existe como botón (próximas) y como badge (historial)
-    expect(screen.getAllByText(messages.citas.estadoNoShow).length).toBeGreaterThanOrEqual(2);
-    expect(screen.getAllByText(/Marta/).length).toBeGreaterThanOrEqual(2);
+    expect(screen.getByText(messages.citas.resumenTitle)).toBeInTheDocument();
+    // La cita pasada no aparece en la pestaña activa (Próximas).
+    expect(screen.queryByText("Cita para conocer a Golfo")).not.toBeInTheDocument();
   });
 
   it("enlaza el editor de disponibilidad", async () => {
