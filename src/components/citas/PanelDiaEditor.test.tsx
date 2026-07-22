@@ -92,6 +92,73 @@ describe("PanelDiaEditor", () => {
     expect(screen.getByText(/hora de fin debe ser posterior/i)).toBeInTheDocument();
   });
 
+  it("añadir una franja abre el día y la guarda como horario especial", () => {
+    const { onGuardar } = pintar(); // parte de sin_configurar (sin franjas)
+    expect(screen.getByText(/añade una franja/i)).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: /añadir franja/i }));
+    fireEvent.click(screen.getByRole("button", { name: /guardar disponibilidad/i }));
+    expect(onGuardar).toHaveBeenCalledWith({
+      tipo: "especial",
+      slots: [{ start: "10:00", end: "13:00", minutes: 30 }],
+      note: null,
+    });
+  });
+
+  it("borrar una franja la quita del guardado", () => {
+    const estadoInicial: EstadoDia = {
+      tipo: "especial",
+      franjas: [
+        { start: "10:00", end: "12:00", minutes: 30 },
+        { start: "16:00", end: "18:00", minutes: 60 },
+      ],
+      note: null,
+    };
+    const { onGuardar } = pintar({ estadoInicial });
+    fireEvent.click(screen.getAllByRole("button", { name: /borrar franja/i })[0]);
+    fireEvent.click(screen.getByRole("button", { name: /guardar disponibilidad/i }));
+    expect(onGuardar).toHaveBeenCalledWith({
+      tipo: "especial",
+      slots: [{ start: "16:00", end: "18:00", minutes: 60 }],
+      note: null,
+    });
+  });
+
+  it("editar la hora de inicio se refleja en el guardado", () => {
+    const estadoInicial: EstadoDia = {
+      tipo: "especial",
+      franjas: [{ start: "10:00", end: "13:00", minutes: 30 }],
+      note: null,
+    };
+    const { onGuardar } = pintar({ estadoInicial });
+    fireEvent.change(screen.getByLabelText(/inicio/i), { target: { value: "11:00" } });
+    fireEvent.click(screen.getByRole("button", { name: /guardar disponibilidad/i }));
+    expect(onGuardar).toHaveBeenCalledWith({
+      tipo: "especial",
+      slots: [{ start: "11:00", end: "13:00", minutes: 30 }],
+      note: null,
+    });
+  });
+
+  it("bloquea el guardado si dos franjas se solapan", () => {
+    const estadoInicial: EstadoDia = {
+      tipo: "especial",
+      franjas: [
+        { start: "10:00", end: "14:00", minutes: 30 },
+        { start: "12:00", end: "16:00", minutes: 30 },
+      ],
+      note: null,
+    };
+    const { onGuardar } = pintar({ estadoInicial });
+    fireEvent.click(screen.getByRole("button", { name: /guardar disponibilidad/i }));
+    expect(onGuardar).not.toHaveBeenCalled();
+    expect(screen.getByText(/no pueden solaparse/i)).toBeInTheDocument();
+  });
+
+  it("muestra el error de guardado que llega del servidor", () => {
+    pintar({ errorGuardar: true });
+    expect(screen.getByText(mensajes.agenda.errorGuardar)).toBeInTheDocument();
+  });
+
   it("resetear el día llama a onResetear", () => {
     const { onResetear } = pintar({
       estadoInicial: { tipo: "patron", franjas: [{ start: "10:00", end: "13:00", minutes: 30 }] },

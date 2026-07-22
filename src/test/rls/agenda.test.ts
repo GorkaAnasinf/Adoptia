@@ -77,6 +77,17 @@ describe.skipIf(!rlsDisponible)("FEATURE-053 agenda overrides", () => {
     expect(eInsert).not.toBeNull();
   });
 
+  it("rechaza un override con una franja de duración fuera de rango", async () => {
+    const owner = await signInAs("agenda-protectora@test.com", PASS);
+    const { error } = await owner.from("availability_overrides").insert({
+      shelter_id: shelterId,
+      date: "2029-12-31",
+      closed: false,
+      slots: [{ start: "10:00", end: "12:00", minutes: 5 }], // 5 < 15 → CHECK
+    });
+    expect(error).not.toBeNull();
+  });
+
   it("otra protectora NO puede editar overrides ajenos", async () => {
     const otra = await signInAs("agenda-otra@test.com", PASS);
     const { data } = await otra

@@ -6,6 +6,27 @@
 
 -- ---------- Excepciones por fecha ----------
 
+-- Valida la forma de cada franja del jsonb `slots`: fin posterior al inicio y
+-- duración en el mismo rango que availability_slots (15–120 min). Se usa en el
+-- CHECK de la tabla porque un CHECK no puede iterar el array por sí mismo. Un
+-- insert directo por supabase-js que se salte el <select> de la UI se rechaza.
+create or replace function public.availability_override_slots_ok(p_slots jsonb)
+returns boolean
+language sql
+immutable
+set search_path = ''
+as $$
+  select coalesce(
+    bool_and(
+      (e ? 'start') and (e ? 'end') and (e ? 'minutes')
+      and (e->>'minutes')::integer between 15 and 120
+      and (e->>'end')::time > (e->>'start')::time
+    ),
+    true
+  )
+  from jsonb_array_elements(coalesce(p_slots, '[]'::jsonb)) e
+$$;
+
 create table public.availability_overrides (
   id uuid primary key default gen_random_uuid(),
   shelter_id uuid not null references public.shelters (id) on delete cascade,
@@ -17,7 +38,8 @@ create table public.availability_overrides (
   updated_at timestamptz not null default now(),
   unique (shelter_id, date),
   check (jsonb_typeof(slots) = 'array'),
-  check (not closed or slots = '[]'::jsonb) -- cerrado ⇒ sin franjas
+  check (not closed or slots = '[]'::jsonb), -- cerrado ⇒ sin franjas
+  check (public.availability_override_slots_ok(slots)) -- franjas bien formadas
 );
 
 create index availability_overrides_shelter_date_idx
