@@ -104,6 +104,12 @@ Formato ligero tipo ADR. Toda decisión con impacto estructural se registra aqu�
 | 47 | **La "capacidad" del wireframe es un contador informativo, no reservas simultáneas**: se mantiene 1 cita por hueco (exclusion constraint de `appointments`) | El aforo real de un refugio para visitas de adopción es 1:1; permitir N simultáneas exigiría rehacer el constraint anti-solape y el RPC sin demanda real | Capacidad N por franja (más constraint y RPC, sin caso de uso) |
 | 48 | **El CRUD de excepciones va directo por supabase-js amparado por RLS, sin Route Handler** (incluido "repetir semanalmente", que hace delete+insert+delete secuenciales) | Mismo patrón que el CRUD de franjas y ofertas de donación; a esta escala el riesgo de fallo parcial es bajo y se autocorrige al reguardar. Los batch transaccionales (rangos, festivos) se difieren a FEATURE-054 | Endpoint transaccional desde F1 (superficie de API antes de necesitarla) |
 
+## 2026-07-22 — FEATURE-054 (utilidades masivas de la agenda)
+
+| # | Decisión | Motivo | Alternativa descartada |
+|---|----------|--------|------------------------|
+| 49 | **Los batch de la agenda (cerrar rango, pintar N días) son un único `upsert` de un array por supabase-js, sin Route Handler** (resuelve lo que #48 dejaba abierto) | Un `upsert([...])` es una sola sentencia SQL: atómica (si una fila falla el `with check` de RLS, cae entera) y bajo la misma política de la dueña, sin superficie de API nueva. Un test de RLS comprueba que un array con una fila ajena se rechaza entero | Endpoint transaccional dedicado (superficie sin necesidad); N upserts en bucle (no atómico, N roundtrips) |
+
 ## Cómo añadir una decisión
 
 Nueva fila con fecha en sección nueva si cambia el mes. Si revierte una anterior, enlázala ("revierte #9") en vez de borrarla.

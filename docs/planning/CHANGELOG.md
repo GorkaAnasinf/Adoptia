@@ -2,6 +2,12 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/es/) adaptado. Versionado 0.x hasta el MVP.
 
+## [0.0.93] — 2026-07-22
+
+### Añadido
+
+- **La agenda gana utilidades para dar de alta la disponibilidad rápido (FEATURE-054)**: sobre el calendario mensual de F1, la protectora puede ahora **seleccionar varios días** de un vistazo (modo «Seleccionar días») y, con ellos marcados, **cerrarlos todos** o **aplicarles un horario** de una vez; y con **«Cerrar rango…»** cierra un tramo entero —p. ej. las vacaciones de agosto— indicando fecha desde/hasta y una nota. Todo el cambio masivo se guarda de golpe y respeta que solo la dueña puede tocar su agenda. Sin cambios de datos: reutiliza el modelo de excepciones de F1. Segunda mitad de las utilidades (festivos, plantillas y copiar/pegar) queda para FEATURE-056. QA: suite 1124 verde; sin migraciones.
+
 ## [0.0.92] — 2026-07-22
 
 ### Añadido
