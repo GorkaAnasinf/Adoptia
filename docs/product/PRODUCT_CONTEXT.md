@@ -102,6 +102,7 @@ Estado de cada capacidad en lenguaje de usuario. Se regenera con `python scripts
 - Agenda de la protectora F3 — vistas anual (heatmap) y diaria (timeline) ([FEATURE-055](../planning/items/FEATURE-055.md))
 - Agenda de la protectora F2b — festivos nacionales y copiar/pegar día ([FEATURE-056](../planning/items/FEATURE-056.md))
 - Agenda de la protectora F2c — plantillas de horario ([FEATURE-057](../planning/items/FEATURE-057.md))
+- Rediseño de la gestión de acogidas de la protectora ([FEATURE-058](../planning/items/FEATURE-058.md))
 - De-duplicar el slug de protectora (nombres repetidos) ([IMPROVEMENT-001](../planning/items/IMPROVEMENT-001.md))
 - Rediseño UX del wizard de alta de protectora (+ fix del mapa gris) ([IMPROVEMENT-002](../planning/items/IMPROVEMENT-002.md))
 - Pulido del shell chrome (sidebar + cabecera) hacia el mockup de Stitch ([IMPROVEMENT-003](../planning/items/IMPROVEMENT-003.md))
