@@ -10,6 +10,16 @@ const ESTILOS: Record<AnimalStatus, string> = {
   not_listed: "border-muted-foreground/30 bg-muted text-muted-foreground",
 };
 
+// Variante para sobre foto: fondo sólido de color + texto blanco + sombra, para
+// que el estado no se pierda contra el fondo de la imagen del animal.
+const ESTILOS_IMAGEN: Record<AnimalStatus, string> = {
+  available: "bg-tertiary text-white",
+  reserved: "bg-amber-500 text-white",
+  adopted: "bg-primary text-white",
+  fostered: "bg-sky-600 text-white",
+  not_listed: "bg-stone-600 text-white",
+};
+
 const CLAVE: Record<AnimalStatus, string> = {
   available: "statusAvailable",
   reserved: "statusReserved",
@@ -18,13 +28,13 @@ const CLAVE: Record<AnimalStatus, string> = {
   not_listed: "statusNot_listed",
 };
 
-export function AnimalStatusBadge({ status }: { status: AnimalStatus }) {
+export function AnimalStatusBadge({ status, onImage = false }: { status: AnimalStatus; onImage?: boolean }) {
   const t = useTranslations("animales");
   return (
     <span
       className={cn(
-        "inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-xs font-semibold",
-        ESTILOS[status],
+        "inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-semibold",
+        onImage ? cn(ESTILOS_IMAGEN[status], "shadow-sm") : cn("border", ESTILOS[status]),
       )}
     >
       <span className="size-1.5 rounded-full bg-current" aria-hidden="true" />
