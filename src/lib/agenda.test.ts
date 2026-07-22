@@ -2,9 +2,11 @@ import { describe, expect, it } from "vitest";
 import {
   celdasMes,
   diasEnRango,
+  estadoAOverride,
   fechaISO,
   resolverDiaAgenda,
   validarFranjas,
+  type EstadoDia,
   type FranjaSemanal,
   type OverrideDia,
 } from "./agenda";
@@ -100,6 +102,53 @@ describe("fechaISO", () => {
     expect(fechaISO(2026, 7, 5)).toBe("2026-08-05");
     expect(fechaISO(2026, 0, 1)).toBe("2026-01-01");
     expect(fechaISO(2026, 11, 31)).toBe("2026-12-31");
+  });
+});
+
+describe("estadoAOverride", () => {
+  it("un día cerrado se pega como cerrado con su nota", () => {
+    const estado: EstadoDia = { tipo: "cerrado", note: "Festivo" };
+    expect(estadoAOverride(estado, "2026-08-11")).toEqual({
+      date: "2026-08-11",
+      closed: true,
+      slots: [],
+      note: "Festivo",
+    });
+  });
+
+  it("un horario especial se pega con sus franjas", () => {
+    const estado: EstadoDia = {
+      tipo: "especial",
+      franjas: [{ start: "16:00", end: "18:00", minutes: 60 }],
+      note: null,
+    };
+    expect(estadoAOverride(estado, "2026-08-11")).toEqual({
+      date: "2026-08-11",
+      closed: false,
+      slots: [{ start: "16:00", end: "18:00", minutes: 60 }],
+      note: null,
+    });
+  });
+
+  it("un día en patrón se pega como horario especial sin nota", () => {
+    const estado: EstadoDia = {
+      tipo: "patron",
+      franjas: [{ start: "10:00", end: "13:00", minutes: 30 }],
+    };
+    expect(estadoAOverride(estado, "2026-08-11")).toMatchObject({ closed: false, note: null });
+  });
+
+  it("sin configurar no produce override", () => {
+    expect(estadoAOverride({ tipo: "sin_configurar" }, "2026-08-11")).toBeNull();
+  });
+
+  it("un horario con franjas inválidas se bloquea (null)", () => {
+    const estado: EstadoDia = {
+      tipo: "especial",
+      franjas: [{ start: "18:00", end: "16:00", minutes: 60 }], // fin < inicio
+      note: null,
+    };
+    expect(estadoAOverride(estado, "2026-08-11")).toBeNull();
   });
 });
 

@@ -107,6 +107,23 @@ export function validarFranjas(
   return { ok: true };
 }
 
+/**
+ * Traduce un estado de día (copiado) a la fila de override de una fecha para
+ * pegarlo (FEATURE-056). Devuelve `null` si no es aplicable: día sin configurar
+ * o franjas inválidas. `patron` se materializa como horario especial de la fecha.
+ */
+export function estadoAOverride(estado: EstadoDia, date: string): OverrideDia | null {
+  if (estado.tipo === "cerrado") {
+    return { date, closed: true, slots: [], note: estado.note };
+  }
+  if (estado.tipo === "especial" || estado.tipo === "patron") {
+    if (!validarFranjas(estado.franjas).ok) return null;
+    const note = estado.tipo === "especial" ? estado.note : null;
+    return { date, closed: false, slots: estado.franjas, note };
+  }
+  return null; // sin_configurar
+}
+
 function patronAFranjas(franjas: FranjaSemanal[]): FranjaDia[] {
   return franjas
     .filter((f) => f.active)

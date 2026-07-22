@@ -271,6 +271,29 @@ describe("AgendaCliente", () => {
     expect(filas.map((f: { date: string }) => f.date).sort()).toEqual(["2026-08-11", "2026-08-12"]);
   });
 
+  it("copiar un día con horario especial y pegarlo aplica sus franjas", async () => {
+    const override: OverrideDia = {
+      date: "2026-08-05",
+      closed: false,
+      slots: [{ start: "16:00", end: "18:00", minutes: 60 }],
+      note: null,
+    };
+    pintar({ overrides: [override] });
+    fireEvent.click(screen.getByRole("gridcell", { name: /^5$/ }));
+    fireEvent.click(screen.getByRole("button", { name: /copiar día/i }));
+    entrarSeleccion();
+    fireEvent.click(screen.getByRole("gridcell", { name: /^11$/ }));
+    fireEvent.click(screen.getByRole("gridcell", { name: /^12$/ }));
+    fireEvent.click(screen.getByRole("button", { name: /^pegar$/i }));
+    await waitFor(() => expect(upsertMock).toHaveBeenCalledOnce());
+    const filas = upsertMock.mock.calls[0][0];
+    expect(filas).toHaveLength(2);
+    expect(filas[0]).toMatchObject({
+      closed: false,
+      slots: [{ start: "16:00", end: "18:00", minutes: 60 }],
+    });
+  });
+
   it("sin nada copiado, la acción «Pegar» no aparece", () => {
     pintar();
     entrarSeleccion();

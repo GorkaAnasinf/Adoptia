@@ -5,6 +5,7 @@ import { useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
 import {
   diasEnRango,
+  estadoAOverride,
   resolverDiaAgenda,
   validarFranjas,
   type EstadoDia,
@@ -277,19 +278,6 @@ export function AgendaCliente({
         note: t("notaFestivo"),
       })),
     );
-  }
-
-  /** Traduce un estado copiado a la fila de override de una fecha (null = no aplicable). */
-  function estadoAOverride(estado: EstadoDia, date: string): OverrideDia | null {
-    if (estado.tipo === "cerrado") {
-      return { date, closed: true, slots: [], note: estado.note };
-    }
-    if (estado.tipo === "especial" || estado.tipo === "patron") {
-      if (!validarFranjas(estado.franjas).ok) return null;
-      const note = estado.tipo === "especial" ? estado.note : null;
-      return { date, closed: false, slots: estado.franjas, note };
-    }
-    return null; // sin_configurar
   }
 
   function pegar() {
