@@ -1,6 +1,6 @@
 "use client";
 
-import { ExternalLink, MoreVertical, PawPrint, Pencil, Plus, Search } from "lucide-react";
+import { ExternalLink, Mars, MoreVertical, PawPrint, Pencil, Plus, Search, Venus } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -175,7 +175,11 @@ export function AnimalesGrid({
               <div className="flex flex-1 flex-col gap-2 p-3">
                 <div className="flex items-start justify-between gap-2">
                   <div className="min-w-0">
-                    <p className="truncate font-heading font-semibold text-primary">{a.name}</p>
+                    <p className="flex items-center gap-1.5 truncate font-heading font-semibold text-primary">
+                      {a.name}
+                      {a.sex === "male" && <Mars className="size-4 shrink-0 text-secondary" aria-label={t("sexMale")} role="img" />}
+                      {a.sex === "female" && <Venus className="size-4 shrink-0 text-secondary" aria-label={t("sexFemale")} role="img" />}
+                    </p>
                     {subtitulo && <p className="truncate text-sm text-muted-foreground">{subtitulo}</p>}
                   </div>
                   {/* Menú de acciones */}
@@ -279,6 +283,7 @@ function MenuItem({
   return (
     <button
       type="button"
+      role="menuitem"
       disabled={disabled}
       onClick={onClick}
       className={cn(

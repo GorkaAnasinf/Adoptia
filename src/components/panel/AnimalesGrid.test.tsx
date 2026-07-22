@@ -76,7 +76,7 @@ describe("AnimalesGrid", () => {
   it("Eliminar pide confirmación y llama a la API con DELETE", async () => {
     conIntl(<AnimalesGrid animales={[base]} shelterVerified />);
     fireEvent.click(screen.getByRole("button", { name: messages.animales.menuLabel }));
-    fireEvent.click(screen.getByRole("button", { name: messages.animales.delete }));
+    fireEvent.click(screen.getByRole("menuitem", { name: messages.animales.delete }));
     expect(window.confirm).toHaveBeenCalled();
     await waitFor(() => expect(fetch).toHaveBeenCalledWith("/api/animales/a1", expect.objectContaining({ method: "DELETE" })));
     expect(refreshMock).toHaveBeenCalled();
