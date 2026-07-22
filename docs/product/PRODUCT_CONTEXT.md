@@ -133,10 +133,9 @@ Estado de cada capacidad en lenguaje de usuario. Se regenera con `python scripts
 
 #### 🚧 En camino (en desarrollo ahora)
 
-_Nada en desarrollo en este momento._
+- Agenda de la protectora F3 — vistas anual (heatmap) y diaria (timeline) ([FEATURE-055](../planning/items/FEATURE-055.md))
 
 #### 🗓️ Previsto
 
-- Agenda de la protectora F3 — vistas anual (heatmap) y diaria (timeline) — hito 0.5 ([FEATURE-055](../planning/items/FEATURE-055.md))
 - Historias felices — social proof de adopciones en la home — hito sin asignar ([FEATURE-035](../planning/items/FEATURE-035.md))
 <!-- RENDER:END -->
