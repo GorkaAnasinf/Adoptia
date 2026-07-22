@@ -6,7 +6,7 @@ import AnimalesPage from "./page";
 
 const state = vi.hoisted(() => ({
   animals: [] as Array<Record<string, unknown>>,
-  shelter: { id: "s1" } as { id: string } | null,
+  shelter: { id: "s1", status: "verified" } as { id: string; status: string } | null,
 }));
 
 vi.mock("next-intl/server", () => ({
@@ -15,6 +15,8 @@ vi.mock("next-intl/server", () => ({
     return obj?.[key] ?? `${ns}.${key}`;
   }),
 }));
+
+vi.mock("next/navigation", () => ({ useRouter: () => ({ refresh: vi.fn(), push: vi.fn() }) }));
 
 vi.mock("@/lib/supabase/server", () => {
   const animalsBuilder = () => {
@@ -50,27 +52,31 @@ function conIntl(ui: React.ReactElement) {
 
 describe("AnimalesPage — listado de gestión", () => {
   beforeEach(() => {
-    state.shelter = { id: "s1" };
+    state.shelter = { id: "s1", status: "verified" };
     state.animals = [];
   });
 
   it("muestra el estado vacío con CTA cuando no hay animales", async () => {
-    conIntl(await AnimalesPage({ searchParams: Promise.resolve({}) }));
+    conIntl(await AnimalesPage());
     expect(screen.getByText(messages.animales.empty)).toBeInTheDocument();
     expect(
       screen.getByRole("link", { name: messages.animales.emptyCta }),
     ).toHaveAttribute("href", "/panel/animales/nueva");
   });
 
-  it("lista los animales con enlace de edición y su estado", async () => {
+  it("monta la rejilla con las tarjetas de los animales", async () => {
     state.animals = [
       {
         id: "a1",
         name: "Luna",
         slug: "luna-x",
         species: "dog",
+        sex: "female",
+        breed: "Podenco",
+        birth_date_approx: null,
         status: "available",
         published_at: "2026-01-01",
+        moderation_note: null,
         animal_media: [],
       },
       {
@@ -78,19 +84,25 @@ describe("AnimalesPage — listado de gestión", () => {
         name: "Rocky",
         slug: "rocky-x",
         species: "cat",
+        sex: "male",
+        breed: null,
+        birth_date_approx: null,
         status: "reserved",
         published_at: null,
+        moderation_note: null,
         animal_media: [],
       },
     ];
-    conIntl(await AnimalesPage({ searchParams: Promise.resolve({}) }));
+    conIntl(await AnimalesPage());
 
-    expect(screen.getAllByText("Luna").length).toBeGreaterThan(0);
-    expect(screen.getAllByText("Rocky").length).toBeGreaterThan(0);
-    // Enlace de edición apunta a la ficha por id
+    expect(screen.getByText("Luna")).toBeInTheDocument();
+    expect(screen.getByText("Rocky")).toBeInTheDocument();
     const editar = screen.getAllByRole("link", { name: messages.animales.edit });
     expect(editar[0]).toHaveAttribute("href", "/panel/animales/a1");
-    // El borrador (published_at null) se marca como tal
-    expect(screen.getAllByText(messages.animales.draft).length).toBeGreaterThan(0);
+    expect(screen.getByText(messages.animales.draft)).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: messages.animales.newAnimalCard })).toHaveAttribute(
+      "href",
+      "/panel/animales/nueva",
+    );
   });
 });
