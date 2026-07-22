@@ -153,4 +153,77 @@ describe("AgendaCliente", () => {
     expect(await screen.findByText(messages.agenda.errorGuardar)).toBeInTheDocument();
     expect(refreshMock).not.toHaveBeenCalled();
   });
+
+  // ---------- Utilidades masivas (F2a) ----------
+
+  function entrarSeleccion() {
+    fireEvent.click(screen.getByRole("button", { name: /seleccionar días/i }));
+  }
+
+  it("cerrar varios días seleccionados hace un único upsert con todas las filas", async () => {
+    pintar();
+    entrarSeleccion();
+    fireEvent.click(screen.getByRole("gridcell", { name: /^11$/ }));
+    fireEvent.click(screen.getByRole("gridcell", { name: /^12$/ }));
+    fireEvent.click(screen.getByRole("gridcell", { name: /^13$/ }));
+    fireEvent.click(screen.getByRole("button", { name: /^cerrar$/i }));
+    await waitFor(() => expect(upsertMock).toHaveBeenCalledOnce());
+    const filas = upsertMock.mock.calls[0][0];
+    expect(filas).toHaveLength(3);
+    expect(filas.every((f: { closed: boolean }) => f.closed)).toBe(true);
+    expect(filas.map((f: { date: string }) => f.date).sort()).toEqual([
+      "2026-08-11",
+      "2026-08-12",
+      "2026-08-13",
+    ]);
+    expect(refreshMock).toHaveBeenCalled();
+  });
+
+  it("aplicar una franja a la selección escribe overrides especiales en bloque", async () => {
+    pintar();
+    entrarSeleccion();
+    fireEvent.click(screen.getByRole("gridcell", { name: /^11$/ }));
+    fireEvent.click(screen.getByRole("gridcell", { name: /^12$/ }));
+    fireEvent.click(screen.getByRole("button", { name: /aplicar franja/i }));
+    fireEvent.click(screen.getByRole("button", { name: /^aplicar$/i }));
+    await waitFor(() => expect(upsertMock).toHaveBeenCalledOnce());
+    const filas = upsertMock.mock.calls[0][0];
+    expect(filas).toHaveLength(2);
+    expect(filas[0]).toMatchObject({
+      closed: false,
+      slots: [{ start: "10:00", end: "13:00", minutes: 30 }],
+    });
+  });
+
+  it("deshabilita las acciones si no hay días seleccionados", () => {
+    pintar();
+    entrarSeleccion();
+    expect(screen.getByRole("button", { name: /^cerrar$/i })).toBeDisabled();
+    expect(screen.getByRole("button", { name: /aplicar franja/i })).toBeDisabled();
+  });
+
+  it("cerrar un rango hace un upsert con todos los días del rango", async () => {
+    pintar();
+    fireEvent.click(screen.getByRole("button", { name: /cerrar rango/i }));
+    fireEvent.change(screen.getByLabelText(/desde/i), { target: { value: "2026-08-01" } });
+    fireEvent.change(screen.getByLabelText(/hasta/i), { target: { value: "2026-08-05" } });
+    fireEvent.change(screen.getByLabelText(/nota/i), { target: { value: "Vacaciones" } });
+    fireEvent.click(screen.getByRole("button", { name: /^cerrar rango$/i }));
+    await waitFor(() => expect(upsertMock).toHaveBeenCalledOnce());
+    const filas = upsertMock.mock.calls[0][0];
+    expect(filas).toHaveLength(5);
+    expect(filas.every((f: { closed: boolean; note: string }) => f.closed && f.note === "Vacaciones")).toBe(
+      true,
+    );
+  });
+
+  it("si el batch falla avisa y no refresca", async () => {
+    upsertMock.mockResolvedValue({ error: { message: "boom" } });
+    pintar();
+    entrarSeleccion();
+    fireEvent.click(screen.getByRole("gridcell", { name: /^11$/ }));
+    fireEvent.click(screen.getByRole("button", { name: /^cerrar$/i }));
+    expect(await screen.findByText(messages.agenda.errorBatch)).toBeInTheDocument();
+    expect(refreshMock).not.toHaveBeenCalled();
+  });
 });

@@ -30,6 +30,8 @@ export function CalendarioMensual({
   onSelect,
   onPrev,
   onNext,
+  modoSeleccion = false,
+  seleccionados,
 }: {
   year: number;
   month: number; // 0-indexado
@@ -39,6 +41,9 @@ export function CalendarioMensual({
   onSelect: (iso: string) => void;
   onPrev: () => void;
   onNext: () => void;
+  /** Activa la selección múltiple: pulsar un día lo conmuta en `seleccionados`. */
+  modoSeleccion?: boolean;
+  seleccionados?: Set<string>;
 }) {
   const t = useTranslations("agenda");
   const celdas = celdasMes(year, month);
@@ -90,21 +95,24 @@ export function CalendarioMensual({
           const iso = fechaISO(year, month, dia);
           const estado = estadoDe(iso);
           const esHoy = iso === todayISO;
-          const seleccionado = iso === seleccionadoISO;
+          const multi = modoSeleccion && Boolean(seleccionados?.has(iso));
+          const seleccionado = !modoSeleccion && iso === seleccionadoISO;
           return (
             <button
               type="button"
               key={iso}
               role="gridcell"
               aria-label={String(dia)}
-              aria-selected={seleccionado}
+              aria-selected={seleccionado || multi}
               data-estado={estado.tipo}
               data-citas={estado.conCitas}
+              data-multi={multi}
               onClick={() => onSelect(iso)}
               className={cn(
                 "relative flex aspect-square min-h-11 flex-col items-center justify-center rounded-xl border text-sm transition-colors",
                 ESTILO_ESTADO[estado.tipo],
                 seleccionado && "ring-2 ring-primary ring-offset-1",
+                multi && "ring-2 ring-secondary ring-offset-1 bg-secondary/15",
                 esHoy && "font-bold",
               )}
             >

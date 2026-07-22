@@ -61,6 +61,21 @@ export function fechaISO(year: number, month: number, day: number): string {
 }
 
 /**
+ * Fechas ISO ("YYYY-MM-DD") de `desde` a `hasta`, ambas inclusive. Rango
+ * invertido → `[]`. Se calcula en UTC para no arrastrar desfases de zona.
+ */
+export function diasEnRango(desde: string, hasta: string): string[] {
+  const dias: string[] = [];
+  const fin = new Date(`${hasta}T00:00:00Z`).getTime();
+  const cursor = new Date(`${desde}T00:00:00Z`);
+  while (cursor.getTime() <= fin) {
+    dias.push(cursor.toISOString().slice(0, 10));
+    cursor.setUTCDate(cursor.getUTCDate() + 1);
+  }
+  return dias;
+}
+
+/**
  * Celdas del mes en rejilla Lunes→Domingo: `null` para el relleno inicial y
  * final, número de día para el resto. Longitud múltiplo de 7.
  */

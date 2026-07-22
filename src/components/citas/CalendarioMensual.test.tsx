@@ -62,4 +62,15 @@ describe("CalendarioMensual", () => {
     expect(onPrev).toHaveBeenCalledOnce();
     expect(onNext).toHaveBeenCalledOnce();
   });
+
+  it("en modo selección marca los días del conjunto y sigue emitiendo onSelect", () => {
+    const { onSelect } = pintar({
+      modoSeleccion: true,
+      seleccionados: new Set(["2026-08-11", "2026-08-12"]),
+    });
+    expect(screen.getByRole("gridcell", { name: /^11$/ })).toHaveAttribute("data-multi", "true");
+    expect(screen.getByRole("gridcell", { name: /^13$/ })).toHaveAttribute("data-multi", "false");
+    fireEvent.click(screen.getByRole("gridcell", { name: /^13$/ }));
+    expect(onSelect).toHaveBeenCalledWith("2026-08-13");
+  });
 });

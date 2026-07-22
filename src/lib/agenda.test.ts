@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   celdasMes,
+  diasEnRango,
   fechaISO,
   resolverDiaAgenda,
   validarFranjas,
@@ -99,6 +100,34 @@ describe("fechaISO", () => {
     expect(fechaISO(2026, 7, 5)).toBe("2026-08-05");
     expect(fechaISO(2026, 0, 1)).toBe("2026-01-01");
     expect(fechaISO(2026, 11, 31)).toBe("2026-12-31");
+  });
+});
+
+describe("diasEnRango", () => {
+  it("devuelve las fechas ISO inclusive de desde a hasta", () => {
+    expect(diasEnRango("2026-08-10", "2026-08-13")).toEqual([
+      "2026-08-10",
+      "2026-08-11",
+      "2026-08-12",
+      "2026-08-13",
+    ]);
+  });
+
+  it("un solo día devuelve ese día", () => {
+    expect(diasEnRango("2026-08-10", "2026-08-10")).toEqual(["2026-08-10"]);
+  });
+
+  it("rango invertido devuelve vacío", () => {
+    expect(diasEnRango("2026-08-13", "2026-08-10")).toEqual([]);
+  });
+
+  it("cruza el cambio de mes correctamente", () => {
+    expect(diasEnRango("2026-07-30", "2026-08-02")).toEqual([
+      "2026-07-30",
+      "2026-07-31",
+      "2026-08-01",
+      "2026-08-02",
+    ]);
   });
 });
 
