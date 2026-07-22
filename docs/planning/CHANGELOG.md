@@ -2,6 +2,12 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/es/) adaptado. Versionado 0.x hasta el MVP.
 
+## [0.0.87] — 2026-07-22
+
+### Añadido
+
+- **«Mis animales» pasa a rejilla de tarjetas con búsqueda, filtros y acciones (FEATURE-048)**: la lista de animales de la protectora deja de ser una tabla y adopta una **rejilla de tarjetas** al estilo del resto del panel. Cada tarjeta muestra la foto con el **estado bien visible** encima (variante legible del sello), un distintivo **«Borrador»** si la ficha no está publicada, el nombre con su **sexo** (♂/♀) y **raza · edad**, y accesos directos **Editar** y **Ver ficha** (esta última solo si está publicada). Estrena un **buscador** por nombre o raza y **filtros por estado** que responden al instante. Y sobre todo, un **menú de acciones** por tarjeta para **publicar**, **despublicar** o **eliminar** sin tener que entrar a editar: se apoya en una nueva API bajo la sesión de la protectora, con la seguridad garantizada por RLS —solo puede tocar sus propios animales— y con las mismas reglas de publicación que el formulario (protectora verificada y ficha completa). Del diseño de referencia se dejan fuera el filtro «Urgentes» y el sello «Caso urgente» porque hoy no hay un campo de urgencia en los animales. Sin cambios de datos: mismo modelo y misma RLS. QA: suite 1063 verde; sin migraciones.
+
 ## [0.0.86] — 2026-07-22
 
 ### Cambiado
