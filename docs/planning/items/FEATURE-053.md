@@ -2,7 +2,7 @@
 id: FEATURE-053
 tipo: feature
 titulo: Agenda de la protectora F1 — calendario mensual con excepciones por día
-estado: desarrollo
+estado: hecho
 prioridad: media
 hito: "0.5"
 duplicado_de: null

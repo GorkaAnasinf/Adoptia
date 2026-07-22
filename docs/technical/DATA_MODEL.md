@@ -12,7 +12,8 @@ profiles ──< shelters ──< animals ──< animal_media
    │             │           │           └──< appointments
    │             │           └──< sponsorships          (fase 3)
    │             ├──< shelter_media
-   │             └──< availability_slots                (fase 2)
+   │             ├──< availability_slots                (fase 2)
+   │             └──< availability_overrides            (FEATURE-053)
    ├──< favorites >── animals                           (fase 2)
    ├──< saved_searches                                  (fase 2)
    └──< lost_found_posts ──< lost_found_sightings       (fase 3)
@@ -30,6 +31,15 @@ profiles ──< shelters ──< animals ──< animal_media
 
 Fase 2: `availability_slots`, `appointments`, `favorites`, `saved_searches`, `notifications`.
 Fase 3: `sponsorships`, `lost_found_posts`, `lost_found_sightings`.
+
+### Agenda de disponibilidad: patrón + excepciones (FEATURE-009 + FEATURE-053)
+
+La disponibilidad de visitas de una protectora se modela como **patrón semanal recurrente + excepciones por fecha**:
+
+- `availability_slots` (FEATURE-009): patrón semanal (`weekday` 0–6, `start_time`/`end_time`, `slot_minutes`). Es la base.
+- `availability_overrides` (FEATURE-053): excepción de un día concreto — `unique(shelter_id, date)`, `closed` (día cerrado/vacaciones) o `slots jsonb` `[{start,end,minutes}]` (horario especial que sustituye al patrón ese día), `note`. CHECKs: `slots` es array, `closed ⇒ slots vacío`, y `availability_override_slots_ok(slots)` valida `fin>inicio` y `minutes ∈ [15,120]` por franja.
+
+**Resolución por fecha** (misma lógica en el cliente `src/lib/agenda.ts` y en el RPC): `closed` → sin huecos · `slots` → esos huecos · sin override → patrón semanal. El RPC `appointment_free_slots(shelter, days)` aplica las excepciones antes de generar huecos y resta las citas vivas. RLS de `availability_overrides` = espejo de `availability_slots` (la dueña escribe; público lee de verificadas). Capacidad = **1 cita por hueco** (exclusion constraint en `appointments`).
 
 ### Avisos de perdidos y sus pistas (FEATURE-012 + FEATURE-022 + FEATURE-024)
 

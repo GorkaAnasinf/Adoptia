@@ -2,6 +2,12 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/es/) adaptado. Versionado 0.x hasta el MVP.
 
+## [0.0.92] — 2026-07-22
+
+### Añadido
+
+- **La agenda de disponibilidad de la protectora se rediseña como un calendario mensual (FEATURE-053)**: la pantalla donde el refugio define cuándo recibe visitas deja de ser una lista de franjas semanales y pasa a ser un **calendario del mes**. Al elegir un día se abre un panel para **cerrar ese día** (vacaciones, festivos), fijarle un **horario especial** propio, o —marcando «Repetir semanalmente»— aplicar el horario a **todos los días de esa semana** (el patrón de siempre). Cada día del calendario se ve de un vistazo: disponible, cerrado o con citas. Por debajo, el patrón semanal se conserva y las excepciones se guardan aparte, así que basta una fila por día alterado. Los huecos que el adoptante ve al reservar respetan ya los cierres y horarios especiales. **Con migración** (`availability_overrides` + reescritura del cálculo de huecos libres). QA: suite 1101 verde; RLS y validaciones cubiertas.
+
 ## [0.0.91] — 2026-07-22
 
 ### Cambiado

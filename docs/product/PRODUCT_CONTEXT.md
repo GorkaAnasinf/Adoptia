@@ -97,6 +97,7 @@ Estado de cada capacidad en lenguaje de usuario. Se regenera con `python scripts
 - Rediseño de "Solicitudes recibidas" (maestra/detalle) del panel ([FEATURE-050](../planning/items/FEATURE-050.md))
 - Rediseño de "Citas" de la protectora (wireframe Stitch) ([FEATURE-051](../planning/items/FEATURE-051.md))
 - Botón "Ver recursos" con el estilo primario relleno ([FEATURE-052](../planning/items/FEATURE-052.md))
+- Agenda de la protectora F1 — calendario mensual con excepciones por día ([FEATURE-053](../planning/items/FEATURE-053.md))
 - De-duplicar el slug de protectora (nombres repetidos) ([IMPROVEMENT-001](../planning/items/IMPROVEMENT-001.md))
 - Rediseño UX del wizard de alta de protectora (+ fix del mapa gris) ([IMPROVEMENT-002](../planning/items/IMPROVEMENT-002.md))
 - Pulido del shell chrome (sidebar + cabecera) hacia el mockup de Stitch ([IMPROVEMENT-003](../planning/items/IMPROVEMENT-003.md))
@@ -129,7 +130,7 @@ Estado de cada capacidad en lenguaje de usuario. Se regenera con `python scripts
 
 #### 🚧 En camino (en desarrollo ahora)
 
-- Agenda de la protectora F1 — calendario mensual con excepciones por día ([FEATURE-053](../planning/items/FEATURE-053.md))
+_Nada en desarrollo en este momento._
 
 #### 🗓️ Previsto
 
