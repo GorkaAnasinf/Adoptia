@@ -1,0 +1,102 @@
+import { fireEvent, render, screen } from "@testing-library/react";
+import { NextIntlClientProvider } from "next-intl";
+import { describe, expect, it, vi } from "vitest";
+import mensajes from "../../../messages/es.json";
+import { PanelDiaEditor } from "./PanelDiaEditor";
+import type { EstadoDia } from "@/lib/agenda";
+
+function pintar(props: Partial<Parameters<typeof PanelDiaEditor>[0]> = {}) {
+  const onGuardar = vi.fn();
+  const onResetear = vi.fn();
+  render(
+    <NextIntlClientProvider locale="es" messages={mensajes}>
+      <PanelDiaEditor
+        fecha="2026-08-12" // miércoles
+        estadoInicial={{ tipo: "sin_configurar" } as EstadoDia}
+        guardando={false}
+        errorGuardar={false}
+        onGuardar={onGuardar}
+        onResetear={onResetear}
+        {...props}
+      />
+    </NextIntlClientProvider>,
+  );
+  return { onGuardar, onResetear };
+}
+
+describe("PanelDiaEditor", () => {
+  it("sin día seleccionado muestra el aviso", () => {
+    render(
+      <NextIntlClientProvider locale="es" messages={mensajes}>
+        <PanelDiaEditor
+          fecha={null}
+          estadoInicial={null}
+          guardando={false}
+          errorGuardar={false}
+          onGuardar={vi.fn()}
+          onResetear={vi.fn()}
+        />
+      </NextIntlClientProvider>,
+    );
+    expect(screen.getByText(/elige un día del calendario/i)).toBeInTheDocument();
+  });
+
+  it("cerrar el día emite intent 'cerrar' con la nota", () => {
+    const { onGuardar } = pintar();
+    fireEvent.click(screen.getByRole("switch", { name: /cerrar este día/i }));
+    fireEvent.change(screen.getByPlaceholderText(/vacaciones/i), {
+      target: { value: "Festivo local" },
+    });
+    fireEvent.click(screen.getByRole("button", { name: /guardar disponibilidad/i }));
+    expect(onGuardar).toHaveBeenCalledWith({ tipo: "cerrar", note: "Festivo local" });
+  });
+
+  it("guardar franjas sin repetir emite intent 'especial'", () => {
+    const estadoInicial: EstadoDia = {
+      tipo: "especial",
+      franjas: [{ start: "16:00", end: "18:00", minutes: 60 }],
+      note: null,
+    };
+    const { onGuardar } = pintar({ estadoInicial });
+    fireEvent.click(screen.getByRole("button", { name: /guardar disponibilidad/i }));
+    expect(onGuardar).toHaveBeenCalledWith({
+      tipo: "especial",
+      slots: [{ start: "16:00", end: "18:00", minutes: 60 }],
+      note: null,
+    });
+  });
+
+  it("con 'repetir semanalmente' emite intent 'patron'", () => {
+    const estadoInicial: EstadoDia = {
+      tipo: "patron",
+      franjas: [{ start: "10:00", end: "13:00", minutes: 30 }],
+    };
+    const { onGuardar } = pintar({ estadoInicial });
+    fireEvent.click(screen.getByRole("checkbox", { name: /repetir semanalmente/i }));
+    fireEvent.click(screen.getByRole("button", { name: /guardar disponibilidad/i }));
+    expect(onGuardar).toHaveBeenCalledWith({
+      tipo: "patron",
+      slots: [{ start: "10:00", end: "13:00", minutes: 30 }],
+    });
+  });
+
+  it("bloquea el guardado si una franja tiene el fin antes del inicio", () => {
+    const estadoInicial: EstadoDia = {
+      tipo: "especial",
+      franjas: [{ start: "18:00", end: "16:00", minutes: 60 }],
+      note: null,
+    };
+    const { onGuardar } = pintar({ estadoInicial });
+    fireEvent.click(screen.getByRole("button", { name: /guardar disponibilidad/i }));
+    expect(onGuardar).not.toHaveBeenCalled();
+    expect(screen.getByText(/hora de fin debe ser posterior/i)).toBeInTheDocument();
+  });
+
+  it("resetear el día llama a onResetear", () => {
+    const { onResetear } = pintar({
+      estadoInicial: { tipo: "patron", franjas: [{ start: "10:00", end: "13:00", minutes: 30 }] },
+    });
+    fireEvent.click(screen.getByRole("button", { name: /resetear día/i }));
+    expect(onResetear).toHaveBeenCalledOnce();
+  });
+});
