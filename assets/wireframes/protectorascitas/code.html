@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+
+<html lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&amp;family=Open+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "outline-variant": "#ddc0ba",
+                    "on-tertiary-container": "#1b2f28",
+                    "primary-container": "#e2725b",
+                    "primary-fixed": "#ffdad3",
+                    "tertiary-fixed-dim": "#b5ccc1",
+                    "on-tertiary-fixed-variant": "#374b43",
+                    "inverse-on-surface": "#f6f0e8",
+                    "surface": "#fef8f0",
+                    "error-container": "#ffdad6",
+                    "on-secondary-container": "#3f6c68",
+                    "secondary-fixed": "#bcece6",
+                    "on-secondary-fixed": "#00201e",
+                    "surface-container-low": "#f9f3eb",
+                    "tertiary": "#4e635a",
+                    "surface-container": "#f3ede5",
+                    "on-tertiary": "#ffffff",
+                    "secondary-fixed-dim": "#a1cfca",
+                    "surface-tint": "#9f402d",
+                    "on-secondary-fixed-variant": "#204e4a",
+                    "surface-variant": "#e7e2da",
+                    "on-surface": "#1d1b17",
+                    "secondary-container": "#bcece6",
+                    "on-primary-fixed-variant": "#802918",
+                    "on-primary-container": "#5a0d02",
+                    "error": "#ba1a1a",
+                    "on-background": "#1d1b17",
+                    "background": "#fef8f0",
+                    "surface-container-high": "#ede7e0",
+                    "secondary": "#396662",
+                    "primary-fixed-dim": "#ffb4a5",
+                    "tertiary-container": "#81978d",
+                    "surface-container-highest": "#e7e2da",
+                    "on-tertiary-fixed": "#0b1f18",
+                    "inverse-primary": "#ffb4a5",
+                    "on-error": "#ffffff",
+                    "surface-dim": "#dfd9d2",
+                    "inverse-surface": "#32302b",
+                    "tertiary-fixed": "#d1e8dd",
+                    "surface-bright": "#fef8f0",
+                    "on-primary": "#ffffff",
+                    "primary": "#9f402d",
+                    "on-error-container": "#93000a",
+                    "on-secondary": "#ffffff",
+                    "on-primary-fixed": "#3e0500",
+                    "surface-container-lowest": "#ffffff",
+                    "on-surface-variant": "#56423e",
+                    "outline": "#89726d"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "xl": "32px",
+                    "margin-mobile": "16px",
+                    "gutter": "20px",
+                    "xs": "4px",
+                    "md": "16px",
+                    "lg": "24px",
+                    "xxl": "48px",
+                    "unit": "4px",
+                    "sm": "8px",
+                    "container-max": "1200px"
+            },
+            "fontFamily": {
+                    "body-md": ["Open Sans"],
+                    "label-sm": ["Open Sans"],
+                    "headline-xl": ["Montserrat"],
+                    "headline-lg": ["Montserrat"],
+                    "body-lg": ["Open Sans"],
+                    "headline-md": ["Montserrat"],
+                    "headline-lg-mobile": ["Montserrat"],
+                    "label-md": ["Open Sans"]
+            },
+            "fontSize": {
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                    "headline-xl": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #fef8f0;
+            color: #1d1b17;
+            font-family: 'Open Sans', sans-serif;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #ddc0ba;
+            border-radius: 10px;
+        }
+        .soft-elevation {
+            box-shadow: 0 4px 12px rgba(226, 114, 91, 0.08);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex">
+<!-- SideNavBar Anchor -->
+<aside class="h-screen w-64 fixed left-0 top-0 bg-surface-container-low dark:bg-surface-container-lowest flex flex-col p-md border-r border-outline-variant/30 z-50">
+<div class="mb-xl px-md">
+<h1 class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed-dim">Adoptia</h1>
+<p class="text-label-sm text-on-surface-variant opacity-70">Nurturing Connections</p>
+</div>
+<nav class="flex-1 space-y-sm overflow-y-auto custom-scrollbar">
+<a class="flex items-center gap-md text-on-surface-variant dark:text-surface-variant px-md py-sm hover:bg-surface-container-highest dark:hover:bg-surface-variant transition-colors active:translate-x-1 transition-transform font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined">home</span>
+<span>Inicio</span>
+</a>
+<a class="flex items-center gap-md text-on-surface-variant dark:text-surface-variant px-md py-sm hover:bg-surface-container-highest dark:hover:bg-surface-variant transition-colors active:translate-x-1 transition-transform font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined">pets</span>
+<span>Mis animales</span>
+</a>
+<a class="flex items-center gap-md text-on-surface-variant dark:text-surface-variant px-md py-sm hover:bg-surface-container-highest dark:hover:bg-surface-variant transition-colors active:translate-x-1 transition-transform font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined">assignment_ind</span>
+<span>Solicitudes</span>
+</a>
+<!-- ACTIVE TAB: Citas -->
+<a class="flex items-center gap-md bg-primary-container text-on-primary-container rounded-xl px-md py-sm font-bold font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined">event_available</span>
+<span>Citas</span>
+</a>
+<a class="flex items-center gap-md text-on-surface-variant dark:text-surface-variant px-md py-sm hover:bg-surface-container-highest dark:hover:bg-surface-variant transition-colors active:translate-x-1 transition-transform font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined">calendar_today</span>
+<span>Agenda</span>
+</a>
+<a class="flex items-center gap-md text-on-surface-variant dark:text-surface-variant px-md py-sm hover:bg-surface-container-highest dark:hover:bg-surface-variant transition-colors active:translate-x-1 transition-transform font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined">storefront</span>
+<span>Perfil público</span>
+</a>
+<a class="flex items-center gap-md text-on-surface-variant dark:text-surface-variant px-md py-sm hover:bg-surface-container-highest dark:hover:bg-surface-variant transition-colors active:translate-x-1 transition-transform font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined">leaderboard</span>
+<span>Estadísticas</span>
+</a>
+</nav>
+<div class="mt-auto pt-md border-t border-outline-variant/20">
+<div class="flex items-center gap-md px-md">
+<img class="w-10 h-10 rounded-full object-cover ring-2 ring-primary/20" data-alt="A warm, professional profile portrait of a shelter manager named Elena, set against a soft-focus background of a clean, bright animal sanctuary office with plants and warm wooden accents. The lighting is soft and golden, conveying empathy and trust, in line with a modern minimalism and homestyle digital environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBOzmlhWfAxIED1DJ06WF0hBeFdZZjo_XayH-f2wFmKGyg-phrQDAIo_ga3NxY0qSxktGuAAJWUfiQYWV_x3p1T3X1lAb7WTPXRF0RkgnvZtWMwaQH7WCKjNg1te2vH35nyVEqcMrdILajoKkxo9xvwXCoK_Ml-ERJxNSTAhhXtNXkQdSiBMaRNzME9n-Xx_lJw3EFN_8Ac62mwf0Uzfk9mgTvCWeyeqEfujjbNxWQ6qPg44k_n2lHWlcoR-0wBvDVXCYf1ePYYPOaO"/>
+<div class="overflow-hidden">
+<p class="font-label-md text-on-surface truncate">Elena Rivas</p>
+<p class="text-label-sm text-on-surface-variant truncate">Refugio de Esperanza</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Canvas -->
+<main class="flex-1 ml-64 min-h-screen flex flex-col">
+<!-- TopAppBar Anchor -->
+<header class="docked full-width top-0 sticky z-50 bg-surface/80 backdrop-blur-md shadow-sm flex justify-between items-center px-lg py-md w-full">
+<div class="flex items-center gap-md">
+<h2 class="font-headline-md text-headline-md font-bold text-primary">Citas</h2>
+</div>
+<div class="flex items-center gap-lg">
+<div class="flex items-center gap-sm">
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-variant/50 transition-colors active:scale-95 transition-transform text-on-surface-variant">
+<span class="material-symbols-outlined">help</span>
+</button>
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-variant/50 transition-colors active:scale-95 transition-transform text-on-surface-variant relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-primary rounded-full"></span>
+</button>
+</div>
+<div class="h-8 w-[1px] bg-outline-variant/30"></div>
+<button class="px-md py-sm bg-primary text-on-primary rounded-xl font-label-md flex items-center gap-sm active:scale-95 transition-transform shadow-md shadow-primary/20">
+<span class="material-symbols-outlined">add</span>
+                    Nueva Cita
+                </button>
+</div>
+</header>
+<!-- Page Content -->
+<div class="p-lg lg:p-xl space-y-xl max-w-[1400px] mx-auto w-full">
+<!-- Header Section -->
+<section>
+<h3 class="font-headline-lg text-headline-lg text-on-surface mb-xs">Mis Citas</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Gestiona los encuentros programados con futuros adoptantes.</p>
+</section>
+<!-- Dashboard Layout Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-xl">
+<!-- Appointments List Area -->
+<div class="lg:col-span-8 space-y-lg">
+<!-- Tabs -->
+<div class="flex gap-md border-b border-outline-variant/30 pb-xs">
+<button class="px-lg py-sm font-label-md text-primary border-b-2 border-primary transition-all">Próximas</button>
+<button class="px-lg py-sm font-label-md text-on-surface-variant hover:text-on-surface transition-colors">Pasadas</button>
+</div>
+<!-- Appointment Cards -->
+<div class="space-y-md">
+<!-- Card 1: Today -->
+<div class="bg-surface-container-lowest soft-elevation rounded-xl overflow-hidden flex flex-col md:flex-row border border-transparent hover:border-primary-container/30 transition-all group">
+<div class="w-full md:w-48 h-48 md:h-auto overflow-hidden">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" data-alt="A beautiful, close-up portrait of a Golden Retriever named Luna with soft brown eyes and a happy expression. The dog is positioned in a bright, sunny garden with warm highlights on its golden fur. The photography style is warm and emotional, using a shallow depth of field to create a soft, blurred green background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBNaSzRH7pxd8TGgvlrkJABLNrzTOMKM5VcvmI8j1qAkt8pw-fl7M808_FeKY4XQXeMsoLz_2eO7lI0ShExxCiS3NE5EbbXfddIV-IlHRPJvbRbb4t7Y62i9elK7n0UCA5uJd-a6DGMTsFEnUTkMFnI6syM799bwss3qzTILqdoz5CpUPUEwy-FjxZJZUTHk43tuPl91nipGIhbgacE30gC7k4NYXWSlnN5q_wHkNeK_-PhdUaYyJ6hUjxKfQYfP5wjDbgoao9AW2ns"/>
+</div>
+<div class="flex-1 p-lg flex flex-col">
+<div class="flex justify-between items-start mb-md">
+<div>
+<h4 class="font-headline-md text-headline-md text-on-surface mb-xs">Cita para conocer a Luna</h4>
+<div class="flex items-center gap-sm text-on-surface-variant">
+<img class="w-6 h-6 rounded-full object-cover" data-alt="A friendly and warm headshot of Sergio, a prospective adopter in his 30s. He is smiling warmly, dressed in a casual earth-toned sweater. The portrait is high-quality with professional lighting against a neutral, warm background that fits the Adoptia design language of tactile softness and nurturing connection." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBHrx07ZRzuEe2IElHrRj2zN1Tx6grzxN8dOLYDYklou7HqwngoNlKrNXa1O6xDP2Mmo8S5zJdars-55hntnC4bJAFW2oS6oxw3ja19Np1RnHozRyL2xuXHNt_aQ-6XoX9uGK6Zah5ipZ_SvNdjv7Ac3MWruJq45UaXyPV7E222A6YFiPIgV4dN-DpUb_y9NeLN1GLaaLyDDwzTg8cpO8_8phWsl6xr16a1MdJJeHwX1NJkMAZYTgyt_NM5Wse7NN8HlbHfeBc4E8dB"/>
+<span class="font-label-md">Con: Sergio Montes</span>
+</div>
+</div>
+<span class="px-md py-xs bg-secondary-container text-on-secondary-container rounded-full font-label-sm uppercase tracking-wider">Confirmada</span>
+</div>
+<div class="grid grid-cols-2 gap-md mb-lg">
+<div class="flex items-center gap-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-primary">schedule</span>
+<span class="font-body-md">Hoy, 16:30</span>
+</div>
+<div class="flex items-center gap-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-primary">location_on</span>
+<span class="font-body-md">Visita al refugio</span>
+</div>
+</div>
+<div class="mt-auto pt-md border-t border-outline-variant/10 flex flex-wrap gap-md">
+<button class="px-md py-sm rounded-lg font-label-md text-primary border border-primary hover:bg-primary/5 transition-colors">Ver perfil adoptante</button>
+<button class="px-md py-sm rounded-lg font-label-md text-on-surface-variant hover:bg-surface-variant/50 transition-colors">Editar cita</button>
+<button class="px-md py-sm rounded-lg font-label-md text-error hover:bg-error/5 ml-auto transition-colors">Cancelar</button>
+</div>
+</div>
+</div>
+<!-- Card 2: Tomorrow -->
+<div class="bg-surface-container-lowest soft-elevation rounded-xl overflow-hidden flex flex-col md:flex-row border border-transparent hover:border-primary-container/30 transition-all group">
+<div class="w-full md:w-48 h-48 md:h-auto overflow-hidden">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" data-alt="A professional animal portrait of a sleek, elegant black cat named Oreo with striking green eyes, sitting gracefully on a cream-colored soft cushion. The lighting is soft and ambient, creating a cozy and high-end feel. The style is minimalist and focuses on the texture of the fur and the emotional connection of the pet." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAD3QA_LweG9HR7C3Q4-P7dUJMR7qadN_UyYNH-8FTOqD8GnJ-jByMdi3aPnbNx8_3KGvYVE4eGuEwoUga16aI0b65bnxp7RC4hQDYgq1EnuL4ivapgDnbNOK7Gdo5rfqwdN8SBF9XjPotwfLDkF6JWDcYNGSPU4N5UTxfWW5-cQdwXDB-FBBaUGiQv20RiRRt4FWKUCO5AwxpRIjU5Jbzu-r8zS9XIIIzIdyp4J0tLd_o79_mfcV2cS2VK0e_uQ3bSM60NfZlAbmbS"/>
+</div>
+<div class="flex-1 p-lg flex flex-col">
+<div class="flex justify-between items-start mb-md">
+<div>
+<h4 class="font-headline-md text-headline-md text-on-surface mb-xs">Cita para conocer a Oreo</h4>
+<div class="flex items-center gap-sm text-on-surface-variant">
+<img class="w-6 h-6 rounded-full object-cover" data-alt="A smiling, middle-aged couple, Ana and Pedro, appearing friendly and responsible. They are shown in a medium shot, wearing high-quality casual clothes in Sage Green and Sand tones. The lighting is bright and airy, reflecting a joyful and hopeful mood for a pet adoption session." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDivVJ2ViJY5-EdCmhy3okHvd0nC66owZ_Wv3wZcelK1ovAPcEcdhe3PzwhPH90wt-XjqoUY86CW98-LpgH2qAwSL43i0feKIcmigLcK9FwcriyPhv5ficHNrLS075tbuWZGicWU6QolL5jy9obNq3HPQ8SM_oVn1olZIkDQ797VvhyFy1Wt7Ya0ui6j-ztmyzQSvhMQ1KXKvF1tDZHX14kqIPJgnDCC1rhfZF-BdXx2xMdN36KzxmQEuck9lv1h5flVwXpCHP0sH9U"/>
+<span class="font-label-md">Con: Familia García</span>
+</div>
+</div>
+<span class="px-md py-xs bg-tertiary-container/30 text-on-tertiary-container rounded-full font-label-sm uppercase tracking-wider">Pendiente</span>
+</div>
+<div class="grid grid-cols-2 gap-md mb-lg">
+<div class="flex items-center gap-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-primary">schedule</span>
+<span class="font-body-md">Mañana, 10:00</span>
+</div>
+<div class="flex items-center gap-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-primary">videocam</span>
+<span class="font-body-md">Videollamada</span>
+</div>
+</div>
+<div class="mt-auto pt-md border-t border-outline-variant/10 flex flex-wrap gap-md">
+<button class="px-md py-sm rounded-lg font-label-md text-primary border border-primary hover:bg-primary/5 transition-colors">Ver perfil adoptante</button>
+<button class="px-md py-sm rounded-lg font-label-md text-on-surface-variant hover:bg-surface-variant/50 transition-colors">Editar cita</button>
+<button class="px-md py-sm rounded-lg font-label-md text-error hover:bg-error/5 ml-auto transition-colors">Cancelar</button>
+</div>
+</div>
+</div>
+<!-- Card 3: Next Week -->
+<div class="bg-surface-container-lowest soft-elevation rounded-xl overflow-hidden flex flex-col md:flex-row border border-transparent hover:border-primary-container/30 transition-all group">
+<div class="w-full md:w-48 h-48 md:h-auto overflow-hidden">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" data-alt="A heart-melting photo of a small, fluffy mixed-breed puppy named Toby exploring a soft patch of grass. The lighting is the golden hour of sunset, bathing the scene in a warm, terracotta glow. The focus is sharp on Toby's curious face while the background is a soft, dreamy blur of green and light." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD9FAISkKg6gKOavSjRhAzk126I1xU_t67PxhLQezoO3c5zJ_S9iTirjJFtsk2qhbdoeKkmAjGzPlGy9KminaP7JdyneLmqi9jwKrwI5enNJlSUl1L8BnOv_Jg0KbXndCIbnv3u7vkccjumR779H3LF-6i7DxKDpvmQw_Q7FPZ-ttQFR34p2nG46Zo55sTtW3VqdqOZZiWxMAur1Gd-wfvEgHbfKrk1j2gkFXT6dkv2VIaAKz8x-I8AahtHMhGuRQdgLby9QeKjZ4zy"/>
+</div>
+<div class="flex-1 p-lg flex flex-col">
+<div class="flex justify-between items-start mb-md">
+<div>
+<h4 class="font-headline-md text-headline-md text-on-surface mb-xs">Seguimiento de Toby</h4>
+<div class="flex items-center gap-sm text-on-surface-variant">
+<img class="w-6 h-6 rounded-full object-cover" data-alt="A portrait of a kind young woman, Laura, who looks empathetic and caring. She is in a minimalist home setting with plenty of natural light. The color palette is composed of soft earth tones like Sand and Cream, reflecting a serene and domestic atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBAMNaokdPHhEMZQuJQpqRI1nk9XIqSQ-N0MqbCSwja19b7VEr3YS2XGiIv9ub6154J5EN1au3JGzneUabP1916R6cP9EFXavyhqd1hUC4kwk8fbA4tWiOfuP27id1QJ4RbG8kUvaStjEO_QctF_TDItPxaeiiBLdrEr-RgF0TfdVKjkf7MH9UJHfmekWe7eS_4bZtay5_pMzXhZnqpMy0NrKFC7gu9xdxZlBlt2iRdelxmnLQdvTy_BkU6UHs1s_mvN6TT4ZJSa-jm"/>
+<span class="font-label-md">Con: Laura Sanz</span>
+</div>
+</div>
+<span class="px-md py-xs bg-secondary-container text-on-secondary-container rounded-full font-label-sm uppercase tracking-wider">Confirmada</span>
+</div>
+<div class="grid grid-cols-2 gap-md mb-lg">
+<div class="flex items-center gap-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-primary">schedule</span>
+<span class="font-body-md">24 Nov, 12:00</span>
+</div>
+<div class="flex items-center gap-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-primary">location_on</span>
+<span class="font-body-md">Visita al refugio</span>
+</div>
+</div>
+<div class="mt-auto pt-md border-t border-outline-variant/10 flex flex-wrap gap-md">
+<button class="px-md py-sm rounded-lg font-label-md text-primary border border-primary hover:bg-primary/5 transition-colors">Ver perfil adoptante</button>
+<button class="px-md py-sm rounded-lg font-label-md text-on-surface-variant hover:bg-surface-variant/50 transition-colors">Editar cita</button>
+<button class="px-md py-sm rounded-lg font-label-md text-error hover:bg-error/5 ml-auto transition-colors">Cancelar</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Pagination / View All -->
+<div class="flex justify-center pt-md">
+<button class="flex items-center gap-sm font-label-md text-primary hover:underline">
+                            Cargar más citas
+                            <span class="material-symbols-outlined">expand_more</span>
+</button>
+</div>
+</div>
+<!-- Calendar & Context Panel -->
+<aside class="lg:col-span-4 space-y-lg">
+<!-- Calendar Widget -->
+<div class="bg-surface-container soft-elevation rounded-xl p-lg">
+<div class="flex justify-between items-center mb-lg">
+<h5 class="font-headline-md text-label-md text-on-surface uppercase tracking-wider">Noviembre 2023</h5>
+<div class="flex gap-sm">
+<button class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined text-sm">chevron_left</span>
+</button>
+<button class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined text-sm">chevron_right</span>
+</button>
+</div>
+</div>
+<div class="grid grid-cols-7 gap-xs text-center mb-sm">
+<span class="text-label-sm text-on-surface-variant font-bold">L</span>
+<span class="text-label-sm text-on-surface-variant font-bold">M</span>
+<span class="text-label-sm text-on-surface-variant font-bold">M</span>
+<span class="text-label-sm text-on-surface-variant font-bold">J</span>
+<span class="text-label-sm text-on-surface-variant font-bold">V</span>
+<span class="text-label-sm text-on-surface-variant font-bold">S</span>
+<span class="text-label-sm text-on-surface-variant font-bold">D</span>
+</div>
+<div class="grid grid-cols-7 gap-xs text-center">
+<!-- Simple Mock Calendar Grid -->
+<span class="py-sm text-on-surface-variant/40 font-body-md">30</span>
+<span class="py-sm text-on-surface-variant/40 font-body-md">31</span>
+<span class="py-sm text-on-surface font-body-md hover:bg-surface-variant rounded-lg cursor-pointer">1</span>
+<span class="py-sm text-on-surface font-body-md hover:bg-surface-variant rounded-lg cursor-pointer">2</span>
+<span class="py-sm text-on-surface font-body-md hover:bg-surface-variant rounded-lg cursor-pointer">3</span>
+<span class="py-sm text-on-surface font-body-md hover:bg-surface-variant rounded-lg cursor-pointer">4</span>
+<span class="py-sm text-on-surface font-body-md hover:bg-surface-variant rounded-lg cursor-pointer">5</span>
+<span class="py-sm text-on-surface font-body-md hover:bg-surface-variant rounded-lg cursor-pointer">6</span>
+<span class="py-sm text-on-surface font-body-md hover:bg-surface-variant rounded-lg cursor-pointer">7</span>
+<span class="py-sm text-on-surface font-body-md hover:bg-surface-variant rounded-lg cursor-pointer">8</span>
+<span class="py-sm text-on-surface font-body-md hover:bg-surface-variant rounded-lg cursor-pointer">9</span>
+<span class="py-sm text-on-surface font-body-md hover:bg-surface-variant rounded-lg cursor-pointer">10</span>
+<span class="py-sm text-on-surface font-body-md hover:bg-surface-variant rounded-lg cursor-pointer">11</span>
+<span class="py-sm text-on-surface font-body-md hover:bg-surface-variant rounded-lg cursor-pointer">12</span>
+<span class="py-sm text-on-surface font-body-md hover:bg-surface-variant rounded-lg cursor-pointer">13</span>
+<span class="py-sm text-on-surface font-body-md hover:bg-surface-variant rounded-lg cursor-pointer">14</span>
+<span class="py-sm text-on-surface font-body-md hover:bg-surface-variant rounded-lg cursor-pointer">15</span>
+<!-- Current Day -->
+<span class="py-sm bg-primary text-on-primary font-body-md rounded-lg relative">
+                                16
+                                <span class="absolute bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 bg-white rounded-full"></span>
+</span>
+<span class="py-sm text-on-surface font-body-md hover:bg-surface-variant rounded-lg cursor-pointer relative">
+                                17
+                                <span class="absolute bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 bg-primary rounded-full"></span>
+</span>
+<span class="py-sm text-on-surface font-body-md hover:bg-surface-variant rounded-lg cursor-pointer">18</span>
+<span class="py-sm text-on-surface font-body-md hover:bg-surface-variant rounded-lg cursor-pointer">19</span>
+<span class="py-sm text-on-surface font-body-md hover:bg-surface-variant rounded-lg cursor-pointer">20</span>
+<span class="py-sm text-on-surface font-body-md hover:bg-surface-variant rounded-lg cursor-pointer">21</span>
+<span class="py-sm text-on-surface font-body-md hover:bg-surface-variant rounded-lg cursor-pointer">22</span>
+<span class="py-sm text-on-surface font-body-md hover:bg-surface-variant rounded-lg cursor-pointer">23</span>
+<span class="py-sm text-on-surface font-body-md hover:bg-surface-variant rounded-lg cursor-pointer relative">
+                                24
+                                <span class="absolute bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 bg-primary rounded-full"></span>
+</span>
+<span class="py-sm text-on-surface font-body-md hover:bg-surface-variant rounded-lg cursor-pointer">25</span>
+<span class="py-sm text-on-surface font-body-md hover:bg-surface-variant rounded-lg cursor-pointer">26</span>
+</div>
+</div>
+<!-- Appointment Summary -->
+<div class="bg-primary-container/10 border border-primary-container/20 rounded-xl p-lg">
+<div class="flex items-center gap-md mb-md">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">insights</span>
+<h5 class="font-headline-md text-label-md text-primary font-bold">Resumen Semanal</h5>
+</div>
+<ul class="space-y-md">
+<li class="flex justify-between items-center">
+<span class="font-body-md text-on-surface-variant">Citas esta semana</span>
+<span class="font-headline-md text-headline-md text-on-surface">12</span>
+</li>
+<li class="flex justify-between items-center">
+<span class="font-body-md text-on-surface-variant">Nuevas solicitudes</span>
+<span class="font-headline-md text-headline-md text-on-surface">5</span>
+</li>
+<li class="flex justify-between items-center">
+<span class="font-body-md text-on-surface-variant">Tasa de asistencia</span>
+<span class="font-headline-md text-headline-md text-secondary">94%</span>
+</li>
+</ul>
+</div>
+<!-- Pro-tip/Action Card -->
+<div class="bg-tertiary-container/10 border border-tertiary-container/20 rounded-xl p-lg">
+<p class="font-body-md text-on-tertiary-container italic mb-md">"Preparar una pequeña guía de cuidados para el adoptante antes de la cita mejora la tasa de éxito."</p>
+<button class="w-full py-sm bg-tertiary text-on-tertiary rounded-lg font-label-md active:scale-95 transition-transform">Ver Recursos</button>
+</div>
+</aside>
+</div>
+</div>
+<!-- Footer spacing for mobile -->
+<div class="h-16 md:hidden"></div>
+</main>
+<!-- Micro-interaction Scripts -->
+<script>
+        document.querySelectorAll('button, a').forEach(el => {
+            el.addEventListener('click', function(e) {
+                if (this.tagName === 'A') return;
+                const ripple = document.createElement('span');
+                ripple.classList.add('ripple');
+                this.appendChild(ripple);
+                setTimeout(() => ripple.remove(), 600);
+            });
+        });
+    </script>
+</body></html>
