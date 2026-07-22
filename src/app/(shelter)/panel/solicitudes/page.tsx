@@ -10,6 +10,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return { title: t("title") };
 }
 
+type MediaRow = { url: string; is_cover: boolean; sort_order: number };
 type FilaAdmin = {
   id: string;
   status: EstadoSolicitud;
@@ -18,8 +19,19 @@ type FilaAdmin = {
   shelter_notes: string | null;
   questionnaire: Record<string, unknown> | null;
   adopter_id: string;
-  animals: { id: string; name: string; slug: string; status: string } | null;
+  animals: {
+    id: string;
+    name: string;
+    slug: string;
+    status: string;
+    animal_media: MediaRow[] | null;
+  } | null;
 };
+
+function portada(media: MediaRow[] | null): string | null {
+  if (!media || media.length === 0) return null;
+  return (media.find((m) => m.is_cover) ?? [...media].sort((a, b) => a.sort_order - b.sort_order)[0]).url;
+}
 
 export default async function SolicitudesPanelPage() {
   const t = await getTranslations("solicitudesPanel");
@@ -44,7 +56,7 @@ export default async function SolicitudesPanelPage() {
     const { data: filas } = await admin
       .from("adoption_requests")
       .select(
-        "id, status, created_at, message, shelter_notes, questionnaire, adopter_id, animals!inner(id, name, slug, status, shelter_id)",
+        "id, status, created_at, message, shelter_notes, questionnaire, adopter_id, animals!inner(id, name, slug, status, shelter_id, animal_media(url, is_cover, sort_order))",
       )
       .eq("animals.shelter_id", shelter.id)
       .order("created_at", { ascending: false });
@@ -72,6 +84,7 @@ export default async function SolicitudesPanelPage() {
           name: f.animals!.name,
           slug: f.animals!.slug,
           status: f.animals!.status,
+          cover: portada(f.animals!.animal_media),
         },
       }));
   }

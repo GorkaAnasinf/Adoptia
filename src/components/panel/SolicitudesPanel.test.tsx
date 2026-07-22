@@ -30,7 +30,7 @@ const solicitudes: SolicitudRow[] = [
       todos_de_acuerdo: true,
     },
     adopterName: "Marta",
-    animal: { id: "a1", name: "Pipa", slug: "pipa-abc", status: "available" },
+    animal: { id: "a1", name: "Pipa", slug: "pipa-abc", status: "available", cover: null },
   },
   {
     id: "req2",
@@ -40,7 +40,7 @@ const solicitudes: SolicitudRow[] = [
     shelter_notes: "Ya contactada",
     questionnaire: null,
     adopterName: "Juan",
-    animal: { id: "a1", name: "Pipa", slug: "pipa-abc", status: "reserved" },
+    animal: { id: "a1", name: "Pipa", slug: "pipa-abc", status: "reserved", cover: null },
   },
 ];
 
@@ -82,6 +82,9 @@ describe("SolicitudesPanel", () => {
     await user.click(screen.getByText("Marta"));
     expect(screen.getByText("Quiero mucho a Pipa")).toBeInTheDocument();
     expect(screen.getByText(/primera vez/)).toBeInTheDocument();
+    // El cuestionario se agrupa en secciones y humaniza los valores de enum.
+    expect(screen.getByText(messages.solicitudesPanel.sectionVivienda)).toBeInTheDocument();
+    expect(screen.getByText(messages.solicitud.viviendaPiso)).toBeInTheDocument();
   });
 
   it("aprobar/rechazar están habilitados solo si está pendiente", async () => {

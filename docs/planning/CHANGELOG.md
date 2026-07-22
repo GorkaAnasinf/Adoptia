@@ -2,6 +2,12 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/es/) adaptado. Versionado 0.x hasta el MVP.
 
+## [0.0.89] — 2026-07-22
+
+### Cambiado
+
+- **La vista de solicitudes recibidas se rediseña por completo (FEATURE-050)**: la pantalla donde la protectora revisa las solicitudes de adopción se pone a la altura del resto del panel. En la **lista**, cada animal es ahora una tarjeta con su **foto** y el número de solicitudes, y cada solicitante aparece con un **avatar con sus iniciales**, la fecha y el estado; las tarjetas entran de forma escalonada y la fila seleccionada se resalta. En el **detalle**, la cabecera muestra al adoptante, el estado y a qué animal opta; y sobre todo, el **cuestionario deja de ser una tabla de códigos** (`casa_jardin`, `alquiler`…) para organizarse en **secciones con icono** —Vivienda, Convivencia, Experiencia— y mostrar los valores **en lenguaje natural** («Casa con jardín», «Alquiler», «Sí»). El mensaje del adoptante y las notas internas quedan en tarjetas, con un aviso de «Notas guardadas» al guardar. Aprobar, rechazar (con motivo) y marcar como completada funcionan igual que antes. Sin cambios de datos: mismo modelo y misma RLS. QA: suite 1064 verde; sin migraciones.
+
 ## [0.0.88] — 2026-07-22
 
 ### Añadido
