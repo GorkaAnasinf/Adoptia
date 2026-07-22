@@ -289,8 +289,8 @@ export default async function PanelPage() {
             </Link>
           </div>
 
-          <div className="mt-6 grid gap-6 lg:grid-cols-[1fr_20rem]">
-            {/* Columna principal: próximas citas + animales */}
+          <div className="mt-6 grid gap-6 lg:grid-cols-2 lg:items-start">
+            {/* Columna izquierda: próximas citas + solicitudes recientes */}
             <div className="flex flex-col gap-6">
               {/* Próximas Citas */}
               <div className="rounded-2xl border border-border bg-card p-5">
@@ -339,95 +339,103 @@ export default async function PanelPage() {
                 )}
               </div>
 
-              {/* Tus animales — rejilla de tarjetas */}
+              {/* Solicitudes recientes — tabla */}
               <div className="rounded-2xl border border-border bg-card p-5">
                 <div className="mb-4 flex items-center justify-between">
-                  <h2 className="font-heading text-lg font-semibold">{t("recentAnimals")}</h2>
-                  <Link href="/panel/animales" className="text-sm font-semibold text-tertiary hover:underline">
-                    {t("viewAll")}
-                  </Link>
-                </div>
-                <ul className="grid grid-cols-2 gap-4 sm:grid-cols-3">
-                  {animals.slice(0, 5).map((a) => {
-                    const edad = edadAproximada(a.birth_date_approx);
-                    const subtitulo = [
-                      a.breed,
-                      edad ? tb(edad.unidad === "anios" ? "edadAnios" : "edadMeses", { n: edad.n }) : null,
-                    ]
-                      .filter(Boolean)
-                      .join(" · ");
-                    return (
-                      <li key={a.id}>
-                        <Link
-                          href={`/panel/animales/${a.id}`}
-                          className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-shadow hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-                        >
-                          <span className="relative block aspect-square bg-muted">
-                            {/* Nombre visible junto a la foto: la imagen es decorativa para lectores de pantalla */}
-                            <FotoAnimal url={portada(a.animal_media)} alt="" />
-                            <span className="absolute left-2 top-2">
-                              <AnimalStatusBadge status={a.status} />
-                            </span>
-                          </span>
-                          <span className="flex flex-col gap-0.5 p-3">
-                            <span className="truncate font-heading font-semibold text-primary">{a.name}</span>
-                            {subtitulo && (
-                              <span className="truncate text-sm text-muted-foreground">{subtitulo}</span>
-                            )}
-                          </span>
-                        </Link>
-                      </li>
-                    );
-                  })}
-                  <li>
-                    <Link
-                      href="/panel/animales/nueva"
-                      className="flex h-full min-h-48 flex-col items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-border text-sm font-semibold text-muted-foreground transition-colors hover:border-primary/40 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-                    >
-                      <ImagePlus className="size-6" aria-hidden="true" />
-                      {t("addAnimalCard")}
+                  <h2 className="font-heading text-lg font-semibold">{t("recentRequests")}</h2>
+                  {recentRequests.length > 0 && (
+                    <Link href="/panel/solicitudes" className="text-sm font-semibold text-tertiary hover:underline">
+                      {t("viewAll")}
                     </Link>
-                  </li>
-                </ul>
+                  )}
+                </div>
+                {recentRequests.length === 0 ? (
+                  <p className="text-sm text-muted-foreground">{t("noRequests")}</p>
+                ) : (
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-left text-sm">
+                      <thead className="border-b border-border text-xs uppercase text-muted-foreground">
+                        <tr>
+                          <th className="pb-2 pr-3 font-semibold">{t("colAdopter")}</th>
+                          <th className="pb-2 pr-3 font-semibold">{t("colAnimal")}</th>
+                          <th className="pb-2 pr-3 font-semibold">{t("colDate")}</th>
+                          <th className="pb-2 font-semibold">{t("colStatus")}</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-border">
+                        {recentRequests.map((r) => (
+                          <tr key={r.id} className="hover:bg-accent/30">
+                            <td className="py-2.5 pr-3 font-medium">{r.adopterName ?? "—"}</td>
+                            <td className="py-2.5 pr-3">{r.animal?.name ?? "—"}</td>
+                            <td className="whitespace-nowrap py-2.5 pr-3 text-muted-foreground">
+                              {FECHA_CORTA_MADRID.format(new Date(r.created_at))}
+                            </td>
+                            <td className="py-2.5">
+                              <span
+                                className={`inline-block rounded-full px-2 py-0.5 text-xs font-semibold ${CHIP_SOLICITUD[r.status]}`}
+                              >
+                                {ts(`status${capitaliza(r.status)}`)}
+                              </span>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
               </div>
             </div>
 
-            {/* Lateral: solicitudes recientes */}
-            <div className="h-fit rounded-2xl border border-border bg-card p-5">
+            {/* Columna derecha: tus animales (rejilla ancha) */}
+            <div className="rounded-2xl border border-border bg-card p-5">
               <div className="mb-4 flex items-center justify-between">
-                <h2 className="font-heading text-lg font-semibold">{t("recentRequests")}</h2>
-                {recentRequests.length > 0 && (
-                  <Link href="/panel/solicitudes" className="text-sm font-semibold text-tertiary hover:underline">
-                    {t("viewAll")}
-                  </Link>
-                )}
+                <h2 className="font-heading text-lg font-semibold">{t("recentAnimals")}</h2>
+                <Link href="/panel/animales" className="text-sm font-semibold text-tertiary hover:underline">
+                  {t("viewAll")}
+                </Link>
               </div>
-              {recentRequests.length === 0 ? (
-                <p className="text-sm text-muted-foreground">{t("noRequests")}</p>
-              ) : (
-                <ul className="flex flex-col divide-y divide-border">
-                  {recentRequests.map((r) => (
-                    <li key={r.id}>
+              <ul className="grid grid-cols-2 gap-4">
+                {animals.slice(0, 5).map((a) => {
+                  const edad = edadAproximada(a.birth_date_approx);
+                  const subtitulo = [
+                    a.breed,
+                    edad ? tb(edad.unidad === "anios" ? "edadAnios" : "edadMeses", { n: edad.n }) : null,
+                  ]
+                    .filter(Boolean)
+                    .join(" · ");
+                  return (
+                    <li key={a.id}>
                       <Link
-                        href="/panel/solicitudes"
-                        className="flex items-center justify-between gap-2 py-2.5 hover:opacity-80"
+                        href={`/panel/animales/${a.id}`}
+                        className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-shadow hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                       >
-                        <span className="flex min-w-0 flex-col">
-                          <span className="truncate text-sm font-semibold">{r.animal?.name ?? "—"}</span>
-                          <span className="truncate text-xs text-muted-foreground">
-                            {`${r.adopterName ?? "—"} · ${FECHA_CORTA_MADRID.format(new Date(r.created_at))}`}
+                        <span className="relative block aspect-square bg-muted">
+                          {/* Nombre visible junto a la foto: la imagen es decorativa para lectores de pantalla */}
+                          <FotoAnimal url={portada(a.animal_media)} alt="" />
+                          <span className="absolute left-2 top-2">
+                            <AnimalStatusBadge status={a.status} />
                           </span>
                         </span>
-                        <span
-                          className={`shrink-0 rounded-full px-2 py-0.5 text-xs font-semibold ${CHIP_SOLICITUD[r.status]}`}
-                        >
-                          {ts(`status${capitaliza(r.status)}`)}
+                        <span className="flex flex-col gap-0.5 p-3">
+                          <span className="truncate font-heading font-semibold text-primary">{a.name}</span>
+                          {subtitulo && (
+                            <span className="truncate text-sm text-muted-foreground">{subtitulo}</span>
+                          )}
                         </span>
                       </Link>
                     </li>
-                  ))}
-                </ul>
-              )}
+                  );
+                })}
+                <li>
+                  <Link
+                    href="/panel/animales/nueva"
+                    className="flex h-full min-h-48 flex-col items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-border text-sm font-semibold text-muted-foreground transition-colors hover:border-primary/40 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                  >
+                    <ImagePlus className="size-6" aria-hidden="true" />
+                    {t("addAnimalCard")}
+                  </Link>
+                </li>
+              </ul>
             </div>
           </div>
         </>

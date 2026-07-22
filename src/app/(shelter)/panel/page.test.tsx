@@ -257,7 +257,12 @@ describe("PanelPage — dashboard rediseñado", () => {
     state.perfiles = [{ id: "adopter1", full_name: "Familia Martínez" }];
     conIntl(await PanelPage());
 
-    // Sin citas en este test, así que "Familia Martínez" solo aparece en el aside.
+    // Cabeceras de la tabla (layout wireframe: Adoptante | Mascota | Fecha | Estado).
+    expect(screen.getByRole("columnheader", { name: messages.panel.colAdopter })).toBeInTheDocument();
+    expect(screen.getByRole("columnheader", { name: messages.panel.colAnimal })).toBeInTheDocument();
+    expect(screen.getByRole("columnheader", { name: messages.panel.colDate })).toBeInTheDocument();
+    expect(screen.getByRole("columnheader", { name: messages.panel.colStatus })).toBeInTheDocument();
+    // Sin citas en este test, así que "Familia Martínez" solo aparece en la tabla.
     expect(screen.getByText("Bruno")).toBeInTheDocument();
     expect(screen.getByText(/Familia Martínez/)).toBeInTheDocument();
     expect(screen.getByText(messages.solicitudesPanel.statusApproved)).toBeInTheDocument();
