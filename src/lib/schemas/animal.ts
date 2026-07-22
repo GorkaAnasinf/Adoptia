@@ -53,6 +53,11 @@ export const animalPublishSchema = animalDraftSchema.extend({
   description: z.string().trim().min(1, "descripcion_requerida"),
 });
 
+// ---------- Acción en lista: publicar/despublicar ----------
+export const accionAnimalSchema = z.object({
+  accion: z.enum(["publish", "unpublish"]),
+});
+
 export type AnimalDraft = z.infer<typeof animalDraftSchema>;
 export type AnimalPublish = z.infer<typeof animalPublishSchema>;
 
