@@ -19,11 +19,16 @@
 Los items `hecho`/`descartado` no aparecen aquí — su histórico vive en [CHANGELOG](CHANGELOG.md) y git.
 
 <!-- RENDER:START -->
-### 📥 Recibido (3)
+### 🔨 En desarrollo (1)
+
+| Item | Título | Prioridad | Hito |
+|------|--------|-----------|------|
+| [FEATURE-057](items/FEATURE-057.md) | Agenda de la protectora F2c — plantillas de horario | media | 0.5 |
+
+### 📥 Recibido (2)
 
 | Item | Título | Prioridad | Hito |
 |------|--------|-----------|------|
 | [FEATURE-055](items/FEATURE-055.md) | Agenda de la protectora F3 — vistas anual (heatmap) y diaria (timeline) | media | 0.5 |
-| [FEATURE-057](items/FEATURE-057.md) | Agenda de la protectora F2c — plantillas de horario | media | 0.5 |
 | [FEATURE-035](items/FEATURE-035.md) | Historias felices — social proof de adopciones en la home | baja | — |
 <!-- RENDER:END -->
