@@ -2,6 +2,12 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/es/) adaptado. Versionado 0.x hasta el MVP.
 
+## [0.0.85] — 2026-07-22
+
+### Cambiado
+
+- **El panel de la protectora adopta el layout de 2 columnas del wireframe (FEATURE-046)**: ajuste sobre FEATURE-045. Al verlo en pantalla, el panel se percibía «igual» porque solo cambiaban dos bloques dentro del mismo esqueleto (`1fr` + barra lateral estrecha). Ahora se adopta la estructura del wireframe de Stitch: **dos columnas anchas**. A la izquierda, «Próximas citas» y «Solicitudes recientes» —esta última pasa a **tabla** con las columnas Adoptante · Mascota · Fecha · Estado—. A la derecha, en una columna ancha, la **rejilla grande de «Tus animales»** con foto, estado y raza · edad. Los animales, que son el activo principal de la protectora, ganan el protagonismo que muestra el diseño. Sin cambios de datos: mismo modelo y misma RLS. QA: suite 1048 verde; sin migraciones.
+
 ## [0.0.84] — 2026-07-21
 
 ### Cambiado
