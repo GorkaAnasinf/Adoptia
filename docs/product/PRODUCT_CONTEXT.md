@@ -141,5 +141,9 @@ _Nada en desarrollo en este momento._
 
 #### 🗓️ Previsto
 
-_Backlog vacío._
+- Historias felices Nivel 2 — testimonios reales del adoptante — hito sin asignar ([FEATURE-059](../planning/items/FEATURE-059.md))
+- Badge «Urgente» en fichas y listado de animales — hito sin asignar ([FEATURE-060](../planning/items/FEATURE-060.md))
+- Buscador global en la cabecera del área privada — hito sin asignar ([FEATURE-061](../planning/items/FEATURE-061.md))
+- Filtro «Apto para piso» en la búsqueda de animales — hito sin asignar ([IMPROVEMENT-031](../planning/items/IMPROVEMENT-031.md))
+- Alinear las subpáginas de /mi-cuenta con el lenguaje del dashboard — hito sin asignar ([IMPROVEMENT-032](../planning/items/IMPROVEMENT-032.md))
 <!-- RENDER:END -->

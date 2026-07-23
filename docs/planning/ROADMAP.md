@@ -144,4 +144,14 @@ Para centrar el desarrollo en un lado de la app cada vez, el 0.2 se aborda en do
 | [FEATURE-052](items/FEATURE-052.md) | Botón "Ver recursos" con el estilo primario relleno | hecho | baja |
 | [IMPROVEMENT-021](items/IMPROVEMENT-021.md) | Búsqueda por texto/raza en el listado de animales | hecho | baja |
 | [IMPROVEMENT-024](items/IMPROVEMENT-024.md) | Pulido menor del perfil público de protectora (fallbacks del hero y de las tarjetas) | hecho | baja |
+
+### Sin hito asignado (5)
+
+_Capturas pendientes de promover — no forman parte del roadmap todavía._
+
+- [FEATURE-059](items/FEATURE-059.md) — Historias felices Nivel 2 — testimonios reales del adoptante (recibido)
+- [FEATURE-060](items/FEATURE-060.md) — Badge «Urgente» en fichas y listado de animales (recibido)
+- [FEATURE-061](items/FEATURE-061.md) — Buscador global en la cabecera del área privada (recibido)
+- [IMPROVEMENT-031](items/IMPROVEMENT-031.md) — Filtro «Apto para piso» en la búsqueda de animales (recibido)
+- [IMPROVEMENT-032](items/IMPROVEMENT-032.md) — Alinear las subpáginas de /mi-cuenta con el lenguaje del dashboard (recibido)
 <!-- RENDER:END -->

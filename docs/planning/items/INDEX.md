@@ -71,6 +71,9 @@
 | [FEATURE-056](FEATURE-056.md) | Agenda de la protectora F2b — festivos nacionales y copiar/pegar día | feature | hecho | 0.5 |
 | [FEATURE-057](FEATURE-057.md) | Agenda de la protectora F2c — plantillas de horario | feature | hecho | 0.5 |
 | [FEATURE-058](FEATURE-058.md) | Rediseño de la gestión de acogidas de la protectora | feature | hecho | 0.5 |
+| [FEATURE-059](FEATURE-059.md) | Historias felices Nivel 2 — testimonios reales del adoptante | feature | recibido | — |
+| [FEATURE-060](FEATURE-060.md) | Badge «Urgente» en fichas y listado de animales | feature | recibido | — |
+| [FEATURE-061](FEATURE-061.md) | Buscador global en la cabecera del área privada | feature | recibido | — |
 | [IMPROVEMENT-001](IMPROVEMENT-001.md) | De-duplicar el slug de protectora (nombres repetidos) | improvement | hecho | — |
 | [IMPROVEMENT-002](IMPROVEMENT-002.md) | Rediseño UX del wizard de alta de protectora (+ fix del mapa gris) | improvement | hecho | 0.2 |
 | [IMPROVEMENT-003](IMPROVEMENT-003.md) | Pulido del shell chrome (sidebar + cabecera) hacia el mockup de Stitch | improvement | hecho | 0.2 |
@@ -101,3 +104,5 @@
 | [IMPROVEMENT-028](IMPROVEMENT-028.md) | El mapa de protectoras se alinea con el lenguaje de la tanda (sin wireframe) | improvement | hecho | 0.5 |
 | [IMPROVEMENT-029](IMPROVEMENT-029.md) | Popup rico en los pines del mapa de perdidos (lenguaje de la tanda) | improvement | hecho | 0.5 |
 | [IMPROVEMENT-030](IMPROVEMENT-030.md) | Cards ricas en la pestaña de propuestas enviadas de acogida | improvement | hecho | 0.5 |
+| [IMPROVEMENT-031](IMPROVEMENT-031.md) | Filtro «Apto para piso» en la búsqueda de animales | improvement | recibido | — |
+| [IMPROVEMENT-032](IMPROVEMENT-032.md) | Alinear las subpáginas de /mi-cuenta con el lenguaje del dashboard | improvement | recibido | — |
