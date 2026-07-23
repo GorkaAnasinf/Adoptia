@@ -608,7 +608,15 @@
     "footerHelp": "Ayuda",
     "footerTerms": "Términos",
     "footerPrivacy": "Privacidad",
-    "navStories": "Historias"
+    "navStories": "Historias",
+    "searchTitle": "Buscar",
+    "searchPlaceholder": "Busca una sección, un animal…",
+    "searchHint": "Escribe para buscar secciones y tus datos.",
+    "searchEmpty": "Sin resultados.",
+    "searchGroupSection": "Sección",
+    "searchGroup_animal": "Animal",
+    "searchGroup_solicitud": "Solicitud",
+    "searchGroup_favorito": "Favorito"
   },
   "onboarding": {
     "title": "Completa el alta de tu protectora",

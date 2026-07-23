@@ -6,7 +6,10 @@ import messages from "../../../messages/es.json";
 import { AppShell } from "./AppShell";
 
 vi.mock("./UserMenu", () => ({ UserMenu: () => <div data-testid="user-menu" /> }));
-vi.mock("next/navigation", () => ({ usePathname: () => "/panel" }));
+vi.mock("next/navigation", () => ({
+  usePathname: () => "/panel",
+  useRouter: () => ({ push: vi.fn() }),
+}));
 
 function renderShell(props?: Partial<Parameters<typeof AppShell>[0]>) {
   render(
