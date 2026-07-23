@@ -107,5 +107,7 @@ test("me interesa → cuestionario → bandeja de la protectora → aprobar", as
   await expect(page.getByText("Quiero mucho a Pipa y tengo experiencia con perros.")).toBeVisible();
 
   await page.getByRole("button", { name: tp.approve }).click();
-  await expect(page.getByText(tp.statusApproved)).toBeVisible();
+  // Tras el rediseño maestro-detalle (FEATURE-050) el chip de estado aparece en la
+  // lista Y en el detalle: acotamos al primero para no violar el modo estricto.
+  await expect(page.getByText(tp.statusApproved).first()).toBeVisible();
 });
