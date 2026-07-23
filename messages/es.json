@@ -401,11 +401,15 @@
     "delete": "Eliminar",
     "deleteConfirm": "¿Eliminar a {name}? Esta acción no se puede deshacer.",
     "publishIncomplete": "Completa la ficha para publicar.",
-    "actionError": "No se pudo completar la acción."
+    "actionError": "No se pudo completar la acción.",
+    "secPriority": "Prioridad",
+    "fUrgent": "Marcar como urgente",
+    "fUrgentHelp": "Úsalo solo para casos que de verdad corren (perrera con fecha límite, urgencia médica, refugio saturado). Saldrá con un distintivo y primero en el listado."
   },
   "busqueda": {
     "ctaAdoptar": "Adoptar",
     "badgeNuevo": "Recién llegado",
+    "badgeUrgente": "Urgente",
     "title": "Peludos buscando un hogar",
     "seoTitle": "Animales en adopción",
     "subtitle": "Encuentra a tu compañero entre los animales de las protectoras verificadas.",
@@ -448,6 +452,7 @@
     "compatPerros": "Bien con perros",
     "compatGatos": "Bien con gatos",
     "compatPiso": "Apto para piso",
+    "filtroUrgentes": "Solo urgentes",
     "distancia": "Distancia máxima",
     "distanciaKm": "{km} km",
     "distanciaSinLimite": "Sin límite",

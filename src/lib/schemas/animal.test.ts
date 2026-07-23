@@ -99,6 +99,11 @@ describe("animalToRow", () => {
     expect(row.breed).toBeNull();
     expect(row.sex).toBe("unknown");
   });
+
+  it("urgent por defecto es false y se respeta cuando se marca", () => {
+    expect(animalToRow({ name: "Luna" }, "s1").urgent).toBe(false);
+    expect(animalToRow({ name: "Luna", urgent: true }, "s1").urgent).toBe(true);
+  });
 });
 
 describe("datosDuplicados", () => {

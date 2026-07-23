@@ -26,6 +26,7 @@ export interface AnimalSearchResult {
   province: string | null;
   distance_m: number | null;
   cover_url: string | null;
+  urgent?: boolean;
   total_count: number;
 }
 
@@ -85,6 +86,10 @@ export function AnimalCard({
           <div className="absolute left-2 top-2">
             <AnimalStatusBadge status={animal.status} />
           </div>
+        ) : animal.urgent ? (
+          <span className="absolute left-3 top-3 rounded-full bg-destructive px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-destructive-foreground shadow-sm">
+            {t("badgeUrgente")}
+          </span>
         ) : (
           esRecienLlegado(animal.published_at) && (
             <span className="absolute left-3 top-3 rounded-full bg-primary-container px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-on-primary-container shadow-sm">
