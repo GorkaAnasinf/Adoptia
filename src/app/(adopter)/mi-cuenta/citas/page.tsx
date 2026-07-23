@@ -3,6 +3,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { MisCitasCliente, type CitaVista } from "@/components/citas/MisCitasCliente";
+import { CuentaSeccionHeader } from "@/components/cuenta/CuentaSeccionHeader";
 import { esImagenValida } from "@/lib/animal-search";
 import { createClient } from "@/lib/supabase/server";
 
@@ -73,10 +74,7 @@ export default async function MisCitasPage() {
 
   return (
     <section className="mx-auto max-w-6xl px-4 py-8">
-      <div>
-        <h1 className="font-heading text-3xl font-bold">{t("citasTitle")}</h1>
-        <p className="mt-2 max-w-2xl text-muted-foreground">{t("citasSubtitle")}</p>
-      </div>
+      <CuentaSeccionHeader titulo={t("citasTitle")} subtitulo={t("citasSubtitle")} />
 
       {vistas.length === 0 ? (
         <div className="mt-8 flex flex-col items-center rounded-2xl border border-border bg-card px-6 py-14 text-center shadow-soft">

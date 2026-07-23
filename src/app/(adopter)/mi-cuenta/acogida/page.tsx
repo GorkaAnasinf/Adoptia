@@ -4,6 +4,7 @@ import { getTranslations } from "next-intl/server";
 import { type FosterHome } from "@/components/acogida/AcogidaForm";
 import { MisAcogidasCliente } from "@/components/acogida/MisAcogidasCliente";
 import { type PropuestaRecibida } from "@/components/acogida/PropuestasRecibidas";
+import { CuentaSeccionHeader } from "@/components/cuenta/CuentaSeccionHeader";
 import { createClient } from "@/lib/supabase/server";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -40,10 +41,9 @@ export default async function MiAcogidaPage() {
   }
 
   return (
-    <section className="mx-auto max-w-6xl px-4 py-12">
-      <h1 className="font-heading text-3xl font-bold">{t("title")}</h1>
-      <p className="mt-2 text-muted-foreground">{t("subtitle")}</p>
-      <p className="mt-3 rounded-xl bg-secondary/10 px-4 py-3 text-sm text-secondary">
+    <section className="mx-auto max-w-6xl px-4 py-8">
+      <CuentaSeccionHeader titulo={t("title")} subtitulo={t("subtitle")} />
+      <p className="mt-4 rounded-xl bg-secondary/10 px-4 py-3 text-sm text-secondary">
         {t("privacidad")}
       </p>
 

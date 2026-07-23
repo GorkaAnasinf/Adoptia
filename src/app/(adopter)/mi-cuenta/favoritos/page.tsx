@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { AnimalCard, type AnimalSearchResult } from "@/components/animals/AnimalCard";
 import { VaciarFavoritosButton } from "@/components/animals/VaciarFavoritosButton";
+import { CuentaSeccionHeader } from "@/components/cuenta/CuentaSeccionHeader";
 import { Reveal } from "@/components/ui/Reveal";
 import { esImagenValida } from "@/lib/animal-search";
 import type { AnimalStatus } from "@/lib/schemas/animal";
@@ -88,20 +89,20 @@ export default async function FavoritosPage() {
 
   return (
     <section className="mx-auto max-w-6xl px-4 py-8">
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-        <div>
-          <h1 className="font-heading text-3xl font-bold">{t("favoritosTitle")}</h1>
-          <p className="mt-2 max-w-2xl text-muted-foreground">{t("favoritosSubtitle")}</p>
-        </div>
-        {favoritos.length > 0 && (
-          <div className="flex items-center gap-3">
-            <span className="text-sm font-medium text-muted-foreground">
-              {t("favoritosCount", { n: favoritos.length })}
-            </span>
-            <VaciarFavoritosButton />
-          </div>
-        )}
-      </div>
+      <CuentaSeccionHeader
+        titulo={t("favoritosTitle")}
+        subtitulo={t("favoritosSubtitle")}
+        accion={
+          favoritos.length > 0 ? (
+            <div className="flex items-center gap-3">
+              <span className="text-sm font-medium text-on-secondary-container/90">
+                {t("favoritosCount", { n: favoritos.length })}
+              </span>
+              <VaciarFavoritosButton />
+            </div>
+          ) : undefined
+        }
+      />
 
       {favoritos.length === 0 ? (
         <div className="mt-8 flex flex-col items-center rounded-2xl border border-border bg-card px-6 py-14 text-center shadow-soft">

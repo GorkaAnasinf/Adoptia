@@ -5,6 +5,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getFormatter, getTranslations } from "next-intl/server";
 import { CancelarCitaButton } from "@/components/citas/CancelarCitaButton";
+import { CuentaSeccionHeader } from "@/components/cuenta/CuentaSeccionHeader";
 import { CompartirHistoriaDialog } from "@/components/historias/CompartirHistoriaDialog";
 import { RetirarSolicitudButton } from "@/components/solicitudes/RetirarSolicitudButton";
 import { Reveal } from "@/components/ui/Reveal";
@@ -115,8 +116,7 @@ export default async function MisSolicitudesPage() {
 
   return (
     <section className="mx-auto max-w-6xl px-4 py-8">
-      <h1 className="font-heading text-3xl font-bold">{t("solicitudesTitle")}</h1>
-      <p className="mt-2 max-w-2xl text-muted-foreground">{t("solicitudesSubtitle")}</p>
+      <CuentaSeccionHeader titulo={t("solicitudesTitle")} subtitulo={t("solicitudesSubtitle")} />
 
       {solicitudes.length === 0 ? (
         <div className="mt-8 flex flex-col items-center rounded-2xl border border-border bg-card px-6 py-14 text-center shadow-soft">

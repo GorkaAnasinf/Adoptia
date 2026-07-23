@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
-import { BellPlus, ChevronRight, PawPrint, Plus } from "lucide-react";
+import { BellPlus, PawPrint, Plus } from "lucide-react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { AlertaCard, type AlertaFiltros, type AlertaVista } from "@/components/alertas/AlertaCard";
+import { CuentaSeccionHeader } from "@/components/cuenta/CuentaSeccionHeader";
 import { createClient } from "@/lib/supabase/server";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -45,29 +46,21 @@ export default async function AlertasPage() {
 
   return (
     <section className="mx-auto max-w-6xl px-4 py-8">
-      <nav className="flex items-center gap-1.5 text-sm text-muted-foreground">
-        <Link href="/mi-cuenta" className="hover:text-foreground">
-          {t("alertasMigaCuenta")}
-        </Link>
-        <ChevronRight className="size-4" aria-hidden="true" />
-        <span className="font-semibold text-primary">{t("alertasTitle")}</span>
-      </nav>
-
-      <div className="mt-4 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-        <div className="max-w-2xl">
-          <h1 className="font-heading text-3xl font-bold">{t("alertasTitle")}</h1>
-          <p className="mt-2 text-muted-foreground">{t("alertasSubtitle")}</p>
-        </div>
-        {vistas.length > 0 && (
-          <Link
-            href="/animales"
-            className="inline-flex min-h-11 shrink-0 items-center gap-2 rounded-full bg-primary-container px-6 text-sm font-semibold text-white shadow-sm transition-shadow hover:shadow-md"
-          >
-            <BellPlus className="size-4" aria-hidden="true" />
-            {t("alertaCrearNueva")}
-          </Link>
-        )}
-      </div>
+      <CuentaSeccionHeader
+        titulo={t("alertasTitle")}
+        subtitulo={t("alertasSubtitle")}
+        accion={
+          vistas.length > 0 ? (
+            <Link
+              href="/animales"
+              className="inline-flex min-h-11 shrink-0 items-center gap-2 rounded-full bg-primary-container px-6 text-sm font-semibold text-white shadow-sm transition-shadow hover:shadow-md"
+            >
+              <BellPlus className="size-4" aria-hidden="true" />
+              {t("alertaCrearNueva")}
+            </Link>
+          ) : undefined
+        }
+      />
 
       {vistas.length === 0 ? (
         <div className="mt-8 flex flex-col items-center rounded-2xl border border-border bg-card px-6 py-14 text-center shadow-soft">
