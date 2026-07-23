@@ -47,7 +47,7 @@
 | [FEATURE-032](FEATURE-032.md) | Ofertas de donación de particulares (material para protectoras) | feature | hecho | 0.5 |
 | [FEATURE-033](FEATURE-033.md) | Alertas de búsqueda guardada (avisos de nuevos animales) | feature | descartado | 0.3 |
 | [FEATURE-034](FEATURE-034.md) | Rediseño de la home según wireframe Stitch (tanda de rediseño, pantalla 1) | feature | hecho | 0.5 |
-| [FEATURE-035](FEATURE-035.md) | Historias felices — social proof de adopciones en la home | feature | recibido | — |
+| [FEATURE-035](FEATURE-035.md) | Historias felices — social proof de adopciones en la home | feature | hecho | 0.5 |
 | [FEATURE-036](FEATURE-036.md) | Rediseño del listado de animales según wireframe Stitch (tanda, pantalla 2) | feature | hecho | 0.5 |
 | [FEATURE-037](FEATURE-037.md) | Rediseño del directorio de protectoras según wireframe Stitch (tanda, pantalla 3) | feature | hecho | 0.5 |
 | [FEATURE-038](FEATURE-038.md) | Rediseño de Perdidos y encontrados según wireframe Stitch (tanda, pantalla 5) | feature | hecho | 0.5 |

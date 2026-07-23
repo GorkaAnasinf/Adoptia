@@ -33,6 +33,19 @@ vi.mock("next-intl/server", () => ({
 
 import HomePage from "./page";
 
+const adoptado = (nombre: string) => ({
+  id: crypto.randomUUID(),
+  name: nombre,
+  slug: `${nombre.toLowerCase()}-xyz789`,
+  species: "cat",
+  shelter_name: "Protectora Bilbao",
+  shelter_slug: "protectora-bilbao",
+  city: "Bilbao",
+  province: "Bizkaia",
+  adopted_at: "2026-06-15T10:00:00Z",
+  cover_url: null,
+});
+
 const reciente = (nombre: string) => ({
   id: crypto.randomUUID(),
   name: nombre,
@@ -69,7 +82,11 @@ describe("Home", () => {
       if (tabla === "shelters") return { count: 4, error: null };
       return { count: 7, error: null };
     });
-    rpcMock.mockResolvedValue({ data: [reciente("Pipa"), reciente("Golfo")], error: null });
+    rpcMock.mockImplementation((name: string) =>
+      name === "adopted_animals_recent"
+        ? { data: [adoptado("Nube")], error: null }
+        : { data: [reciente("Pipa"), reciente("Golfo")], error: null },
+    );
   });
 
   it("muestra el titular de bienvenida desde messages/es.json", async () => {
@@ -149,19 +166,27 @@ describe("Home", () => {
     ).not.toBeInTheDocument();
   });
 
-  it("muestra las historias felices de demostración con sus fotos", async () => {
+  it("muestra 'Ya están en casa' con las adopciones reales (nombre, protectora y enlace a la ficha)", async () => {
     await renderHome();
     expect(
       screen.getByRole("heading", { name: messages.home.storiesTitle }),
     ).toBeInTheDocument();
-    for (const historia of ["stories1", "stories2", "stories3"] as const) {
-      expect(
-        screen.getByText(messages.home[`${historia}Quote`]),
-      ).toBeInTheDocument();
-      expect(
-        screen.getByRole("img", { name: messages.home[`${historia}Alt`] }),
-      ).toBeInTheDocument();
-    }
+    expect(screen.getByText("Nube")).toBeInTheDocument();
+    expect(
+      screen.getByRole("link", { name: /Nube/ }),
+    ).toHaveAttribute("href", "/animales/nube-xyz789");
+  });
+
+  it("sin adopciones oculta la sección 'Ya están en casa'", async () => {
+    rpcMock.mockImplementation((name: string) =>
+      name === "adopted_animals_recent"
+        ? { data: [], error: null }
+        : { data: [reciente("Pipa")], error: null },
+    );
+    await renderHome();
+    expect(
+      screen.queryByRole("heading", { name: messages.home.storiesTitle }),
+    ).not.toBeInTheDocument();
   });
 
   it("incluye el bloque para protectoras con overline, título y CTA al registro", async () => {

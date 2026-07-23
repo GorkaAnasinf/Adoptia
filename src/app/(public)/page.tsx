@@ -57,25 +57,41 @@ async function cargarRecientes(): Promise<AnimalSearchResult[]> {
   }
 }
 
+type Adoptado = {
+  id: string;
+  name: string;
+  slug: string;
+  shelter_name: string;
+  adopted_at: string;
+  cover_url: string | null;
+};
+
+async function cargarAdoptados(): Promise<Adoptado[]> {
+  try {
+    const supabase = await createClient();
+    const { data, error } = await supabase.rpc("adopted_animals_recent", { p_limit: 3 });
+    if (error || !data) return [];
+    return data as Adoptado[];
+  } catch {
+    return [];
+  }
+}
+
+const MES_ANIO = new Intl.DateTimeFormat("es-ES", { month: "long", year: "numeric" });
+
 export default async function HomePage() {
   const t = await getTranslations();
-  const [stats, recientes] = await Promise.all([cargarEstadisticas(), cargarRecientes()]);
+  const [stats, recientes, adoptados] = await Promise.all([
+    cargarEstadisticas(),
+    cargarRecientes(),
+    cargarAdoptados(),
+  ]);
 
   const pasos = [
     { icono: Search, titulo: t("home.how1Title"), texto: t("home.how1Text") },
     { icono: Heart, titulo: t("home.how2Title"), texto: t("home.how2Text") },
     { icono: CalendarCheck, titulo: t("home.how3Title"), texto: t("home.how3Text") },
   ];
-
-  // DEMO (IMPROVEMENT-027): historias inventadas — FEATURE-035 traerá las reales
-  const historias = (["stories1", "stories2", "stories3"] as const).map((clave, i) => ({
-    nombre: t(`home.${clave}Name`),
-    frase: t(`home.${clave}Quote`),
-    autor: t(`home.${clave}Author`),
-    tiempo: t(`home.${clave}Time`),
-    alt: t(`home.${clave}Alt`),
-    foto: ["/images/story-luna.jpg", "/images/story-simba.jpg", "/images/story-kira.jpg"][i],
-  }));
 
   return (
     <>
@@ -182,45 +198,58 @@ export default async function HomePage() {
         </section>
       )}
 
-      {/* Historias felices — DEMO con datos inventados (IMPROVEMENT-027).
-          FEATURE-035 sustituirá esta sección por adopciones reales. */}
-      <section className="mx-auto max-w-6xl px-4 pt-14">
-        <div className="text-center">
-          <h2 className="font-heading text-2xl font-semibold">{t("home.storiesTitle")}</h2>
-          <p className="mt-2 text-sm text-muted-foreground">{t("home.storiesSubtitle")}</p>
-        </div>
-        <ul className="mt-8 grid gap-6 sm:grid-cols-3">
-          {historias.map(({ nombre, frase, autor, tiempo, alt, foto }, i) => (
-            <li key={nombre}>
-              <Reveal delayMs={i * 120} className="h-full">
-                <figure className="flex h-full flex-col overflow-hidden rounded-3xl bg-surface-container-lowest shadow-soft">
-                  <div className="relative aspect-4/3">
-                    <Image
-                      src={foto}
-                      alt={alt}
-                      fill
-                      sizes="(max-width: 640px) 100vw, 33vw"
-                      className="object-cover"
-                    />
-                    <span className="absolute left-3 top-3 rounded-full bg-tertiary px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-tertiary-foreground">
-                      {t("home.storiesBadge")}
-                    </span>
-                  </div>
-                  <blockquote className="flex-1 px-5 pt-5 text-sm text-foreground">
-                    {frase}
-                  </blockquote>
-                  <figcaption className="px-5 pb-5 pt-3 text-sm">
-                    <span className="font-heading font-semibold text-primary">{nombre}</span>
-                    <span className="block text-muted-foreground">
-                      {autor} · {tiempo}
-                    </span>
-                  </figcaption>
-                </figure>
-              </Reveal>
-            </li>
-          ))}
-        </ul>
-      </section>
+      {/* Ya están en casa — últimas adopciones reales (FEATURE-035, Nivel 1).
+          Se oculta si aún no hay adopciones con foto. */}
+      {adoptados.length > 0 && (
+        <section className="mx-auto max-w-6xl px-4 pt-14">
+          <div className="text-center">
+            <h2 className="font-heading text-2xl font-semibold">{t("home.storiesTitle")}</h2>
+            <p className="mt-2 text-sm text-muted-foreground">{t("home.storiesSubtitle")}</p>
+          </div>
+          <ul className="mt-8 grid gap-6 sm:grid-cols-3">
+            {adoptados.map((animal, i) => (
+              <li key={animal.id}>
+                <Reveal delayMs={i * 120} className="h-full">
+                  <Link
+                    href={`/animales/${animal.slug}`}
+                    className="group flex h-full flex-col overflow-hidden rounded-3xl bg-surface-container-lowest shadow-soft transition-all motion-safe:duration-300 hover:shadow-md motion-safe:hover:-translate-y-1"
+                  >
+                    <div className="relative aspect-4/3 overflow-hidden">
+                      {animal.cover_url ? (
+                        <Image
+                          src={animal.cover_url}
+                          alt={t("home.storiesAlt", { nombre: animal.name })}
+                          fill
+                          sizes="(max-width: 640px) 100vw, 33vw"
+                          className="object-cover transition-transform motion-safe:duration-500 motion-safe:group-hover:scale-105"
+                        />
+                      ) : (
+                        <div className="flex size-full items-center justify-center bg-surface-container">
+                          <Heart className="size-10 text-primary/30" aria-hidden="true" />
+                        </div>
+                      )}
+                      <span className="absolute left-3 top-3 rounded-full bg-tertiary px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-tertiary-foreground">
+                        {t("home.storiesBadge")}
+                      </span>
+                    </div>
+                    <div className="flex flex-1 flex-col px-5 pb-5 pt-4 text-sm">
+                      <span className="font-heading text-lg font-semibold text-primary">
+                        {animal.name}
+                      </span>
+                      <span className="text-muted-foreground">
+                        {t("home.storiesVia", { protectora: animal.shelter_name })}
+                      </span>
+                      <span className="mt-1 text-xs text-muted-foreground">
+                        {t("home.storiesDate", { fecha: MES_ANIO.format(new Date(animal.adopted_at)) })}
+                      </span>
+                    </div>
+                  </Link>
+                </Reveal>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
 
       <PawTrail className="pt-10" />
 

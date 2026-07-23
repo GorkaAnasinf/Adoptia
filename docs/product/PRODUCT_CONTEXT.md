@@ -80,6 +80,7 @@ Estado de cada capacidad en lenguaje de usuario. Se regenera con `python scripts
 - Tablón de necesidades de protectoras (pedir ayuda material) ([FEATURE-031](../planning/items/FEATURE-031.md))
 - Ofertas de donación de particulares (material para protectoras) ([FEATURE-032](../planning/items/FEATURE-032.md))
 - Rediseño de la home según wireframe Stitch (tanda de rediseño, pantalla 1) ([FEATURE-034](../planning/items/FEATURE-034.md))
+- Historias felices — social proof de adopciones en la home ([FEATURE-035](../planning/items/FEATURE-035.md))
 - Rediseño del listado de animales según wireframe Stitch (tanda, pantalla 2) ([FEATURE-036](../planning/items/FEATURE-036.md))
 - Rediseño del directorio de protectoras según wireframe Stitch (tanda, pantalla 3) ([FEATURE-037](../planning/items/FEATURE-037.md))
 - Rediseño de Perdidos y encontrados según wireframe Stitch (tanda, pantalla 5) ([FEATURE-038](../planning/items/FEATURE-038.md))
@@ -140,5 +141,5 @@ _Nada en desarrollo en este momento._
 
 #### 🗓️ Previsto
 
-- Historias felices — social proof de adopciones en la home — hito sin asignar ([FEATURE-035](../planning/items/FEATURE-035.md))
+_Backlog vacío._
 <!-- RENDER:END -->
