@@ -976,7 +976,11 @@
     "preferenciasCualquiera": "Cualquier animal",
     "otrosAnimalesLabel": "Otros animales",
     "radioLabel": "Radio de aviso",
-    "ofrecidaEl": "Se ofreció el {fecha}"
+    "ofrecidaEl": "Se ofreció el {fecha}",
+    "animalLabel": "Animal",
+    "duracionLabel": "Duración",
+    "enviadaEl": "Enviada el {fecha}",
+    "mensajeEnviadoLabel": "Tu mensaje"
   },
   "necesidades": {
     "title": "Necesidades de las protectoras",
