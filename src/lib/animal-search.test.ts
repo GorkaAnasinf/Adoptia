@@ -213,6 +213,29 @@ describe("buildQueryString", () => {
   });
 });
 
+describe("filtro apto para piso", () => {
+  it("parsea el flag piso=si a true y lo omite si no viene", () => {
+    expect(parseAnimalSearch({ piso: "si" }).piso).toBe(true);
+    expect(parseAnimalSearch({}).piso).toBeUndefined();
+    expect(parseAnimalSearch({ piso: "no" }).piso).toBeUndefined();
+  });
+
+  it("cuenta el filtro piso como activo", () => {
+    expect(contarFiltrosActivos(parseAnimalSearch({ piso: "si" }))).toBe(1);
+    expect(contarFiltrosActivos(parseAnimalSearch({}))).toBe(0);
+  });
+
+  it("mapea piso a p_apartment_suitable en los argumentos del RPC", () => {
+    expect(searchToRpcArgs(parseAnimalSearch({ piso: "si" }), HOY).p_apartment_suitable).toBe(true);
+    expect(searchToRpcArgs(parseAnimalSearch({}), HOY).p_apartment_suitable).toBeNull();
+  });
+
+  it("serializa piso=si en la URL solo cuando está activo", () => {
+    expect(buildQueryString(parseAnimalSearch({ piso: "si" }))).toContain("piso=si");
+    expect(buildQueryString(parseAnimalSearch({}))).not.toContain("piso=");
+  });
+});
+
 describe("edadAproximada", () => {
   it("devuelve años para mayores de un año y meses para cachorros", () => {
     expect(edadAproximada("2020-01-15", HOY)).toEqual({ unidad: "anios", n: 6 });

@@ -81,7 +81,7 @@ Para centrar el desarrollo en un lado de la app cada vez, el 0.2 se aborda en do
 | [FEATURE-015](items/FEATURE-015.md) | Contenido educativo sobre adopción responsable | hecho | baja |
 | [FEATURE-016](items/FEATURE-016.md) | Registro de casas de acogida | hecho | baja |
 
-### Hito 0.5 — 100% completado (59/59)
+### Hito 0.5 — 100% completado (60/60)
 
 | Item | Título | Estado | Prioridad |
 |------|--------|--------|-----------|
@@ -144,14 +144,14 @@ Para centrar el desarrollo en un lado de la app cada vez, el 0.2 se aborda en do
 | [FEATURE-052](items/FEATURE-052.md) | Botón "Ver recursos" con el estilo primario relleno | hecho | baja |
 | [IMPROVEMENT-021](items/IMPROVEMENT-021.md) | Búsqueda por texto/raza en el listado de animales | hecho | baja |
 | [IMPROVEMENT-024](items/IMPROVEMENT-024.md) | Pulido menor del perfil público de protectora (fallbacks del hero y de las tarjetas) | hecho | baja |
+| [IMPROVEMENT-031](items/IMPROVEMENT-031.md) | Filtro «Apto para piso» en la búsqueda de animales | hecho | baja |
 
-### Sin hito asignado (5)
+### Sin hito asignado (4)
 
 _Capturas pendientes de promover — no forman parte del roadmap todavía._
 
 - [FEATURE-059](items/FEATURE-059.md) — Historias felices Nivel 2 — testimonios reales del adoptante (recibido)
 - [FEATURE-060](items/FEATURE-060.md) — Badge «Urgente» en fichas y listado de animales (recibido)
 - [FEATURE-061](items/FEATURE-061.md) — Buscador global en la cabecera del área privada (recibido)
-- [IMPROVEMENT-031](items/IMPROVEMENT-031.md) — Filtro «Apto para piso» en la búsqueda de animales (recibido)
 - [IMPROVEMENT-032](items/IMPROVEMENT-032.md) — Alinear las subpáginas de /mi-cuenta con el lenguaje del dashboard (recibido)
 <!-- RENDER:END -->

@@ -104,5 +104,5 @@
 | [IMPROVEMENT-028](IMPROVEMENT-028.md) | El mapa de protectoras se alinea con el lenguaje de la tanda (sin wireframe) | improvement | hecho | 0.5 |
 | [IMPROVEMENT-029](IMPROVEMENT-029.md) | Popup rico en los pines del mapa de perdidos (lenguaje de la tanda) | improvement | hecho | 0.5 |
 | [IMPROVEMENT-030](IMPROVEMENT-030.md) | Cards ricas en la pestaña de propuestas enviadas de acogida | improvement | hecho | 0.5 |
-| [IMPROVEMENT-031](IMPROVEMENT-031.md) | Filtro «Apto para piso» en la búsqueda de animales | improvement | recibido | — |
+| [IMPROVEMENT-031](IMPROVEMENT-031.md) | Filtro «Apto para piso» en la búsqueda de animales | improvement | hecho | 0.5 |
 | [IMPROVEMENT-032](IMPROVEMENT-032.md) | Alinear las subpáginas de /mi-cuenta con el lenguaje del dashboard | improvement | recibido | — |

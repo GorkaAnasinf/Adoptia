@@ -30,6 +30,7 @@ const SEARCH: AnimalSearch = {
   ninos: undefined,
   perros: undefined,
   gatos: undefined,
+  piso: undefined,
   distanciaKm: 50,
   lat: 43.26,
   lng: -2.94,

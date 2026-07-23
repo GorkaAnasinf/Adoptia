@@ -31,6 +31,7 @@ type Borrador = {
   ninos: boolean;
   perros: boolean;
   gatos: boolean;
+  piso: boolean;
   distanciaKm: number | undefined;
 };
 
@@ -72,6 +73,7 @@ export function AnimalSearchFilters({ search }: { search: AnimalSearch }) {
     ninos: search.ninos === true,
     perros: search.perros === true,
     gatos: search.gatos === true,
+    piso: search.piso === true,
     distanciaKm: search.distanciaKm,
   });
 
@@ -96,6 +98,7 @@ export function AnimalSearchFilters({ search }: { search: AnimalSearch }) {
       ninos: borrador.ninos ? true : undefined,
       perros: borrador.perros ? true : undefined,
       gatos: borrador.gatos ? true : undefined,
+      piso: borrador.piso ? true : undefined,
       distanciaKm: conUbicacion ? borrador.distanciaKm : undefined,
     });
   };
@@ -228,6 +231,7 @@ export function AnimalSearchFilters({ search }: { search: AnimalSearch }) {
               ["ninos", t("compatNinos")],
               ["perros", t("compatPerros")],
               ["gatos", t("compatGatos")],
+              ["piso", t("compatPiso")],
             ] as const
           ).map(([campo, etiqueta]) => (
             <label key={campo} className="flex min-h-9 items-center gap-2 text-sm">
