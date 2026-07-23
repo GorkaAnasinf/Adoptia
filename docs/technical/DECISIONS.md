@@ -110,6 +110,12 @@ Formato ligero tipo ADR. Toda decisión con impacto estructural se registra aqu�
 |---|----------|--------|------------------------|
 | 49 | **Los batch de la agenda (cerrar rango, pintar N días) son un único `upsert` de un array por supabase-js, sin Route Handler** (resuelve lo que #48 dejaba abierto) | Un `upsert([...])` es una sola sentencia SQL: atómica (si una fila falla el `with check` de RLS, cae entera) y bajo la misma política de la dueña, sin superficie de API nueva. Un test de RLS comprueba que un array con una fila ajena se rechaza entero | Endpoint transaccional dedicado (superficie sin necesidad); N upserts en bucle (no atómico, N roundtrips) |
 
+## 2026-07-23 — Historias felices Nivel 2
+
+| # | Decisión | Motivo | Alternativa descartada |
+|---|----------|--------|------------------------|
+| 50 | **Los testimonios del adoptante (`adoption_stories`) los modera la PROTECTORA DUEÑA, no el admin** | La protectora conoce a la familia y el caso; reparte la carga de moderación y da cercanía. RLS: `update` solo del `shelter_id` propio; el adoptante no puede autoaprobarse (`with check status='pending'`). Foto/texto son datos personales → `consent` obligatorio (check en BD) | Moderación centralizada por admin (cuello de botella, menos contexto); publicación directa sin revisar (riesgo reputacional/RGPD) |
+
 ## Cómo añadir una decisión
 
 Nueva fila con fecha en sección nueva si cambia el mes. Si revierte una anterior, enlázala ("revierte #9") en vez de borrarla.

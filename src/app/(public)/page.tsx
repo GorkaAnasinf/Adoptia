@@ -8,6 +8,7 @@ import { CountUp } from "@/components/ui/CountUp";
 import { Parallax } from "@/components/ui/Parallax";
 import { PawTrail } from "@/components/ui/PawTrail";
 import { Reveal } from "@/components/ui/Reveal";
+import { esImagenValida } from "@/lib/animal-search";
 import { createClient } from "@/lib/supabase/server";
 
 export const revalidate = 300;
@@ -79,12 +80,50 @@ async function cargarAdoptados(): Promise<Adoptado[]> {
 
 const MES_ANIO = new Intl.DateTimeFormat("es-ES", { month: "long", year: "numeric" });
 
+type HistoriaMedia = { url: string; is_cover: boolean; sort_order: number };
+type Historia = {
+  id: string;
+  quote: string;
+  photo_url: string | null;
+  animals: { name: string; slug: string; animal_media: HistoriaMedia[] | null } | null;
+  shelters: { name: string } | null;
+};
+
+async function cargarHistorias(): Promise<Historia[]> {
+  try {
+    const supabase = await createClient();
+    const { data, error } = await supabase
+      .from("adoption_stories")
+      .select(
+        "id, quote, photo_url, animals (name, slug, animal_media (url, is_cover, sort_order)), shelters (name)",
+      )
+      .eq("status", "approved")
+      .order("published_at", { ascending: false })
+      .limit(3);
+    if (error || !data) return [];
+    return data as unknown as Historia[];
+  } catch {
+    return [];
+  }
+}
+
+/** Portada de la historia: foto propia del testimonio o, si no, la del animal. */
+function portadaHistoria(h: Historia): string | null {
+  if (h.photo_url && esImagenValida(h.photo_url)) return h.photo_url;
+  const media = (h.animals?.animal_media ?? [])
+    .slice()
+    .sort((a, b) => Number(b.is_cover) - Number(a.is_cover) || a.sort_order - b.sort_order);
+  const url = media[0]?.url ?? null;
+  return url && esImagenValida(url) ? url : null;
+}
+
 export default async function HomePage() {
   const t = await getTranslations();
-  const [stats, recientes, adoptados] = await Promise.all([
+  const [stats, recientes, adoptados, historias] = await Promise.all([
     cargarEstadisticas(),
     cargarRecientes(),
     cargarAdoptados(),
+    cargarHistorias(),
   ]);
 
   const pasos = [
@@ -198,56 +237,106 @@ export default async function HomePage() {
         </section>
       )}
 
-      {/* Ya están en casa — últimas adopciones reales (FEATURE-035, Nivel 1).
-          Se oculta si aún no hay adopciones con foto. */}
-      {adoptados.length > 0 && (
+      {/* Historias felices — testimonios reales del adoptante (FEATURE-059, Nivel 2);
+          si aún no hay ninguno aprobado, cae a las últimas adopciones (Nivel 1,
+          FEATURE-035). Se oculta si no hay nada que mostrar. */}
+      {(historias.length > 0 || adoptados.length > 0) && (
         <section className="mx-auto max-w-6xl px-4 pt-14">
           <div className="text-center">
             <h2 className="font-heading text-2xl font-semibold">{t("home.storiesTitle")}</h2>
             <p className="mt-2 text-sm text-muted-foreground">{t("home.storiesSubtitle")}</p>
           </div>
-          <ul className="mt-8 grid gap-6 sm:grid-cols-3">
-            {adoptados.map((animal, i) => (
-              <li key={animal.id}>
-                <Reveal delayMs={i * 120} className="h-full">
-                  <Link
-                    href={`/animales/${animal.slug}`}
-                    className="group flex h-full flex-col overflow-hidden rounded-3xl bg-surface-container-lowest shadow-soft transition-all motion-safe:duration-300 hover:shadow-md motion-safe:hover:-translate-y-1"
-                  >
-                    <div className="relative aspect-4/3 overflow-hidden">
-                      {animal.cover_url ? (
-                        <Image
-                          src={animal.cover_url}
-                          alt={t("home.storiesAlt", { nombre: animal.name })}
-                          fill
-                          sizes="(max-width: 640px) 100vw, 33vw"
-                          className="object-cover transition-transform motion-safe:duration-500 motion-safe:group-hover:scale-105"
-                        />
-                      ) : (
-                        <div className="flex size-full items-center justify-center bg-surface-container">
-                          <Heart className="size-10 text-primary/30" aria-hidden="true" />
+
+          {historias.length > 0 ? (
+            <ul className="mt-8 grid gap-6 sm:grid-cols-3">
+              {historias.map((historia, i) => {
+                const foto = portadaHistoria(historia);
+                const nombre = historia.animals?.name ?? "";
+                return (
+                  <li key={historia.id}>
+                    <Reveal delayMs={i * 120} className="h-full">
+                      <figure className="group flex h-full flex-col overflow-hidden rounded-3xl bg-surface-container-lowest shadow-soft transition-all motion-safe:duration-300 hover:shadow-md motion-safe:hover:-translate-y-1">
+                        <div className="relative aspect-4/3 overflow-hidden">
+                          {foto ? (
+                            <Image
+                              src={foto}
+                              alt={t("home.storiesAlt", { nombre })}
+                              fill
+                              sizes="(max-width: 640px) 100vw, 33vw"
+                              className="object-cover transition-transform motion-safe:duration-500 motion-safe:group-hover:scale-105"
+                            />
+                          ) : (
+                            <div className="flex size-full items-center justify-center bg-surface-container">
+                              <Heart className="size-10 text-primary/30" aria-hidden="true" />
+                            </div>
+                          )}
+                          <span className="absolute left-3 top-3 rounded-full bg-tertiary px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-tertiary-foreground">
+                            {t("home.storiesBadge")}
+                          </span>
                         </div>
-                      )}
-                      <span className="absolute left-3 top-3 rounded-full bg-tertiary px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-tertiary-foreground">
-                        {t("home.storiesBadge")}
-                      </span>
-                    </div>
-                    <div className="flex flex-1 flex-col px-5 pb-5 pt-4 text-sm">
-                      <span className="font-heading text-lg font-semibold text-primary">
-                        {animal.name}
-                      </span>
-                      <span className="text-muted-foreground">
-                        {t("home.storiesVia", { protectora: animal.shelter_name })}
-                      </span>
-                      <span className="mt-1 text-xs text-muted-foreground">
-                        {t("home.storiesDate", { fecha: MES_ANIO.format(new Date(animal.adopted_at)) })}
-                      </span>
-                    </div>
-                  </Link>
-                </Reveal>
-              </li>
-            ))}
-          </ul>
+                        <blockquote className="flex-1 px-5 pt-5 text-sm text-foreground">
+                          {historia.quote}
+                        </blockquote>
+                        <figcaption className="px-5 pb-5 pt-3 text-sm">
+                          <span className="font-heading font-semibold text-primary">{nombre}</span>
+                          {historia.shelters && (
+                            <span className="block text-muted-foreground">
+                              {t("home.storiesVia", { protectora: historia.shelters.name })}
+                            </span>
+                          )}
+                        </figcaption>
+                      </figure>
+                    </Reveal>
+                  </li>
+                );
+              })}
+            </ul>
+          ) : (
+            <ul className="mt-8 grid gap-6 sm:grid-cols-3">
+              {adoptados.map((animal, i) => (
+                <li key={animal.id}>
+                  <Reveal delayMs={i * 120} className="h-full">
+                    <Link
+                      href={`/animales/${animal.slug}`}
+                      className="group flex h-full flex-col overflow-hidden rounded-3xl bg-surface-container-lowest shadow-soft transition-all motion-safe:duration-300 hover:shadow-md motion-safe:hover:-translate-y-1"
+                    >
+                      <div className="relative aspect-4/3 overflow-hidden">
+                        {animal.cover_url ? (
+                          <Image
+                            src={animal.cover_url}
+                            alt={t("home.storiesAlt", { nombre: animal.name })}
+                            fill
+                            sizes="(max-width: 640px) 100vw, 33vw"
+                            className="object-cover transition-transform motion-safe:duration-500 motion-safe:group-hover:scale-105"
+                          />
+                        ) : (
+                          <div className="flex size-full items-center justify-center bg-surface-container">
+                            <Heart className="size-10 text-primary/30" aria-hidden="true" />
+                          </div>
+                        )}
+                        <span className="absolute left-3 top-3 rounded-full bg-tertiary px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-tertiary-foreground">
+                          {t("home.storiesBadge")}
+                        </span>
+                      </div>
+                      <div className="flex flex-1 flex-col px-5 pb-5 pt-4 text-sm">
+                        <span className="font-heading text-lg font-semibold text-primary">
+                          {animal.name}
+                        </span>
+                        <span className="text-muted-foreground">
+                          {t("home.storiesVia", { protectora: animal.shelter_name })}
+                        </span>
+                        <span className="mt-1 text-xs text-muted-foreground">
+                          {t("home.storiesDate", {
+                            fecha: MES_ANIO.format(new Date(animal.adopted_at)),
+                          })}
+                        </span>
+                      </div>
+                    </Link>
+                  </Reveal>
+                </li>
+              ))}
+            </ul>
+          )}
         </section>
       )}
 

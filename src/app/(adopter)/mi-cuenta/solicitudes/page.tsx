@@ -5,6 +5,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getFormatter, getTranslations } from "next-intl/server";
 import { CancelarCitaButton } from "@/components/citas/CancelarCitaButton";
+import { CompartirHistoriaDialog } from "@/components/historias/CompartirHistoriaDialog";
 import { RetirarSolicitudButton } from "@/components/solicitudes/RetirarSolicitudButton";
 import { Reveal } from "@/components/ui/Reveal";
 import { esImagenValida } from "@/lib/animal-search";
@@ -20,6 +21,7 @@ type Media = { url: string; is_cover: boolean; sort_order: number };
 
 type Solicitud = {
   id: string;
+  animal_id: string;
   status: "pending" | "approved" | "rejected" | "withdrawn" | "completed";
   created_at: string;
   message: string | null;
@@ -77,13 +79,14 @@ export default async function MisSolicitudesPage() {
 
   const t = await getTranslations("account");
   const tCitas = await getTranslations("citas");
+  const tHistorias = await getTranslations("historias");
   const format = await getFormatter();
 
-  const [{ data }, { data: citasData }] = await Promise.all([
+  const [{ data }, { data: citasData }, { data: historiasData }] = await Promise.all([
     supabase
       .from("adoption_requests")
       .select(
-        `id, status, created_at, message,
+        `id, animal_id, status, created_at, message,
          animals (name, slug, published_at,
            animal_media (url, is_cover, sort_order),
            shelters (name, slug))`,
@@ -93,8 +96,16 @@ export default async function MisSolicitudesPage() {
       .from("appointments")
       .select("id, request_id, starts_at, status")
       .in("status", ["pending", "confirmed"]),
+    supabase.from("adoption_stories").select("animal_id, status"),
   ]);
   const solicitudes = (data as unknown as Solicitud[] | null) ?? [];
+  // Estado de la historia por animal (RLS: solo las del propio adoptante).
+  const historiaPorAnimal = new Map(
+    ((historiasData as { animal_id: string; status: string }[] | null) ?? []).map((h) => [
+      h.animal_id,
+      h.status,
+    ]),
+  );
   const citaPorSolicitud = new Map(
     (
       (citasData as { id: string; request_id: string; starts_at: string; status: string }[] | null) ??
@@ -272,6 +283,24 @@ export default async function MisSolicitudesPage() {
                         {solicitud.status === "pending" && (
                           <RetirarSolicitudButton solicitudId={solicitud.id} />
                         )}
+
+                        {solicitud.status === "completed" &&
+                          animal &&
+                          (historiaPorAnimal.has(solicitud.animal_id) ? (
+                            <span className="inline-flex min-h-11 items-center text-sm text-muted-foreground">
+                              {historiaPorAnimal.get(solicitud.animal_id) === "approved"
+                                ? tHistorias("estadoAprobada")
+                                : historiaPorAnimal.get(solicitud.animal_id) === "rejected"
+                                  ? tHistorias("estadoRechazada")
+                                  : tHistorias("estadoPendiente")}
+                            </span>
+                          ) : (
+                            <CompartirHistoriaDialog
+                              animalId={solicitud.animal_id}
+                              userId={user.id}
+                              animalName={nombreAnimal}
+                            />
+                          ))}
 
                         {animal && (
                           <Link href={`/animales/${animal.slug}`} className={ACCION_GHOST}>

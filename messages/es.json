@@ -63,7 +63,8 @@
     "storiesBadge": "Ya en casa",
     "storiesDate": "En su hogar desde {fecha}",
     "storiesVia": "vía {protectora}",
-    "storiesAlt": "{nombre}, ya adoptado, en su nuevo hogar"
+    "storiesAlt": "{nombre}, ya adoptado, en su nuevo hogar",
+    "storiesBy": "— {nombre}"
   },
   "auth": {
     "loginTitle": "Inicia sesión",
@@ -601,7 +602,8 @@
     "footerRights": "© {year} Adoptia. Hecho con cariño.",
     "footerHelp": "Ayuda",
     "footerTerms": "Términos",
-    "footerPrivacy": "Privacidad"
+    "footerPrivacy": "Privacidad",
+    "navStories": "Historias"
   },
   "onboarding": {
     "title": "Completa el alta de tu protectora",
@@ -1589,5 +1591,38 @@
     "unknownAdopter": "Adoptante",
     "requestFrom": "Solicitud de {nombre}",
     "requestedOn": "Enviada el {fecha}"
+  },
+  "historias": {
+    "compartir": "Comparte vuestra historia",
+    "dialogoTitulo": "Vuestra historia con {animal}",
+    "fraseLabel": "¿Cómo ha cambiado vuestra vida juntos?",
+    "frasePlaceholder": "Cuéntanos cómo fue la llegada a casa, su carácter, lo que más os gusta de compartir vuestros días…",
+    "fotoLabel": "Foto (opcional)",
+    "fotoBoton": "Añadir foto",
+    "fotoAyuda": "Una foto suya en su nuevo hogar. Si no la añades, usaremos la de su ficha.",
+    "consent": "Doy mi consentimiento para que la protectora y Adoptia publiquen esta historia y la foto en la web. Puedo pedir que se retire cuando quiera.",
+    "enviar": "Enviar historia",
+    "enviando": "Enviando…",
+    "cancelar": "Cancelar",
+    "enviada": "¡Gracias! La protectora la revisará y, si la aprueba, saldrá en la home.",
+    "errorFrase": "Escribe al menos unas palabras (mínimo 10 caracteres).",
+    "errorConsent": "Necesitamos tu consentimiento para poder publicarla.",
+    "errorFoto": "No se pudo subir la foto. Prueba con otra o envíala sin foto.",
+    "errorExiste": "Ya compartiste una historia de este animal.",
+    "errorGenerico": "No se pudo enviar la historia. Inténtalo de nuevo.",
+    "panelTitle": "Historias de adopción",
+    "panelSubtitle": "Testimonios de las familias que adoptaron en tu protectora. Aprueba los que quieras publicar en la home de Adoptia.",
+    "panelEmpty": "Aún no hay historias que revisar. Cuando una familia comparta la suya, aparecerá aquí.",
+    "pendientesTitulo": "Pendientes de revisar",
+    "revisadasTitulo": "Revisadas",
+    "estadoPendiente": "Pendiente",
+    "estadoAprobada": "Publicada",
+    "estadoRechazada": "Rechazada",
+    "deLabel": "De {nombre}",
+    "sinNombre": "Adoptante",
+    "sobreAnimal": "Sobre {animal}",
+    "aprobar": "Aprobar y publicar",
+    "rechazar": "Rechazar",
+    "errorModerar": "No se pudo actualizar la historia. Inténtalo de nuevo."
   }
 }

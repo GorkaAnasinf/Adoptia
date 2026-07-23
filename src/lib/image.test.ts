@@ -10,6 +10,7 @@ import {
   FOTO_MAX_KB,
   LOGO_MAX_KB,
   rutaFoto,
+  rutaHistoria,
   rutaLogo,
 } from "./image";
 
@@ -72,5 +73,12 @@ describe("rutaFoto", () => {
   it("construye {shelterId}/{animalId}/{uuid}.{ext}", () => {
     const ruta = rutaFoto("s1", "a1", archivo("Foto.JPG", "image/jpeg", 1));
     expect(ruta).toMatch(/^s1\/a1\/[0-9a-f-]{36}\.jpg$/);
+  });
+});
+
+describe("rutaHistoria", () => {
+  it("construye {userId}/{uuid}.{ext} (carpeta = uid del adoptante)", () => {
+    const ruta = rutaHistoria("u1", archivo("Nube.PNG", "image/png", 1));
+    expect(ruta).toMatch(/^u1\/[0-9a-f-]{36}\.png$/);
   });
 });
