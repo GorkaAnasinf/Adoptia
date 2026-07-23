@@ -2,6 +2,7 @@
 
 import {
   CalendarClock,
+  Clock,
   Dog,
   Home,
   Navigation,
@@ -380,32 +381,53 @@ export function GestionAcogidas({
           {propuestas.length === 0 ? (
             <EstadoVacio icon={CalendarClock} texto={t("historialEmpty")} />
           ) : (
-            <ul className="flex flex-col gap-3">
+            <ul className="flex flex-col gap-4">
               {propuestas.map((p, i) => (
                 <li key={p.id}>
                   <Reveal delayMs={Math.min(i, 6) * 70}>
-                    <article className="flex flex-wrap items-center gap-x-3 gap-y-2 rounded-2xl border border-border bg-card px-5 py-4 text-sm shadow-soft transition-all motion-safe:duration-300 hover:shadow-md">
-                      <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-semibold text-primary">
-                        {iniciales(nombrePorAcogedor.get(p.foster_user_id) ?? null)}
-                      </span>
-                      <div className="min-w-0">
-                        <p className="font-medium">
-                          {nombrePorAcogedor.get(p.foster_user_id) ?? "—"}
-                        </p>
-                        <p className="text-muted-foreground">
-                          {p.animals?.name ?? t("sinAnimalConcreto")} · {p.duracion}
-                        </p>
+                    <article className="rounded-2xl border border-border bg-card p-5 shadow-soft transition-all motion-safe:duration-300 hover:shadow-md motion-safe:hover:-translate-y-0.5">
+                      <header className="flex flex-wrap items-start gap-x-3 gap-y-2">
+                        <span className="flex size-12 shrink-0 items-center justify-center rounded-full bg-primary/10 text-sm font-bold text-primary">
+                          {iniciales(nombrePorAcogedor.get(p.foster_user_id) ?? null)}
+                        </span>
+                        <div className="min-w-0 flex-1">
+                          <div className="flex flex-wrap items-center gap-2">
+                            <h3 className="font-heading text-lg font-semibold">
+                              {nombrePorAcogedor.get(p.foster_user_id) ?? "—"}
+                            </h3>
+                            <span
+                              className={cn(
+                                "rounded-full px-2.5 py-0.5 text-xs font-semibold",
+                                ESTADO_CHIP[p.status],
+                              )}
+                            >
+                              {ESTADO_TEXTO[p.status]}
+                            </span>
+                          </div>
+                          <p className="mt-0.5 flex items-center gap-1 text-sm text-muted-foreground">
+                            <CalendarClock className="size-3.5" aria-hidden="true" />
+                            {t("enviadaEl", { fecha: fecha(p.created_at) })}
+                          </p>
+                        </div>
+                      </header>
+
+                      <div className="mt-4 grid gap-4 border-t border-border pt-4 sm:grid-cols-2">
+                        <Dato
+                          icon={PawPrint}
+                          titulo={t("animalLabel")}
+                          valor={p.animals?.name ?? t("sinAnimalConcreto")}
+                        />
+                        <Dato icon={Clock} titulo={t("duracionLabel")} valor={p.duracion} />
                       </div>
-                      <span
-                        className={cn(
-                          "rounded-full px-2.5 py-0.5 text-xs font-semibold",
-                          ESTADO_CHIP[p.status],
-                        )}
-                      >
-                        {ESTADO_TEXTO[p.status]}
-                      </span>
+
+                      {p.mensaje && (
+                        <p className="mt-4 border-l-2 border-primary/30 pl-3 text-sm italic text-muted-foreground">
+                          {p.mensaje}
+                        </p>
+                      )}
+
                       {p.relevo_pedido_at && p.relevo_fecha_limite && p.status === "aceptada" && (
-                        <span className="flex flex-wrap items-center gap-2">
+                        <div className="mt-4 flex flex-wrap items-center gap-2">
                           <span className="rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-semibold text-amber-800">
                             {t("relevoPedido", { fecha: p.relevo_fecha_limite })}
                           </span>
@@ -414,12 +436,14 @@ export function GestionAcogidas({
                               {t("relevoMotivoLabel", { motivo: p.relevo_motivo })}
                             </span>
                           )}
-                        </span>
+                        </div>
                       )}
-                      <span className="ml-auto flex items-center gap-3">
-                        <span className="text-xs text-muted-foreground">{fecha(p.created_at)}</span>
-                        <PropuestaEstadoActions proposalId={p.id} status={p.status} />
-                      </span>
+
+                      {(p.status === "enviada" || p.status === "aceptada") && (
+                        <footer className="mt-4 flex flex-wrap items-center gap-3 border-t border-border pt-4">
+                          <PropuestaEstadoActions proposalId={p.id} status={p.status} />
+                        </footer>
+                      )}
                     </article>
                   </Reveal>
                 </li>

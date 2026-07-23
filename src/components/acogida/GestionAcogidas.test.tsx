@@ -114,13 +114,17 @@ describe("GestionAcogidas", () => {
     expect(screen.getByText(messages.acogida.cardEnRevision)).toBeInTheDocument();
   });
 
-  it("la pestaña de enviadas lista el historial con animal, duración y acciones", async () => {
+  it("la pestaña de enviadas muestra card con acogedor, animal, duración, mensaje y acciones", async () => {
     const user = userEvent.setup();
     renderGestion({ acogedores: [ANE], propuestas: [PROPUESTA] });
     await user.click(screen.getByRole("tab", { name: messages.acogida.tabEnviadas }));
     const region = screen.getByRole("tabpanel");
+    expect(within(region).getByText("Ane Acogedora")).toBeInTheDocument();
     expect(within(region).getByText(/Trufa/)).toBeInTheDocument();
     expect(within(region).getByText(/2 semanas/)).toBeInTheDocument();
+    // La cita del mensaje enviado se muestra en la card
+    expect(within(region).getByText(/Camada de cachorros/)).toBeInTheDocument();
+    expect(within(region).getByText(messages.acogida.estadoPropuestaEnviada)).toBeInTheDocument();
     expect(
       within(region).getByRole("button", { name: messages.acogida.marcarAceptada }),
     ).toBeInTheDocument();

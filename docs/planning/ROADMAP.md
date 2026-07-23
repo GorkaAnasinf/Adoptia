@@ -81,7 +81,7 @@ Para centrar el desarrollo en un lado de la app cada vez, el 0.2 se aborda en do
 | [FEATURE-015](items/FEATURE-015.md) | Contenido educativo sobre adopción responsable | hecho | baja |
 | [FEATURE-016](items/FEATURE-016.md) | Registro de casas de acogida | hecho | baja |
 
-### Hito 0.5 — 100% completado (57/57)
+### Hito 0.5 — 100% completado (58/58)
 
 | Item | Título | Estado | Prioridad |
 |------|--------|--------|-----------|
@@ -138,6 +138,7 @@ Para centrar el desarrollo en un lado de la app cada vez, el 0.2 se aborda en do
 | [IMPROVEMENT-023](items/IMPROVEMENT-023.md) | Subir CI y el runtime a Node 22+ (hoy el job de la app va en Node 20, ya deprecado) | hecho | media |
 | [IMPROVEMENT-025](items/IMPROVEMENT-025.md) | Acogidas visibles en la navegación del usuario | hecho | media |
 | [IMPROVEMENT-026](items/IMPROVEMENT-026.md) | Sincronizar el estado del animal con su propuesta de acogida | hecho | media |
+| [IMPROVEMENT-030](items/IMPROVEMENT-030.md) | Cards ricas en la pestaña de propuestas enviadas de acogida | hecho | media |
 | [FEATURE-049](items/FEATURE-049.md) | Efectos del área de usuario en el panel (Reveal, carrusel de fotos, hover) | hecho | baja |
 | [FEATURE-052](items/FEATURE-052.md) | Botón "Ver recursos" con el estilo primario relleno | hecho | baja |
 | [IMPROVEMENT-021](items/IMPROVEMENT-021.md) | Búsqueda por texto/raza en el listado de animales | hecho | baja |

@@ -132,6 +132,7 @@ Estado de cada capacidad en lenguaje de usuario. Se regenera con `python scripts
 - Vida y micro-interacciones en la web (cursor, count-up, reveal, header compacto, huellas) ([IMPROVEMENT-027](../planning/items/IMPROVEMENT-027.md))
 - El mapa de protectoras se alinea con el lenguaje de la tanda (sin wireframe) ([IMPROVEMENT-028](../planning/items/IMPROVEMENT-028.md))
 - Popup rico en los pines del mapa de perdidos (lenguaje de la tanda) ([IMPROVEMENT-029](../planning/items/IMPROVEMENT-029.md))
+- Cards ricas en la pestaña de propuestas enviadas de acogida ([IMPROVEMENT-030](../planning/items/IMPROVEMENT-030.md))
 
 #### 🚧 En camino (en desarrollo ahora)
 
