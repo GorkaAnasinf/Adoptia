@@ -24,6 +24,7 @@ type AnimalRow = {
   weight_kg: number | null;
   status: AnimalStatus;
   description: string | null;
+  urgent: boolean;
   good_with_kids: boolean | null;
   good_with_dogs: boolean | null;
   good_with_cats: boolean | null;
@@ -56,7 +57,7 @@ export default async function EditarFichaPage({
   const { data: animal } = await supabase
     .from("animals")
     .select(
-      "id,shelter_id,name,species,breed,sex,size,birth_date_approx,weight_kg,status,description,good_with_kids,good_with_dogs,good_with_cats,apartment_suitable,energy_level,special_needs,vaccinated,sterilized,microchipped,health_notes,adoption_fee,animal_media(id,type,url,is_cover,sort_order)",
+      "id,shelter_id,name,species,breed,sex,size,birth_date_approx,weight_kg,status,description,urgent,good_with_kids,good_with_dogs,good_with_cats,apartment_suitable,energy_level,special_needs,vaccinated,sterilized,microchipped,health_notes,adoption_fee,animal_media(id,type,url,is_cover,sort_order)",
     )
     .eq("id", id)
     .eq("shelter_id", shelter.id)
@@ -98,6 +99,7 @@ export default async function EditarFichaPage({
         weightKg: a.weight_kg ?? null,
         status: a.status,
         description: a.description ?? undefined,
+        urgent: a.urgent,
         goodWithKids: a.good_with_kids,
         goodWithDogs: a.good_with_dogs,
         goodWithCats: a.good_with_cats,

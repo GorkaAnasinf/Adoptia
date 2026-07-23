@@ -236,6 +236,21 @@ describe("filtro apto para piso", () => {
   });
 });
 
+describe("filtro urgentes", () => {
+  it("parsea el flag urgente=si, lo cuenta y lo mapea a p_urgent", () => {
+    expect(parseAnimalSearch({ urgente: "si" }).urgente).toBe(true);
+    expect(parseAnimalSearch({}).urgente).toBeUndefined();
+    expect(contarFiltrosActivos(parseAnimalSearch({ urgente: "si" }))).toBe(1);
+    expect(searchToRpcArgs(parseAnimalSearch({ urgente: "si" }), HOY).p_urgent).toBe(true);
+    expect(searchToRpcArgs(parseAnimalSearch({}), HOY).p_urgent).toBeNull();
+  });
+
+  it("serializa urgente=si en la URL solo cuando está activo", () => {
+    expect(buildQueryString(parseAnimalSearch({ urgente: "si" }))).toContain("urgente=si");
+    expect(buildQueryString(parseAnimalSearch({}))).not.toContain("urgente=");
+  });
+});
+
 describe("edadAproximada", () => {
   it("devuelve años para mayores de un año y meses para cachorros", () => {
     expect(edadAproximada("2020-01-15", HOY)).toEqual({ unidad: "anios", n: 6 });

@@ -81,7 +81,7 @@ Para centrar el desarrollo en un lado de la app cada vez, el 0.2 se aborda en do
 | [FEATURE-015](items/FEATURE-015.md) | Contenido educativo sobre adopción responsable | hecho | baja |
 | [FEATURE-016](items/FEATURE-016.md) | Registro de casas de acogida | hecho | baja |
 
-### Hito 0.5 — 100% completado (61/61)
+### Hito 0.5 — 100% completado (62/62)
 
 | Item | Título | Estado | Prioridad |
 |------|--------|--------|-----------|
@@ -132,6 +132,7 @@ Para centrar el desarrollo en un lado de la app cada vez, el 0.2 se aborda en do
 | [FEATURE-057](items/FEATURE-057.md) | Agenda de la protectora F2c — plantillas de horario | hecho | media |
 | [FEATURE-058](items/FEATURE-058.md) | Rediseño de la gestión de acogidas de la protectora | hecho | media |
 | [FEATURE-059](items/FEATURE-059.md) | Historias felices Nivel 2 — testimonios reales del adoptante | hecho | media |
+| [FEATURE-060](items/FEATURE-060.md) | Badge «Urgente» en fichas y listado de animales | hecho | media |
 | [IMPROVEMENT-017](items/IMPROVEMENT-017.md) | Rediseño del dashboard de protectora (tarjetas de color y próximas citas) | hecho | media |
 | [IMPROVEMENT-018](items/IMPROVEMENT-018.md) | Rediseño de la home pública (hero con buscador, recién llegados, banda de stats y CTA) | hecho | media |
 | [IMPROVEMENT-019](items/IMPROVEMENT-019.md) | Rediseño del listado /animales (filtros horizontales, tarjetas con favorito y paginación numerada) | hecho | media |
@@ -147,11 +148,10 @@ Para centrar el desarrollo en un lado de la app cada vez, el 0.2 se aborda en do
 | [IMPROVEMENT-024](items/IMPROVEMENT-024.md) | Pulido menor del perfil público de protectora (fallbacks del hero y de las tarjetas) | hecho | baja |
 | [IMPROVEMENT-031](items/IMPROVEMENT-031.md) | Filtro «Apto para piso» en la búsqueda de animales | hecho | baja |
 
-### Sin hito asignado (3)
+### Sin hito asignado (2)
 
 _Capturas pendientes de promover — no forman parte del roadmap todavía._
 
-- [FEATURE-060](items/FEATURE-060.md) — Badge «Urgente» en fichas y listado de animales (recibido)
 - [FEATURE-061](items/FEATURE-061.md) — Buscador global en la cabecera del área privada (recibido)
 - [IMPROVEMENT-032](items/IMPROVEMENT-032.md) — Alinear las subpáginas de /mi-cuenta con el lenguaje del dashboard (recibido)
 <!-- RENDER:END -->

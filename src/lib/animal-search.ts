@@ -29,6 +29,7 @@ export interface AnimalSearch {
   perros: true | undefined;
   gatos: true | undefined;
   piso: true | undefined;
+  urgente: true | undefined;
   distanciaKm: number | undefined;
   lat: number | undefined;
   lng: number | undefined;
@@ -85,6 +86,7 @@ export function parseAnimalSearch(params: RawParams): AnimalSearch {
     perros: flag(params.perros),
     gatos: flag(params.gatos),
     piso: flag(params.piso),
+    urgente: flag(params.urgente),
     distanciaKm: numeroEnRango(primero(params.distancia), DISTANCIA_MIN_KM, DISTANCIA_MAX_KM),
     lat: conUbicacion ? lat : undefined,
     lng: conUbicacion ? lng : undefined,
@@ -109,6 +111,7 @@ export function contarFiltrosActivos(search: AnimalSearch): number {
     search.perros,
     search.gatos,
     search.piso,
+    search.urgente,
     search.distanciaKm,
   ].filter((v) => v !== undefined).length;
 }
@@ -146,6 +149,7 @@ export interface AnimalsSearchRpcArgs {
   p_good_with_dogs: boolean | null;
   p_good_with_cats: boolean | null;
   p_apartment_suitable: boolean | null;
+  p_urgent: boolean | null;
   p_birth_after: string | null;
   p_birth_before: string | null;
   p_lat: number | null;
@@ -169,6 +173,7 @@ export function searchToRpcArgs(s: AnimalSearch, hoy: Date = new Date()): Animal
     p_good_with_dogs: s.perros ?? null,
     p_good_with_cats: s.gatos ?? null,
     p_apartment_suitable: s.piso ?? null,
+    p_urgent: s.urgente ?? null,
     // Nacido DESPUÉS de (hoy - hasta años) → más joven que `hasta`.
     p_birth_after: hastaAnios !== null ? fechaHaceAnios(hoy, hastaAnios) : null,
     p_birth_before: desdeAnios !== null && desdeAnios > 0 ? fechaHaceAnios(hoy, desdeAnios) : null,
@@ -195,6 +200,7 @@ export function buildQueryString(s: AnimalSearch): string {
   if (s.perros) qs.set("perros", "si");
   if (s.gatos) qs.set("gatos", "si");
   if (s.piso) qs.set("piso", "si");
+  if (s.urgente) qs.set("urgente", "si");
   if (s.distanciaKm !== undefined) qs.set("distancia", String(s.distanciaKm));
   if (s.lat !== undefined && s.lng !== undefined) {
     qs.set("lat", String(s.lat));

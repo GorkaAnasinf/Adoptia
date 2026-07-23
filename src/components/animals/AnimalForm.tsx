@@ -276,6 +276,12 @@ export function AnimalForm({
         </Campo>
       </Seccion>
 
+      {/* -------- Prioridad (FEATURE-060) -------- */}
+      <Seccion titulo={t("secPriority")}>
+        <Check label={t("fUrgent")} checked={form.urgent ?? false} onChange={(v) => set("urgent", v)} />
+        <p className="text-sm text-muted-foreground">{t("fUrgentHelp")}</p>
+      </Seccion>
+
       {/* -------- Salud -------- */}
       <Seccion titulo={t("secHealth")}>
         <div className="flex flex-wrap gap-4">
