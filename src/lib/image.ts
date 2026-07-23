@@ -66,3 +66,14 @@ export function rutaMediaShelter(shelterId: string, file: File): string {
     : "jpg";
   return `${shelterId}/${crypto.randomUUID()}.${ext}`;
 }
+
+/**
+ * Ruta de la foto de un testimonio (bucket `story-media`): `{userId}/{uuid}.{ext}`.
+ * La primera carpeta es el uid del adoptante (la política RLS valida foldername[1]).
+ */
+export function rutaHistoria(userId: string, file: File): string {
+  const ext = file.name.includes(".")
+    ? (file.name.split(".").pop() as string).toLowerCase()
+    : "jpg";
+  return `${userId}/${crypto.randomUUID()}.${ext}`;
+}

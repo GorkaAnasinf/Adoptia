@@ -104,6 +104,7 @@ Estado de cada capacidad en lenguaje de usuario. Se regenera con `python scripts
 - Agenda de la protectora F2b — festivos nacionales y copiar/pegar día ([FEATURE-056](../planning/items/FEATURE-056.md))
 - Agenda de la protectora F2c — plantillas de horario ([FEATURE-057](../planning/items/FEATURE-057.md))
 - Rediseño de la gestión de acogidas de la protectora ([FEATURE-058](../planning/items/FEATURE-058.md))
+- Historias felices Nivel 2 — testimonios reales del adoptante ([FEATURE-059](../planning/items/FEATURE-059.md))
 - De-duplicar el slug de protectora (nombres repetidos) ([IMPROVEMENT-001](../planning/items/IMPROVEMENT-001.md))
 - Rediseño UX del wizard de alta de protectora (+ fix del mapa gris) ([IMPROVEMENT-002](../planning/items/IMPROVEMENT-002.md))
 - Pulido del shell chrome (sidebar + cabecera) hacia el mockup de Stitch ([IMPROVEMENT-003](../planning/items/IMPROVEMENT-003.md))
@@ -142,7 +143,6 @@ _Nada en desarrollo en este momento._
 
 #### 🗓️ Previsto
 
-- Historias felices Nivel 2 — testimonios reales del adoptante — hito sin asignar ([FEATURE-059](../planning/items/FEATURE-059.md))
 - Badge «Urgente» en fichas y listado de animales — hito sin asignar ([FEATURE-060](../planning/items/FEATURE-060.md))
 - Buscador global en la cabecera del área privada — hito sin asignar ([FEATURE-061](../planning/items/FEATURE-061.md))
 - Alinear las subpáginas de /mi-cuenta con el lenguaje del dashboard — hito sin asignar ([IMPROVEMENT-032](../planning/items/IMPROVEMENT-032.md))

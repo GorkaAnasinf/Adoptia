@@ -71,7 +71,7 @@
 | [FEATURE-056](FEATURE-056.md) | Agenda de la protectora F2b — festivos nacionales y copiar/pegar día | feature | hecho | 0.5 |
 | [FEATURE-057](FEATURE-057.md) | Agenda de la protectora F2c — plantillas de horario | feature | hecho | 0.5 |
 | [FEATURE-058](FEATURE-058.md) | Rediseño de la gestión de acogidas de la protectora | feature | hecho | 0.5 |
-| [FEATURE-059](FEATURE-059.md) | Historias felices Nivel 2 — testimonios reales del adoptante | feature | recibido | — |
+| [FEATURE-059](FEATURE-059.md) | Historias felices Nivel 2 — testimonios reales del adoptante | feature | hecho | 0.5 |
 | [FEATURE-060](FEATURE-060.md) | Badge «Urgente» en fichas y listado de animales | feature | recibido | — |
 | [FEATURE-061](FEATURE-061.md) | Buscador global en la cabecera del área privada | feature | recibido | — |
 | [IMPROVEMENT-001](IMPROVEMENT-001.md) | De-duplicar el slug de protectora (nombres repetidos) | improvement | hecho | — |

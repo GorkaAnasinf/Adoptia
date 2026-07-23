@@ -7,15 +7,26 @@ import messages from "../../../messages/es.json";
 // "verified" = protectoras verificadas, "adopted" = adopciones.
 const statsMock = vi.fn();
 const rpcMock = vi.fn();
+const historiasMock = vi.fn();
 
 vi.mock("@/lib/supabase/server", () => ({
   createClient: vi.fn(async () => ({
-    from: vi.fn((tabla: string) => ({
-      select: vi.fn(() => ({
-        not: vi.fn(() => statsMock(tabla, "published")),
-        eq: vi.fn((_col: string, valor: string) => statsMock(tabla, valor)),
-      })),
-    })),
+    from: vi.fn((tabla: string) => {
+      if (tabla === "adoption_stories") {
+        // cargarHistorias: select().eq().order().limit()
+        return {
+          select: () => ({
+            eq: () => ({ order: () => ({ limit: () => historiasMock() }) }),
+          }),
+        };
+      }
+      return {
+        select: vi.fn(() => ({
+          not: vi.fn(() => statsMock(tabla, "published")),
+          eq: vi.fn((_col: string, valor: string) => statsMock(tabla, valor)),
+        })),
+      };
+    }),
     rpc: rpcMock,
   })),
 }));
@@ -87,6 +98,7 @@ describe("Home", () => {
         ? { data: [adoptado("Nube")], error: null }
         : { data: [reciente("Pipa"), reciente("Golfo")], error: null },
     );
+    historiasMock.mockReset().mockResolvedValue({ data: [], error: null });
   });
 
   it("muestra el titular de bienvenida desde messages/es.json", async () => {
@@ -177,7 +189,7 @@ describe("Home", () => {
     ).toHaveAttribute("href", "/animales/nube-xyz789");
   });
 
-  it("sin adopciones oculta la sección 'Ya están en casa'", async () => {
+  it("sin adopciones ni historias oculta la sección de historias felices", async () => {
     rpcMock.mockImplementation((name: string) =>
       name === "adopted_animals_recent"
         ? { data: [], error: null }
@@ -187,6 +199,28 @@ describe("Home", () => {
     expect(
       screen.queryByRole("heading", { name: messages.home.storiesTitle }),
     ).not.toBeInTheDocument();
+  });
+
+  it("con un testimonio aprobado muestra la frase del adoptante en vez del adoptado", async () => {
+    historiasMock.mockResolvedValue({
+      data: [
+        {
+          id: "st1",
+          quote: "Llegó asustada y hoy es la reina del sofá.",
+          photo_url: null,
+          animals: { name: "Luna", slug: "luna-abc", animal_media: [] },
+          shelters: { name: "Protectora Bilbao" },
+        },
+      ],
+      error: null,
+    });
+    await renderHome();
+    expect(
+      screen.getByRole("heading", { name: messages.home.storiesTitle }),
+    ).toBeInTheDocument();
+    expect(screen.getByText(/reina del sofá/)).toBeInTheDocument();
+    // El testimonio sustituye a la card de adoptado (Nube no aparece en la sección)
+    expect(screen.queryByText("Nube")).not.toBeInTheDocument();
   });
 
   it("incluye el bloque para protectoras con overline, título y CTA al registro", async () => {

@@ -13,6 +13,7 @@ import {
   type LucideIcon,
   LifeBuoy,
   PawPrint,
+  Sparkles,
   Store,
 } from "lucide-react";
 import Link from "next/link";
@@ -37,6 +38,7 @@ const NAV: Record<Role, Item[]> = {
     { key: "navAppointments", href: "/panel/citas", icon: CalendarDays, exists: true },
     { key: "navAgenda", href: "/panel/agenda", icon: Clock, exists: true },
     { key: "navFosterHomes", href: "/panel/acogida", icon: LifeBuoy, exists: true },
+    { key: "navStories", href: "/panel/historias", icon: Sparkles, exists: true },
     { key: "navNeeds", href: "/panel/necesidades", icon: HandHeart, exists: true },
     { key: "navDonationBoard", href: "/panel/donaciones", icon: Gift, exists: true },
     { key: "navPublicProfile", href: "/panel/perfil", icon: Store, exists: true },
