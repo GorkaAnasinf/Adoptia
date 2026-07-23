@@ -12,7 +12,7 @@
 - **Follow-ups abiertos:** Re-medir Lighthouse de ficha/listado en producción cuando haya contenido real (ver IMPROVEMENT-012). Datos de prueba masivos (`@masivo.adoptia.es`, slugs `-msv`) cargados en local y en producción el 2026-07-13 — borrarlos al acabar las pruebas. Candidatos a item: badge «Urgente» (requiere campo en BD) y filtro «Apto para piso» en el RPC `animals_search` (mockup de IMPROVEMENT-019); **buscador global en la cabecera del área privada** y **alineación de las seis subpáginas de `/mi-cuenta`** con el lenguaje del dashboard (ambos vistos en FEATURE-039).
 - **Nota (2026-07-15):** se corrigió una afirmación errónea de BUG-005: los umbrales de cobertura **sí** se vigilaban en CI — el `RolldownError` era ruido en Linux (exit 0, tabla impresa, umbrales evaluados) y solo tumbaba el proceso en Windows.
 - **Cómo correr los E2E en local:** ver `docs/meta/TESTING.md` — hay tres trampas documentadas que cuestan horas si no se conocen (el `npm run dev` zombi que Playwright reutiliza, el `upsert(onConflict: "slug")` que no es idempotente, y el captcha).
-- **Última actualización:** 2026-07-22 (FEATURE-055 — agenda F3: vistas anual/diaria; **completa el rediseño entero de la agenda F1→F3**).
+- **Última actualización:** 2026-07-22 (FEATURE-058 — rediseño de la gestión de acogidas de la protectora: tabs recibidas/enviadas, sidebar de filtros client-side, cards con avatar de iniciales, estados y efectos Reveal + hover-lift; sin migración. Suite 1181 verde. El mini-mapa "Puntos de acogida cercanos" del wireframe se omitió (necesitaría exponer coords aproximadas + decisión de privacidad)).
 
 ## Items abiertos por estado
 

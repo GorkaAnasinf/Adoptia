@@ -91,7 +91,7 @@ async function renderPagina() {
   );
 }
 
-describe("Panel de casas de acogida", () => {
+describe("Panel de gestión de acogidas", () => {
   beforeEach(() => {
     state.shelter = { id: "s1", status: "verified" };
     state.acogedores = [ACOGEDOR];
@@ -99,61 +99,28 @@ describe("Panel de casas de acogida", () => {
     state.propuestas = [];
   });
 
-  it("lista acogedores con condiciones, distancia y botón de proponer", async () => {
+  it("pinta el título y lista los acogedores recibidos con distancia y proponer", async () => {
     await renderPagina();
+    expect(screen.getByText(messages.acogida.gestionTitle)).toBeInTheDocument();
     expect(screen.getByText("Ane Acogedora")).toBeInTheDocument();
     expect(screen.getByText(/a 4.2 km/)).toBeInTheDocument();
-    expect(screen.getByText(messages.acogida.jardin)).toBeInTheDocument();
-    expect(screen.getByText(/Mejor findes/)).toBeInTheDocument();
     expect(screen.getByRole("button", { name: messages.acogida.contactar })).toBeInTheDocument();
-    // Sin propuestas: el historial muestra su estado vacío
-    expect(screen.getByText(messages.acogida.historialEmpty)).toBeInTheDocument();
   });
 
-  it("con propuesta activa muestra el estado en vez del botón de proponer", async () => {
+  it("propaga las propuestas: con una activa la card muestra 'en revisión', no proponer", async () => {
     state.propuestas = [PROPUESTA];
     await renderPagina();
     expect(
       screen.queryByRole("button", { name: messages.acogida.contactar }),
     ).not.toBeInTheDocument();
-    expect(screen.getByText(/Propuesta enviada el/)).toBeInTheDocument();
-  });
-
-  it("el historial lista las propuestas con animal, duración, estado y acciones", async () => {
-    state.propuestas = [PROPUESTA];
-    await renderPagina();
-    expect(screen.getByText(messages.acogida.historialTitulo)).toBeInTheDocument();
-    expect(screen.getByText(/Trufa/)).toBeInTheDocument();
-    expect(screen.getByText(/2 semanas/)).toBeInTheDocument();
-    // El chip de estado sale en la tarjeta del acogedor Y en el historial
-    expect(screen.getAllByText(messages.acogida.estadoPropuestaEnviada)).toHaveLength(2);
-    expect(
-      screen.getByRole("button", { name: messages.acogida.marcarAceptada }),
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole("button", { name: messages.acogida.marcarRechazada }),
-    ).toBeInTheDocument();
-  });
-
-  it("con relevo pedido muestra el aviso con fecha y motivo", async () => {
-    state.propuestas = [
-      {
-        ...PROPUESTA,
-        status: "aceptada",
-        relevo_pedido_at: "2026-07-17T10:00:00Z",
-        relevo_motivo: "Obras en casa",
-        relevo_fecha_limite: "2026-08-01",
-      },
-    ];
-    await renderPagina();
-    expect(screen.getAllByText(/2026-08-01/).length).toBeGreaterThan(0);
-    expect(screen.getByText(/Obras en casa/)).toBeInTheDocument();
+    expect(screen.getByText(messages.acogida.cardEnRevision)).toBeInTheDocument();
   });
 
   it("una protectora sin verificar ve el aviso, no la lista", async () => {
     state.shelter = { id: "s1", status: "pending" };
     await renderPagina();
     expect(screen.getByText(messages.acogida.panelSoloVerificadas)).toBeInTheDocument();
+    expect(screen.queryByText("Ane Acogedora")).not.toBeInTheDocument();
   });
 
   it("sin acogedores muestra el estado vacío", async () => {
