@@ -31,6 +31,7 @@ function search(over: Partial<AnimalSearch> = {}): AnimalSearch {
     ninos: undefined,
     perros: undefined,
     gatos: undefined,
+    piso: undefined,
     distanciaKm: undefined,
     lat: undefined,
     lng: undefined,
