@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { getTranslations } from "next-intl/server";
+import { CuentaSeccionHeader } from "@/components/cuenta/CuentaSeccionHeader";
 import { type Donacion } from "@/components/donaciones/DonacionForm";
 import { MisDonacionesCliente } from "@/components/donaciones/MisDonacionesCliente";
 import { createClient } from "@/lib/supabase/server";
@@ -27,9 +28,8 @@ export default async function DonacionesPage() {
   const ofertas = (data as Donacion[] | null) ?? [];
 
   return (
-    <section className="mx-auto max-w-6xl px-4 py-12">
-      <h1 className="font-heading text-3xl font-bold">{t("title")}</h1>
-      <p className="mt-2 text-muted-foreground">{t("subtitle")}</p>
+    <section className="mx-auto max-w-6xl px-4 py-8">
+      <CuentaSeccionHeader titulo={t("title")} subtitulo={t("subtitle")} />
 
       <MisDonacionesCliente userId={user.id} ofertas={ofertas} />
     </section>
