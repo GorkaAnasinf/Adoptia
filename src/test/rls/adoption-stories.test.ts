@@ -14,7 +14,6 @@ describe.skipIf(!rlsDisponible)("FEATURE-059 RLS adoption_stories", () => {
   let shelterOwnerId: string;
   let otroOwnerId: string;
   let adopterId: string;
-  let otroAdopterId: string;
   let shelterId: string;
   let adoptadoId: string; // animal adoptado por adopter
   let noAdoptadoId: string; // animal SIN adopción del adopter
@@ -24,7 +23,7 @@ describe.skipIf(!rlsDisponible)("FEATURE-059 RLS adoption_stories", () => {
     shelterOwnerId = await ensureUser("hist-prot-a@test.com", PASS);
     otroOwnerId = await ensureUser("hist-prot-b@test.com", PASS);
     adopterId = await ensureUser("hist-adopter-a@test.com", PASS);
-    otroAdopterId = await ensureUser("hist-adopter-b@test.com", PASS);
+    await ensureUser("hist-adopter-b@test.com", PASS);
 
     const { data: shelter } = await upsertShelterFixture({
       owner_id: shelterOwnerId,
