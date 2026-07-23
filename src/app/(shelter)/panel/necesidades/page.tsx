@@ -54,26 +54,40 @@ export default async function NecesidadesPanelPage() {
             <NecesidadForm shelterId={shelter.id as string} />
           </div>
 
-          <h2 className="mt-8 font-heading text-xl font-bold">{t("abiertasTitulo")}</h2>
+          <h2 className="mt-10 flex items-center gap-2 font-heading text-xl font-bold">
+            {t("abiertasTitulo")}
+            {abiertas.length > 0 && (
+              <span className="rounded-full bg-primary/10 px-2.5 py-0.5 text-sm font-semibold text-primary">
+                {abiertas.length}
+              </span>
+            )}
+          </h2>
           {abiertas.length === 0 ? (
-            <p className="mt-3 rounded-xl border-2 border-dashed border-border p-6 text-center text-sm text-muted-foreground">
+            <p className="mt-3 rounded-2xl border-2 border-dashed border-border p-8 text-center text-sm text-muted-foreground">
               {t("panelEmpty")}
             </p>
           ) : (
-            <ul className="mt-3 flex flex-col gap-2">
+            <ul className="mt-4 flex flex-col gap-3">
               {abiertas.map((n) => (
                 <NecesidadRow key={n.id} need={n} shelterId={shelter.id as string} />
               ))}
             </ul>
           )}
 
-          <h2 className="mt-8 font-heading text-xl font-bold">{t("historialTitulo")}</h2>
+          <h2 className="mt-10 flex items-center gap-2 font-heading text-xl font-bold">
+            {t("historialTitulo")}
+            {cubiertas.length > 0 && (
+              <span className="rounded-full bg-muted px-2.5 py-0.5 text-sm font-semibold text-muted-foreground">
+                {cubiertas.length}
+              </span>
+            )}
+          </h2>
           {cubiertas.length === 0 ? (
-            <p className="mt-3 rounded-xl border-2 border-dashed border-border p-6 text-center text-sm text-muted-foreground">
+            <p className="mt-3 rounded-2xl border-2 border-dashed border-border p-8 text-center text-sm text-muted-foreground">
               {t("historialEmpty")}
             </p>
           ) : (
-            <ul className="mt-3 flex flex-col gap-2">
+            <ul className="mt-4 flex flex-col gap-3">
               {cubiertas.map((n) => (
                 <NecesidadRow key={n.id} need={n} shelterId={shelter.id as string} />
               ))}
