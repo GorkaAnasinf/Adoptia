@@ -48,7 +48,7 @@ export default async function AcogidaPanelPage() {
   }
 
   return (
-    <section className="mx-auto max-w-5xl px-4 py-8">
+    <section className="mx-auto max-w-6xl px-4 py-8">
       <h1 className="font-heading text-3xl font-bold">{t("gestionTitle")}</h1>
       <p className="mt-1 text-muted-foreground">{t("gestionSubtitle")}</p>
 
