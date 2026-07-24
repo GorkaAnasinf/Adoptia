@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { User } from "lucide-react";
 import { getFormatter, getTranslations } from "next-intl/server";
 import { ContactarDonanteButton } from "@/components/donaciones/ContactarDonanteButton";
 import { createClient } from "@/lib/supabase/server";
@@ -46,11 +47,11 @@ export default async function DonacionesPanelPage() {
       <p className="mt-1 text-muted-foreground">{t("panelSubtitle")}</p>
 
       {!verificada || !shelter ? (
-        <p className="mt-8 rounded-xl border-2 border-dashed border-border p-8 text-center text-muted-foreground">
+        <p className="mt-8 rounded-2xl border-2 border-dashed border-border p-8 text-center text-muted-foreground">
           {t("panelSoloVerificadas")}
         </p>
       ) : ofertas.length === 0 ? (
-        <p className="mt-8 rounded-xl border-2 border-dashed border-border p-8 text-center text-muted-foreground">
+        <p className="mt-8 rounded-2xl border-2 border-dashed border-border p-8 text-center text-muted-foreground">
           {t("tablonEmpty")}
         </p>
       ) : (
@@ -58,16 +59,13 @@ export default async function DonacionesPanelPage() {
           {ofertas.map((o) => (
             <li
               key={o.id}
-              className="flex flex-col gap-2 rounded-2xl border border-border bg-card px-4 py-3"
+              className="flex flex-col gap-3 rounded-2xl border border-border bg-card p-5 shadow-soft"
             >
-              <div className="flex flex-wrap items-center gap-2 text-sm">
+              <div className="flex flex-wrap items-center gap-2">
                 <span className="rounded-full bg-muted px-2.5 py-0.5 text-xs font-medium">
                   {t(`cat${o.categoria.charAt(0).toUpperCase()}${o.categoria.slice(1)}`)}
                 </span>
-                <span className="font-semibold">
-                  {o.full_name ? t("deDonante", { nombre: o.full_name }) : t("donanteAnonimo")}
-                </span>
-                <span className="text-muted-foreground">
+                <span className="ml-auto text-xs text-muted-foreground">
                   {[
                     o.city,
                     t("aKm", { km: o.distance_km }),
@@ -82,8 +80,17 @@ export default async function DonacionesPanelPage() {
                     .join(" · ")}
                 </span>
               </div>
-              <p className="text-sm">{o.descripcion}</p>
-              <ContactarDonanteButton offerId={o.id} />
+
+              <p className="flex items-center gap-1.5 text-sm font-semibold text-foreground">
+                <User className="size-4 shrink-0 text-muted-foreground" aria-hidden="true" />
+                {o.full_name ? t("deDonante", { nombre: o.full_name }) : t("donanteAnonimo")}
+              </p>
+
+              <p className="text-sm text-foreground">{o.descripcion}</p>
+
+              <div className="border-t border-border pt-3">
+                <ContactarDonanteButton offerId={o.id} />
+              </div>
             </li>
           ))}
         </ul>
