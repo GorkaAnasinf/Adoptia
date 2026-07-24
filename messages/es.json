@@ -1097,7 +1097,7 @@
     "contactarAviso": "El mensaje llegará al donante por email con vuestros datos de contacto; su dirección no se comparte con vosotros hasta que responda.",
     "contactarEnviar": "Enviar",
     "contactarEnviando": "Enviando…",
-    "contactarOk": "Mensaje enviado ✓",
+    "contactarOk": "Mensaje enviado",
     "contactarError": "No se pudo enviar. Inténtalo de nuevo.",
     "contactarCorto": "Contadle un poco más (mínimo 10 caracteres)."
   },
