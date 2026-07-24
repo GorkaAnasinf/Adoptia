@@ -147,5 +147,5 @@ _Nada en desarrollo en este momento._
 
 #### 🗓️ Previsto
 
-_Backlog vacío._
+- Test de la agenda falla por dependencia de la fecha real (vista diaria/resumen) — hito 0.5 ([BUG-009](../planning/items/BUG-009.md))
 <!-- RENDER:END -->
