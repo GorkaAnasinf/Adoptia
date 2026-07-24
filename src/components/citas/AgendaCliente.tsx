@@ -427,7 +427,14 @@ export function AgendaCliente({
           onHoy={() => setDiaVista(hoyISO)}
         />
       ) : vista === "anual" ? (
-        <VistaAnual year={year} todayISO={hoyISO} estadoDe={estadoDe} onIrADia={irADia} />
+        <VistaAnual
+          year={year}
+          todayISO={hoyISO}
+          estadoDe={estadoDe}
+          onIrADia={irADia}
+          onPrevYear={() => setYear((y) => y - 1)}
+          onNextYear={() => setYear((y) => y + 1)}
+        />
       ) : (
         <div className="grid gap-6 lg:grid-cols-[1fr_22rem] lg:items-start">
           <CalendarioMensual

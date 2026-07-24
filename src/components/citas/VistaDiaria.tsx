@@ -1,6 +1,7 @@
 "use client";
 
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import Link from "next/link";
 import { useTranslations } from "next-intl";
 import type { CitaAgenda, EstadoDia } from "@/lib/agenda";
 import { cn } from "@/lib/utils";
@@ -36,6 +37,8 @@ const ESTADO_CHIP: Record<string, string> = {
 };
 
 const HORA_PX = 64; // alto de cada hora en el timeline
+const HORA_MIN = 8; // ventana por defecto: siempre se pinta 08:00–21:00…
+const HORA_MAX = 21; // …y se amplía si hay franjas o citas fuera de ese rango.
 
 function aMinutos(hhmm: string): number {
   const [h, m] = hhmm.split(":").map(Number);
@@ -48,8 +51,9 @@ function minutosDeCita(startsAt: string): number {
 
 /**
  * Vista diaria de la agenda (FEATURE-055): agenda tipo timeline del día. Pinta
- * las franjas de apertura en color y coloca cada cita en su hueco horario, con
- * animal, adoptante y estado. Navegable entre días desde el padre.
+ * la rejilla completa de horas con las franjas de apertura resaltadas al fondo y
+ * coloca cada cita en su hueco (animal, adoptante, estado). La cita enlaza con
+ * la bandeja de citas para gestionarla. Navegable entre días desde el padre.
  */
 export function VistaDiaria({
   fecha,
@@ -89,13 +93,12 @@ export function VistaDiaria({
   const franjas =
     estado && (estado.tipo === "patron" || estado.tipo === "especial") ? estado.franjas : [];
 
-  // Rango horario del timeline: cubre franjas y citas; con margen a horas enteras.
+  // Ventana horaria: siempre 08:00–21:00, ampliada para cubrir franjas y citas.
   const minutosCitas = citas.map((c) => minutosDeCita(c.starts_at));
   const inicios = [...franjas.map((f) => aMinutos(f.start)), ...minutosCitas];
   const fines = [...franjas.map((f) => aMinutos(f.end)), ...minutosCitas.map((m) => m + 30)];
-  const hayTimeline = inicios.length > 0;
-  const horaInicio = hayTimeline ? Math.floor(Math.min(...inicios) / 60) : 9;
-  const horaFin = hayTimeline ? Math.ceil(Math.max(...fines) / 60) : 14;
+  const horaInicio = inicios.length ? Math.min(HORA_MIN, Math.floor(Math.min(...inicios) / 60)) : HORA_MIN;
+  const horaFin = fines.length ? Math.max(HORA_MAX, Math.ceil(Math.max(...fines) / 60)) : HORA_MAX;
   const horas = Array.from({ length: horaFin - horaInicio + 1 }, (_, i) => horaInicio + i);
   const alto = (horaFin - horaInicio) * HORA_PX;
   const topDe = (min: number) => ((min - horaInicio * 60) / 60) * HORA_PX;
@@ -142,88 +145,96 @@ export function VistaDiaria({
         )}
       </div>
 
-      {cerrado && (
+      {/* Resumen de disponibilidad del día (evita solapar texto en el timeline) */}
+      {cerrado ? (
         <p className="mt-4 rounded-xl border border-destructive/30 bg-destructive/10 px-4 py-2.5 text-sm font-medium text-destructive">
           {t("cerrado")}
           {estado?.tipo === "cerrado" && estado.note ? ` · ${estado.note}` : ""}
         </p>
+      ) : franjas.length > 0 ? (
+        <div className="mt-4 flex flex-wrap gap-2">
+          {franjas.map((f) => (
+            <span
+              key={`${f.start}-${f.end}`}
+              className="inline-flex items-center gap-1.5 rounded-full border border-tertiary/40 bg-tertiary/10 px-3 py-1 text-xs font-medium text-tertiary"
+            >
+              {t("abierto")} · {f.start}–{f.end} · {t("diariaTurnos", { min: f.minutes })}
+            </span>
+          ))}
+        </div>
+      ) : (
+        <p className="mt-4 text-sm text-muted-foreground">{t("diariaSinHorario")}</p>
       )}
 
-      {!hayTimeline ? (
-        <p className="mt-6 rounded-xl border border-dashed border-border px-4 py-10 text-center text-muted-foreground">
-          {t("sinCitasDia")}
-        </p>
-      ) : (
-        <div className="relative mt-5" style={{ height: alto }}>
-          {/* Líneas y etiquetas de hora */}
-          {horas.map((h) => (
+      {citas.length === 0 && (
+        <p className="mt-3 text-sm text-muted-foreground">{t("sinCitasDia")}</p>
+      )}
+
+      {/* Timeline: rejilla completa de horas + franjas al fondo + citas encima */}
+      <div className="relative mt-5" style={{ height: alto }}>
+        {horas.map((h) => (
+          <div
+            key={h}
+            className="absolute inset-x-0 border-t border-border/60"
+            style={{ top: (h - horaInicio) * HORA_PX }}
+          >
+            <span className="absolute -top-2.5 left-0 w-12 pr-2 text-right text-xs tabular-nums text-muted-foreground">
+              {String(h).padStart(2, "0")}:00
+            </span>
+          </div>
+        ))}
+
+        <div className="absolute inset-y-0 left-14 right-0">
+          {/* Franjas de apertura: fondo en color, sin texto (va en el resumen) */}
+          {franjas.map((f) => (
             <div
-              key={h}
-              className="absolute inset-x-0 border-t border-border/60"
-              style={{ top: (h - horaInicio) * HORA_PX }}
-            >
-              <span className="absolute -top-2.5 left-0 w-12 pr-2 text-right text-xs tabular-nums text-muted-foreground">
-                {String(h).padStart(2, "0")}:00
-              </span>
-            </div>
+              key={`${f.start}-${f.end}`}
+              aria-hidden="true"
+              className="absolute inset-x-0 rounded-lg border-l-4 border-tertiary/60 bg-tertiary/10"
+              style={{
+                top: topDe(aMinutos(f.start)),
+                height: ((aMinutos(f.end) - aMinutos(f.start)) / 60) * HORA_PX,
+              }}
+            />
           ))}
 
-          {/* Pista de contenido (a la derecha de las etiquetas) */}
-          <div className="absolute inset-y-0 left-14 right-0">
-            {/* Franjas de apertura, en color */}
-            {franjas.map((f) => (
-              <div
-                key={`${f.start}-${f.end}`}
-                className="absolute inset-x-0 rounded-lg border-l-4 border-tertiary bg-tertiary/10 px-3 py-1"
-                style={{ top: topDe(aMinutos(f.start)), height: (aMinutos(f.end) - aMinutos(f.start)) / 60 * HORA_PX }}
+          {/* Citas: sobre las franjas, clicables hacia la bandeja de citas */}
+          {citas.map((c) => {
+            const min = minutosDeCita(c.starts_at);
+            const dur = duracionCita(min);
+            return (
+              <Link
+                key={c.id}
+                href="/panel/citas"
+                title={t("verEnCitas")}
+                className={cn(
+                  "absolute left-1 right-1 z-10 flex flex-col gap-0.5 overflow-hidden rounded-lg border border-border border-l-4 px-2.5 py-1 shadow-sm transition-shadow hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary",
+                  ESTADO_COLOR[c.status] ?? "border-l-primary bg-surface-container-high",
+                )}
+                style={{ top: topDe(min), height: Math.max((dur / 60) * HORA_PX, 44) }}
               >
-                <p className="text-xs font-semibold text-tertiary">
-                  {t("abierto")} · {f.start}–{f.end}
-                </p>
-                <p className="text-[0.7rem] text-muted-foreground">{t("diariaTurnos", { min: f.minutes })}</p>
-              </div>
-            ))}
-
-            {/* Citas, sobre las franjas */}
-            {citas.map((c) => {
-              const min = minutosDeCita(c.starts_at);
-              const dur = duracionCita(min);
-              return (
-                <div
-                  key={c.id}
-                  className={cn(
-                    "absolute right-1 z-10 flex flex-col gap-0.5 overflow-hidden rounded-lg border border-border border-l-4 px-2.5 py-1 shadow-sm",
-                    ESTADO_COLOR[c.status] ?? "border-l-primary bg-surface-container-high",
-                  )}
-                  style={{
-                    top: topDe(min),
-                    height: Math.max((dur / 60) * HORA_PX, 40),
-                    left: "5.5rem",
-                  }}
-                >
-                  <div className="flex items-center gap-2">
-                    <span className="font-heading text-sm font-bold tabular-nums">
-                      {HORA.format(new Date(c.starts_at))}
-                    </span>
-                    <span className="truncate text-sm font-semibold">{c.animalName ?? "—"}</span>
-                    <span
-                      className={cn(
-                        "ml-auto shrink-0 rounded-full px-2 py-0.5 text-[0.65rem] font-semibold",
-                        ESTADO_CHIP[c.status] ?? "bg-surface-container-high text-foreground",
-                      )}
-                    >
-                      {tc(ESTADO_KEY[c.status] ?? "estadoPendiente")}
-                    </span>
-                  </div>
-                  {c.adopterName && (
-                    <span className="truncate text-xs text-muted-foreground">{c.adopterName}</span>
-                  )}
+                <div className="flex items-center gap-2">
+                  <span className="font-heading text-sm font-bold tabular-nums">
+                    {HORA.format(new Date(c.starts_at))}
+                  </span>
+                  <span className="truncate text-sm font-semibold">{c.animalName ?? "—"}</span>
+                  <span
+                    className={cn(
+                      "ml-auto shrink-0 rounded-full px-2 py-0.5 text-[0.65rem] font-semibold",
+                      ESTADO_CHIP[c.status] ?? "bg-surface-container-high text-foreground",
+                    )}
+                  >
+                    {tc(ESTADO_KEY[c.status] ?? "estadoPendiente")}
+                  </span>
                 </div>
-              );
-            })}
-          </div>
+                {c.adopterName && (
+                  <span className="truncate text-xs text-muted-foreground">{c.adopterName}</span>
+                )}
+              </Link>
+            );
+          })}
         </div>
-      )}
+      </div>
     </div>
   );
 }

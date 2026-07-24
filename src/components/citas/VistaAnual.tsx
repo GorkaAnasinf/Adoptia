@@ -1,5 +1,7 @@
 "use client";
 
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { celdasMes, fechaISO, type EstadoDia } from "@/lib/agenda";
 import { cn } from "@/lib/utils";
 import type { EstadoCalendario } from "./CalendarioMensual";
@@ -24,15 +26,42 @@ export function VistaAnual({
   todayISO,
   estadoDe,
   onIrADia,
+  onPrevYear,
+  onNextYear,
 }: {
   year: number;
   todayISO: string | null;
   estadoDe: (iso: string) => EstadoCalendario;
   onIrADia: (iso: string) => void;
+  onPrevYear?: () => void;
+  onNextYear?: () => void;
 }) {
+  const t = useTranslations("agenda");
   return (
     <div className="rounded-2xl border border-border bg-card p-4 shadow-soft sm:p-6">
-      <h2 className="font-heading text-2xl font-bold">{year}</h2>
+      <div className="flex items-center justify-between gap-3">
+        <h2 className="font-heading text-2xl font-bold">{year}</h2>
+        {(onPrevYear || onNextYear) && (
+          <div className="flex gap-2">
+            <button
+              type="button"
+              onClick={onPrevYear}
+              aria-label={t("anioAnterior")}
+              className="flex size-10 items-center justify-center rounded-xl border border-border text-foreground transition-colors hover:bg-accent"
+            >
+              <ChevronLeft className="size-5" aria-hidden="true" />
+            </button>
+            <button
+              type="button"
+              onClick={onNextYear}
+              aria-label={t("anioSiguiente")}
+              className="flex size-10 items-center justify-center rounded-xl border border-border text-foreground transition-colors hover:bg-accent"
+            >
+              <ChevronRight className="size-5" aria-hidden="true" />
+            </button>
+          </div>
+        )}
+      </div>
       <div className="mt-4 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {Array.from({ length: 12 }, (_, month) => {
           const mesLabel = new Intl.DateTimeFormat("es-ES", { month: "long" }).format(
