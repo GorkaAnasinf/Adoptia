@@ -66,3 +66,9 @@ queda como posible mejora futura (no en este item).
 
 - La protectora marca urgente en la ficha; sale badge y filtro «Solo urgentes».
 - En orden recientes los urgentes van primero. Suite y lint verdes; textos en es.json.
+
+## Despliegue (2026-07-24)
+
+- Migración `20260723180000_feature060_urgent` **aplicada en producción** (`supabase
+  db push`): columna `animals.urgent` y `animals_search` recreada con `p_urgent` y
+  el orden urgentes-primero. El badge «Urgente» queda **operativo en prod**.
