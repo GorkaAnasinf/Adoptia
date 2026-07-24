@@ -135,7 +135,7 @@ export default async function HomePage() {
   return (
     <>
       {/* Hero con buscador sobre foto ambiente */}
-      <section className="relative flex min-h-120 flex-col items-center justify-center px-4 py-16 sm:min-h-160">
+      <section className="relative flex min-h-88 flex-col items-center justify-center px-4 pb-8 pt-14 sm:min-h-120 sm:pb-10">
         <div className="absolute inset-0 overflow-hidden" aria-hidden="true">
           <Parallax factor={0.35} className="absolute -inset-y-24 inset-x-0">
             <Image

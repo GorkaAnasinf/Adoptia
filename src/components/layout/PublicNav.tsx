@@ -12,6 +12,8 @@ const LINKS = [
   { key: "shelters", href: "/protectoras" },
   { key: "map", href: "/mapa" },
   { key: "lostFound", href: "/perdidos-encontrados" },
+  { key: "acogida", href: "/acogida" },
+  { key: "necesidades", href: "/necesidades" },
 ] as const;
 
 /**
@@ -77,7 +79,7 @@ export function PublicNav() {
   return (
     <>
       {/* Enlaces (desktop) */}
-      <nav className="hidden items-center gap-5 text-sm md:flex" aria-label={t("openMenu")}>
+      <nav className="hidden items-center gap-x-4 gap-y-1 text-sm md:flex" aria-label={t("openMenu")}>
         {LINKS.map(({ key, href }) => (
           <Link
             key={key}

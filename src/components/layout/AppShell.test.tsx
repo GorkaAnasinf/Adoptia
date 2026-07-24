@@ -37,7 +37,7 @@ describe("AppShell", () => {
     expect(screen.getByText(messages.shell.statusVerified)).toBeInTheDocument();
   });
 
-  it("el logo lleva al inicio del rol: la protectora a su panel y el adoptante a su cuenta", () => {
+  it("el logo lleva siempre a la home pública, sea cual sea el rol", () => {
     const { unmount } = render(
       <NextIntlClientProvider locale="es" messages={messages}>
         <AppShell role="shelter" onboarding={false} status="verified">
@@ -46,7 +46,7 @@ describe("AppShell", () => {
       </NextIntlClientProvider>,
     );
     for (const enlace of screen.getAllByRole("link", { name: new RegExp(messages.common.appName) })) {
-      expect(enlace).toHaveAttribute("href", "/panel");
+      expect(enlace).toHaveAttribute("href", "/");
     }
     unmount();
 
@@ -58,7 +58,7 @@ describe("AppShell", () => {
       </NextIntlClientProvider>,
     );
     for (const enlace of screen.getAllByRole("link", { name: new RegExp(messages.common.appName) })) {
-      expect(enlace).toHaveAttribute("href", "/mi-cuenta");
+      expect(enlace).toHaveAttribute("href", "/");
     }
   });
 
