@@ -1,19 +1,19 @@
 "use client";
 
-import { Eye, Pencil } from "lucide-react";
+import { Building2, Eye, FileText, HandHeart, Images, Pencil, Share2, Users } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { FormSection } from "@/components/ui/FormSection";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { esEnlacePagoValido } from "@/lib/enlaces-pago";
 import { socialLinksSchema } from "@/lib/schemas/shelter";
-import type { OpeningHours, SocialLinks } from "@/lib/schemas/shelter";
+import type { SocialLinks } from "@/lib/schemas/shelter";
 import { createClient } from "@/lib/supabase/client";
 import { CoverUploader } from "./CoverUploader";
 import { LogoUploader } from "./LogoUploader";
-import { OpeningHoursEditor } from "./OpeningHoursEditor";
 import { type ShelterMedia, ShelterMediaUploader } from "./ShelterMediaUploader";
 import {
   type PublicAnimal,
@@ -27,7 +27,6 @@ type Form = {
   foundedYear: string; // input de texto; se valida y parsea al guardar
   description: string;
   donationLink: string;
-  openingHours: OpeningHours;
   socialLinks: SocialLinks;
   acceptsVolunteers: boolean;
   acceptsFostering: boolean;
@@ -86,7 +85,6 @@ export function PerfilEditor({
     description: form.description || null,
     donation_link: form.donationLink || null,
     social_links: form.socialLinks,
-    opening_hours: form.openingHours,
     accepts_volunteers: form.acceptsVolunteers,
     accepts_fostering: form.acceptsFostering,
   };
@@ -120,7 +118,6 @@ export function PerfilEditor({
           founded_year: anioFundacion,
           description: form.description.trim() || null,
           donation_link: form.donationLink.trim() || null,
-          opening_hours: form.openingHours,
           social_links: limpias,
           accepts_volunteers: form.acceptsVolunteers,
           accepts_fostering: form.acceptsFostering,
@@ -155,105 +152,117 @@ export function PerfilEditor({
           <ShelterPublicProfile shelter={shelterPreview} animals={animals} photos={media} />
         </div>
       ) : (
-        <div className="mt-6 flex flex-col gap-6">
-          <LogoUploader
-            shelterId={shelterId}
-            initialUrl={form.logoUrl || undefined}
-            onUploaded={(url) => set("logoUrl", url)}
-          />
+        <div className="mt-6 rounded-2xl border border-border bg-card px-5 shadow-soft sm:px-8">
+          <div className="divide-y divide-border">
+            <FormSection icon={Building2} title={t("secIdentidadTitulo")} description={t("secIdentidadDesc")}>
+              <div className="flex flex-col gap-5">
+                <LogoUploader
+                  shelterId={shelterId}
+                  initialUrl={form.logoUrl || undefined}
+                  onUploaded={(url) => set("logoUrl", url)}
+                />
 
-          <CoverUploader
-            shelterId={shelterId}
-            initialUrl={form.coverUrl || undefined}
-            onChange={(url) => set("coverUrl", url ?? "")}
-          />
+                <CoverUploader
+                  shelterId={shelterId}
+                  initialUrl={form.coverUrl || undefined}
+                  onChange={(url) => set("coverUrl", url ?? "")}
+                />
 
-          <div className="flex flex-col gap-1.5">
-            <Label htmlFor="foundedYear">{t("foundedYear")}</Label>
-            <Input
-              id="foundedYear"
-              type="number"
-              inputMode="numeric"
-              min={1900}
-              max={anioActual}
-              value={form.foundedYear}
-              placeholder={String(anioActual - 10)}
-              onChange={(e) => set("foundedYear", e.target.value)}
-              className="max-w-40"
-            />
-            <p className="text-xs text-muted-foreground">{t("foundedYearHelp")}</p>
-          </div>
-
-          <div className="flex flex-col gap-1.5">
-            <Label htmlFor="description">{t("description")}</Label>
-            <textarea
-              id="description"
-              rows={5}
-              value={form.description}
-              placeholder={t("descriptionPlaceholder")}
-              onChange={(e) => set("description", e.target.value)}
-              className="rounded-md border border-border bg-background px-3 py-2 text-sm"
-            />
-          </div>
-
-          {/* Donaciones (FEATURE-013): enlace externo, Adoptia no cobra */}
-          <div className="flex flex-col gap-1.5">
-            <Label htmlFor="donationLink">{t("donationLink")}</Label>
-            <Input
-              id="donationLink"
-              value={form.donationLink}
-              placeholder="https://www.teaming.net/…"
-              onChange={(e) => set("donationLink", e.target.value)}
-            />
-            <p className="text-xs text-muted-foreground">{t("donationLinkHelp")}</p>
-          </div>
-
-          <OpeningHoursEditor value={form.openingHours} onChange={(v) => set("openingHours", v)} />
-
-          <ShelterMediaUploader shelterId={shelterId} media={media} onChange={setMedia} />
-
-          <fieldset className="flex flex-col gap-3">
-            <legend className="font-medium">{t("socialsTitle")}</legend>
-            <div className="grid gap-3 sm:grid-cols-2">
-              {REDES.map(({ key, labelKey }) => (
-                <div key={key} className="flex flex-col gap-1.5">
-                  <Label htmlFor={`red-${key}`}>{t(labelKey)}</Label>
+                <div className="flex flex-col gap-1.5">
+                  <Label htmlFor="foundedYear">{t("foundedYear")}</Label>
                   <Input
-                    id={`red-${key}`}
-                    value={form.socialLinks[key] ?? ""}
-                    onChange={(e) => setRed(key, e.target.value)}
-                    placeholder="https://…"
+                    id="foundedYear"
+                    type="number"
+                    inputMode="numeric"
+                    min={1900}
+                    max={anioActual}
+                    value={form.foundedYear}
+                    placeholder={String(anioActual - 10)}
+                    onChange={(e) => set("foundedYear", e.target.value)}
+                    className="max-w-40"
                   />
+                  <p className="text-xs text-muted-foreground">{t("foundedYearHelp")}</p>
                 </div>
-              ))}
-            </div>
-          </fieldset>
+              </div>
+            </FormSection>
 
-          <fieldset className="flex flex-col gap-3">
-            <legend className="font-medium">{t("collabTitle")}</legend>
-            <div className="grid gap-3 sm:grid-cols-2">
-              <label className="flex cursor-pointer items-center gap-2.5 rounded-xl border border-border p-3 text-sm has-[:checked]:border-primary has-[:checked]:bg-primary/5">
-                <input
-                  type="checkbox"
-                  checked={form.acceptsVolunteers}
-                  onChange={(e) => set("acceptsVolunteers", e.target.checked)}
-                  className="size-4 accent-[var(--primary)]"
+            <FormSection icon={FileText} title={t("secSobreTitulo")} description={t("secSobreDesc")}>
+              <div className="flex flex-col gap-1.5">
+                <Label htmlFor="description">{t("description")}</Label>
+                <textarea
+                  id="description"
+                  rows={5}
+                  value={form.description}
+                  placeholder={t("descriptionPlaceholder")}
+                  onChange={(e) => set("description", e.target.value)}
+                  className="rounded-md border border-border bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
                 />
-                {t("acceptsVolunteers")}
-              </label>
-              <label className="flex cursor-pointer items-center gap-2.5 rounded-xl border border-border p-3 text-sm has-[:checked]:border-primary has-[:checked]:bg-primary/5">
-                <input
-                  type="checkbox"
-                  checked={form.acceptsFostering}
-                  onChange={(e) => set("acceptsFostering", e.target.checked)}
-                  className="size-4 accent-[var(--primary)]"
-                />
-                {t("acceptsFostering")}
-              </label>
-            </div>
-          </fieldset>
+              </div>
+            </FormSection>
 
-          {error && <p className="text-sm text-destructive">{error}</p>}
+            {/* Donaciones (FEATURE-013): enlace externo, Adoptia no cobra */}
+            <FormSection icon={HandHeart} title={t("secDonacionesTitulo")} description={t("secDonacionesDesc")}>
+              <div className="flex flex-col gap-1.5">
+                <Label htmlFor="donationLink">{t("donationLink")}</Label>
+                <Input
+                  id="donationLink"
+                  value={form.donationLink}
+                  placeholder="https://www.teaming.net/…"
+                  onChange={(e) => set("donationLink", e.target.value)}
+                />
+                <p className="text-xs text-muted-foreground">{t("donationLinkHelp")}</p>
+              </div>
+            </FormSection>
+
+            <FormSection icon={Images} title={t("facilitiesTitle")} description={t("secFotosDesc")}>
+              <ShelterMediaUploader shelterId={shelterId} media={media} onChange={setMedia} />
+            </FormSection>
+
+            <FormSection icon={Share2} title={t("socialsTitle")} description={t("secRedesDesc")}>
+              <div className="grid gap-3 sm:grid-cols-2">
+                {REDES.map(({ key, labelKey }) => (
+                  <div key={key} className="flex flex-col gap-1.5">
+                    <Label htmlFor={`red-${key}`}>{t(labelKey)}</Label>
+                    <Input
+                      id={`red-${key}`}
+                      value={form.socialLinks[key] ?? ""}
+                      onChange={(e) => setRed(key, e.target.value)}
+                      placeholder="https://…"
+                    />
+                  </div>
+                ))}
+              </div>
+            </FormSection>
+
+            <FormSection icon={Users} title={t("collabTitle")} description={t("secColabDesc")}>
+              <div className="grid gap-3 sm:grid-cols-2">
+                <label className="flex cursor-pointer items-center gap-2.5 rounded-xl border border-border p-3 text-sm has-[:checked]:border-primary has-[:checked]:bg-primary/5">
+                  <input
+                    type="checkbox"
+                    checked={form.acceptsVolunteers}
+                    onChange={(e) => set("acceptsVolunteers", e.target.checked)}
+                    className="size-4 accent-[var(--primary)]"
+                  />
+                  {t("acceptsVolunteers")}
+                </label>
+                <label className="flex cursor-pointer items-center gap-2.5 rounded-xl border border-border p-3 text-sm has-[:checked]:border-primary has-[:checked]:bg-primary/5">
+                  <input
+                    type="checkbox"
+                    checked={form.acceptsFostering}
+                    onChange={(e) => set("acceptsFostering", e.target.checked)}
+                    className="size-4 accent-[var(--primary)]"
+                  />
+                  {t("acceptsFostering")}
+                </label>
+              </div>
+            </FormSection>
+
+            {error && (
+              <div className="py-6">
+                <p className="text-sm text-destructive">{error}</p>
+              </div>
+            )}
+          </div>
         </div>
       )}
 

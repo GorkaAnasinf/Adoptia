@@ -30,7 +30,7 @@ const animales: PublicAnimal[] = [
 ];
 
 describe("ShelterPublicProfile", () => {
-  it("muestra nombre, ubicación, descripción, horario y colaboración", () => {
+  it("muestra nombre, ubicación, descripción y colaboración", () => {
     conIntl(
       <ShelterPublicProfile
         shelter={{
@@ -38,7 +38,6 @@ describe("ShelterPublicProfile", () => {
           city: "Bilbao",
           province: "Bizkaia",
           description: "Somos un refugio de prueba.",
-          opening_hours: { lun: [{ open: "10:00", close: "14:00" }] },
           accepts_volunteers: true,
           status: "verified",
         }}
@@ -48,7 +47,6 @@ describe("ShelterPublicProfile", () => {
     expect(screen.getByRole("heading", { name: "Refugio Esperanza" })).toBeInTheDocument();
     expect(screen.getByText(/Bilbao, Bizkaia/)).toBeInTheDocument();
     expect(screen.getByText("Somos un refugio de prueba.")).toBeInTheDocument();
-    expect(screen.getByText("10:00–14:00")).toBeInTheDocument();
     expect(screen.getByText(messages.shelterPublic.volunteers)).toBeInTheDocument();
     expect(screen.getByText("Luna")).toBeInTheDocument();
   });
@@ -130,7 +128,7 @@ describe("ShelterPublicProfile — métricas (FEATURE-028)", () => {
   });
 });
 
-describe("ShelterPublicProfile — horario y ubicación (FEATURE-028)", () => {
+describe("ShelterPublicProfile — ubicación (FEATURE-028)", () => {
   // POINT(-2.935 43.263) en EWKB hex (como lo devuelve Supabase)
   const LOCATION = "0101000020E61000007B14AE47E17A07C08B6CE7FBA9A14540";
 
@@ -145,18 +143,10 @@ describe("ShelterPublicProfile — horario y ubicación (FEATURE-028)", () => {
     expect(screen.getByText(/calle esperanza 14/i)).toBeInTheDocument();
   });
 
-  it("sin location no hay mapa; la sección de horario sigue funcionando", () => {
-    conIntl(
-      <ShelterPublicProfile
-        shelter={{
-          name: "Refugio",
-          opening_hours: { lun: [{ open: "10:00", close: "18:00" }] },
-        }}
-        animals={[]}
-      />,
-    );
+  it("sin location ni dirección no se pinta la sección de ubicación", () => {
+    conIntl(<ShelterPublicProfile shelter={{ name: "Refugio" }} animals={[]} />);
     expect(screen.queryByTestId("mini-mapa")).not.toBeInTheDocument();
-    expect(screen.getByText("10:00–18:00")).toBeInTheDocument();
+    expect(screen.queryByText(messages.shelterPublic.locationTitle)).not.toBeInTheDocument();
   });
 });
 

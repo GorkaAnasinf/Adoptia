@@ -7,11 +7,9 @@ import { EnlaceExternoPago } from "@/components/apadrinamiento/EnlaceExternoPago
 import { MiniMapa } from "@/components/map/MiniMapa";
 import { AyudarNecesidadButton } from "@/components/necesidades/AyudarNecesidadButton";
 import type { AnimalStatus } from "@/lib/schemas/animal";
-import { resumenHorario, tieneHorario } from "@/lib/opening-hours";
 import { parsePoint } from "@/lib/shelter-mapping";
 import { ShelterAnimalsGrid } from "./ShelterAnimalsGrid";
 import type { OpeningHours, SocialLinks } from "@/lib/schemas/shelter";
-import { cn } from "@/lib/utils";
 
 export type PublicShelter = {
   name: string;
@@ -83,12 +81,10 @@ export function ShelterPublicProfile({
 }) {
   const t = useTranslations("shelterPublic");
   const tn = useTranslations("necesidades");
-  const td = useTranslations("onboarding");
   const ubicacion = [shelter.city, shelter.province].filter(Boolean).join(", ");
   const redes = REDES.filter((r) => {
     return Boolean(shelter.social_links?.[r.key]);
   });
-  const horario = resumenHorario(shelter.opening_hours);
   const punto = parsePoint(shelter.location);
 
   // Métricas (FEATURE-028): cada tile solo con dato real; nada de «0 años».
@@ -298,29 +294,9 @@ export function ShelterPublicProfile({
           </section>
         )}
 
-        {(tieneHorario(shelter.opening_hours) || punto || shelter.address) && (
+        {(punto || shelter.address) && (
           <aside className="rounded-2xl border border-border bg-card p-5 sm:p-6">
-            <h2 className="font-heading text-lg font-semibold">{t("hoursLocationTitle")}</h2>
-            {tieneHorario(shelter.opening_hours) && (
-              <dl className="mt-3 divide-y divide-border">
-                {horario.map(({ dia, franjas }) => (
-                  <div
-                    key={dia}
-                    className="flex items-center justify-between gap-3 py-1.5 text-sm"
-                  >
-                    <dt className="font-medium">{td(`days.${dia}`)}</dt>
-                    <dd
-                      className={cn(
-                        "tabular-nums",
-                        franjas ? "text-foreground" : "text-muted-foreground",
-                      )}
-                    >
-                      {franjas ?? t("closed")}
-                    </dd>
-                  </div>
-                ))}
-              </dl>
-            )}
+            <h2 className="font-heading text-lg font-semibold">{t("locationTitle")}</h2>
             {punto && (
               <div className="mt-4 overflow-hidden rounded-xl">
                 <MiniMapa lat={punto.lat} lng={punto.lng} />
