@@ -21,7 +21,6 @@ import { AddressAutocomplete } from "./AddressAutocomplete";
 import { LogoUploader } from "./LogoUploader";
 import { ProvinciaCombo } from "./ProvinciaCombo";
 import { MapPinPicker } from "./MapPinPicker";
-import { OpeningHoursEditor } from "./OpeningHoursEditor";
 import { Stepper } from "./Stepper";
 
 type Form = Partial<ShelterForm>;
@@ -56,7 +55,6 @@ export function WizardAlta({
   const [paso, setPaso] = useState(0);
   const [maxVisto, setMaxVisto] = useState(0);
   const [form, setForm] = useState<Form>({
-    openingHours: {},
     socialLinks: {},
     acceptsVolunteers: false,
     acceptsFostering: false,
@@ -369,10 +367,6 @@ export function WizardAlta({
               className="rounded-md border border-border bg-background px-3 py-2 text-sm"
             />
           </Campo>
-          <OpeningHoursEditor
-            value={form.openingHours ?? {}}
-            onChange={(v) => set("openingHours", v)}
-          />
           <div className="grid gap-3 sm:grid-cols-2">
             <label className="flex cursor-pointer items-center gap-2.5 rounded-xl border border-border p-3 text-sm has-[:checked]:border-primary has-[:checked]:bg-primary/5">
               <input

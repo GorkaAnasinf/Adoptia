@@ -10,7 +10,7 @@ import {
 import { createClient } from "@/lib/supabase/server";
 
 const CAMPOS =
-  "name, slug, description, city, province, website, social_links, opening_hours, accepts_volunteers, accepts_fostering, status, donation_link, email, cover_url, founded_year, address, location";
+  "name, slug, description, city, province, website, social_links, accepts_volunteers, accepts_fostering, status, donation_link, email, cover_url, founded_year, address, location";
 
 async function cargarProtectora(slug: string) {
   const supabase = await createClient();

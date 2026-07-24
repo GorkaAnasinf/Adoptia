@@ -9,7 +9,7 @@ import { AyudarNecesidadButton } from "@/components/necesidades/AyudarNecesidadB
 import type { AnimalStatus } from "@/lib/schemas/animal";
 import { parsePoint } from "@/lib/shelter-mapping";
 import { ShelterAnimalsGrid } from "./ShelterAnimalsGrid";
-import type { OpeningHours, SocialLinks } from "@/lib/schemas/shelter";
+import type { SocialLinks } from "@/lib/schemas/shelter";
 
 export type PublicShelter = {
   name: string;
@@ -24,7 +24,6 @@ export type PublicShelter = {
   province?: string | null;
   website?: string | null;
   social_links?: SocialLinks | null;
-  opening_hours?: OpeningHours | null;
   accepts_volunteers?: boolean;
   accepts_fostering?: boolean;
   status?: string | null;
