@@ -98,20 +98,19 @@ describe("Panel de estadísticas", () => {
     expect(screen.getByTestId("stats-resumen")).toHaveTextContent("10");
   });
 
-  it("fila por animal con visitas, solicitudes y generador de imagen", async () => {
+  it("fila por animal con enlace, visitas y solicitudes", async () => {
     await renderPagina();
     expect(screen.getByRole("link", { name: "Luna" })).toHaveAttribute("href", "/animales/luna-demo");
-    expect(
-      screen.getByRole("button", { name: messages.stats.generarImagen }),
-    ).toBeInTheDocument();
+    const fila = screen.getByRole("link", { name: "Luna" }).closest("tr");
+    expect(fila).toHaveTextContent("7");
+    expect(fila).toHaveTextContent("2");
   });
 
-  it("un borrador no ofrece imagen social", async () => {
+  it("sin visitas, la gráfica muestra el estado vacío", async () => {
     state.animales = [{ ...ANIMAL, published_at: null }];
     state.vistas = [];
     state.solicitudes = [];
     await renderPagina();
-    expect(screen.getByText(messages.stats.soloPublicados)).toBeInTheDocument();
     expect(screen.getByText(messages.stats.graficaVacia)).toBeInTheDocument();
   });
 

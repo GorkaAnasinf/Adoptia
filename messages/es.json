@@ -1142,15 +1142,9 @@
     "colAnimal": "Animal",
     "colVisitas": "Visitas 30d",
     "colSolicitudes": "Solicitudes",
-    "colImagen": "Imagen para redes",
-    "generarImagen": "Generar imagen",
-    "cerrarImagen": "Cerrar",
-    "descargarCuadrada": "Descargar 1080×1080",
-    "descargarStory": "Descargar 1080×1920",
     "vacioTitle": "Aún no hay datos",
     "vacioText": "Publica tus primeros animales y aquí verás sus visitas y solicitudes.",
-    "vacioCta": "Ir a mis animales",
-    "soloPublicados": "Solo disponible para fichas publicadas"
+    "vacioCta": "Ir a mis animales"
   },
   "perdidos": {
     "title": "Animales perdidos y encontrados",
