@@ -18,7 +18,7 @@ export function ContactarDonanteButton({ offerId }: { offerId: string }) {
 
   if (estado === "ok") {
     return (
-      <span className="inline-flex items-center gap-1.5 text-sm font-medium text-secondary">
+      <span className="inline-flex items-center gap-1.5 text-sm font-medium text-primary">
         <CheckCircle2 className="size-4" aria-hidden="true" />
         {t("contactarOk")}
       </span>
@@ -30,7 +30,7 @@ export function ContactarDonanteButton({ offerId }: { offerId: string }) {
       <button
         type="button"
         onClick={() => setAbierto(true)}
-        className="inline-flex min-h-9 items-center rounded-full bg-secondary px-5 text-sm font-semibold text-secondary-foreground transition-colors hover:bg-secondary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2"
+        className="inline-flex min-h-9 items-center rounded-full bg-primary px-5 text-sm font-semibold text-primary-foreground transition-colors hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
       >
         {t("contactar")}
       </button>
@@ -71,7 +71,7 @@ export function ContactarDonanteButton({ offerId }: { offerId: string }) {
           onChange={(e) => setMensaje(e.target.value)}
           rows={2}
           maxLength={1000}
-          className="rounded-lg border border-input bg-white px-3 py-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary"
+          className="rounded-lg border border-input bg-white px-3 py-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
         />
       </label>
       <p className="text-xs text-muted-foreground">{t("contactarAviso")}</p>
@@ -80,7 +80,7 @@ export function ContactarDonanteButton({ offerId }: { offerId: string }) {
         <button
           type="submit"
           disabled={estado === "enviando"}
-          className="inline-flex min-h-9 items-center rounded-full bg-secondary px-5 text-sm font-semibold text-secondary-foreground transition-colors hover:bg-secondary/90 disabled:opacity-50"
+          className="inline-flex min-h-9 items-center rounded-full bg-primary px-5 text-sm font-semibold text-primary-foreground transition-colors hover:opacity-90 disabled:opacity-50"
         >
           {estado === "enviando" ? t("contactarEnviando") : t("contactarEnviar")}
         </button>
