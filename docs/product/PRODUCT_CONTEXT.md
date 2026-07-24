@@ -141,6 +141,7 @@ Estado de cada capacidad en lenguaje de usuario. Se regenera con `python scripts
 - Filtro «Apto para piso» en la búsqueda de animales ([IMPROVEMENT-031](../planning/items/IMPROVEMENT-031.md))
 - Alinear las subpáginas de /mi-cuenta con el lenguaje del dashboard ([IMPROVEMENT-032](../planning/items/IMPROVEMENT-032.md))
 - Pulido de la cara pública — cabecera, pie y páginas de contenido ([IMPROVEMENT-033](../planning/items/IMPROVEMENT-033.md))
+- Rediseño de la vista pública de Casas de acogida ([IMPROVEMENT-034](../planning/items/IMPROVEMENT-034.md))
 
 #### 🚧 En camino (en desarrollo ahora)
 

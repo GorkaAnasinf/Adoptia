@@ -2,6 +2,12 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/es/) adaptado. Versionado 0.x hasta el MVP.
 
+## [0.0.98] — 2026-07-24
+
+### Cambiado
+
+- **Rediseño de la vista de Casas de acogida (IMPROVEMENT-034)**: la página pública `/acogida` pasa a estar **ordenada por secciones** y al **ancho del panel de la protectora** (`max-w-6xl`), en línea con el resto de vistas ya tocadas. Estrena **cabecera con acento**, una banda **«Cómo funciona la acogida»** de tres pasos (te registras → las protectoras de tu zona te ven → te proponen por email), la **garantía de privacidad** como bloque destacado y el **formulario** en columna legible centrada bajo su propia cabecera de sección. Solo frontend + i18n; sin migraciones. QA: suite verde.
+
 ## [0.0.97] — 2026-07-24
 
 ### Cambiado

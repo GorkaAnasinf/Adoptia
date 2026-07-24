@@ -81,7 +81,7 @@ Para centrar el desarrollo en un lado de la app cada vez, el 0.2 se aborda en do
 | [FEATURE-015](items/FEATURE-015.md) | Contenido educativo sobre adopción responsable | hecho | baja |
 | [FEATURE-016](items/FEATURE-016.md) | Registro de casas de acogida | hecho | baja |
 
-### Hito 0.5 — 100% completado (66/66)
+### Hito 0.5 — 100% completado (67/67)
 
 | Item | Título | Estado | Prioridad |
 |------|--------|--------|-----------|
@@ -144,6 +144,7 @@ Para centrar el desarrollo en un lado de la app cada vez, el 0.2 se aborda en do
 | [IMPROVEMENT-026](items/IMPROVEMENT-026.md) | Sincronizar el estado del animal con su propuesta de acogida | hecho | media |
 | [IMPROVEMENT-030](items/IMPROVEMENT-030.md) | Cards ricas en la pestaña de propuestas enviadas de acogida | hecho | media |
 | [IMPROVEMENT-033](items/IMPROVEMENT-033.md) | Pulido de la cara pública — cabecera, pie y páginas de contenido | hecho | media |
+| [IMPROVEMENT-034](items/IMPROVEMENT-034.md) | Rediseño de la vista pública de Casas de acogida | hecho | media |
 | [FEATURE-035](items/FEATURE-035.md) | Historias felices — social proof de adopciones en la home | hecho | baja |
 | [FEATURE-049](items/FEATURE-049.md) | Efectos del área de usuario en el panel (Reveal, carrusel de fotos, hover) | hecho | baja |
 | [FEATURE-052](items/FEATURE-052.md) | Botón "Ver recursos" con el estilo primario relleno | hecho | baja |
