@@ -25,7 +25,6 @@ vi.mock("@/lib/supabase/client", () => ({
 
 import { QuitarFavoritoButton } from "./animals/QuitarFavoritoButton";
 import { ContactarAcogedorButton } from "./acogida/ContactarAcogedorButton";
-import { ImagenSocialButton } from "./stats/ImagenSocialButton";
 import { ResolverAvisoButton } from "./perdidos/ResolverAvisoButton";
 
 const fetchMock = vi.fn();
@@ -74,23 +73,6 @@ describe("ContactarAcogedorButton", () => {
     conIntl(<ContactarAcogedorButton fosterUserId="u9" />);
     await user.click(screen.getByRole("button", { name: messages.acogida.contactar }));
     expect(await screen.findByText(messages.acogida.errorContactar)).toBeInTheDocument();
-  });
-});
-
-describe("ImagenSocialButton", () => {
-  it("abre la preview con descargas en ambos formatos", async () => {
-    const user = userEvent.setup();
-    conIntl(<ImagenSocialButton slug="luna-demo" />);
-    await user.click(screen.getByRole("button", { name: messages.stats.generarImagen }));
-    expect(
-      screen.getByRole("link", { name: messages.stats.descargarCuadrada }),
-    ).toHaveAttribute("href", "/api/og/social/luna-demo");
-    expect(screen.getByRole("link", { name: messages.stats.descargarStory })).toHaveAttribute(
-      "href",
-      "/api/og/social/luna-demo?f=story",
-    );
-    await user.click(screen.getByRole("button", { name: messages.stats.cerrarImagen }));
-    expect(screen.getByRole("button", { name: messages.stats.generarImagen })).toBeInTheDocument();
   });
 });
 

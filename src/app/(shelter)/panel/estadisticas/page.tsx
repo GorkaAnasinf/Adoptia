@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
+import { Clock, Eye, Inbox, type LucideIcon } from "lucide-react";
 import Link from "next/link";
 import { getFormatter, getTranslations } from "next-intl/server";
-import { ImagenSocialButton } from "@/components/stats/ImagenSocialButton";
 import { serieVisitas, tiempoMedioHastaAdopcion, type VistaDia } from "@/lib/estadisticas";
 import { createClient } from "@/lib/supabase/server";
 
@@ -86,12 +86,12 @@ export default async function EstadisticasPage() {
       <p className="mt-2 text-xs text-muted-foreground">{t("sinPII")}</p>
 
       {animales.length === 0 ? (
-        <div className="mt-8 flex flex-col items-center rounded-2xl border border-border bg-card px-6 py-14 text-center">
+        <div className="mt-8 flex flex-col items-center rounded-2xl border border-border bg-card px-6 py-14 text-center shadow-soft">
           <h2 className="font-heading text-xl font-semibold">{t("vacioTitle")}</h2>
           <p className="mt-2 max-w-md text-muted-foreground">{t("vacioText")}</p>
           <Link
             href="/panel/animales"
-            className="mt-6 rounded-full bg-primary px-6 py-2.5 text-sm font-semibold text-primary-foreground hover:opacity-90"
+            className="mt-6 inline-flex min-h-11 items-center rounded-full bg-primary px-6 text-sm font-semibold text-primary-foreground hover:opacity-90"
           >
             {t("vacioCta")}
           </Link>
@@ -100,20 +100,30 @@ export default async function EstadisticasPage() {
         <>
           {/* Resumen */}
           <dl data-testid="stats-resumen" className="mt-8 grid gap-4 sm:grid-cols-3">
-            {[
-              { valor: String(totalVisitas), etiqueta: t("visitas30") },
-              { valor: String(totalSolicitudes), etiqueta: t("solicitudesTotales") },
-              { valor: media === null ? t("tiempoMedioVacio") : String(media), etiqueta: t("tiempoMedio") },
-            ].map(({ valor, etiqueta }) => (
-              <div key={etiqueta} className="rounded-2xl border border-border bg-card p-5">
-                <dd className="font-heading text-3xl font-bold tabular-nums">{valor}</dd>
-                <dt className="mt-1 text-sm text-muted-foreground">{etiqueta}</dt>
+            {(
+              [
+                { icono: Eye, valor: String(totalVisitas), etiqueta: t("visitas30"), tono: "bg-primary/10 text-primary" },
+                { icono: Inbox, valor: String(totalSolicitudes), etiqueta: t("solicitudesTotales"), tono: "bg-secondary-container text-on-secondary-container" },
+                { icono: Clock, valor: media === null ? t("tiempoMedioVacio") : String(media), etiqueta: t("tiempoMedio"), tono: "bg-tertiary/10 text-tertiary" },
+              ] as { icono: LucideIcon; valor: string; etiqueta: string; tono: string }[]
+            ).map(({ icono: Icono, valor, etiqueta, tono }) => (
+              <div
+                key={etiqueta}
+                className="flex items-center gap-4 rounded-2xl border border-border bg-card p-5 shadow-soft"
+              >
+                <span className={`flex size-12 shrink-0 items-center justify-center rounded-xl ${tono}`}>
+                  <Icono className="size-6" aria-hidden="true" />
+                </span>
+                <div className="min-w-0">
+                  <dd className="font-heading text-3xl font-bold tabular-nums">{valor}</dd>
+                  <dt className="mt-0.5 text-sm text-muted-foreground">{etiqueta}</dt>
+                </div>
               </div>
             ))}
           </dl>
 
           {/* Gráfica de barras (30 días) */}
-          <div className="mt-8 rounded-2xl border border-border bg-card p-5">
+          <div className="mt-8 rounded-2xl border border-border bg-card p-5 shadow-soft">
             <h2 className="font-heading text-lg font-semibold">{t("graficaTitle")}</h2>
             {totalVisitas === 0 ? (
               <p className="mt-3 text-sm text-muted-foreground">{t("graficaVacia")}</p>
@@ -128,7 +138,7 @@ export default async function EstadisticasPage() {
                   <div
                     key={d.day}
                     title={`${format.dateTime(new Date(d.day), { day: "numeric", month: "short" })}: ${d.views}`}
-                    className="flex-1 rounded-t bg-primary/70"
+                    className="flex-1 rounded-t-sm bg-primary/70 transition-colors hover:bg-primary"
                     style={{ height: `${Math.max(2, Math.round((d.views / maxDia) * 100))}%` }}
                   />
                 ))}
@@ -138,19 +148,21 @@ export default async function EstadisticasPage() {
 
           {/* Por animal */}
           <h2 className="mt-10 font-heading text-xl font-semibold">{t("porAnimalTitle")}</h2>
-          <div className="mt-3 overflow-x-auto rounded-2xl border border-border bg-card">
+          <div className="mt-3 overflow-x-auto rounded-2xl border border-border bg-card shadow-soft">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-border text-left text-muted-foreground">
+                <tr className="border-b border-border bg-muted/40 text-left text-muted-foreground">
                   <th className="px-4 py-3 font-medium">{t("colAnimal")}</th>
                   <th className="px-4 py-3 font-medium">{t("colVisitas")}</th>
                   <th className="px-4 py-3 font-medium">{t("colSolicitudes")}</th>
-                  <th className="px-4 py-3 font-medium">{t("colImagen")}</th>
                 </tr>
               </thead>
               <tbody>
                 {animales.map((a) => (
-                  <tr key={a.id} className="border-b border-border/60 align-top last:border-0">
+                  <tr
+                    key={a.id}
+                    className="border-b border-border/60 transition-colors last:border-0 hover:bg-muted/30"
+                  >
                     <td className="px-4 py-2.5">
                       <Link href={`/animales/${a.slug}`} className="font-medium text-primary hover:underline">
                         {a.name}
@@ -158,13 +170,6 @@ export default async function EstadisticasPage() {
                     </td>
                     <td className="px-4 py-2.5 tabular-nums">{visitasDeAnimal(a.id)}</td>
                     <td className="px-4 py-2.5 tabular-nums">{solicitudesPorAnimal.get(a.id) ?? 0}</td>
-                    <td className="px-4 py-2.5">
-                      {a.published_at ? (
-                        <ImagenSocialButton slug={a.slug} />
-                      ) : (
-                        <span className="text-muted-foreground">{t("soloPublicados")}</span>
-                      )}
-                    </td>
                   </tr>
                 ))}
               </tbody>
