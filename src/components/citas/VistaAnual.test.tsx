@@ -1,5 +1,7 @@
 import { fireEvent, render, screen } from "@testing-library/react";
+import { NextIntlClientProvider } from "next-intl";
 import { describe, expect, it, vi } from "vitest";
+import mensajes from "../../../messages/es.json";
 import { VistaAnual } from "./VistaAnual";
 import type { EstadoDia } from "@/lib/agenda";
 
@@ -8,7 +10,11 @@ function pintar(props: Partial<Parameters<typeof VistaAnual>[0]> = {}) {
   const estadoDe =
     props.estadoDe ??
     (() => ({ tipo: "sin_configurar" as EstadoDia["tipo"], conCitas: false }));
-  render(<VistaAnual year={2026} todayISO={null} estadoDe={estadoDe} onIrADia={onIrADia} {...props} />);
+  render(
+    <NextIntlClientProvider locale="es" messages={mensajes}>
+      <VistaAnual year={2026} todayISO={null} estadoDe={estadoDe} onIrADia={onIrADia} {...props} />
+    </NextIntlClientProvider>,
+  );
   return { onIrADia };
 }
 
