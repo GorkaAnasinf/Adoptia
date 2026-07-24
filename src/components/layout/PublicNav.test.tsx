@@ -37,6 +37,14 @@ describe("PublicNav", () => {
       "href",
       "/perdidos-encontrados",
     );
+    expect(screen.getByRole("link", { name: messages.nav.acogida })).toHaveAttribute(
+      "href",
+      "/acogida",
+    );
+    expect(screen.getByRole("link", { name: messages.nav.necesidades })).toHaveAttribute(
+      "href",
+      "/necesidades",
+    );
   });
 
   it("marca como actual el enlace de la sección en la que estás", () => {

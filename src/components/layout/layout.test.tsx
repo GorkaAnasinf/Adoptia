@@ -60,14 +60,12 @@ describe("Footer", () => {
     ).toBeInTheDocument();
   });
 
-  it("muestra la marca con tagline y conserva los 7 enlaces del pie", () => {
+  it("muestra la marca con tagline y los 5 enlaces del pie (acogida y necesidades pasan al menú)", () => {
     conIntl(<Footer />);
     expect(screen.getByText(messages.common.appName)).toBeInTheDocument();
     expect(screen.getByText(messages.footer.tagline)).toBeInTheDocument();
     for (const nombre of [
       messages.guias.footer,
-      messages.acogida.footer,
-      messages.necesidades.footer,
       messages.footer.privacy,
       messages.footer.legalNotice,
       messages.footer.cookies,
@@ -75,5 +73,8 @@ describe("Footer", () => {
     ]) {
       expect(screen.getByRole("link", { name: nombre })).toBeInTheDocument();
     }
+    // Acogida y Necesidades ya no están en el pie: viven en el menú principal.
+    expect(screen.queryByRole("link", { name: messages.acogida.footer })).not.toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: messages.necesidades.footer })).not.toBeInTheDocument();
   });
 });

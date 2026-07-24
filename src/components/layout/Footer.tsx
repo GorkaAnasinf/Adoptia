@@ -1,43 +1,84 @@
+import { PawPrint } from "lucide-react";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 
+/** Columna de enlaces del pie con su encabezado. */
+function ColumnaEnlaces({
+  titulo,
+  enlaces,
+}: {
+  titulo: string;
+  enlaces: { href: string; label: string }[];
+}) {
+  return (
+    <nav aria-label={titulo} className="flex flex-col gap-3">
+      <h2 className="text-xs font-bold uppercase tracking-wider text-foreground/70">{titulo}</h2>
+      <ul className="flex flex-col gap-2 text-sm text-muted-foreground">
+        {enlaces.map(({ href, label }) => (
+          <li key={href}>
+            <Link
+              href={href}
+              className="underline-offset-4 transition-colors hover:text-primary hover:underline"
+            >
+              {label}
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  );
+}
+
 export function Footer() {
   const t = useTranslations();
+  const year = new Date().getFullYear();
+
+  const explorar = [
+    { href: "/animales", label: t("nav.animals") },
+    { href: "/protectoras", label: t("nav.shelters") },
+    { href: "/mapa", label: t("nav.map") },
+    { href: "/perdidos-encontrados", label: t("nav.lostFound") },
+    { href: "/guias", label: t("guias.footer") },
+  ];
+  const legal = [
+    { href: "/privacidad", label: t("footer.privacy") },
+    { href: "/aviso-legal", label: t("footer.legalNotice") },
+    { href: "/cookies", label: t("footer.cookies") },
+    { href: "/terminos", label: t("footer.terms") },
+  ];
 
   return (
-    <footer className="bg-surface-container">
-      <div className="mx-auto flex max-w-6xl flex-col items-center gap-6 px-4 py-10 text-sm md:flex-row md:items-start md:justify-between">
-        <div className="flex max-w-xs flex-col gap-2 text-center md:text-left">
-          <p className="font-heading text-xl font-bold text-primary">{t("common.appName")}</p>
-          <p className="text-muted-foreground">{t("footer.tagline")}</p>
+    <footer className="mt-16 border-t border-border/60 bg-surface-container">
+      <div className="mx-auto max-w-6xl px-4 py-12">
+        <div className="grid gap-10 md:grid-cols-[1.4fr_1fr_1fr]">
+          {/* Marca */}
+          <div className="flex max-w-xs flex-col gap-3">
+            <Link
+              href="/"
+              className="flex items-center gap-2 rounded-md focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
+            >
+              <span className="flex size-9 items-center justify-center rounded-xl bg-primary text-primary-foreground">
+                <PawPrint className="size-5" aria-hidden="true" />
+              </span>
+              <span className="font-heading text-xl font-bold text-primary">
+                {t("common.appName")}
+              </span>
+            </Link>
+            <p className="text-sm leading-relaxed text-muted-foreground">{t("footer.tagline")}</p>
+          </div>
+
+          <ColumnaEnlaces titulo={t("footer.exploreTitle")} enlaces={explorar} />
+          <ColumnaEnlaces titulo={t("footer.legalTitle")} enlaces={legal} />
         </div>
-        <nav
-          aria-label={t("footer.navLabel")}
-          className="flex flex-wrap justify-center gap-x-5 gap-y-2 text-muted-foreground"
-        >
-          <Link href="/guias" className="py-1 underline-offset-4 hover:text-secondary hover:underline">
-            {t("guias.footer")}
-          </Link>
-          <Link href="/acogida" className="py-1 underline-offset-4 hover:text-secondary hover:underline">
-            {t("acogida.footer")}
-          </Link>
-          <Link href="/necesidades" className="py-1 underline-offset-4 hover:text-secondary hover:underline">
-            {t("necesidades.footer")}
-          </Link>
-          <Link href="/privacidad" className="py-1 underline-offset-4 hover:text-secondary hover:underline">
-            {t("footer.privacy")}
-          </Link>
-          <Link href="/aviso-legal" className="py-1 underline-offset-4 hover:text-secondary hover:underline">
-            {t("footer.legalNotice")}
-          </Link>
-          <Link href="/cookies" className="py-1 underline-offset-4 hover:text-secondary hover:underline">
-            {t("footer.cookies")}
-          </Link>
-          <Link href="/terminos" className="py-1 underline-offset-4 hover:text-secondary hover:underline">
-            {t("footer.terms")}
-          </Link>
-        </nav>
-        <p className="shrink-0 text-muted-foreground">{t("footer.rights")}</p>
+
+        {/* Barra inferior */}
+        <div className="mt-10 flex flex-col items-center gap-2 border-t border-border/50 pt-6 text-sm text-muted-foreground sm:flex-row sm:justify-between">
+          <p>{t("footer.copyright", { year })}</p>
+          <p className="flex items-center gap-1.5">
+            <PawPrint className="size-4 text-primary" aria-hidden="true" />
+            {t("footer.rights")}
+          </p>
+        </div>
       </div>
     </footer>
   );
