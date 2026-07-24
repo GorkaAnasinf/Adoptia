@@ -2,6 +2,12 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/es/) adaptado. Versionado 0.x hasta el MVP.
 
+## [0.0.97] — 2026-07-24
+
+### Cambiado
+
+- **Pulido de la cara pública (IMPROVEMENT-033)**: el **logo** de la cabecera lleva ahora **siempre a la página de inicio** (`/`), también dentro del panel de la protectora. **Casas de acogida** y **Necesidades** pasan del pie al **menú principal**. El **pie de página** se rediseña (marca + columnas «Explorar» y «Legal» + barra inferior), dejando de quedar descuadrado y soso. En la **home** se recorta el hueco entre el hero y «Recién llegados». Las páginas de **Guías** y **legales** (Privacidad, Cookies, Aviso legal, Términos) se mejoran y adoptan el **ancho del panel** (`max-w-6xl`) con la columna de texto legible, cabeceras con acento y un índice lateral en el artículo de guía. Solo frontend + i18n; sin migraciones. QA: suite verde (salvo un fallo preexistente ajeno en la agenda).
+
 ## [0.0.96] — 2026-07-22
 
 ### Añadido
