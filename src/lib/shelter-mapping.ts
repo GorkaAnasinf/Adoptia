@@ -1,4 +1,4 @@
-import type { OpeningHours, SocialLinks } from "@/lib/schemas/shelter";
+import type { SocialLinks } from "@/lib/schemas/shelter";
 
 export type ShelterForm = {
   name: string;
@@ -17,7 +17,6 @@ export type ShelterForm = {
   coverUrl?: string;
   foundedYear?: number;
   donationLink?: string;
-  openingHours: OpeningHours;
   socialLinks: SocialLinks;
   acceptsVolunteers: boolean;
   acceptsFostering: boolean;
@@ -76,7 +75,6 @@ export function shelterRowToForm(row: Record<string, unknown> | null): Partial<S
     coverUrl: (row.cover_url as string) ?? undefined,
     foundedYear: (row.founded_year as number) ?? undefined,
     donationLink: (row.donation_link as string) ?? undefined,
-    openingHours: (row.opening_hours as ShelterForm["openingHours"]) ?? {},
     socialLinks: (row.social_links as ShelterForm["socialLinks"]) ?? {},
     acceptsVolunteers: Boolean(row.accepts_volunteers),
     acceptsFostering: Boolean(row.accepts_fostering),
@@ -114,7 +112,6 @@ export function formToShelterRow(
     cover_url: form.coverUrl ?? null,
     founded_year: form.foundedYear ?? null,
     donation_link: form.donationLink || null,
-    opening_hours: form.openingHours ?? null,
     social_links: form.socialLinks ?? null,
     accepts_volunteers: form.acceptsVolunteers ?? false,
     accepts_fostering: form.acceptsFostering ?? false,

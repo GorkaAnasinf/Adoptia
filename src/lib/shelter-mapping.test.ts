@@ -23,7 +23,6 @@ describe("formToShelterRow", () => {
     lng: -2.935,
     description: "Somos un refugio",
     logoUrl: "https://cdn/logo.png",
-    openingHours: { lun: [{ open: "10:00", close: "14:00" }] },
     socialLinks: { instagram: "https://instagram.com/refugio" },
     acceptsVolunteers: true,
     acceptsFostering: false,
@@ -35,7 +34,6 @@ describe("formToShelterRow", () => {
     expect(row.slug).toBe("refugio-esperanza");
     expect(row.postal_code).toBe("48001");
     expect(row.logo_url).toBe("https://cdn/logo.png");
-    expect(row.opening_hours).toEqual(form.openingHours);
     expect(row.social_links).toEqual(form.socialLinks);
     expect(row.accepts_volunteers).toBe(true);
   });
@@ -82,7 +80,6 @@ describe("shelterRowToForm", () => {
       name: "Refugio",
       postal_code: "48001",
       logo_url: "https://cdn/logo.png",
-      opening_hours: { lun: [] },
       social_links: { instagram: "https://x" },
       accepts_volunteers: true,
       accepts_fostering: false,
@@ -90,12 +87,10 @@ describe("shelterRowToForm", () => {
     expect(form.postalCode).toBe("48001");
     expect(form.logoUrl).toBe("https://cdn/logo.png");
     expect(form.acceptsVolunteers).toBe(true);
-    expect(form.openingHours).toEqual({ lun: [] });
   });
 
-  it("usa valores por defecto para horarios/redes ausentes", () => {
+  it("usa valores por defecto para redes ausentes", () => {
     const form = shelterRowToForm({ name: "Refugio" });
-    expect(form.openingHours).toEqual({});
     expect(form.socialLinks).toEqual({});
     expect(form.acceptsFostering).toBe(false);
   });

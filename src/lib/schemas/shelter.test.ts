@@ -2,7 +2,6 @@ import { describe, expect, it } from "vitest";
 import {
   cifValido,
   entidadSchema,
-  openingHoursSchema,
   perfilSchema,
   socialLinksSchema,
   ubicacionSchema,
@@ -94,35 +93,6 @@ describe("ubicacionSchema (paso 2)", () => {
   });
 });
 
-describe("openingHoursSchema", () => {
-  it("acepta varias franjas por día con apertura < cierre", () => {
-    const r = openingHoursSchema.safeParse({
-      lun: [
-        { open: "10:00", close: "14:00" },
-        { open: "16:00", close: "20:00" },
-      ],
-      sab: [{ open: "10:00", close: "13:00" }],
-    });
-    expect(r.success).toBe(true);
-  });
-
-  it("rechaza una franja con cierre anterior a la apertura", () => {
-    const r = openingHoursSchema.safeParse({
-      lun: [{ open: "20:00", close: "10:00" }],
-    });
-    expect(r.success).toBe(false);
-  });
-
-  it("rechaza hora con formato inválido", () => {
-    const r = openingHoursSchema.safeParse({ lun: [{ open: "25:00", close: "26:00" }] });
-    expect(r.success).toBe(false);
-  });
-
-  it("acepta objeto vacío (sin horario declarado)", () => {
-    expect(openingHoursSchema.safeParse({}).success).toBe(true);
-  });
-});
-
 describe("socialLinksSchema", () => {
   it("acepta redes con URLs válidas y parciales", () => {
     expect(
@@ -139,7 +109,6 @@ describe("socialLinksSchema", () => {
 describe("perfilSchema (paso 3)", () => {
   const base = {
     description: "Somos un refugio sin ánimo de lucro.",
-    openingHours: {},
     socialLinks: {},
     acceptsVolunteers: true,
     acceptsFostering: false,

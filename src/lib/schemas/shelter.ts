@@ -94,24 +94,6 @@ export function normalizeGeoQuery(p: GeocodeInput): string {
     .trim();
 }
 
-// ---------- Horarios de apertura ----------
-const HHMM_RE = /^([01]\d|2[0-3]):[0-5]\d$/;
-const hhmm = z.string().regex(HHMM_RE, { message: "hora_invalida" });
-
-const franjaSchema = z
-  .object({ open: hhmm, close: hhmm })
-  .refine((f) => f.open < f.close, { message: "franja_invalida" });
-
-const DIAS = ["lun", "mar", "mie", "jue", "vie", "sab", "dom"] as const;
-export const openingHoursSchema = z
-  .object(
-    Object.fromEntries(DIAS.map((d) => [d, z.array(franjaSchema)])) as Record<
-      (typeof DIAS)[number],
-      z.ZodArray<typeof franjaSchema>
-    >,
-  )
-  .partial();
-
 // ---------- Redes sociales ----------
 export const socialLinksSchema = z
   .object({
@@ -139,7 +121,6 @@ export const perfilSchema = z.object({
   donationLink: z
     .union([z.string().trim().regex(ENLACE_PAGO_RE, "enlace_pago_invalido"), z.literal("")])
     .optional(),
-  openingHours: openingHoursSchema,
   socialLinks: socialLinksSchema,
   acceptsVolunteers: z.boolean(),
   acceptsFostering: z.boolean(),
@@ -160,5 +141,4 @@ export const shelterOnboardingSchema = entidadSchema
 export type EntidadInput = z.infer<typeof entidadSchema>;
 export type UbicacionInput = z.infer<typeof ubicacionSchema>;
 export type PerfilInput = z.infer<typeof perfilSchema>;
-export type OpeningHours = z.infer<typeof openingHoursSchema>;
 export type SocialLinks = z.infer<typeof socialLinksSchema>;
