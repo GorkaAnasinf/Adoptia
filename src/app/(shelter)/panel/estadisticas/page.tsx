@@ -80,7 +80,7 @@ export default async function EstadisticasPage() {
   }
 
   return (
-    <section className="mx-auto max-w-5xl px-4 py-8">
+    <section className="mx-auto max-w-6xl px-4 py-8">
       <h1 className="font-heading text-3xl font-bold">{t("title")}</h1>
       <p className="mt-1 text-muted-foreground">{t("subtitle")}</p>
       <p className="mt-2 text-xs text-muted-foreground">{t("sinPII")}</p>

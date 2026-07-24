@@ -135,7 +135,7 @@ export function PerfilEditor({
   }
 
   return (
-    <div className="mx-auto w-full max-w-3xl px-4 py-8">
+    <div className="mx-auto w-full max-w-6xl px-4 py-8">
       <header className="flex items-center justify-between gap-3">
         <div>
           <h1 className="font-heading text-2xl font-bold sm:text-3xl">{t("title")}</h1>
@@ -267,7 +267,7 @@ export function PerfilEditor({
       )}
 
       <div className="sticky bottom-0 z-30 -mx-4 mt-6 border-t border-border bg-background/95 px-4 backdrop-blur">
-        <div className="mx-auto flex max-w-3xl items-center justify-end gap-3 py-3">
+        <div className="mx-auto flex max-w-6xl items-center justify-end gap-3 py-3">
           {guardado && <span className="mr-auto text-sm text-tertiary">{t("saved")}</span>}
           <Button type="button" onClick={guardar} disabled={guardando}>
             {guardando ? t("saving") : t("save")}
