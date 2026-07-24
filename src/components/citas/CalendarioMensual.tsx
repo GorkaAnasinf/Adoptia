@@ -114,6 +114,7 @@ export function CalendarioMensual({
                 seleccionado && "ring-2 ring-primary ring-offset-1",
                 multi && "ring-2 ring-secondary ring-offset-1 bg-secondary/15",
                 esHoy && "font-bold",
+                esHoy && !seleccionado && !multi && "ring-1 ring-primary/50",
               )}
             >
               <span>{dia}</span>

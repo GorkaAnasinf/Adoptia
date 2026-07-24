@@ -1,7 +1,8 @@
 "use client";
 
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useTranslations } from "next-intl";
-import type { CitaAgenda } from "@/lib/agenda";
+import type { CitaAgenda, EstadoDia } from "@/lib/agenda";
 import { cn } from "@/lib/utils";
 
 const HORA = new Intl.DateTimeFormat("es-ES", {
@@ -19,6 +20,14 @@ const ESTADO_KEY: Record<string, string> = {
 };
 
 const ESTADO_COLOR: Record<string, string> = {
+  pending: "border-l-primary bg-surface-container-high",
+  confirmed: "border-l-secondary bg-secondary/10",
+  cancelled: "border-l-destructive bg-destructive/10",
+  done: "border-l-tertiary bg-tertiary/10",
+  no_show: "border-l-destructive bg-destructive/10",
+};
+
+const ESTADO_CHIP: Record<string, string> = {
   pending: "bg-surface-container-high text-foreground",
   confirmed: "bg-secondary/15 text-secondary",
   cancelled: "bg-destructive/10 text-destructive",
@@ -26,11 +35,39 @@ const ESTADO_COLOR: Record<string, string> = {
   no_show: "bg-destructive/10 text-destructive",
 };
 
+const HORA_PX = 64; // alto de cada hora en el timeline
+
+function aMinutos(hhmm: string): number {
+  const [h, m] = hhmm.split(":").map(Number);
+  return h * 60 + m;
+}
+
+function minutosDeCita(startsAt: string): number {
+  return aMinutos(HORA.format(new Date(startsAt)));
+}
+
 /**
- * Vista diaria de la agenda (FEATURE-055): timeline de las citas del día
- * seleccionado. Las citas llegan ya filtradas por el padre.
+ * Vista diaria de la agenda (FEATURE-055): agenda tipo timeline del día. Pinta
+ * las franjas de apertura en color y coloca cada cita en su hueco horario, con
+ * animal, adoptante y estado. Navegable entre días desde el padre.
  */
-export function VistaDiaria({ fecha, citas }: { fecha: string | null; citas: CitaAgenda[] }) {
+export function VistaDiaria({
+  fecha,
+  estado,
+  citas,
+  esHoy = false,
+  onPrev,
+  onNext,
+  onHoy,
+}: {
+  fecha: string | null;
+  estado?: EstadoDia;
+  citas: CitaAgenda[];
+  esHoy?: boolean;
+  onPrev?: () => void;
+  onNext?: () => void;
+  onHoy?: () => void;
+}) {
   const t = useTranslations("agenda");
   const tc = useTranslations("citas");
 
@@ -48,39 +85,144 @@ export function VistaDiaria({ fecha, citas }: { fecha: string | null; citas: Cit
     month: "long",
   }).format(new Date(`${fecha}T00:00:00`));
 
+  const cerrado = estado?.tipo === "cerrado";
+  const franjas =
+    estado && (estado.tipo === "patron" || estado.tipo === "especial") ? estado.franjas : [];
+
+  // Rango horario del timeline: cubre franjas y citas; con margen a horas enteras.
+  const minutosCitas = citas.map((c) => minutosDeCita(c.starts_at));
+  const inicios = [...franjas.map((f) => aMinutos(f.start)), ...minutosCitas];
+  const fines = [...franjas.map((f) => aMinutos(f.end)), ...minutosCitas.map((m) => m + 30)];
+  const hayTimeline = inicios.length > 0;
+  const horaInicio = hayTimeline ? Math.floor(Math.min(...inicios) / 60) : 9;
+  const horaFin = hayTimeline ? Math.ceil(Math.max(...fines) / 60) : 14;
+  const horas = Array.from({ length: horaFin - horaInicio + 1 }, (_, i) => horaInicio + i);
+  const alto = (horaFin - horaInicio) * HORA_PX;
+  const topDe = (min: number) => ((min - horaInicio * 60) / 60) * HORA_PX;
+
+  // Duración de una cita: el tamaño de turno de la franja que la contiene, o 30.
+  const duracionCita = (min: number) =>
+    franjas.find((f) => aMinutos(f.start) <= min && min < aMinutos(f.end))?.minutes ?? 30;
+
   return (
     <div className="rounded-2xl border border-border bg-card p-5 shadow-soft sm:p-6">
-      <h2 className="font-heading text-2xl font-bold capitalize">{fechaLarga}</h2>
-      <p className="mt-1 text-sm text-muted-foreground">{t("diariaTitulo")}</p>
+      {/* Cabecera con navegación entre días */}
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div className="flex items-center gap-2">
+          {onPrev && (
+            <button
+              type="button"
+              onClick={onPrev}
+              aria-label={t("diaAnterior")}
+              className="flex size-10 items-center justify-center rounded-xl border border-border text-foreground transition-colors hover:bg-accent"
+            >
+              <ChevronLeft className="size-5" aria-hidden="true" />
+            </button>
+          )}
+          {onNext && (
+            <button
+              type="button"
+              onClick={onNext}
+              aria-label={t("diaSiguiente")}
+              className="flex size-10 items-center justify-center rounded-xl border border-border text-foreground transition-colors hover:bg-accent"
+            >
+              <ChevronRight className="size-5" aria-hidden="true" />
+            </button>
+          )}
+          <h2 className="ml-1 font-heading text-xl font-bold capitalize sm:text-2xl">{fechaLarga}</h2>
+        </div>
+        {onHoy && !esHoy && (
+          <button
+            type="button"
+            onClick={onHoy}
+            className="inline-flex min-h-9 items-center rounded-full border border-primary px-4 text-sm font-semibold text-primary transition-colors hover:bg-primary/10"
+          >
+            {t("irHoy")}
+          </button>
+        )}
+      </div>
 
-      {citas.length === 0 ? (
+      {cerrado && (
+        <p className="mt-4 rounded-xl border border-destructive/30 bg-destructive/10 px-4 py-2.5 text-sm font-medium text-destructive">
+          {t("cerrado")}
+          {estado?.tipo === "cerrado" && estado.note ? ` · ${estado.note}` : ""}
+        </p>
+      )}
+
+      {!hayTimeline ? (
         <p className="mt-6 rounded-xl border border-dashed border-border px-4 py-10 text-center text-muted-foreground">
           {t("sinCitasDia")}
         </p>
       ) : (
-        <ul className="mt-4 flex flex-col gap-3">
-          {citas.map((c) => (
-            <li key={c.id} className="flex items-center gap-3 rounded-xl border border-border px-4 py-3">
-              <span className="font-heading text-lg font-bold tabular-nums">
-                {HORA.format(new Date(c.starts_at))}
+        <div className="relative mt-5" style={{ height: alto }}>
+          {/* Líneas y etiquetas de hora */}
+          {horas.map((h) => (
+            <div
+              key={h}
+              className="absolute inset-x-0 border-t border-border/60"
+              style={{ top: (h - horaInicio) * HORA_PX }}
+            >
+              <span className="absolute -top-2.5 left-0 w-12 pr-2 text-right text-xs tabular-nums text-muted-foreground">
+                {String(h).padStart(2, "0")}:00
               </span>
-              <div className="min-w-0 flex-1">
-                <p className="truncate font-semibold">{c.animalName ?? "—"}</p>
-                {c.adopterName && (
-                  <p className="truncate text-sm text-muted-foreground">{c.adopterName}</p>
-                )}
-              </div>
-              <span
-                className={cn(
-                  "shrink-0 rounded-full px-2.5 py-0.5 text-xs font-semibold",
-                  ESTADO_COLOR[c.status] ?? "bg-surface-container-high text-foreground",
-                )}
-              >
-                {tc(ESTADO_KEY[c.status] ?? "estadoPendiente")}
-              </span>
-            </li>
+            </div>
           ))}
-        </ul>
+
+          {/* Pista de contenido (a la derecha de las etiquetas) */}
+          <div className="absolute inset-y-0 left-14 right-0">
+            {/* Franjas de apertura, en color */}
+            {franjas.map((f) => (
+              <div
+                key={`${f.start}-${f.end}`}
+                className="absolute inset-x-0 rounded-lg border-l-4 border-tertiary bg-tertiary/10 px-3 py-1"
+                style={{ top: topDe(aMinutos(f.start)), height: (aMinutos(f.end) - aMinutos(f.start)) / 60 * HORA_PX }}
+              >
+                <p className="text-xs font-semibold text-tertiary">
+                  {t("abierto")} · {f.start}–{f.end}
+                </p>
+                <p className="text-[0.7rem] text-muted-foreground">{t("diariaTurnos", { min: f.minutes })}</p>
+              </div>
+            ))}
+
+            {/* Citas, sobre las franjas */}
+            {citas.map((c) => {
+              const min = minutosDeCita(c.starts_at);
+              const dur = duracionCita(min);
+              return (
+                <div
+                  key={c.id}
+                  className={cn(
+                    "absolute right-1 z-10 flex flex-col gap-0.5 overflow-hidden rounded-lg border border-border border-l-4 px-2.5 py-1 shadow-sm",
+                    ESTADO_COLOR[c.status] ?? "border-l-primary bg-surface-container-high",
+                  )}
+                  style={{
+                    top: topDe(min),
+                    height: Math.max((dur / 60) * HORA_PX, 40),
+                    left: "5.5rem",
+                  }}
+                >
+                  <div className="flex items-center gap-2">
+                    <span className="font-heading text-sm font-bold tabular-nums">
+                      {HORA.format(new Date(c.starts_at))}
+                    </span>
+                    <span className="truncate text-sm font-semibold">{c.animalName ?? "—"}</span>
+                    <span
+                      className={cn(
+                        "ml-auto shrink-0 rounded-full px-2 py-0.5 text-[0.65rem] font-semibold",
+                        ESTADO_CHIP[c.status] ?? "bg-surface-container-high text-foreground",
+                      )}
+                    >
+                      {tc(ESTADO_KEY[c.status] ?? "estadoPendiente")}
+                    </span>
+                  </div>
+                  {c.adopterName && (
+                    <span className="truncate text-xs text-muted-foreground">{c.adopterName}</span>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
       )}
     </div>
   );

@@ -6,6 +6,7 @@ import { useTranslations } from "next-intl";
 import {
   diasEnRango,
   estadoAOverride,
+  fechaISO,
   resolverDiaAgenda,
   validarFranjas,
   type EstadoDia,
@@ -97,6 +98,8 @@ export function AgendaCliente({
 
   // Vistas (F3)
   const [vista, setVista] = useState<Vista>("mensual");
+  // Día enfocado en la vista diaria (independiente de la selección del mes).
+  const [diaVista, setDiaVista] = useState(hoyISO);
 
   const citasSet = useMemo(() => new Set(citasPorDia), [citasPorDia]);
   const citasDelDia = (iso: string | null) =>
@@ -107,12 +110,17 @@ export function AgendaCliente({
       YMD_MADRID.format(new Date(c.starts_at)) === hoyISO,
   ).length;
 
+  /** Desde la vista anual: abre la vista diaria de esa fecha. */
   function irADia(iso: string) {
-    const d = new Date(`${iso}T00:00:00`);
-    setYear(d.getFullYear());
-    setMonth(d.getMonth());
-    setSeleccion(iso);
-    setVista("mensual");
+    setDiaVista(iso);
+    setVista("diaria");
+  }
+
+  /** Navegación entre días en la vista diaria. */
+  function moverDia(delta: number) {
+    const d = new Date(`${diaVista}T00:00:00`);
+    d.setDate(d.getDate() + delta);
+    setDiaVista(fechaISO(d.getFullYear(), d.getMonth(), d.getDate()));
   }
 
   function patronDe(iso: string): FranjaSemanal[] {
@@ -376,9 +384,9 @@ export function AgendaCliente({
           value={vista}
           onChange={(v) => setVista(v as Vista)}
           options={[
+            { value: "diaria", label: t("vistaDiaria") },
             { value: "mensual", label: t("vistaMensual") },
             { value: "anual", label: t("vistaAnual") },
-            { value: "diaria", label: t("vistaDiaria") },
           ]}
         />
         {vista === "mensual" && (
@@ -408,7 +416,17 @@ export function AgendaCliente({
       )}
       {errorPlantilla && <p className="text-sm text-destructive">{t("errorPlantilla")}</p>}
 
-      {vista === "anual" ? (
+      {vista === "diaria" ? (
+        <VistaDiaria
+          fecha={diaVista}
+          estado={resolverDiaAgenda(patronDe(diaVista), overridesLocal.get(diaVista) ?? null)}
+          citas={citasDelDia(diaVista)}
+          esHoy={diaVista === hoyISO}
+          onPrev={() => moverDia(-1)}
+          onNext={() => moverDia(1)}
+          onHoy={() => setDiaVista(hoyISO)}
+        />
+      ) : vista === "anual" ? (
         <VistaAnual year={year} todayISO={hoyISO} estadoDe={estadoDe} onIrADia={irADia} />
       ) : (
         <div className="grid gap-6 lg:grid-cols-[1fr_22rem] lg:items-start">
@@ -421,13 +439,11 @@ export function AgendaCliente({
             onSelect={onDiaClick}
             onPrev={() => navegar(-1)}
             onNext={() => navegar(1)}
-            modoSeleccion={modoSeleccion && vista === "mensual"}
+            modoSeleccion={modoSeleccion}
             seleccionados={seleccionados}
           />
 
-          {vista === "diaria" ? (
-            <VistaDiaria fecha={seleccion} citas={citasDelDia(seleccion)} />
-          ) : modoSeleccion ? (
+          {modoSeleccion ? (
           <div className="flex flex-col gap-3 rounded-2xl border border-border bg-card p-5 shadow-soft">
             <p className="font-heading text-lg font-semibold">
               {t("diasSeleccionados", { n: nSeleccionados })}
