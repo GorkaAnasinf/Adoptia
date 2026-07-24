@@ -81,7 +81,7 @@ Para centrar el desarrollo en un lado de la app cada vez, el 0.2 se aborda en do
 | [FEATURE-015](items/FEATURE-015.md) | Contenido educativo sobre adopción responsable | hecho | baja |
 | [FEATURE-016](items/FEATURE-016.md) | Registro de casas de acogida | hecho | baja |
 
-### Hito 0.5 — 98% completado (65/66)
+### Hito 0.5 — 100% completado (66/66)
 
 | Item | Título | Estado | Prioridad |
 |------|--------|--------|-----------|
@@ -106,7 +106,7 @@ Para centrar el desarrollo en un lado de la app cada vez, el 0.2 se aborda en do
 | [IMPROVEMENT-028](items/IMPROVEMENT-028.md) | El mapa de protectoras se alinea con el lenguaje de la tanda (sin wireframe) | hecho | alta |
 | [IMPROVEMENT-029](items/IMPROVEMENT-029.md) | Popup rico en los pines del mapa de perdidos (lenguaje de la tanda) | hecho | alta |
 | [BUG-005](items/BUG-005.md) | npm run test -- --coverage revienta al parsear globals.css y las guías .md | hecho | media |
-| [BUG-009](items/BUG-009.md) | Test de la agenda falla por dependencia de la fecha real (vista diaria/resumen) | recibido | media |
+| [BUG-009](items/BUG-009.md) | Test de la agenda roto tras el rediseño de vistas (label y timeline) | hecho | media |
 | [FEATURE-020](items/FEATURE-020.md) | Vídeos en la ficha del animal (YouTube + MP4) | hecho | media |
 | [FEATURE-021](items/FEATURE-021.md) | Rediseño de la cabecera superior con menú de usuario por rol | hecho | media |
 | [FEATURE-023](items/FEATURE-023.md) | Avisos de perdidos — datos identificativos, fecha real del suceso y filtros | hecho | media |

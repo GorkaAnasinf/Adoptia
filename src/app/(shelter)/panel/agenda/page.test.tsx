@@ -123,11 +123,9 @@ describe("Agenda de disponibilidad de la protectora", () => {
     await renderPagina();
     // Resumen: 1 hueco del RPC (singular).
     expect(screen.getByText("1 hueco")).toBeInTheDocument();
-    // Vista diaria: elegir el día de hoy muestra la cita con animal y adoptante.
-    fireEvent.click(screen.getByRole("radio", { name: /diaria/i }));
-    const [aa, , dd] = hoyISO.split("-");
-    void aa;
-    fireEvent.click(screen.getByRole("gridcell", { name: new RegExp(`^${Number(dd)}$`) }));
+    // Vista diaria: por defecto muestra hoy, con la cita (animal y adoptante).
+    // Es un timeline, no una rejilla: basta con cambiar de vista.
+    fireEvent.click(screen.getByRole("radio", { name: messages.agenda.vistaDiaria }));
     expect(screen.getByText("Pipa")).toBeInTheDocument();
     expect(screen.getByText("Marta")).toBeInTheDocument();
   });
