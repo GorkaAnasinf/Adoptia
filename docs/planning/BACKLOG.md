@@ -19,9 +19,5 @@
 Los items `hecho`/`descartado` no aparecen aquí — su histórico vive en [CHANGELOG](CHANGELOG.md) y git.
 
 <!-- RENDER:START -->
-### 📥 Recibido (1)
-
-| Item | Título | Prioridad | Hito |
-|------|--------|-----------|------|
-| [BUG-009](items/BUG-009.md) | Test de la agenda falla por dependencia de la fecha real (vista diaria/resumen) | media | 0.5 |
+_No hay items abiertos._
 <!-- RENDER:END -->
