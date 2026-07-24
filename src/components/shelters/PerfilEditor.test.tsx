@@ -40,7 +40,6 @@ function editor() {
         foundedYear: "",
         description: "Hola",
         donationLink: "",
-        openingHours: {},
         socialLinks: {},
         acceptsVolunteers: false,
         acceptsFostering: false,

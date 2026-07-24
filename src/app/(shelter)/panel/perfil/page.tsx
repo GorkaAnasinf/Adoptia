@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { PerfilEditor } from "@/components/shelters/PerfilEditor";
 import type { PublicAnimal } from "@/components/shelters/ShelterPublicProfile";
-import type { OpeningHours, SocialLinks } from "@/lib/schemas/shelter";
+import type { SocialLinks } from "@/lib/schemas/shelter";
 import { createClient } from "@/lib/supabase/server";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -23,7 +23,6 @@ type ShelterRow = {
   province: string | null;
   website: string | null;
   social_links: SocialLinks | null;
-  opening_hours: OpeningHours | null;
   accepts_volunteers: boolean;
   accepts_fostering: boolean;
   status: string | null;
@@ -38,7 +37,7 @@ export default async function PerfilPage() {
     ? await supabase
         .from("shelters")
         .select(
-          "id, name, logo_url, cover_url, founded_year, description, donation_link, city, province, website, social_links, opening_hours, accepts_volunteers, accepts_fostering, status",
+          "id, name, logo_url, cover_url, founded_year, description, donation_link, city, province, website, social_links, accepts_volunteers, accepts_fostering, status",
         )
         .eq("owner_id", user.id)
         .maybeSingle()
@@ -72,7 +71,6 @@ export default async function PerfilPage() {
         foundedYear: s.founded_year != null ? String(s.founded_year) : "",
         description: s.description ?? "",
         donationLink: s.donation_link ?? "",
-        openingHours: s.opening_hours ?? {},
         socialLinks: s.social_links ?? {},
         acceptsVolunteers: s.accepts_volunteers,
         acceptsFostering: s.accepts_fostering,
