@@ -131,6 +131,13 @@ Formato ligero tipo ADR. Toda decisión con impacto estructural se registra aqu�
 | 54 | **El aviso a la protectora es un resumen batch 24 h antes (cron), no un email por cada RSVP** | El RSVP de F1 se inserta directo por supabase-js amparado por RLS, sin Route Handler: un aviso por confirmación exigiría un hook server (trigger + pg_net) o mover el RSVP a endpoint. Un resumen "mañana tu jornada, N asistentes" da el dato útil sin esa superficie y es idempotente (`reminder_sent_at`) | Trigger de BD con pg_net por cada insert (infra nueva); mover el RSVP a un endpoint (superficie de API donde RLS ya basta) |
 | 55 | **El aviso de jornada cercana empareja con las búsquedas guardadas existentes al procesar el evento y marca `zone_notified_at`** | Dedup barato por evento (una pasada, un email por usuario) reutilizando la zona (`filters.lat/lng/radio_km`) de `saved_searches`; sin tabla de notificaciones por (evento, usuario) | Tabla de notificaciones evento×usuario (más exacta ante búsquedas creadas después, pero más peso para una feature incremental) |
 
+## 2026-07-25 — FEATURE-064 (Jornadas de adopción F3, métricas)
+
+| # | Decisión | Motivo | Alternativa descartada |
+|---|----------|--------|------------------------|
+| 56 | **El resultado de una jornada (`adoptions_count`/`attended_count`) es un dato DECLARADO por la protectora al finalizar, no adopciones vinculadas** | No existe una entidad de "adopción cerrada por jornada"; vincular animales adoptados a un evento sería un modelo nuevo y frágil (una adopción no se cierra en el sitio). Un par de contadores agregados dan la métrica y el social proof sin esa complejidad | Vincular adopciones reales evento×animal (modelo nuevo, y el cierre de adopción no ocurre en la plataforma) |
+| 57 | **La "historia feliz de jornada" es un agregado público en el perfil de la protectora, no una entrada en `adoption_stories`** | `adoption_stories` es un **testimonio del adoptante sobre un animal concreto con consentimiento** (FEATURE-035/059); un recuento de jornada no es eso. Un banner "en nuestras jornadas, N animales encontraron familia" da el social proof reutilizando la lectura pública de eventos `finished`, sin PII ni moderación nueva | Insertar una fila sintética en `adoption_stories` (rompe su semántica: sin adoptante, sin animal, sin consentimiento) |
+
 ## Cómo añadir una decisión
 
 Nueva fila con fecha en sección nueva si cambia el mes. Si revierte una anterior, enlázala ("revierte #9") en vez de borrarla.

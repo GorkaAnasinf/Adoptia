@@ -2,6 +2,12 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/es/) adaptado. Versionado 0.x hasta el MVP.
 
+## [0.0.104] — 2026-07-25
+
+### Añadido
+
+- **Métricas de jornadas de adopción (FEATURE-064, F3)**: la protectora puede **finalizar** una jornada ya pasada y registrar cuántas **adopciones** se cerraron y cuánta gente asistió. Esos datos alimentan una nueva tarjeta en sus **estadísticas** (jornadas celebradas, adopciones y asistentes) y un **mensaje de social proof** en su perfil público ("en nuestras jornadas, N animales encontraron familia"). **Con migración** (`20260726100000_feature064_event_outcome`). **Con esto la línea de Jornadas (F1 + F2 + F3) queda completa.**
+
 ## [0.0.103] — 2026-07-25
 
 ### Corregido
