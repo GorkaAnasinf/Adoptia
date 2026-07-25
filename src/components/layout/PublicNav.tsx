@@ -12,6 +12,7 @@ const LINKS = [
   { key: "shelters", href: "/protectoras" },
   { key: "map", href: "/mapa" },
   { key: "lostFound", href: "/perdidos-encontrados" },
+  { key: "events", href: "/jornadas" },
   { key: "acogida", href: "/acogida" },
   { key: "necesidades", href: "/necesidades" },
 ] as const;

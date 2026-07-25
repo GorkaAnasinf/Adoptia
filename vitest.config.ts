@@ -55,6 +55,7 @@ export default defineConfig({
         "src/components/shelters/MapPinPicker*.tsx",
         "src/components/map/MiniMapa*.tsx",
         "src/components/map/MapaProtectoras*.tsx",
+        "src/components/jornadas/MapaJornadas*.tsx",
       ],
       thresholds: {
         lines: 70,
