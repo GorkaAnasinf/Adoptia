@@ -95,6 +95,18 @@ test("perdidos y encontrados", async ({ page }) => {
   await page.screenshot({ path: join(DIR, "perdidos.png") });
 });
 
+test("jornadas listado", async ({ page }) => {
+  await page.goto("/jornadas");
+  await asentar(page, 2000); // tiene mapa
+  await page.screenshot({ path: join(DIR, "jornadas-listado.png") });
+});
+
+test("jornada ficha", async ({ page }) => {
+  await page.goto("/jornadas/55555555-5555-4555-8555-555555555501");
+  await asentar(page, 2000); // mini-mapa
+  await page.screenshot({ path: join(DIR, "jornadas-ficha.png") });
+});
+
 test("home movil", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/");

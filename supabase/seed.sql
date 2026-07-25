@@ -42,28 +42,28 @@ on conflict (id) do nothing;
 -- ---------- Protectoras (verificadas para que su contenido sea público) ----------
 
 insert into public.shelters
-  (id, owner_id, name, slug, description, email, phone, city, province, postal_code, location, status, accepts_volunteers, accepts_fostering)
+  (id, owner_id, name, slug, description, email, phone, city, province, postal_code, location, status, accepts_volunteers, accepts_fostering, submitted_at)
 values
   ('22222222-2222-4222-8222-222222222201', '11111111-1111-4111-8111-111111111101',
    'Protectora Última Oportunidad', 'protectora-ultima-oportunidad',
    'Llevamos 15 años rescatando perros y gatos del País Vasco. Trabajamos solo con casas de acogida: nuestros animales viven en hogares, no en jaulas.',
    'protectora.bilbao@demo.adoptia.es', '944000001', 'Bilbao', 'Bizkaia', '48001',
-   extensions.st_makepoint(-2.9350, 43.2630)::extensions.geography, 'verified', true, true),
+   extensions.st_makepoint(-2.9350, 43.2630)::extensions.geography, 'verified', true, true, now()),
   ('22222222-2222-4222-8222-222222222202', '11111111-1111-4111-8111-111111111102',
    'Huellas Madrid', 'huellas-madrid',
    'Refugio a las afueras de Madrid con más de 200 animales. Organizamos jornadas de adopción todos los sábados y buscamos voluntariado para paseos.',
    'protectora.madrid@demo.adoptia.es', '910000002', 'Madrid', 'Madrid', '28001',
-   extensions.st_makepoint(-3.7038, 40.4168)::extensions.geography, 'verified', true, false),
+   extensions.st_makepoint(-3.7038, 40.4168)::extensions.geography, 'verified', true, false, now()),
   ('22222222-2222-4222-8222-222222222203', '11111111-1111-4111-8111-111111111103',
    'SOS Peludos Valencia', 'sos-peludos-valencia',
    'Asociación especializada en gatos de colonia y perros abandonados de la huerta valenciana. Todos nuestros animales se entregan con chip, vacunas y esterilización.',
    'protectora.valencia@demo.adoptia.es', '960000003', 'Valencia', 'Valencia', '46001',
-   extensions.st_makepoint(-0.3763, 39.4699)::extensions.geography, 'verified', false, true),
+   extensions.st_makepoint(-0.3763, 39.4699)::extensions.geography, 'verified', false, true, now()),
   ('22222222-2222-4222-8222-222222222204', '11111111-1111-4111-8111-111111111104',
    'Refugio La Alameda', 'refugio-la-alameda',
    'Pequeño refugio familiar en Sevilla centrado en galgos y podencos rescatados tras la temporada de caza.',
    'protectora.sevilla@demo.adoptia.es', '950000004', 'Sevilla', 'Sevilla', '41001',
-   extensions.st_makepoint(-5.9845, 37.3891)::extensions.geography, 'verified', false, false)
+   extensions.st_makepoint(-5.9845, 37.3891)::extensions.geography, 'verified', false, false, now())
 on conflict (id) do nothing;
 
 -- ---------- Animales ----------
@@ -195,3 +195,46 @@ values
    '{"vivienda":"piso","regimen":"alquiler","permiten_animales":true,"convivientes":1,"ninos_edades":[],"otros_animales":"","experiencia":"Primer gato, pero con mucha ilusión","horas_solo":6,"todos_de_acuerdo":true,"message":"Busco compañía tranquila para mi ático.","aceptaRgpd":true}',
    'Busco compañía tranquila para mi ático.')
 on conflict (id) do nothing;
+
+-- ---------- Jornadas de adopción (FEATURE-062) ----------
+-- Dos publicadas y futuras (Madrid con animales y asistentes, Sevilla) y un
+-- borrador de Madrid, para que la demo y las capturas del manual tengan
+-- contenido en /jornadas y en Panel → Jornadas.
+
+insert into public.events
+  (id, shelter_id, title, description, starts_at, ends_at, location, address, city, capacity, status)
+values
+  ('55555555-5555-4555-8555-555555555501', '22222222-2222-4222-8222-222222222202',
+   'Jornada de adopción en el Retiro',
+   'Ven a conocer a nuestros perros y gatos este sábado en el parque del Retiro. Estaremos toda la mañana con voluntarios, información sobre adopción responsable y muchos animales buscando familia.',
+   date_trunc('day', now()) + interval '10 days' + interval '11 hours',
+   date_trunc('day', now()) + interval '10 days' + interval '14 hours',
+   extensions.st_makepoint(-3.6833, 40.4152)::extensions.geography, 'Parque del Retiro, Puerta de Alcalá', 'Madrid', 40, 'published'),
+  ('55555555-5555-4555-8555-555555555502', '22222222-2222-4222-8222-222222222204',
+   'Galgos y podencos en la Alameda',
+   'Jornada de sensibilización y adopción de galgos y podencos rescatados tras la temporada de caza. Trae a toda la familia.',
+   date_trunc('day', now()) + interval '17 days' + interval '10 hours',
+   date_trunc('day', now()) + interval '17 days' + interval '13 hours',
+   extensions.st_makepoint(-5.9930, 37.4000)::extensions.geography, 'Alameda de Hércules', 'Sevilla', 30, 'published'),
+  ('55555555-5555-4555-8555-555555555503', '22222222-2222-4222-8222-222222222202',
+   'Jornada especial de Navidad',
+   'Estamos preparando una jornada especial de Navidad. Aún por confirmar fecha y lugar definitivos.',
+   date_trunc('day', now()) + interval '40 days' + interval '11 hours',
+   date_trunc('day', now()) + interval '40 days' + interval '14 hours',
+   null, null, 'Madrid', null, 'draft')
+on conflict (id) do nothing;
+
+insert into public.event_animals (event_id, animal_id)
+values
+  ('55555555-5555-4555-8555-555555555501', '33333333-3333-4333-8333-333333333311'), -- Curro
+  ('55555555-5555-4555-8555-555555555501', '33333333-3333-4333-8333-333333333314'), -- Chispa
+  ('55555555-5555-4555-8555-555555555501', '33333333-3333-4333-8333-333333333316'), -- Greta
+  ('55555555-5555-4555-8555-555555555502', '33333333-3333-4333-8333-333333333331'), -- Bruno
+  ('55555555-5555-4555-8555-555555555502', '33333333-3333-4333-8333-333333333333')  -- Rayo
+on conflict do nothing;
+
+insert into public.event_attendees (event_id, user_id)
+values
+  ('55555555-5555-4555-8555-555555555501', '11111111-1111-4111-8111-111111111201'), -- Ana
+  ('55555555-5555-4555-8555-555555555501', '11111111-1111-4111-8111-111111111202')  -- Luis
+on conflict do nothing;

@@ -189,7 +189,9 @@ La página de inicio muestra **historias felices**: animales que ya encontraron 
 
 En **Jornadas** (en el **menú principal**) encuentras los **encuentros presenciales** que organizan las protectoras para que conozcas en persona a los animales que buscan familia. Verás un **listado con mapa**: cada jornada muestra cuándo y dónde es, quién la organiza y cuántos animales van. Abre la ficha de una jornada para ver todos los detalles, los animales que asistirán y su ubicación en el mapa. Si quieres ir, pulsa **«Voy a ir»** (necesitas cuenta) para confirmar tu asistencia — puedes retirarla cuando quieras — y usa **«Compartir»** para enviarle el evento a quien quieras.
 
-<!-- TODO capturas (tras db push a prod y datos reales): img/jornadas-listado.png, img/jornadas-ficha.png -->
+![Listado de jornadas de adopción con el mapa y las tarjetas de cada evento (fecha, lugar, protectora)](img/jornadas-listado.png)
+
+![Ficha de una jornada a dos columnas: descripción y animales que van a la izquierda; cuándo, dónde, asistentes, botones de asistir y compartir, y mini-mapa a la derecha](img/jornadas-ficha.png)
 
 ---
 
@@ -262,7 +264,9 @@ En **Panel → Jornadas** organizas **encuentros presenciales de captación** (e
 
 Puedes **guardar como borrador** y publicar más tarde (para publicar hace falta la ubicación). Una vez publicada, aparece en el listado y el mapa público de `/jornadas` y en la ficha puedes ver **cuánta gente ha confirmado** que asistirá (solo el recuento y la lista, nunca sus correos). Desde el listado del panel editas la jornada o la **cancelas** si surge un imprevisto. Disponible para protectoras verificadas.
 
-<!-- TODO capturas (tras db push a prod y datos reales): img/panel-jornadas.png, img/panel-jornada-nueva.png -->
+![Panel → Jornadas: las jornadas de la protectora agrupadas en próximas y borradores, con su estado, animales y asistentes](img/panel-jornadas.png)
+
+![Formulario de nueva jornada por secciones: datos, ubicación con mapa, animales y cartel](img/panel-jornada-nueva.png)
 
 ![Panel → Necesidades: las peticiones de material publicadas por la protectora, con su categoría y urgencia](img/panel-necesidades.png)
 

@@ -45,6 +45,19 @@ test("panel de la protectora", async ({ page }) => {
   }
 });
 
+test("panel jornadas", async ({ page }) => {
+  await iniciarSesion(page, "protectora.madrid@demo.adoptia.es", PASS, /\/panel/);
+  const rutas: [string, string][] = [
+    ["/panel/jornadas", "panel-jornadas.png"],
+    ["/panel/jornadas/nueva", "panel-jornada-nueva.png"],
+  ];
+  for (const [ruta, archivo] of rutas) {
+    await page.goto(ruta);
+    await asentar(page);
+    await page.screenshot({ path: join(DIR, archivo) });
+  }
+});
+
 test("area del adoptante", async ({ page }) => {
   await iniciarSesion(page, "adoptante.ana@demo.adoptia.es", PASS, "/");
   const rutas: [string, string][] = [
