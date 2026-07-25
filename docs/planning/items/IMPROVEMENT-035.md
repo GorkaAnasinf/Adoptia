@@ -2,7 +2,7 @@
 id: IMPROVEMENT-035
 tipo: improvement
 titulo: Añadir capturas de pantalla al manual de usuario
-estado: recibido
+estado: hecho
 prioridad: baja
 hito: "0.5"
 duplicado_de: null
@@ -38,7 +38,24 @@ captura conviene hacerla con el dev server local y una sesión asistida (ver
 - Casas de acogida (registro) y Necesidades (tablón).
 - Admin: verificación y moderación.
 
+## Cierre (2026-07-25)
+
+- **24 capturas** incrustadas en `docs/manual/MANUAL_USUARIO.md`, guardadas en
+  `docs/manual/img/` (dentro del árbol de MkDocs, se sirven solas): home (escritorio
+  y móvil), listado, ficha, protectoras, mapa, perfil de protectora, guías, artículo
+  de guía, acogida, necesidades, perdidos, Mi cuenta (dashboard, favoritos,
+  solicitudes, citas, alertas) y panel de la protectora (dashboard, animales,
+  solicitudes, agenda, estadísticas, acogida, necesidades).
+- Tomadas con **Playwright** sobre el stack local (`npx supabase db reset` +
+  `supabase/seed.sql` + un pequeño enriquecimiento demo), captcha desactivado por
+  el `webServer`, sesión con los usuarios demo del seed (`AdoptiaDemo1!`).
+- Scripts de regeneración: `e2e/_capturas.spec.ts` (públicas) y
+  `e2e/_capturas-auth.spec.ts` (privadas). **Se saltan en CI/e2e normal**; para
+  regenerarlas: `CAPTURAS=1 npx playwright test e2e/_capturas.spec.ts --project=chromium --workers=1`.
+- Admin (verificación/moderación) queda **sin captura** por ahora (el seed no trae
+  usuario admin); pendiente menor si se quiere completar esa sección.
+
 ## Criterios de aceptación
 
 - El manual incluye capturas actualizadas de las pantallas clave, con texto
-  alternativo, en `docs/manual/` (o `assets/`), y se ven en el sitio de MkDocs.
+  alternativo, en `docs/manual/img/`, y se ven en el sitio de MkDocs. ✓

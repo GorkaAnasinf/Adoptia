@@ -2,6 +2,17 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/es/) adaptado. Versionado 0.x hasta el MVP.
 
+## [0.0.99] — 2026-07-25
+
+### Añadido
+
+- **Manual de usuario con capturas de pantalla (IMPROVEMENT-035)**: el manual (`docs/manual/MANUAL_USUARIO.md`) estrena **24 capturas** de las pantallas clave —home (escritorio y móvil), listado y ficha de animal, directorio y mapa de protectoras, guías, acogida, necesidades, perdidos, el área de «Mi cuenta» y el panel completo de la protectora—, generadas de forma reproducible con Playwright sobre datos de demo. Scripts `e2e/_capturas*.spec.ts` (se saltan en CI; se lanzan con `CAPTURAS=1`).
+
+### Documentación / auditoría
+
+- **Auditoría de cierre**: se reconcilió el gitflow documentado con la práctica real (main-based), se unificó la versión de Node (24), se actualizó el README (badges) y el manual con las features recientes, y se sincronizó `develop` con `main`.
+- **BUG-010 abierto**: `appointments.cancelled_by` y `reports.reviewed_by` referencian a `profiles` sin `on delete cascade`, lo que bloquea el borrado de una cuenta con esas acciones; pendiente de migración.
+
 ## [0.0.98] — 2026-07-24
 
 ### Cambiado
