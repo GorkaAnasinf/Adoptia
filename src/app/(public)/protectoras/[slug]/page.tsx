@@ -22,7 +22,8 @@ async function cargarProtectora(slug: string) {
   if (!shelter) return null;
 
   const shelterId = (shelter as { id: string }).id;
-  const [{ data: animals }, { data: photos }, { data: stats }, { data: needs }] = await Promise.all([
+  const [{ data: animals }, { data: photos }, { data: stats }, { data: needs }, { data: jornadas }] =
+    await Promise.all([
     supabase
       .from("animals")
       .select(
@@ -47,7 +48,14 @@ async function cargarProtectora(slug: string) {
       .eq("shelter_id", shelterId)
       .order("urgencia", { ascending: false })
       .order("created_at", { ascending: false }),
+    // Adopciones declaradas en jornadas finalizadas (FEATURE-064): social proof.
+    supabase.from("events").select("adoptions_count").eq("shelter_id", shelterId).eq("status", "finished"),
   ]);
+
+  const adopcionesJornadas = ((jornadas as { adoptions_count: number | null }[] | null) ?? []).reduce(
+    (n, j) => n + (j.adoptions_count ?? 0),
+    0,
+  );
 
   return {
     shelter: shelter as PublicShelter & { id: string },
@@ -55,6 +63,7 @@ async function cargarProtectora(slug: string) {
     photos: (photos as { id: string; url: string }[]) ?? [],
     stats: ((stats as ShelterStats[] | null)?.[0] as ShelterStats | undefined) ?? null,
     needs: (needs as PublicNeed[]) ?? [],
+    adopcionesJornadas,
   };
 }
 
@@ -89,6 +98,7 @@ export default async function ProtectoraPublicaPage({
       photos={data.photos}
       stats={data.stats}
       needs={data.needs}
+      adopcionesJornadas={data.adopcionesJornadas}
       autenticado={Boolean(user)}
     />
   );

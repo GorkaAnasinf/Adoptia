@@ -1751,6 +1751,19 @@
     "rsvpError": "No se pudo actualizar tu asistencia. Inténtalo de nuevo.",
     "cancelada": "Esta jornada se ha cancelado.",
     "finalizada": "Esta jornada ya ha terminado.",
-    "volver": "Volver a las jornadas"
+    "volver": "Volver a las jornadas",
+    "finalizarJornada": "Finalizar",
+    "finalizarTitulo": "Resultado de la jornada",
+    "fAdopciones": "Adopciones cerradas",
+    "fAdopcionesHelp": "¿Cuántos animales encontraron familia en esta jornada?",
+    "fAsistentes": "Personas que asistieron",
+    "finalizarConfirmar": "Guardar resultado",
+    "finalizando": "Guardando…",
+    "cancelarFinalizar": "Cancelar",
+    "statsJornadasTitulo": "Jornadas de adopción",
+    "statsCelebradas": "Jornadas celebradas",
+    "statsAdopciones": "Adopciones en jornadas",
+    "statsAsistentes": "Asistentes totales",
+    "socialProofJornadas": "En nuestras jornadas de adopción, {count, plural, one {# animal ha encontrado} other {# animales han encontrado}} familia."
   }
 }
