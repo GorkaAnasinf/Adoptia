@@ -150,14 +150,18 @@ Reutilizar el lenguaje visual existente (tokens, tarjetas, `rounded-full`, Revea
 
 ## Criterios de aceptación / Casuística a cubrir
 
-- [ ] La protectora crea una jornada con formulario **por secciones**, guarda borrador y la publica; puede editar y cancelar.
-- [ ] Ubicación propia del evento geocodificada (no la sede) con mini-mapa; publicar exige ubicación válida.
-- [ ] Vincular animales del propio catálogo es opcional; jornada sin animales permitida.
-- [ ] Cartel opcional (subida comprimida ≤300 KB); ficha por defecto correcta si no hay cartel.
-- [ ] Público ve listado + mapa por proximidad solo de jornadas **publicadas futuras** de protectoras **verificadas**; borradores nunca visibles.
-- [ ] Ficha a dos columnas con datos, animales, RSVP (login gate para anónimo) y botón compartir (Web Share + portapapeles).
-- [ ] RSVP: el usuario confirma/retira asistencia; la dueña ve el recuento/lista de asistentes; un asistente no ve a otros.
-- [ ] Seguridad RLS: matriz permitido/denegado por rol para las tres tablas (tests).
-- [ ] Estados vacíos (sin jornadas, sin animales, sin asistentes) y errores de guardado con feedback.
-- [ ] Identidad visual intacta (tokens/patrones existentes); textos en `messages/es.json`; `tsc` y lint limpios.
-- [ ] Documentación y manual anotados como pendientes de alinear al cerrar (ver sección anterior).
+- [x] La protectora crea una jornada con formulario **por secciones**, guarda borrador y la publica; puede editar y cancelar.
+- [x] Ubicación propia del evento (no la sede) con `MapPinPicker` y mini-mapa en la ficha; publicar exige ubicación válida (gating en UI + check de BD + `jornadaEsPublicable`).
+- [x] Vincular animales del propio catálogo es opcional; jornada sin animales permitida.
+- [x] Cartel opcional (subida comprimida vía `comprimirFoto`, bucket `event-posters`); ficha con 🐾 por defecto si no hay cartel.
+- [x] Público ve listado + mapa solo de jornadas **publicadas futuras** de protectoras **verificadas** (RPC `events_upcoming`); borradores nunca visibles.
+- [x] Ficha a dos columnas con datos, animales, RSVP (login gate para anónimo) y botón compartir (Web Share + portapapeles).
+- [x] RSVP: el usuario confirma/retira asistencia; la dueña ve el recuento/lista de asistentes; un asistente no ve a otros.
+- [x] Seguridad RLS: matriz permitido/denegado por rol para las tres tablas (`src/test/rls/eventos.test.ts`, 8/8; RPC `event_detail` no filtra borradores).
+- [x] Estados vacíos (sin jornadas, sin animales, sin asistentes) y errores de guardado con feedback.
+- [x] Identidad visual intacta (tokens/patrones existentes); textos en `messages/es.json`; `tsc` y lint limpios.
+- [ ] Documentación y manual anotados como pendientes de alinear al cerrar (ver sección anterior) — **a cargo de Hachiko**.
+
+## Estado de implementación (Bolt · 2026-07-25)
+
+Rama `feature/FEATURE-062-jornadas-adopcion` (desde `main`), 5 commits. Verificación: unit + **199/199 RLS en DB limpio**, cobertura 80.9 % global / 96 % `src/lib`, `tsc` y lint sin errores. **Pendiente de despliegue:** migración `20260725100000_feature062_events.sql` (aplicada solo en local vía `db reset`; falta `supabase db push` a producción). Queda a cargo de **Scooby** (QA final) y **Hachiko** (alinear DATA_MODEL/API_CONTRACTS/DECISIONS/PRIVACY + CHANGELOG + manual cuando se cierre).
