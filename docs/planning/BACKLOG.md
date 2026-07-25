@@ -23,5 +23,5 @@ Los items `hecho`/`descartado` no aparecen aquí — su histórico vive en [CHAN
 
 | Item | Título | Prioridad | Hito |
 |------|--------|-----------|------|
-| [IMPROVEMENT-035](items/IMPROVEMENT-035.md) | Añadir capturas de pantalla al manual de usuario | baja | 0.5 |
+| [BUG-010](items/BUG-010.md) | FKs sin ON DELETE CASCADE bloquean el borrado de una cuenta (appointments/reports) | media | 0.5 |
 <!-- RENDER:END -->

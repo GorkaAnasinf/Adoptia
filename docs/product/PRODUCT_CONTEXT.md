@@ -142,6 +142,7 @@ Estado de cada capacidad en lenguaje de usuario. Se regenera con `python scripts
 - Alinear las subpáginas de /mi-cuenta con el lenguaje del dashboard ([IMPROVEMENT-032](../planning/items/IMPROVEMENT-032.md))
 - Pulido de la cara pública — cabecera, pie y páginas de contenido ([IMPROVEMENT-033](../planning/items/IMPROVEMENT-033.md))
 - Rediseño de la vista pública de Casas de acogida ([IMPROVEMENT-034](../planning/items/IMPROVEMENT-034.md))
+- Añadir capturas de pantalla al manual de usuario ([IMPROVEMENT-035](../planning/items/IMPROVEMENT-035.md))
 
 #### 🚧 En camino (en desarrollo ahora)
 
@@ -149,5 +150,5 @@ _Nada en desarrollo en este momento._
 
 #### 🗓️ Previsto
 
-- Añadir capturas de pantalla al manual de usuario — hito 0.5 ([IMPROVEMENT-035](../planning/items/IMPROVEMENT-035.md))
+- FKs sin ON DELETE CASCADE bloquean el borrado de una cuenta (appointments/reports) — hito 0.5 ([BUG-010](../planning/items/BUG-010.md))
 <!-- RENDER:END -->
