@@ -25,4 +25,10 @@ Los items `hecho`/`descartado` no aparecen aquí — su histórico vive en [CHAN
 |------|--------|-----------|------|
 | [FEATURE-063](items/FEATURE-063.md) | Jornadas de adopción F2 — recordatorios, aviso a la protectora y avisos por zona | media | 0.5 |
 | [FEATURE-064](items/FEATURE-064.md) | Jornadas de adopción F3 — cierre con métricas hacia estadísticas e historias | baja | 0.5 |
+
+### 📥 Recibido (1)
+
+| Item | Título | Prioridad | Hito |
+|------|--------|-----------|------|
+| [BUG-011](items/BUG-011.md) | CI en rojo crónico — el job E2E falla en onboarding y citas (main lleva rojo varias features) | alta | 0.5 |
 <!-- RENDER:END -->

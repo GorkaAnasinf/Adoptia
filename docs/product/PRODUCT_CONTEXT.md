@@ -152,6 +152,7 @@ _Nada en desarrollo en este momento._
 
 #### 🗓️ Previsto
 
+- CI en rojo crónico — el job E2E falla en onboarding y citas (main lleva rojo varias features) — hito 0.5 ([BUG-011](../planning/items/BUG-011.md))
 - Jornadas de adopción F2 — recordatorios, aviso a la protectora y avisos por zona — hito 0.5 ([FEATURE-063](../planning/items/FEATURE-063.md))
 - Jornadas de adopción F3 — cierre con métricas hacia estadísticas e historias — hito 0.5 ([FEATURE-064](../planning/items/FEATURE-064.md))
 <!-- RENDER:END -->

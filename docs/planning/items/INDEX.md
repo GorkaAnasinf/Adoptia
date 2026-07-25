@@ -14,6 +14,7 @@
 | [BUG-008](BUG-008.md) | La suite E2E está podrida — 14 de 26 fallan al ejecutarla entera | bug | hecho | 0.5 |
 | [BUG-009](BUG-009.md) | Test de la agenda roto tras el rediseño de vistas (label y timeline) | bug | hecho | 0.5 |
 | [BUG-010](BUG-010.md) | FKs sin ON DELETE CASCADE bloquean el borrado de una cuenta (appointments/reports) | bug | hecho | 0.5 |
+| [BUG-011](BUG-011.md) | CI en rojo crónico — el job E2E falla en onboarding y citas (main lleva rojo varias features) | bug | recibido | 0.5 |
 | [FEATURE-000](FEATURE-000.md) | Inicialización y andamiaje del proyecto | feature | hecho | 0.1 |
 | [FEATURE-001](FEATURE-001.md) | Registro y login de adoptantes y protectoras | feature | hecho | 0.2 |
 | [FEATURE-002](FEATURE-002.md) | Onboarding de protectoras y verificación por admin | feature | hecho | 0.2 |
