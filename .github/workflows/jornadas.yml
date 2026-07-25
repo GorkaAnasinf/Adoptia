@@ -1,0 +1,23 @@
+name: Avisos de jornadas
+
+# FEATURE-063: recordatorio 24 h a asistentes + resumen a la protectora +
+# aviso de jornada cercana por zona. El endpoint es idempotente
+# (reminded_at / reminder_sent_at / zone_notified_at), así que correr cada hora
+# garantiza que cada jornada cae en la ventana 23–25 h exactamente una vez y que
+# un aviso por zona no se duplica.
+# Requiere secrets: SITE_URL (p. ej. https://adoptia-eight.vercel.app) y CRON_SECRET.
+
+on:
+  schedule:
+    - cron: "20 * * * *" # cada hora, minuto 20
+  workflow_dispatch:
+
+jobs:
+  jornadas:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Llama al endpoint de avisos de jornadas
+        run: |
+          curl -sf "${{ secrets.SITE_URL }}/api/cron/jornadas" \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}"
+          echo "Avisos de jornadas procesados."
