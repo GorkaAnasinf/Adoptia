@@ -109,3 +109,4 @@
 | [IMPROVEMENT-032](IMPROVEMENT-032.md) | Alinear las subpáginas de /mi-cuenta con el lenguaje del dashboard | improvement | hecho | 0.5 |
 | [IMPROVEMENT-033](IMPROVEMENT-033.md) | Pulido de la cara pública — cabecera, pie y páginas de contenido | improvement | hecho | 0.5 |
 | [IMPROVEMENT-034](IMPROVEMENT-034.md) | Rediseño de la vista pública de Casas de acogida | improvement | hecho | 0.5 |
+| [IMPROVEMENT-035](IMPROVEMENT-035.md) | Añadir capturas de pantalla al manual de usuario | improvement | recibido | 0.5 |

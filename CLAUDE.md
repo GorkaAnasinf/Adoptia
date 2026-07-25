@@ -44,7 +44,7 @@ Antes de escribir código, carga la skill del dominio que toques:
 2. **RLS es el pilar de seguridad** — toda tabla nueva con políticas + tests de acceso permitido/denegado.
 3. **Textos de UI en `messages/es.json`** (next-intl) — nunca hardcodeados.
 4. **Secretos jamás con `NEXT_PUBLIC_`** salvo los diseñados como públicos (URL y anon key de Supabase).
-5. **Gitflow sin PRs:** ramas `feature/FEATURE-NNN-slug` desde `develop`; commits Conventional Commits en español; nunca commit directo a `main`.
+5. **Gitflow sin PRs (main-based):** ramas `feature/FEATURE-NNN-slug` / `fix/BUG-NNN-slug` **desde `main`**; se liberan directas a `main` con `merge --no-ff` + push (no hay `develop` intermedio — quedó en desuso). Commits Conventional Commits en español; nunca commit directo a `main`.
 6. **Decisión estructural → fila en `docs/technical/DECISIONS.md`** con fecha y motivo.
 7. Imágenes siempre vía `next/image`; comprimir en cliente antes de subir (≤300 KB).
 8. Leaflet siempre con `dynamic import` sin SSR.

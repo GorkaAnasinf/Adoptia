@@ -5,15 +5,15 @@
 Equipo de 1 → sin pull requests; el CI protege la calidad.
 
 ```
-main      ← solo merges desde develop (release). Producción.
-develop   ← rama de integración. Preview en Vercel.
-feature/FEATURE-NNN-slug   ← una rama por item, desde develop
-fix/BUG-NNN-slug           ← correcciones
+main                        ← integración y producción (Vercel deploya al hacer push).
+feature/FEATURE-NNN-slug    ← una rama por item, desde main
+fix/BUG-NNN-slug            ← correcciones, desde main
 ```
 
-- Nunca commit directo a `main` (pre-commit lo bloquea).
-- Merge a `develop` con la rama en verde localmente (lint + typecheck + tests).
-- Release: `develop → main` + tag `vX.Y.Z` + entrada en [CHANGELOG](docs/planning/CHANGELOG.md).
+- **Una rama por item, creada desde `main`.** Se libera directa a `main`: no hay rama `develop` intermedia (quedó en desuso; el flujo real es main-based).
+- Nunca commit directo a `main` (pre-commit lo bloquea): siempre rama + `merge --no-ff`.
+- Merge a `main` con la rama en verde localmente (lint + typecheck + tests) y `push origin main` (dispara el deploy en Vercel).
+- Release/versionado: entrada en [CHANGELOG](docs/planning/CHANGELOG.md) al cerrar cada item (tag `vX.Y.Z` opcional).
 
 ## Commits
 
@@ -45,8 +45,8 @@ Sin excepciones en código de producción. Detalle en [docs/meta/TESTING.md](doc
 ## Ciclo de un item
 
 1. Item en `docs/planning/items/` con estado `listo` (plan aprobado).
-2. Rama `feature/FEATURE-NNN-slug`; item a `estado: desarrollo`.
+2. Rama `feature/FEATURE-NNN-slug` desde `main`; item a `estado: desarrollo`.
 3. TDD hasta cumplir TODOS los criterios de aceptación.
-4. Cierre: `estado: hecho`, CHANGELOG, `python scripts/render_planning.py`, merge a `develop`.
+4. Cierre: `estado: hecho`, CHANGELOG, `python scripts/render_planning.py`, `merge --no-ff` a `main` y push.
 
 Con la Manada: `/adoptia-balto "FEATURE-NNN"` hace este ciclo completo.

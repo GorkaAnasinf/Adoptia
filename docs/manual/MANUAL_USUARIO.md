@@ -1,7 +1,7 @@
 # Manual de usuario — Adoptia
 
 > Guía funcional completa de la plataforma, organizada por perfil de usuario.
-> Última actualización: 2026-07-12 · Público objetivo: usuarios finales (sin conocimientos técnicos).
+> Última actualización: 2026-07-25 · Público objetivo: usuarios finales (sin conocimientos técnicos).
 
 ## 1. Introducción
 
@@ -56,9 +56,12 @@ Solo se necesita un **navegador web actual** (Chrome, Firefox, Edge o Safari) en
 ### 3.1 Cómo buscar un animal
 
 1. Entra en **Animales** desde el menú principal.
-2. Usa los **filtros**: especie (perro, gato…), tamaño, edad, sexo, provincia y otros criterios.
+2. Usa los **filtros**: especie (perro, gato…), tamaño, edad, sexo, provincia, **apto para piso** y otros criterios. También puedes marcar **«Solo urgentes»** para ver antes los casos que más corren.
 3. Ordena o filtra por **cercanía** para ver primero los animales de protectoras próximas a ti.
-4. Pulsa cualquier tarjeta para abrir la **ficha completa** del animal.
+4. Los animales marcados como **urgentes** por su protectora llevan un distintivo «Urgente» y aparecen los primeros cuando ordenas por «recientes».
+5. Pulsa cualquier tarjeta para abrir la **ficha completa** del animal.
+
+> **Buscador rápido**: la barra de búsqueda de la cabecera (y, con sesión iniciada, el buscador global) te lleva directo a lo que escribas —una raza, un nombre— sin pasar por los filtros.
 
 ### 3.2 El directorio y el mapa de protectoras
 
@@ -125,7 +128,7 @@ Tablón público de anuncios de animales perdidos o encontrados:
 
 Si puedes cuidar temporalmente de un animal:
 
-1. Entra en **Acogidas** — desde tu área personal (**Mi cuenta → Acogidas**, también en el menú del avatar) o desde el enlace del pie de página — y rellena el **registro de casa de acogida**: datos de contacto, tipo de vivienda, qué animales puedes acoger y por cuánto tiempo.
+1. Entra en **Casas de acogida** — desde el **menú principal**, desde tu área personal (**Mi cuenta → Acogidas**) o desde el menú del avatar — y rellena el **registro de casa de acogida**: qué animales puedes acoger, tu vivienda, tu convivencia y tu zona aproximada. La propia pantalla explica en tres pasos cómo funciona y garantiza que tu dirección exacta nunca se comparte.
 2. Las protectoras de tu zona podrán **proponerte acogidas a través de la plataforma** — recibirás un email con el animal, la duración estimada y un mensaje; tu correo no se muestra públicamente.
 3. En esa misma pantalla verás tus **propuestas recibidas** con su estado, y puedes **editar tus condiciones, pausarte** (por ejemplo en vacaciones) **o darte de baja** en cualquier momento.
 4. Si ya tienes una acogida en marcha y te surge una emergencia (obras, un viaje inesperado…), pulsa **«Necesito relevo»** sobre esa acogida, cuenta el motivo y hasta cuándo puedes seguir: la protectora recibirá el aviso y buscará otra casa de acogida. Puedes cancelar la petición si tu situación se arregla.
@@ -136,7 +139,11 @@ En **Guías** encontrarás contenido educativo: qué implica adoptar, cómo prep
 
 ### 3.12 Ayudar con material a las protectoras
 
-Si no puedes adoptar ni acoger pero quieres echar una mano, entra en **Necesidades** (enlace del pie de página): es el tablón donde las protectoras piden **comida, mantas y ropa, medicinas o transporte**, con filtros por categoría, urgencia y ciudad. Las mismas peticiones aparecen en el perfil de cada protectora («Necesitamos»). Pulsa **«Puedo ayudar»** (necesitas cuenta), cuenta qué puedes aportar y tu mensaje llegará a la protectora por email — ten en cuenta que al responderte verá tu dirección de correo.
+Si no puedes adoptar ni acoger pero quieres echar una mano, entra en **Necesidades** (en el **menú principal**): es el tablón donde las protectoras piden **comida, mantas y ropa, medicinas o transporte**, con filtros por categoría, urgencia y ciudad. Las mismas peticiones aparecen en el perfil de cada protectora («Necesitamos»). Pulsa **«Puedo ayudar»** (necesitas cuenta), cuenta qué puedes aportar y tu mensaje llegará a la protectora por email — ten en cuenta que al responderte verá tu dirección de correo.
+
+### 3.13 Historias felices
+
+La página de inicio muestra **historias felices**: animales que ya encontraron hogar, con el testimonio de quien los adoptó (o, en su defecto, las últimas adopciones con foto). Es la mejor forma de ver el resultado real de la plataforma. Cuando una adopción se completa a través de Adoptia, la protectora puede publicar el testimonio para que aparezca aquí.
 
 ---
 
@@ -155,6 +162,8 @@ Tras iniciar sesión, el **Panel** es tu página de inicio: resumen de animales 
 
 Estados de un animal: **publicado** (visible), **reservado** (en proceso de adopción) y **adoptado** (caso cerrado; deja de aparecer en las búsquedas). Cambia el estado desde la ficha en **Panel → Animales**.
 
+Si un caso corre de verdad (perrera con fecha límite, urgencia médica, refugio saturado), márcalo como **urgente** en la ficha: llevará un distintivo «Urgente» en la tarjeta y saldrá el primero en las búsquedas por «recientes». Úsalo con moderación para que mantenga su fuerza.
+
 ### 4.3 Gestionar solicitudes de adopción
 
 1. Entra en **Panel → Solicitudes**: es tu bandeja de entrada, con las solicitudes más recientes primero.
@@ -164,7 +173,7 @@ Estados de un animal: **publicado** (visible), **reservado** (en proceso de adop
 
 ### 4.4 Agenda y citas
 
-- En **Panel → Agenda** define tu **disponibilidad**: días y franjas horarias en las que puedes recibir visitas.
+- En **Panel → Agenda** define tu **disponibilidad**: días y franjas horarias en las que puedes recibir visitas. La agenda ofrece tres vistas —**Mes** (pintar disponibilidad, festivos, plantillas de horario y copiar/pegar días), **Año** (un vistazo a los 12 meses en mapa de calor) y **Día** (el detalle de las citas de una jornada)— además de un resumen con tu capacidad de huecos y las citas pendientes de hoy.
 - En **Panel → Citas** ves las citas confirmadas, puedes cancelarlas si surge un imprevisto y consultar el histórico.
 - El sistema envía **recordatorios automáticos** por correo a ambas partes.
 
