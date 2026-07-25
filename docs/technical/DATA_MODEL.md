@@ -176,6 +176,15 @@ asistentes para la ficha y la edición; lleva una **guarda de visibilidad** que 
 de lectura (nunca devuelve un `draft` a quien no es la dueña/admin). Bucket de Storage
 **`event-posters`** (público) para los carteles, con carpeta = `auth.uid()`.
 
+**Avisos (FEATURE-063, migración `20260725160000`):** columnas de idempotencia
+que escribe el cron con service role — `event_attendees.reminded_at`
+(recordatorio 24 h enviado a ese asistente), `events.reminder_sent_at` (resumen
+24 h a la protectora) y `events.zone_notified_at` (aviso de jornada cercana ya
+emitido). El RPC **`event_zone_matches()`** (SECURITY DEFINER, solo `service_role`)
+empareja jornadas publicadas y futuras aún no avisadas con las búsquedas
+guardadas **activas** cuya zona (`filters.lat/lng/radio_km`) las cubre
+(`st_dwithin`). Lo consume el cron `/api/cron/jornadas`.
+
 ## Migraciones
 
 SQL versionado en `supabase/migrations/` con la CLI de Supabase (`supabase migration new`, `supabase db push`). Nunca cambios manuales en el dashboard sin su migración correspondiente. Seed de demo en `supabase/seed.sql`.

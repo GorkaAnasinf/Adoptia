@@ -193,6 +193,8 @@ En **Jornadas** (en el **menú principal**) encuentras los **encuentros presenci
 
 ![Ficha de una jornada a dos columnas: descripción y animales que van a la izquierda; cuándo, dónde, asistentes, botones de asistir y compartir, y mini-mapa a la derecha](img/jornadas-ficha.png)
 
+Si confirmas tu asistencia, recibirás un **recordatorio por email el día antes**. Y si tienes una **búsqueda guardada** (tus alertas), te avisaremos por correo cuando se publique una jornada **cerca de tu zona**; puedes darte de baja desde el propio email.
+
 ---
 
 ## 4. Guía de la protectora
@@ -267,6 +269,8 @@ Puedes **guardar como borrador** y publicar más tarde (para publicar hace falta
 ![Panel → Jornadas: las jornadas de la protectora agrupadas en próximas y borradores, con su estado, animales y asistentes](img/panel-jornadas.png)
 
 ![Formulario de nueva jornada por secciones: datos, ubicación con mapa, animales y cartel](img/panel-jornada-nueva.png)
+
+El día antes de la jornada recibirás un **email de recordatorio** con el número de personas que han confirmado su asistencia, para que te hagas una idea de la afluencia.
 
 ![Panel → Necesidades: las peticiones de material publicadas por la protectora, con su categoría y urgencia](img/panel-necesidades.png)
 

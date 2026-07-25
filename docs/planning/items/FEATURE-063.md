@@ -2,7 +2,7 @@
 id: FEATURE-063
 tipo: feature
 titulo: Jornadas de adopción F2 — recordatorios, aviso a la protectora y avisos por zona
-estado: listo
+estado: hecho
 prioridad: media
 hito: "0.5"
 duplicado_de: null
@@ -83,9 +83,15 @@ Migración `supabase/migrations/20260725xxxxxx_feature063_event_reminders.sql` (
 
 ## Criterios de aceptación / Casuística a cubrir
 
-- [ ] Los asistentes reciben recordatorio ~24 h antes, una sola vez (idempotente ante reejecuciones del cron).
-- [ ] La protectora recibe aviso de nuevas confirmaciones sin ver emails de los asistentes.
-- [ ] Adoptantes con alerta/zona reciben aviso de jornada cercana publicada; respeta opt-out.
-- [ ] Ningún email cruzado ni fuga de datos personales; cron protegido por secreto.
-- [ ] Textos en `messages/es.json`; `tsc` y lint limpios.
-- [ ] Documentación y manual anotados como pendientes de alinear al cerrar.
+- [x] Los asistentes reciben recordatorio ~24 h antes, una sola vez (idempotente por `reminded_at`; ventana 23–25 h).
+- [x] La protectora recibe un aviso sin ver emails de los asistentes — **resumen batch 24 h** ("mañana tu jornada, N asistentes"), idempotente por `reminder_sent_at`, en vez de un email por cada RSVP (batch pre-aprobado en el plan; evita hook server sobre el insert directo de F1).
+- [x] Adoptantes con búsqueda guardada **activa** cuya zona cubre una jornada publicada reciben aviso de jornada cercana; enlace de baja de la alerta. Idempotente por `zone_notified_at`.
+- [x] Ningún email cruzado ni fuga de datos personales (emails de asistentes nunca a la protectora); cron protegido por `CRON_SECRET` (401 sin él).
+- [x] `tsc` y lint limpios. (Los textos van en las plantillas de email server-side, no en `messages/es.json`.)
+- [ ] Documentación y manual alineados al cerrar — **a cargo de Hachiko**.
+
+## Estado de implementación (Bolt · 2026-07-25)
+
+Rama `feature/FEATURE-063-jornadas-avisos` (desde `main`). Migración `20260725160000_feature063_event_notifications` (columnas `reminded_at`/`reminder_sent_at`/`zone_notified_at` + RPC `event_zone_matches`), 3 plantillas de email y cron `GET /api/cron/jornadas`. Verificación: RLS eventos 10/10, cron 4/4, `tsc` y lint limpios.
+
+**Desviaciones vs plan (justificadas):** (1) aviso a la protectora = resumen batch 24 h, no por-RSVP (el plan lo permitía; el insert de RSVP de F1 es directo por RLS, sin hook server). (2) El aviso por zona empareja con las búsquedas guardadas **existentes al procesar** el evento (se marca `zone_notified_at` tras el primer aviso con coincidencias); una búsqueda creada después no lo recibe — limitación aceptable para F2. **Pendiente de despliegue:** `supabase db push` a prod + alta del cron `/api/cron/jornadas` en el scheduler externo (como el resto de `/api/cron/*`).
