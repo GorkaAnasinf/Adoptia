@@ -8,6 +8,7 @@ const state = vi.hoisted(() => ({
   animales: [] as Record<string, unknown>[],
   vistas: [] as Record<string, unknown>[],
   solicitudes: [] as Record<string, unknown>[],
+  eventos: [] as Record<string, unknown>[],
 }));
 
 vi.mock("@/lib/supabase/server", () => {
@@ -28,6 +29,7 @@ vi.mock("@/lib/supabase/server", () => {
         }
         if (tabla === "animals") return thenable({ data: state.animales });
         if (tabla === "page_views") return thenable({ data: state.vistas });
+        if (tabla === "events") return thenable({ data: state.eventos });
         return thenable({ data: state.solicitudes });
       }),
     })),
@@ -71,6 +73,7 @@ describe("Panel de estadísticas", () => {
     state.animales = [ANIMAL];
     state.vistas = [{ animal_id: "a1", day: hoy.slice(0, 10), views: 7 }];
     state.solicitudes = [{ animal_id: "a1" }, { animal_id: "a1" }];
+    state.eventos = [];
   });
 
   it("muestra resumen de visitas, solicitudes y estado de tiempo medio", async () => {
@@ -114,8 +117,22 @@ describe("Panel de estadísticas", () => {
     expect(screen.getByText(messages.stats.graficaVacia)).toBeInTheDocument();
   });
 
-  it("sin animales muestra estado vacío explicativo", async () => {
+  it("muestra la tarjeta de jornadas con adopciones y asistentes", async () => {
+    state.eventos = [
+      { adoptions_count: 3, attended_count: 20 },
+      { adoptions_count: 1, attended_count: 12 },
+    ];
+    await renderPagina();
+    const jornadas = screen.getByTestId("stats-jornadas");
+    expect(jornadas).toHaveTextContent("2"); // jornadas celebradas
+    expect(jornadas).toHaveTextContent("4"); // adopciones (3+1)
+    expect(jornadas).toHaveTextContent("32"); // asistentes (20+12)
+    expect(jornadas).toHaveTextContent(messages.jornadas.statsAdopciones);
+  });
+
+  it("sin animales ni jornadas muestra estado vacío explicativo", async () => {
     state.animales = [];
+    state.eventos = [];
     await renderPagina();
     expect(screen.getByText(messages.stats.vacioTitle)).toBeInTheDocument();
     expect(screen.getByRole("link", { name: messages.stats.vacioCta })).toHaveAttribute(
