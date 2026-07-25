@@ -81,7 +81,7 @@ Para centrar el desarrollo en un lado de la app cada vez, el 0.2 se aborda en do
 | [FEATURE-015](items/FEATURE-015.md) | Contenido educativo sobre adopción responsable | hecho | baja |
 | [FEATURE-016](items/FEATURE-016.md) | Registro de casas de acogida | hecho | baja |
 
-### Hito 0.5 — 100% completado (69/69)
+### Hito 0.5 — 97% completado (70/72)
 
 | Item | Título | Estado | Prioridad |
 |------|--------|--------|-----------|
@@ -136,6 +136,8 @@ Para centrar el desarrollo en un lado de la app cada vez, el 0.2 se aborda en do
 | [FEATURE-059](items/FEATURE-059.md) | Historias felices Nivel 2 — testimonios reales del adoptante | hecho | media |
 | [FEATURE-060](items/FEATURE-060.md) | Badge «Urgente» en fichas y listado de animales | hecho | media |
 | [FEATURE-061](items/FEATURE-061.md) | Buscador global en la cabecera del área privada | hecho | media |
+| [FEATURE-062](items/FEATURE-062.md) | Jornadas de adopción F1 — crear/publicar, listado+mapa público, ficha, RSVP y compartir | hecho | media |
+| [FEATURE-063](items/FEATURE-063.md) | Jornadas de adopción F2 — recordatorios, aviso a la protectora y avisos por zona | listo | media |
 | [IMPROVEMENT-017](items/IMPROVEMENT-017.md) | Rediseño del dashboard de protectora (tarjetas de color y próximas citas) | hecho | media |
 | [IMPROVEMENT-018](items/IMPROVEMENT-018.md) | Rediseño de la home pública (hero con buscador, recién llegados, banda de stats y CTA) | hecho | media |
 | [IMPROVEMENT-019](items/IMPROVEMENT-019.md) | Rediseño del listado /animales (filtros horizontales, tarjetas con favorito y paginación numerada) | hecho | media |
@@ -149,6 +151,7 @@ Para centrar el desarrollo en un lado de la app cada vez, el 0.2 se aborda en do
 | [FEATURE-035](items/FEATURE-035.md) | Historias felices — social proof de adopciones en la home | hecho | baja |
 | [FEATURE-049](items/FEATURE-049.md) | Efectos del área de usuario en el panel (Reveal, carrusel de fotos, hover) | hecho | baja |
 | [FEATURE-052](items/FEATURE-052.md) | Botón "Ver recursos" con el estilo primario relleno | hecho | baja |
+| [FEATURE-064](items/FEATURE-064.md) | Jornadas de adopción F3 — cierre con métricas hacia estadísticas e historias | listo | baja |
 | [IMPROVEMENT-021](items/IMPROVEMENT-021.md) | Búsqueda por texto/raza en el listado de animales | hecho | baja |
 | [IMPROVEMENT-024](items/IMPROVEMENT-024.md) | Pulido menor del perfil público de protectora (fallbacks del hero y de las tarjetas) | hecho | baja |
 | [IMPROVEMENT-031](items/IMPROVEMENT-031.md) | Filtro «Apto para piso» en la búsqueda de animales | hecho | baja |

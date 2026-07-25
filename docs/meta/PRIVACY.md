@@ -13,6 +13,7 @@ Adoptia trata datos personales de **adoptantes** (identidad, contacto, cuestiona
 | Alertas por email | email + criterios de búsqueda | Consentimiento (6.1.a), baja en un clic |
 | Analítica | agregados sin cookies (Umami) | Interés legítimo (6.1.f) — sin PII |
 | Verificación de protectoras | CIF, documentación | Interés legítimo (6.1.f) — prevención de fraude |
+| Asistencia a jornadas (RSVP, FEATURE-062) | vínculo usuario↔evento | Consentimiento (6.1.a) — el usuario confirma; retira su asistencia en un clic. La protectora dueña ve el **recuento** y la lista de asistentes de su evento, nunca sus emails; un asistente no ve a otro (RLS) |
 
 **No hay decisiones automatizadas con efectos jurídicos (art. 22):** el cuestionario NO filtra ni puntúa automáticamente — la decisión sobre cada solicitud la toma siempre una persona de la protectora.
 

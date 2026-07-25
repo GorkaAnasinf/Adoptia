@@ -185,6 +185,12 @@ Si no puedes adoptar ni acoger pero quieres echar una mano, entra en **Necesidad
 
 La página de inicio muestra **historias felices**: animales que ya encontraron hogar, con el testimonio de quien los adoptó (o, en su defecto, las últimas adopciones con foto). Es la mejor forma de ver el resultado real de la plataforma. Cuando una adopción se completa a través de Adoptia, la protectora puede publicar el testimonio para que aparezca aquí.
 
+### 3.14 Jornadas de adopción
+
+En **Jornadas** (en el **menú principal**) encuentras los **encuentros presenciales** que organizan las protectoras para que conozcas en persona a los animales que buscan familia. Verás un **listado con mapa**: cada jornada muestra cuándo y dónde es, quién la organiza y cuántos animales van. Abre la ficha de una jornada para ver todos los detalles, los animales que asistirán y su ubicación en el mapa. Si quieres ir, pulsa **«Voy a ir»** (necesitas cuenta) para confirmar tu asistencia — puedes retirarla cuando quieras — y usa **«Compartir»** para enviarle el evento a quien quieras.
+
+<!-- TODO capturas (tras db push a prod y datos reales): img/jornadas-listado.png, img/jornadas-ficha.png -->
+
 ---
 
 ## 4. Guía de la protectora
@@ -244,6 +250,19 @@ En **Panel → Acogida** consultas las **casas de acogida registradas** en tu zo
 ### 4.8 Pedir ayuda material (necesidades)
 
 En **Panel → Necesidades** publicas lo que os hace falta — comida, mantas y ropa, medicinas, transporte u otros — con descripción y marca de **urgente** si toca. Se muestra en vuestro perfil público y en el tablón general de necesidades. Cuando alguien pulse «Puedo ayudar» recibirás su mensaje por email y podrás responderle directamente. Al conseguir lo pedido, márcalo **cubierto**: desaparece del tablón pero queda en vuestro historial (y puedes reabrirlo si vuelve a hacer falta). Disponible para protectoras verificadas.
+
+### 4.9 Jornadas de adopción
+
+En **Panel → Jornadas** organizas **encuentros presenciales de captación** (en una plaza, un parque, una tienda…) para dar a conocer a tus animales. Pulsa **«Nueva jornada»** y completa el formulario, que va por secciones:
+
+1. **Datos**: título, descripción, fecha y hora de inicio y fin, y un aforo aproximado (informativo).
+2. **Ubicación**: sitúa en el mapa **el lugar del evento** (no tu sede) — es lo que verá la gente para llegar.
+3. **Animales que van**: elige de tu catálogo los que llevarás (opcional; puedes crear una jornada genérica sin animales concretos).
+4. **Cartel**: sube una imagen para anunciarla (opcional; se comprime sola).
+
+Puedes **guardar como borrador** y publicar más tarde (para publicar hace falta la ubicación). Una vez publicada, aparece en el listado y el mapa público de `/jornadas` y en la ficha puedes ver **cuánta gente ha confirmado** que asistirá (solo el recuento y la lista, nunca sus correos). Desde el listado del panel editas la jornada o la **cancelas** si surge un imprevisto. Disponible para protectoras verificadas.
+
+<!-- TODO capturas (tras db push a prod y datos reales): img/panel-jornadas.png, img/panel-jornada-nueva.png -->
 
 ![Panel → Necesidades: las peticiones de material publicadas por la protectora, con su categoría y urgencia](img/panel-necesidades.png)
 

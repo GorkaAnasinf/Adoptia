@@ -109,6 +109,7 @@ Estado de cada capacidad en lenguaje de usuario. Se regenera con `python scripts
 - Historias felices Nivel 2 — testimonios reales del adoptante ([FEATURE-059](../planning/items/FEATURE-059.md))
 - Badge «Urgente» en fichas y listado de animales ([FEATURE-060](../planning/items/FEATURE-060.md))
 - Buscador global en la cabecera del área privada ([FEATURE-061](../planning/items/FEATURE-061.md))
+- Jornadas de adopción F1 — crear/publicar, listado+mapa público, ficha, RSVP y compartir ([FEATURE-062](../planning/items/FEATURE-062.md))
 - De-duplicar el slug de protectora (nombres repetidos) ([IMPROVEMENT-001](../planning/items/IMPROVEMENT-001.md))
 - Rediseño UX del wizard de alta de protectora (+ fix del mapa gris) ([IMPROVEMENT-002](../planning/items/IMPROVEMENT-002.md))
 - Pulido del shell chrome (sidebar + cabecera) hacia el mockup de Stitch ([IMPROVEMENT-003](../planning/items/IMPROVEMENT-003.md))
@@ -151,5 +152,6 @@ _Nada en desarrollo en este momento._
 
 #### 🗓️ Previsto
 
-_Backlog vacío._
+- Jornadas de adopción F2 — recordatorios, aviso a la protectora y avisos por zona — hito 0.5 ([FEATURE-063](../planning/items/FEATURE-063.md))
+- Jornadas de adopción F3 — cierre con métricas hacia estadísticas e historias — hito 0.5 ([FEATURE-064](../planning/items/FEATURE-064.md))
 <!-- RENDER:END -->

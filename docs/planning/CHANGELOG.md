@@ -2,6 +2,12 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/es/) adaptado. Versionado 0.x hasta el MVP.
 
+## [0.0.101] — 2026-07-25
+
+### Añadido
+
+- **Jornadas de adopción (FEATURE-062, F1)**: las protectoras verificadas pueden organizar **encuentros presenciales de captación** desde su panel con un formulario por secciones (datos, ubicación propia del evento en el mapa, animales que van y cartel), guardarlos como borrador y publicarlos. La gente los descubre en `/jornadas` (listado + mapa), abre la ficha de cada uno, **confirma su asistencia** y **comparte** el evento. La protectora ve cuántas personas irán (sin ver sus emails). **Con migración** (`20260725100000_feature062_events`: tablas `events`/`event_animals`/`event_attendees`, RLS, RPCs `events_upcoming`/`event_detail` y bucket `event-posters`). Faltan por desarrollar F2 (avisos por email/zona, FEATURE-063) y F3 (métricas, FEATURE-064).
+
 ## [0.0.100] — 2026-07-25
 
 ### Corregido

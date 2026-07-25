@@ -1,6 +1,7 @@
 import {
   BarChart3,
   Bell,
+  CalendarClock,
   CalendarDays,
   CalendarHeart,
   Clock,
@@ -41,6 +42,7 @@ const NAV: Record<Role, Item[]> = {
     { key: "navStories", href: "/panel/historias", icon: Sparkles, exists: true },
     { key: "navNeeds", href: "/panel/necesidades", icon: HandHeart, exists: true },
     { key: "navDonationBoard", href: "/panel/donaciones", icon: Gift, exists: true },
+    { key: "navEvents", href: "/panel/jornadas", icon: CalendarClock, exists: true },
     { key: "navPublicProfile", href: "/panel/perfil", icon: Store, exists: true },
     { key: "navStats", href: "/panel/estadisticas", icon: BarChart3, exists: true },
   ],

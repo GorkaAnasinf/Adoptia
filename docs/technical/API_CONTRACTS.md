@@ -257,4 +257,13 @@ Auth: dueño de protectora **verificada**. **Relay puro e inverso al de necesida
 // 502 → { "error": { "code": "email_error" } }
 ```
 
+## Jornadas de adopción — sin endpoints  *(FEATURE-062)*
+
+El CRUD de jornadas va **directo por supabase-js amparado por RLS**, sin Route Handlers (mismo
+patrón que necesidades y ofertas de donación): la protectora crea/edita/cancela sobre `events`
+y `event_animals`, y el adoptante confirma/retira asistencia sobre `event_attendees`. El cartel
+se sube al bucket `event-posters`. El descubrimiento y el detalle van por RPC (`events_upcoming`,
+`event_detail`, ver `DATA_MODEL.md`), no por API. Los avisos por email (recordatorio a asistentes,
+aviso a la protectora, jornada cercana) llegan en **FEATURE-063 (F2)** y sí añadirán un cron.
+
 Este documento se amplía por item: cada FEATURE que añada endpoints los documenta aquí al cerrarse (lo verifica Hachiko).
