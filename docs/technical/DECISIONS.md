@@ -124,6 +124,13 @@ Formato ligero tipo ADR. Toda decisión con impacto estructural se registra aqu�
 | 52 | **El descubrimiento y el detalle van por RPC SECURITY DEFINER (`events_upcoming`, `event_detail`) en vez de select directo** | Los recuentos de asistentes deben ser exactos para el público, pero `event_attendees` está cerrado por RLS (un anónimo no ve filas). Un definer da el agregado sin exponer PII; `event_detail` lleva una guarda de visibilidad que replica la RLS para no filtrar borradores | Select directo (recuentos a 0 para el público); contar en cliente (imposible sin leer las filas) |
 | 53 | **Aforo informativo, no gestión estricta de plazas; y jornada sin animales permitida** | F1 busca el mínimo útil: `capacity` es un número orientativo (sin lista de espera ni bloqueo) y una jornada genérica de captación no obliga a vincular animales | Aforo con reserva de plaza (complejidad y estados que no aportan en F1); exigir animales (bloquearía eventos de mera difusión) |
 
+## 2026-07-25 — FEATURE-063 (Jornadas de adopción F2, avisos)
+
+| # | Decisión | Motivo | Alternativa descartada |
+|---|----------|--------|------------------------|
+| 54 | **El aviso a la protectora es un resumen batch 24 h antes (cron), no un email por cada RSVP** | El RSVP de F1 se inserta directo por supabase-js amparado por RLS, sin Route Handler: un aviso por confirmación exigiría un hook server (trigger + pg_net) o mover el RSVP a endpoint. Un resumen "mañana tu jornada, N asistentes" da el dato útil sin esa superficie y es idempotente (`reminder_sent_at`) | Trigger de BD con pg_net por cada insert (infra nueva); mover el RSVP a un endpoint (superficie de API donde RLS ya basta) |
+| 55 | **El aviso de jornada cercana empareja con las búsquedas guardadas existentes al procesar el evento y marca `zone_notified_at`** | Dedup barato por evento (una pasada, un email por usuario) reutilizando la zona (`filters.lat/lng/radio_km`) de `saved_searches`; sin tabla de notificaciones por (evento, usuario) | Tabla de notificaciones evento×usuario (más exacta ante búsquedas creadas después, pero más peso para una feature incremental) |
+
 ## Cómo añadir una decisión
 
 Nueva fila con fecha en sección nueva si cambia el mes. Si revierte una anterior, enlázala ("revierte #9") en vez de borrarla.

@@ -81,7 +81,7 @@ Para centrar el desarrollo en un lado de la app cada vez, el 0.2 se aborda en do
 | [FEATURE-015](items/FEATURE-015.md) | Contenido educativo sobre adopción responsable | hecho | baja |
 | [FEATURE-016](items/FEATURE-016.md) | Registro de casas de acogida | hecho | baja |
 
-### Hito 0.5 — 96% completado (70/73)
+### Hito 0.5 — 97% completado (71/73)
 
 | Item | Título | Estado | Prioridad |
 |------|--------|--------|-----------|
@@ -138,7 +138,7 @@ Para centrar el desarrollo en un lado de la app cada vez, el 0.2 se aborda en do
 | [FEATURE-060](items/FEATURE-060.md) | Badge «Urgente» en fichas y listado de animales | hecho | media |
 | [FEATURE-061](items/FEATURE-061.md) | Buscador global en la cabecera del área privada | hecho | media |
 | [FEATURE-062](items/FEATURE-062.md) | Jornadas de adopción F1 — crear/publicar, listado+mapa público, ficha, RSVP y compartir | hecho | media |
-| [FEATURE-063](items/FEATURE-063.md) | Jornadas de adopción F2 — recordatorios, aviso a la protectora y avisos por zona | listo | media |
+| [FEATURE-063](items/FEATURE-063.md) | Jornadas de adopción F2 — recordatorios, aviso a la protectora y avisos por zona | hecho | media |
 | [IMPROVEMENT-017](items/IMPROVEMENT-017.md) | Rediseño del dashboard de protectora (tarjetas de color y próximas citas) | hecho | media |
 | [IMPROVEMENT-018](items/IMPROVEMENT-018.md) | Rediseño de la home pública (hero con buscador, recién llegados, banda de stats y CTA) | hecho | media |
 | [IMPROVEMENT-019](items/IMPROVEMENT-019.md) | Rediseño del listado /animales (filtros horizontales, tarjetas con favorito y paginación numerada) | hecho | media |

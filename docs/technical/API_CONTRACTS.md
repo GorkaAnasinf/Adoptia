@@ -20,6 +20,7 @@ La mayor parte del acceso a datos va **directo a Supabase** (supabase-js + RLS).
 | GET | `/api/geocode?q=` | Geocodifica ciudad/CP para el buscador del mapa público (cachea, rate limit por IP) | público |
 | POST | `/api/admin/protectoras/[id]/verificar` | `pending → verified/suspended`; email de resultado | admin |
 | GET | `/api/cron/keepalive` | Ping BD (evita pausa Supabase free) | CRON_SECRET |
+| GET | `/api/cron/jornadas` | Recordatorio 24 h a asistentes + resumen a la protectora + aviso de jornada cercana por zona (FEATURE-063) | CRON_SECRET |
 
 Fase 2 añade: `/api/citas` (proponer/confirmar/cancelar + recordatorios), `/api/alertas/notificar` (cron que casa animales nuevos con `saved_searches`).
 

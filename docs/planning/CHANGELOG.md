@@ -2,6 +2,12 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/es/) adaptado. Versionado 0.x hasta el MVP.
 
+## [0.0.102] — 2026-07-25
+
+### Añadido
+
+- **Avisos de jornadas de adopción (FEATURE-063, F2)**: los asistentes reciben un **recordatorio por email ~24 h antes** de la jornada, la protectora un **resumen** ("mañana tu jornada, N asistentes") y los adoptantes con una **búsqueda guardada** cuya zona cubre una nueva jornada reciben un aviso de **jornada cercana** (con baja de la alerta). Todo por el cron `GET /api/cron/jornadas`, idempotente (marcas `reminded_at`/`reminder_sent_at`/`zone_notified_at`) y sin exponer los emails de los asistentes. **Con migración** (`20260725160000_feature063_event_notifications`: esas columnas + RPC `event_zone_matches`). Falta desplegar la migración a prod y dar de alta el cron en el scheduler.
+
 ## [0.0.101] — 2026-07-25
 
 ### Añadido

@@ -545,3 +545,95 @@ export function plantillaAvistamiento({
     `),
   };
 }
+
+// ---------- FEATURE-063: avisos de jornadas de adopción ----------
+
+const JORNADA_URL = (id: string) => `${SITE}/jornadas/${id}`;
+
+/** Recordatorio 24 h antes de la jornada, al asistente confirmado. */
+export function plantillaJornadaRecordatorio({
+  nombre,
+  titulo,
+  lugar,
+  fecha,
+  eventId,
+}: {
+  nombre: string;
+  titulo: string;
+  lugar: string;
+  fecha: Date;
+  eventId: string;
+}) {
+  return {
+    subject: `Recordatorio: mañana es «${esc(titulo)}»`,
+    html: BASE(`
+      <p>Hola ${esc(nombre)},</p>
+      <p>Te recordamos que mañana es la jornada <strong>${esc(titulo)}</strong>, a la que confirmaste tu asistencia:</p>
+      <p style="font-size:18px"><strong>${formatearFechaCita(fecha)}</strong></p>
+      ${lugar ? `<p><strong>Dónde:</strong> ${esc(lugar)}</p>` : ""}
+      <p>Si al final no puedes ir, puedes retirar tu asistencia desde la ficha:</p>
+      <p><a href="${JORNADA_URL(eventId)}" style="color:#396662">Ver la jornada</a></p>
+    `),
+  };
+}
+
+/** Resumen 24 h antes, a la protectora organizadora. */
+export function plantillaJornadaProtectora({
+  nombre,
+  titulo,
+  fecha,
+  asistentes,
+  eventId,
+}: {
+  nombre: string;
+  titulo: string;
+  fecha: Date;
+  asistentes: number;
+  eventId: string;
+}) {
+  return {
+    subject: `Mañana: ${esc(titulo)} — ${asistentes} ${asistentes === 1 ? "asistente confirmado" : "asistentes confirmados"}`,
+    html: BASE(`
+      <p>Hola ${esc(nombre)},</p>
+      <p>Mañana celebráis vuestra jornada <strong>${esc(titulo)}</strong>:</p>
+      <p style="font-size:18px"><strong>${formatearFechaCita(fecha)}</strong></p>
+      <p>Personas que han confirmado su asistencia: <strong>${asistentes}</strong> (es orientativo).</p>
+      <p><a href="${JORNADA_URL(eventId)}" style="color:#396662">Ver la jornada</a></p>
+    `),
+  };
+}
+
+/** Aviso de una o varias jornadas cercanas a la zona de una búsqueda guardada. */
+export function plantillaJornadaCercana({
+  nombre,
+  jornadas,
+  unsubscribeToken,
+}: {
+  nombre: string;
+  jornadas: { id: string; title: string; city: string | null; fecha: Date }[];
+  unsubscribeToken: string;
+}) {
+  const items = jornadas
+    .map(
+      (j) => `
+      <li style="margin:8px 0">
+        <a href="${JORNADA_URL(j.id)}" style="color:#396662;font-weight:600">${esc(j.title)}</a>
+        <span style="color:#6b6b6b"> — ${formatearFechaCita(j.fecha)}${j.city ? ` · ${esc(j.city)}` : ""}</span>
+      </li>`,
+    )
+    .join("");
+  return {
+    subject:
+      jornadas.length === 1
+        ? "Hay una jornada de adopción cerca de ti"
+        : `${jornadas.length} jornadas de adopción cerca de ti`,
+    html: BASE(`
+      <p>Hola ${esc(nombre)},</p>
+      <p>Se han publicado jornadas de adopción en la zona de tu búsqueda guardada:</p>
+      <ul style="margin:8px 0;padding-left:18px">${items}</ul>
+      <p style="font-size:12px;color:#6b6b6b;margin-top:16px">
+        <a href="${SITE}/alertas/baja?token=${unsubscribeToken}" style="color:#6b6b6b">Darme de baja de esta alerta</a>
+      </p>
+    `),
+  };
+}
