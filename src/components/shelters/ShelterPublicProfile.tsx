@@ -69,6 +69,7 @@ export function ShelterPublicProfile({
   photos = [],
   stats,
   needs = [],
+  adopcionesJornadas = 0,
   autenticado = false,
 }: {
   shelter: PublicShelter;
@@ -76,10 +77,12 @@ export function ShelterPublicProfile({
   photos?: { id: string; url: string }[];
   stats?: ShelterStats | null;
   needs?: PublicNeed[];
+  adopcionesJornadas?: number;
   autenticado?: boolean;
 }) {
   const t = useTranslations("shelterPublic");
   const tn = useTranslations("necesidades");
+  const tj = useTranslations("jornadas");
   const ubicacion = [shelter.city, shelter.province].filter(Boolean).join(", ");
   const redes = REDES.filter((r) => {
     return Boolean(shelter.social_links?.[r.key]);
@@ -199,6 +202,14 @@ export function ShelterPublicProfile({
             </div>
           ))}
         </dl>
+      )}
+
+      {/* Social proof de jornadas (FEATURE-064) */}
+      {adopcionesJornadas > 0 && (
+        <p className="mt-6 flex items-center gap-2 rounded-2xl border border-primary/20 bg-primary/5 px-5 py-4 text-sm font-medium text-primary">
+          <PawPrint aria-hidden className="size-5 shrink-0" />
+          {tj("socialProofJornadas", { count: adopcionesJornadas })}
+        </p>
       )}
 
       {/* Necesidades abiertas (FEATURE-031) */}

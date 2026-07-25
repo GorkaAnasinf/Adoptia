@@ -185,6 +185,13 @@ empareja jornadas publicadas y futuras aún no avisadas con las búsquedas
 guardadas **activas** cuya zona (`filters.lat/lng/radio_km`) las cubre
 (`st_dwithin`). Lo consume el cron `/api/cron/jornadas`.
 
+**Resultado (FEATURE-064, migración `20260726100000`):** `events.adoptions_count`
+y `events.attended_count` (int nullable, `check >= 0`) — la protectora los declara
+al **finalizar** una jornada pasada (estado `finished`). Son agregados sin PII:
+alimentan la tarjeta de estadísticas de la protectora y el social proof público
+del perfil ("en nuestras jornadas, N animales encontraron familia"), que se lee
+directamente de los eventos `finished` (público por RLS).
+
 ## Migraciones
 
 SQL versionado en `supabase/migrations/` con la CLI de Supabase (`supabase migration new`, `supabase db push`). Nunca cambios manuales en el dashboard sin su migración correspondiente. Seed de demo en `supabase/seed.sql`.

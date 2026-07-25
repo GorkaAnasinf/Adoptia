@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Clock, Eye, Inbox, type LucideIcon } from "lucide-react";
+import { CalendarClock, Clock, Eye, Heart, Inbox, type LucideIcon, Users } from "lucide-react";
 import Link from "next/link";
 import { getFormatter, getTranslations } from "next-intl/server";
 import { serieVisitas, tiempoMedioHastaAdopcion, type VistaDia } from "@/lib/estadisticas";
@@ -22,6 +22,7 @@ type AnimalFila = {
 /** Métricas de la protectora: visitas agregadas (sin PII), solicitudes y ritmo. */
 export default async function EstadisticasPage() {
   const t = await getTranslations("stats");
+  const tj = await getTranslations("jornadas");
   const format = await getFormatter();
   const supabase = await createClient();
   const {
@@ -33,6 +34,7 @@ export default async function EstadisticasPage() {
 
   let animales: AnimalFila[] = [];
   let vistas: (VistaDia & { animal_id: string })[] = [];
+  let jornadasFin: { adoptions_count: number | null; attended_count: number | null }[] = [];
   const solicitudesPorAnimal = new Map<string, number>();
 
   if (shelter) {
@@ -42,6 +44,13 @@ export default async function EstadisticasPage() {
       .eq("shelter_id", shelter.id)
       .order("updated_at", { ascending: false });
     animales = (a as AnimalFila[] | null) ?? [];
+
+    const { data: ev } = await supabase
+      .from("events")
+      .select("adoptions_count, attended_count")
+      .eq("shelter_id", shelter.id)
+      .eq("status", "finished");
+    jornadasFin = (ev as typeof jornadasFin | null) ?? [];
 
     if (animales.length > 0) {
       const ids = animales.map((x) => x.id);
@@ -66,6 +75,9 @@ export default async function EstadisticasPage() {
     return a + b;
   }, 0);
   const media = tiempoMedioHastaAdopcion(animales);
+  const jornadasCelebradas = jornadasFin.length;
+  const adopcionesJornadas = jornadasFin.reduce((n, j) => n + (j.adoptions_count ?? 0), 0);
+  const asistentesJornadas = jornadasFin.reduce((n, j) => n + (j.attended_count ?? 0), 0);
 
   // Serie diaria agregada (todas las fichas) para la gráfica de barras
   const porDia = new Map<string, number>();
@@ -85,7 +97,7 @@ export default async function EstadisticasPage() {
       <p className="mt-1 text-muted-foreground">{t("subtitle")}</p>
       <p className="mt-2 text-xs text-muted-foreground">{t("sinPII")}</p>
 
-      {animales.length === 0 ? (
+      {animales.length === 0 && jornadasCelebradas === 0 ? (
         <div className="mt-8 flex flex-col items-center rounded-2xl border border-border bg-card px-6 py-14 text-center shadow-soft">
           <h2 className="font-heading text-xl font-semibold">{t("vacioTitle")}</h2>
           <p className="mt-2 max-w-md text-muted-foreground">{t("vacioText")}</p>
@@ -121,6 +133,32 @@ export default async function EstadisticasPage() {
               </div>
             ))}
           </dl>
+
+          {/* Jornadas de adopción (FEATURE-064) */}
+          {jornadasCelebradas > 0 && (
+            <dl data-testid="stats-jornadas" className="mt-4 grid gap-4 sm:grid-cols-3">
+              {(
+                [
+                  { icono: CalendarClock, valor: String(jornadasCelebradas), etiqueta: tj("statsCelebradas"), tono: "bg-primary/10 text-primary" },
+                  { icono: Heart, valor: String(adopcionesJornadas), etiqueta: tj("statsAdopciones"), tono: "bg-secondary-container text-on-secondary-container" },
+                  { icono: Users, valor: String(asistentesJornadas), etiqueta: tj("statsAsistentes"), tono: "bg-tertiary/10 text-tertiary" },
+                ] as { icono: LucideIcon; valor: string; etiqueta: string; tono: string }[]
+              ).map(({ icono: Icono, valor, etiqueta, tono }) => (
+                <div
+                  key={etiqueta}
+                  className="flex items-center gap-4 rounded-2xl border border-border bg-card p-5 shadow-soft"
+                >
+                  <span className={`flex size-12 shrink-0 items-center justify-center rounded-xl ${tono}`}>
+                    <Icono className="size-6" aria-hidden="true" />
+                  </span>
+                  <div className="min-w-0">
+                    <dd className="font-heading text-3xl font-bold tabular-nums">{valor}</dd>
+                    <dt className="mt-0.5 text-sm text-muted-foreground">{etiqueta}</dt>
+                  </div>
+                </div>
+              ))}
+            </dl>
+          )}
 
           {/* Gráfica de barras (30 días) */}
           <div className="mt-8 rounded-2xl border border-border bg-card p-5 shadow-soft">

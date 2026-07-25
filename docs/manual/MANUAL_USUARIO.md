@@ -272,6 +272,8 @@ Puedes **guardar como borrador** y publicar más tarde (para publicar hace falta
 
 El día antes de la jornada recibirás un **email de recordatorio** con el número de personas que han confirmado su asistencia, para que te hagas una idea de la afluencia.
 
+Cuando la jornada haya terminado, pulsa **«Finalizar»** en la lista y anota el **resultado**: cuántas adopciones se cerraron y cuánta gente asistió. Esos datos aparecen luego en tus **Estadísticas** (tarjeta «Jornadas de adopción») y, si hubo adopciones, en tu **perfil público** como un mensaje de ánimo para futuros adoptantes («en nuestras jornadas, N animales encontraron familia»). Son cifras agregadas: no se comparte ningún dato personal.
+
 ![Panel → Necesidades: las peticiones de material publicadas por la protectora, con su categoría y urgencia](img/panel-necesidades.png)
 
 ---

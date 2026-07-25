@@ -2,7 +2,7 @@
 id: FEATURE-064
 tipo: feature
 titulo: Jornadas de adopción F3 — cierre con métricas hacia estadísticas e historias
-estado: listo
+estado: hecho
 prioridad: baja
 hito: "0.5"
 duplicado_de: null
@@ -78,9 +78,15 @@ Migración `supabase/migrations/20260725xxxxxx_feature064_event_outcome.sql`:
 
 ## Criterios de aceptación / Casuística a cubrir
 
-- [ ] La protectora finaliza una jornada pasada y registra adopciones/asistentes; estado `finished`.
-- [ ] La estadística de la protectora agrega solo jornadas finalizadas.
-- [ ] Se puede generar una historia feliz desde una jornada con resultado positivo, con moderación y sin datos personales.
-- [ ] Seguridad RLS: solo la dueña/admin cierra y edita el resultado.
-- [ ] Textos en `messages/es.json`; `tsc` y lint limpios.
-- [ ] Documentación y manual anotados como pendientes de alinear al cerrar.
+- [x] La protectora finaliza una jornada pasada (botón "Finalizar" solo si `ends_at` ya pasó) y registra adopciones/asistentes; estado `finished`.
+- [x] La estadística de la protectora agrega **solo** jornadas `finished` (tarjeta "Jornadas de adopción" con celebradas/adopciones/asistentes).
+- [x] Social proof **sin datos personales**: banner en el perfil público de la protectora ("en nuestras jornadas, N animales encontraron familia"), como **agregado público** en vez de forzarlo en `adoption_stories` (Decisión #57).
+- [x] Seguridad RLS: solo la dueña/admin cierra y edita el resultado; los contadores son públicos (agregados, sin PII). Test RLS 3/3.
+- [x] Textos en `messages/es.json`; `tsc` y lint limpios.
+- [ ] Documentación y manual alineados al cerrar — **a cargo de Hachiko**.
+
+## Estado de implementación (Bolt · 2026-07-25)
+
+Rama `feature/FEATURE-064-jornadas-metricas` (desde `main`). Migración `20260726100000_feature064_event_outcome` (columnas `adoptions_count`/`attended_count` con checks). Panel: "Finalizar" en `JornadaRow` con formulario de resultado. Estadísticas: tarjeta de jornadas. Perfil público: banner de social proof.
+
+**Desviación vs plan (justificada):** la "historia feliz desde jornada" se implementa como **agregado público** en el perfil de la protectora, no como entrada en `adoption_stories` — ese modelo es un **testimonio del adoptante sobre un animal concreto con consentimiento** (FEATURE-035/059), que no encaja con un recuento de jornada (Decisión #57). Verificación: RLS eventos 13/13, unit 28/28, `tsc` y lint limpios. **Pendiente de despliegue:** `supabase db push` a prod. Con F3, **la línea Jornadas (F1+F2+F3) queda completa.**
