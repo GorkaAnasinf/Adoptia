@@ -2,7 +2,7 @@
 id: FEATURE-062
 tipo: feature
 titulo: Jornadas de adopción F1 — crear/publicar, listado+mapa público, ficha, RSVP y compartir
-estado: desarrollo
+estado: hecho
 prioridad: media
 hito: "0.5"
 duplicado_de: null

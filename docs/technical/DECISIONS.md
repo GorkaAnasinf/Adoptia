@@ -116,6 +116,14 @@ Formato ligero tipo ADR. Toda decisión con impacto estructural se registra aqu�
 |---|----------|--------|------------------------|
 | 50 | **Los testimonios del adoptante (`adoption_stories`) los modera la PROTECTORA DUEÑA, no el admin** | La protectora conoce a la familia y el caso; reparte la carga de moderación y da cercanía. RLS: `update` solo del `shelter_id` propio; el adoptante no puede autoaprobarse (`with check status='pending'`). Foto/texto son datos personales → `consent` obligatorio (check en BD) | Moderación centralizada por admin (cuello de botella, menos contexto); publicación directa sin revisar (riesgo reputacional/RGPD) |
 
+## 2026-07-25 — FEATURE-062 (Jornadas de adopción F1)
+
+| # | Decisión | Motivo | Alternativa descartada |
+|---|----------|--------|------------------------|
+| 51 | **La jornada tiene ubicación PROPIA (`events.location`), no la de la sede de la protectora** | Una jornada ocurre en una plaza/parque/tienda, casi nunca en la sede; el mapa y la ficha necesitan ese punto. Se geocodifica con el mismo `MapPinPicker` del resto de altas | Reutilizar la ubicación de la protectora (llevaría a la gente al sitio equivocado) |
+| 52 | **El descubrimiento y el detalle van por RPC SECURITY DEFINER (`events_upcoming`, `event_detail`) en vez de select directo** | Los recuentos de asistentes deben ser exactos para el público, pero `event_attendees` está cerrado por RLS (un anónimo no ve filas). Un definer da el agregado sin exponer PII; `event_detail` lleva una guarda de visibilidad que replica la RLS para no filtrar borradores | Select directo (recuentos a 0 para el público); contar en cliente (imposible sin leer las filas) |
+| 53 | **Aforo informativo, no gestión estricta de plazas; y jornada sin animales permitida** | F1 busca el mínimo útil: `capacity` es un número orientativo (sin lista de espera ni bloqueo) y una jornada genérica de captación no obliga a vincular animales | Aforo con reserva de plaza (complejidad y estados que no aportan en F1); exigir animales (bloquearía eventos de mera difusión) |
+
 ## Cómo añadir una decisión
 
 Nueva fila con fecha en sección nueva si cambia el mes. Si revierte una anterior, enlázala ("revierte #9") en vez de borrarla.

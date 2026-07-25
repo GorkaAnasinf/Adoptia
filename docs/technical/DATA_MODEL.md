@@ -147,6 +147,35 @@ devuelve los conteos agregados del perfil público — `adopciones` (todos los `
 `verified`, es del caller o el caller es admin; si no, 0 filas. Lo consume
 `/protectoras/[slug]` vía `supabase.rpc("shelter_public_stats", { p_shelter_id })`.
 
+## Jornadas de adopción (FEATURE-062, migración `20260725100000`)
+
+Eventos presenciales de captación que organiza una protectora. Tres tablas:
+
+- **`events`** — la jornada: `shelter_id`, `title`, `description`, `starts_at`/`ends_at`
+  (con `check (ends_at > starts_at)`), `location extensions.geography(point,4326)` **propia
+  del evento** (una plaza/parque, NO la sede), `address`/`city`, `poster_url` (cartel,
+  opcional), `capacity` (aforo informativo, nullable, `check > 0`), `status`
+  (enum `event_status`: `draft`/`published`/`cancelled`/`finished`) y
+  `check (status <> 'published' or location is not null)` — publicar exige ubicación.
+- **`event_animals`** — animales que van (opcional): PK `(event_id, animal_id)`.
+- **`event_attendees`** — asistencia confirmada (RSVP): PK `(event_id, user_id)`.
+
+**RLS**: `events` la gestiona solo la **dueña de una protectora verificada** (insert/update/
+delete); el público lee cualquier estado salvo `draft` de verificadas; admin todo.
+`event_animals` hereda la visibilidad del evento y en escritura exige que el animal sea de la
+**misma protectora**. `event_attendees`: cada usuario gestiona **su propia** fila y solo puede
+confirmar a un evento `published` de verificada; la **dueña** del evento lee la lista completa;
+un asistente NO ve a otro (tests en `src/test/rls/eventos.test.ts`).
+
+Dos RPCs **SECURITY DEFINER** (recuentos exactos sin exponer PII de asistentes):
+**`events_upcoming(p_lat, p_lng, p_radius_m)`** — jornadas `published` y futuras de
+verificadas, con `lat`/`lng`, nombre de la protectora y recuentos de animales/asistentes;
+si se pasan coordenadas filtra por radio (`st_dwithin`) y ordena por distancia. La consume
+`/jornadas`. **`event_detail(p_id)`** — detalle de una jornada con `lat`/`lng` y recuento de
+asistentes para la ficha y la edición; lleva una **guarda de visibilidad** que replica la RLS
+de lectura (nunca devuelve un `draft` a quien no es la dueña/admin). Bucket de Storage
+**`event-posters`** (público) para los carteles, con carpeta = `auth.uid()`.
+
 ## Migraciones
 
 SQL versionado en `supabase/migrations/` con la CLI de Supabase (`supabase migration new`, `supabase db push`). Nunca cambios manuales en el dashboard sin su migración correspondiente. Seed de demo en `supabase/seed.sql`.
