@@ -274,4 +274,20 @@ describe.skipIf(!rlsDisponible)("FEATURE-062 jornadas de adopción", () => {
     const lejosFilas = (lejos ?? []) as Record<string, unknown>[];
     expect(lejosFilas.some((f) => f.id === eventoPubId)).toBe(false);
   });
+
+  it("event_detail devuelve la publicada con coordenadas a anon, pero nunca el borrador", async () => {
+    const { data: pub } = await anonClient().rpc("event_detail", { p_id: eventoPubId });
+    const fila = ((pub ?? []) as Record<string, unknown>[])[0];
+    expect(fila).toBeTruthy();
+    expect(Math.round(Number(fila.lat))).toBe(37);
+    expect(Number(fila.lng)).toBeLessThan(0);
+
+    const { data: borr } = await anonClient().rpc("event_detail", { p_id: eventoBorradorId });
+    expect((borr ?? []) as unknown[]).toHaveLength(0);
+
+    // La dueña sí ve su borrador por event_detail.
+    const verif = await signInAs("evt-prot-verif@test.com", PASS);
+    const { data: comoDuena } = await verif.rpc("event_detail", { p_id: eventoBorradorId });
+    expect(((comoDuena ?? []) as unknown[]).length).toBe(1);
+  });
 });

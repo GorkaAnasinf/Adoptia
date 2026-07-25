@@ -279,6 +279,63 @@ $$;
 grant execute on function public.events_upcoming(double precision, double precision, double precision)
   to anon, authenticated, service_role;
 
+-- Detalle de UNA jornada con coordenadas y recuento de asistentes, para la
+-- ficha pública y la edición. `security definer` para dar recuentos exactos,
+-- pero con guarda de visibilidad que REPLICA la RLS de lectura: nunca devuelve
+-- un borrador a quien no es la dueña/admin.
+create or replace function public.event_detail(p_id uuid)
+returns table (
+  id uuid,
+  shelter_id uuid,
+  title text,
+  description text,
+  starts_at timestamptz,
+  ends_at timestamptz,
+  address text,
+  city text,
+  poster_url text,
+  capacity int,
+  status public.event_status,
+  lat double precision,
+  lng double precision,
+  shelter_name text,
+  shelter_slug text,
+  attendee_count bigint
+)
+language sql
+security definer
+set search_path = public, extensions
+stable
+as $$
+  select
+    e.id,
+    e.shelter_id,
+    e.title,
+    e.description,
+    e.starts_at,
+    e.ends_at,
+    e.address,
+    e.city,
+    e.poster_url,
+    e.capacity,
+    e.status,
+    st_y(e.location::geometry) as lat,
+    st_x(e.location::geometry) as lng,
+    s.name as shelter_name,
+    s.slug as shelter_slug,
+    (select count(*) from public.event_attendees att where att.event_id = e.id) as attendee_count
+  from public.events e
+  join public.shelters s on s.id = e.shelter_id
+  where e.id = p_id
+    and (
+      (e.status <> 'draft' and s.status = 'verified')
+      or s.owner_id = auth.uid()
+      or public.is_admin()
+    )
+$$;
+
+grant execute on function public.event_detail(uuid) to anon, authenticated, service_role;
+
 -- ---------- Bucket de carteles ----------
 
 insert into storage.buckets (id, name, public)
