@@ -76,6 +76,9 @@
 | [FEATURE-059](FEATURE-059.md) | Historias felices Nivel 2 — testimonios reales del adoptante | feature | hecho | 0.5 |
 | [FEATURE-060](FEATURE-060.md) | Badge «Urgente» en fichas y listado de animales | feature | hecho | 0.5 |
 | [FEATURE-061](FEATURE-061.md) | Buscador global en la cabecera del área privada | feature | hecho | 0.5 |
+| [FEATURE-062](FEATURE-062.md) | Jornadas de adopción F1 — crear/publicar, listado+mapa público, ficha, RSVP y compartir | feature | listo | 0.5 |
+| [FEATURE-063](FEATURE-063.md) | Jornadas de adopción F2 — recordatorios, aviso a la protectora y avisos por zona | feature | listo | 0.5 |
+| [FEATURE-064](FEATURE-064.md) | Jornadas de adopción F3 — cierre con métricas hacia estadísticas e historias | feature | listo | 0.5 |
 | [IMPROVEMENT-001](IMPROVEMENT-001.md) | De-duplicar el slug de protectora (nombres repetidos) | improvement | hecho | — |
 | [IMPROVEMENT-002](IMPROVEMENT-002.md) | Rediseño UX del wizard de alta de protectora (+ fix del mapa gris) | improvement | hecho | 0.2 |
 | [IMPROVEMENT-003](IMPROVEMENT-003.md) | Pulido del shell chrome (sidebar + cabecera) hacia el mockup de Stitch | improvement | hecho | 0.2 |

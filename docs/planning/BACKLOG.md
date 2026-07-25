@@ -19,5 +19,11 @@
 Los items `hecho`/`descartado` no aparecen aquí — su histórico vive en [CHANGELOG](CHANGELOG.md) y git.
 
 <!-- RENDER:START -->
-_No hay items abiertos._
+### ✅ Listo para desarrollo (3)
+
+| Item | Título | Prioridad | Hito |
+|------|--------|-----------|------|
+| [FEATURE-062](items/FEATURE-062.md) | Jornadas de adopción F1 — crear/publicar, listado+mapa público, ficha, RSVP y compartir | media | 0.5 |
+| [FEATURE-063](items/FEATURE-063.md) | Jornadas de adopción F2 — recordatorios, aviso a la protectora y avisos por zona | media | 0.5 |
+| [FEATURE-064](items/FEATURE-064.md) | Jornadas de adopción F3 — cierre con métricas hacia estadísticas e historias | baja | 0.5 |
 <!-- RENDER:END -->

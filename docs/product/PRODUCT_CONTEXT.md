@@ -151,5 +151,7 @@ _Nada en desarrollo en este momento._
 
 #### 🗓️ Previsto
 
-_Backlog vacío._
+- Jornadas de adopción F1 — crear/publicar, listado+mapa público, ficha, RSVP y compartir — hito 0.5 ([FEATURE-062](../planning/items/FEATURE-062.md))
+- Jornadas de adopción F2 — recordatorios, aviso a la protectora y avisos por zona — hito 0.5 ([FEATURE-063](../planning/items/FEATURE-063.md))
+- Jornadas de adopción F3 — cierre con métricas hacia estadísticas e historias — hito 0.5 ([FEATURE-064](../planning/items/FEATURE-064.md))
 <!-- RENDER:END -->
