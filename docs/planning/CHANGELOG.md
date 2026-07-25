@@ -2,6 +2,12 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/es/) adaptado. Versionado 0.x hasta el MVP.
 
+## [0.0.103] — 2026-07-25
+
+### Corregido
+
+- **CI en verde de nuevo (BUG-011)**: el workflow llevaba rojo crónico (varias features) por dos causas ajenas a los cambios de cada PR. (1) El paso `npm audit` tumbaba el job por advisories *high* que eran **solo de devDependencies** (árbol de eslint); ahora audita solo producción (`--omit=dev`). (2) El E2E de **onboarding** fallaba en todos los reintentos porque comprobaba un texto obsoleto ("Horario de apertura") que el rediseño del wizard eliminó del paso 3; se corrige la aserción al encabezado real. Además, los flujos E2E largos (onboarding, citas) superaban el timeout por compilación en frío de turbopack → `test.slow()`. Los 5 jobs de CI vuelven a `success`.
+
 ## [0.0.102] — 2026-07-25
 
 ### Añadido

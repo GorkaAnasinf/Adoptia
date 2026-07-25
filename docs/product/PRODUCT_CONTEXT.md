@@ -48,6 +48,7 @@ Estado de cada capacidad en lenguaje de usuario. Se regenera con `python scripts
 - La suite E2E está podrida — 14 de 26 fallan al ejecutarla entera ([BUG-008](../planning/items/BUG-008.md))
 - Test de la agenda roto tras el rediseño de vistas (label y timeline) ([BUG-009](../planning/items/BUG-009.md))
 - FKs sin ON DELETE CASCADE bloquean el borrado de una cuenta (appointments/reports) ([BUG-010](../planning/items/BUG-010.md))
+- CI en rojo crónico — el job E2E falla en onboarding y citas (main lleva rojo varias features) ([BUG-011](../planning/items/BUG-011.md))
 - Inicialización y andamiaje del proyecto ([FEATURE-000](../planning/items/FEATURE-000.md))
 - Registro y login de adoptantes y protectoras ([FEATURE-001](../planning/items/FEATURE-001.md))
 - Onboarding de protectoras y verificación por admin ([FEATURE-002](../planning/items/FEATURE-002.md))
@@ -153,6 +154,5 @@ _Nada en desarrollo en este momento._
 
 #### 🗓️ Previsto
 
-- CI en rojo crónico — el job E2E falla en onboarding y citas (main lleva rojo varias features) — hito 0.5 ([BUG-011](../planning/items/BUG-011.md))
 - Jornadas de adopción F3 — cierre con métricas hacia estadísticas e historias — hito 0.5 ([FEATURE-064](../planning/items/FEATURE-064.md))
 <!-- RENDER:END -->
