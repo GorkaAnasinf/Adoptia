@@ -149,5 +149,5 @@ _Nada en desarrollo en este momento._
 
 #### 🗓️ Previsto
 
-_Backlog vacío._
+- Añadir capturas de pantalla al manual de usuario — hito 0.5 ([IMPROVEMENT-035](../planning/items/IMPROVEMENT-035.md))
 <!-- RENDER:END -->

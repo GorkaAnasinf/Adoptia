@@ -4,9 +4,16 @@
 
 [![CI](https://github.com/GorkaAnasinf/Adoptia/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/GorkaAnasinf/Adoptia/actions/workflows/ci.yml)
 ![Next.js 15](https://img.shields.io/badge/Next.js-15-black?logo=next.js)
+![React 19](https://img.shields.io/badge/React-19-149ECA?logo=react&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript&logoColor=white)
+![Node](https://img.shields.io/badge/Node-24-5FA04E?logo=node.js&logoColor=white)
 ![Supabase](https://img.shields.io/badge/Supabase-Postgres%20%2B%20PostGIS-3FCF8E?logo=supabase&logoColor=white)
 ![Tailwind CSS 4](https://img.shields.io/badge/Tailwind_CSS-4-06B6D4?logo=tailwindcss&logoColor=white)
+<br>
+![Tests](https://img.shields.io/badge/tests-1196%20passing-success?logo=vitest&logoColor=white)
+![Cobertura](https://img.shields.io/badge/cobertura-%E2%89%A570%25-success)
+![RLS](https://img.shields.io/badge/seguridad-RLS%20en%20BD-1f6feb)
+![Estado](https://img.shields.io/badge/estado-MVP%20en%20producci%C3%B3n-brightgreen)
 ![Coste](https://img.shields.io/badge/coste-0%20%E2%82%AC-success)
 
 Las protectoras publican sus animales con fichas completas y gestionan solicitudes y citas desde un panel privado; los adoptantes buscan por proximidad en un mapa, consultan fichas y arrancan la adopción con un cuestionario guiado que sustituye al filtro telefónico manual. **Gratuito para ambos lados** y construido íntegramente sobre free tiers (**coste de operación: 0 €**).
@@ -92,7 +99,7 @@ Decisiones estructurales clave (detalle y motivos en [DECISIONS.md](docs/technic
 
 ### Requisitos previos
 
-- **Node.js 20+** y npm
+- **Node.js 24** (fijado en [.nvmrc](.nvmrc); `engines` exige ≥22) y npm
 - **Git**
 - **Python 3.10+** (script de planificación y MkDocs; opcional para solo ejecutar la app)
 - Cuenta gratuita en [Supabase](https://supabase.com)
@@ -163,8 +170,8 @@ El proyecto se desarrolla con **TDD estricto**: todo código de producción nace
 
 | Rama | Entorno |
 |------|---------|
-| `main` | Producción (Vercel) |
-| `develop` | Preview automático (Vercel Preview Deployments) |
+| `main` | Producción (Vercel) — cada `push` despliega |
+| `feature/*` · `fix/*` | Preview automático por rama (Vercel Preview Deployments) |
 
 1. Importar el repo en Vercel (framework autodetectado) y configurar las variables de entorno de `.env.example` en Production + Preview.
 2. Aplicar migraciones al proyecto Supabase de producción (`npx supabase db push`).
@@ -214,7 +221,7 @@ Toda la documentación vive en [docs/](docs/) y se navega con `mkdocs serve`:
 
 El proyecto sigue un flujo **SDD (Spec-Driven Development)** orquestado por agentes (la *Manada*, ver [CLAUDE.md](CLAUDE.md)): cada petición se clasifica, se especifica y planifica en un item de `docs/planning/items/`, se aprueba, se implementa con TDD, pasa QA y se documenta antes de cerrarse. Las vistas de planificación se regeneran con `python scripts/render_planning.py`.
 
-- **Gitflow sin PRs**: ramas `feature/<ID>-slug` desde `develop`; merge a `develop` y de ahí a `main`. Nunca commits directos a `main`.
+- **Gitflow sin PRs (main-based)**: una rama `feature/<ID>-slug` (o `fix/<ID>-slug`) por item **desde `main`**, y se libera directa a `main` con `merge --no-ff` + push. Nunca commits directos a `main` (siempre rama + merge).
 - **Commits**: [Conventional Commits](https://www.conventionalcommits.org/es/) en español.
 - Convenciones completas: [CONTRIBUTING.md](CONTRIBUTING.md) · Política de seguridad: [SECURITY.md](SECURITY.md)
 

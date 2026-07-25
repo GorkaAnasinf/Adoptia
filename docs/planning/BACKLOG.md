@@ -19,5 +19,9 @@
 Los items `hecho`/`descartado` no aparecen aquí — su histórico vive en [CHANGELOG](CHANGELOG.md) y git.
 
 <!-- RENDER:START -->
-_No hay items abiertos._
+### 📥 Recibido (1)
+
+| Item | Título | Prioridad | Hito |
+|------|--------|-----------|------|
+| [IMPROVEMENT-035](items/IMPROVEMENT-035.md) | Añadir capturas de pantalla al manual de usuario | baja | 0.5 |
 <!-- RENDER:END -->
