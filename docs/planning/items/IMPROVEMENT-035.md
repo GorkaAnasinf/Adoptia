@@ -49,11 +49,13 @@ captura conviene hacerla con el dev server local y una sesión asistida (ver
 - Tomadas con **Playwright** sobre el stack local (`npx supabase db reset` +
   `supabase/seed.sql` + un pequeño enriquecimiento demo), captcha desactivado por
   el `webServer`, sesión con los usuarios demo del seed (`AdoptiaDemo1!`).
-- Scripts de regeneración: `e2e/_capturas.spec.ts` (públicas) y
-  `e2e/_capturas-auth.spec.ts` (privadas). **Se saltan en CI/e2e normal**; para
-  regenerarlas: `CAPTURAS=1 npx playwright test e2e/_capturas.spec.ts --project=chromium --workers=1`.
-- Admin (verificación/moderación) queda **sin captura** por ahora (el seed no trae
-  usuario admin); pendiente menor si se quiere completar esa sección.
+- **Administración** también cubierta (27 capturas en total): verificación de
+  protectoras, cola de reportes y registro de auditoría. Para el rol admin se
+  promueve en local a un usuario demo (`update profiles set role='admin'`).
+- Scripts de regeneración: `e2e/_capturas.spec.ts` (públicas),
+  `e2e/_capturas-auth.spec.ts` (adoptante/protectora) y `e2e/_capturas-admin.spec.ts`
+  (administración). **Se saltan en CI/e2e normal**; para regenerarlas:
+  `CAPTURAS=1 npx playwright test e2e/_capturas.spec.ts --project=chromium --workers=1`.
 
 ## Criterios de aceptación
 

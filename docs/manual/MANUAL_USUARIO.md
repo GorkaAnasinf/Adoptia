@@ -259,14 +259,20 @@ Sección reservada al equipo de Adoptia (rol administrador).
 2. Revisa los datos de la entidad (nombre, CIF, contacto, ubicación).
 3. **Verifica** la protectora (pasa a ser visible públicamente) o recházala indicando el motivo. En ambos casos la protectora recibe un correo.
 
+![Admin → Protectoras: la cola de protectoras pendientes de verificación con los botones «Verificar» y «Rechazar»](img/admin-protectoras.png)
+
 ### 5.2 Moderación y reportes
 
 - **Admin → Reportes**: cola de contenido reportado por los usuarios (fichas, anuncios de perdidos y encontrados). Cada reporte puede resolverse retirando el contenido o desestimándose.
 - Desde la administración también se pueden **despublicar animales** y **suspender cuentas** que incumplan las normas.
 
+![Admin → Reportes: la cola de contenido reportado por los usuarios, con su motivo y estado](img/admin-reportes.png)
+
 ### 5.3 Auditoría
 
 **Admin → Auditoría** registra las acciones sensibles realizadas en la plataforma (verificaciones, moderaciones, suspensiones), con fecha y autor, para poder revisar cualquier decisión a posteriori.
+
+![Admin → Auditoría: el registro inmutable de acciones sensibles con su fecha y autor](img/admin-auditoria.png)
 
 ---
 

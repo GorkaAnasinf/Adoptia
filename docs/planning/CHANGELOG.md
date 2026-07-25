@@ -6,7 +6,7 @@ Formato: [Keep a Changelog](https://keepachangelog.com/es/) adaptado. Versionado
 
 ### Añadido
 
-- **Manual de usuario con capturas de pantalla (IMPROVEMENT-035)**: el manual (`docs/manual/MANUAL_USUARIO.md`) estrena **24 capturas** de las pantallas clave —home (escritorio y móvil), listado y ficha de animal, directorio y mapa de protectoras, guías, acogida, necesidades, perdidos, el área de «Mi cuenta» y el panel completo de la protectora—, generadas de forma reproducible con Playwright sobre datos de demo. Scripts `e2e/_capturas*.spec.ts` (se saltan en CI; se lanzan con `CAPTURAS=1`).
+- **Manual de usuario con capturas de pantalla (IMPROVEMENT-035)**: el manual (`docs/manual/MANUAL_USUARIO.md`) estrena **27 capturas** de las pantallas clave —home (escritorio y móvil), listado y ficha de animal, directorio y mapa de protectoras, guías, acogida, necesidades, perdidos, el área de «Mi cuenta», el panel completo de la protectora y la administración (verificación, reportes, auditoría)—, generadas de forma reproducible con Playwright sobre datos de demo. Scripts `e2e/_capturas*.spec.ts` (se saltan en CI; se lanzan con `CAPTURAS=1`).
 
 ### Documentación / auditoría
 
