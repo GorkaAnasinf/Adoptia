@@ -2,6 +2,12 @@
 
 Formato: [Keep a Changelog](https://keepachangelog.com/es/) adaptado. Versionado 0.x hasta el MVP.
 
+## [0.0.100] — 2026-07-25
+
+### Corregido
+
+- **Borrado de cuenta bloqueado por dos claves foráneas (BUG-010)**: `appointments.cancelled_by` y `reports.reviewed_by` referenciaban `profiles(id)` sin `on delete`, de modo que borrar una cuenta que hubiera cancelado una cita o revisado un reporte fallaba con una violación de clave foránea (bajas de usuario, RGPD, limpieza de datos). Ahora ambas usan `on delete set null`: se conserva la cita/el reporte y se desvincula al autor. **Con migración** (`20260725120000_bug010_fk_set_null`) y test de borrado.
+
 ## [0.0.99] — 2026-07-25
 
 ### Añadido

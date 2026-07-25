@@ -19,9 +19,5 @@
 Los items `hecho`/`descartado` no aparecen aquí — su histórico vive en [CHANGELOG](CHANGELOG.md) y git.
 
 <!-- RENDER:START -->
-### 📥 Recibido (1)
-
-| Item | Título | Prioridad | Hito |
-|------|--------|-----------|------|
-| [BUG-010](items/BUG-010.md) | FKs sin ON DELETE CASCADE bloquean el borrado de una cuenta (appointments/reports) | media | 0.5 |
+_No hay items abiertos._
 <!-- RENDER:END -->
