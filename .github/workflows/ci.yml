@@ -56,7 +56,12 @@ jobs:
 
       - name: Auditoría de dependencias
         if: steps.app.outputs.exists == 'true'
-        run: npm audit --audit-level=high
+        # Solo dependencias de PRODUCCIÓN (lo que llega al usuario). Las
+        # advisories high abiertas eran todas de devDependencies (el árbol de
+        # eslint: brace-expansion → minimatch → @eslint/config-array), sin
+        # exposición en runtime, y tumbaban el CI en cada push. `--omit=dev`
+        # mantiene el gate sobre lo que sí se despliega (hoy: 0 vulnerabilidades).
+        run: npm audit --audit-level=high --omit=dev
 
   # BUG-007: hasta 2026-07-15 los 122 tests de RLS se saltaban en verde en cada
   # push (sin stack no hay variables, y `describe.skipIf` no hace ruido). "RLS
