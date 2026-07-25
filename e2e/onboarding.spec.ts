@@ -28,6 +28,9 @@ function cifValido(): string {
 }
 
 test("una protectora se registra, completa el wizard y queda en revisión", async ({ page }) => {
+  // Flujo largo: registro → wizard (3 pasos) → panel; con turbopack compilando
+  // cada ruta en frío el primer acceso, 30 s se quedan cortos.
+  test.slow();
   const sello = Date.now();
   const email = `e2e-shelter-${sello}@test.com`;
   const password = "Secreta-123-E2E";
@@ -71,7 +74,9 @@ test("una protectora se registra, completa el wizard y queda en revisión", asyn
   await page.getByRole("button", { name: t.next }).click();
 
   // --- Paso 3: perfil ---
-  await expect(page.getByText(t.hoursTitle)).toBeVisible();
+  // El paso 3 (rediseño del wizard) ya no tiene "Horario de apertura": su
+  // marca estable es el encabezado "Perfil público" (cardProfile).
+  await expect(page.getByRole("heading", { name: t.cardProfile })).toBeVisible();
   await page.getByLabel(t.description).fill("Somos un refugio de prueba E2E.");
   await page.getByRole("button", { name: t.finish }).click();
 

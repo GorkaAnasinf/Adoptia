@@ -102,6 +102,9 @@ test.beforeAll(async () => {
 test("solicitud aprobada → reservar hueco → agenda de la protectora → realizada", async ({
   page,
 }) => {
+  // Flujo largo (adoptante reserva → protectora en su agenda): con turbopack
+  // compilando cada ruta en frío el primer acceso, 30 s se quedan cortos.
+  test.slow();
   // --- Adoptante: entra y reserva ---
   await iniciarSesion(page, ADOPTER_EMAIL, PASS);
 
