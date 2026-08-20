@@ -10,7 +10,7 @@ const COMPLETE_DEMO_SEED = `
     id uuid primary key,
     email text not null unique,
     password_login_enabled boolean not null
-  ) on commit drop;
+  );
   insert into demo_expected_users (id, email, password_login_enabled) values
     ('d0000000-0000-4000-8000-000000000001','protectoraaitana@adoptiademo.com',true),
     ('d0000000-0000-4000-8000-000000000002','protectorabaluarte@adoptiademo.com',true),
@@ -31,8 +31,10 @@ const COMPLETE_DEMO_SEED = `
     ('d0000000-0000-4000-8000-000000000019','adoptanteiglesias@adoptiademo.com',true),
     ('d0000000-0000-4000-8000-000000000020','adoptantejimenez@adoptiademo.com',true),
     ('d0000000-0000-4000-8000-000000000031','admin@adoptiademo.com',false);
-  create temporary table demo_seed_config (demo_password text not null) on commit drop;
+  create temporary table demo_seed_config (demo_password text not null);
   insert into demo_seed_config values ('${DEMO_PASSWORD}');
+  drop table if exists demo_expected_users;
+  drop table if exists demo_seed_config;
 
   do $$
   begin
@@ -160,15 +162,15 @@ const COMPLETE_DEMO_SEED = `
 const COMPLETE_CLEANUP_SEED = `
   begin;
   lock table auth.users in share row exclusive mode;
-  create temporary table seed_user_ids on commit drop as
+  create temporary table seed_user_ids as
   select id from auth.users
   where lower(email) like '%@adoptiademo.com'
     or lower(email) like '%@circuito.adoptia.es'
     or lower(email) like '%@masivo.adoptia.es';
-  create temporary table seed_shelter_ids on commit drop as
+  create temporary table seed_shelter_ids as
   select id from public.shelters
   where owner_id in (select id from seed_user_ids);
-  create temporary table audit_log_user_trigger_states on commit drop as
+  create temporary table audit_log_user_trigger_states as
   select tgname, tgenabled from pg_trigger
   where tgrelid = 'public.audit_log'::regclass and not tgisinternal;
   do $$
@@ -226,6 +228,9 @@ const COMPLETE_CLEANUP_SEED = `
     end if;
   end
   $$;
+  drop table if exists seed_user_ids;
+  drop table if exists seed_shelter_ids;
+  drop table if exists audit_log_user_trigger_states;
   commit;
 `;
 
@@ -372,13 +377,30 @@ describe("contrato SQL de los seeds", () => {
     expect(validateCleanupSeed(sql)).toContain("falta bloquear auth.users durante la limpieza");
   });
 
-  it("exige que seed_user_ids desaparezca al confirmar", () => {
+  it("exige que seed_user_ids se cree con el allowlist exacto", () => {
     const sql = COMPLETE_CLEANUP_SEED.replace(
-      "create temporary table seed_user_ids on commit drop as",
       "create temporary table seed_user_ids as",
+      "create temporary table seed_user_ids as select id from auth.users; --",
     );
 
-    expect(validateCleanupSeed(sql)).toContain("seed_user_ids no usa ON COMMIT DROP");
+    expect(validateCleanupSeed(sql)).toContain("seed_user_ids no se crea con el allowlist esperado");
+  });
+
+  it("rechaza atar las temporales al COMMIT (rompe en el SQL Editor)", () => {
+    const sql = COMPLETE_CLEANUP_SEED.replace(
+      "create temporary table seed_shelter_ids as",
+      "create temporary table seed_shelter_ids on commit drop as",
+    );
+
+    expect(validateCleanupSeed(sql)).toContain(
+      "las tablas temporales no pueden depender del COMMIT",
+    );
+  });
+
+  it("exige liberar las temporales de la limpieza", () => {
+    const sql = COMPLETE_CLEANUP_SEED.replace("drop table if exists seed_user_ids;", "");
+
+    expect(validateCleanupSeed(sql)).toContain("la limpieza no libera sus tablas temporales");
   });
 
   it("exige revalidar el allowlist en el propio DELETE", () => {

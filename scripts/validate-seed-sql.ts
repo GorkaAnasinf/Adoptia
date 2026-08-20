@@ -4,7 +4,7 @@ const ALIASED_DOMAIN_ALLOWLIST = DOMAINS.map(
   (domain) => `lower(u.email) like '%${domain}'`,
 ).join(" or ");
 const CREATE_SEED_USER_IDS =
-  `create temporary table seed_user_ids on commit drop as select id from auth.users where ${DOMAIN_ALLOWLIST}`;
+  `create temporary table seed_user_ids as select id from auth.users where ${DOMAIN_ALLOWLIST}`;
 const DELETE_SEED_USER_IDS =
   `delete from auth.users u where u.id in (select id from seed_user_ids) and (${ALIASED_DOMAIN_ALLOWLIST})`;
 const EXPECTED_DEMO_USERS = [
@@ -201,6 +201,18 @@ export function validateDemoSeed(sql: string): string[] {
     errors.push("faltan invariantes completas de Auth");
   }
 
+  if (normalizedSql.includes("on commit drop")) {
+    errors.push("las tablas temporales no pueden depender del COMMIT");
+  }
+  if (
+    !containsEvery(normalizedSql, [
+      "drop table if exists demo_expected_users;",
+      "drop table if exists demo_seed_config;",
+    ])
+  ) {
+    errors.push("el seed no libera sus tablas temporales");
+  }
+
   const hasDisabledAdmin = containsEvery(normalizedSql, [
     "extensions.gen_random_bytes(32)",
     "timestamptz '9999-12-31 00:00:00+00'",
@@ -235,7 +247,7 @@ export function validateCleanupSeed(sql: string): string[] {
   }
 
   if (!normalizedSql.includes(CREATE_SEED_USER_IDS)) {
-    errors.push("seed_user_ids no usa ON COMMIT DROP");
+    errors.push("seed_user_ids no se crea con el allowlist esperado");
   }
 
   const allowlistIsClosed =
@@ -263,7 +275,7 @@ export function validateCleanupSeed(sql: string): string[] {
   }
 
   const hasFinalAssertions = containsEvery(normalizedSql, [
-    "create temporary table seed_shelter_ids on commit drop as",
+    "create temporary table seed_shelter_ids as",
     "select id from public.shelters where owner_id in (select id from seed_user_ids)",
     "remaining_user_count",
     "remaining_profile_count",
@@ -282,9 +294,9 @@ export function validateCleanupSeed(sql: string): string[] {
 
   const orderedFragments = [
     "lock table auth.users in share row exclusive mode",
-    "create temporary table seed_user_ids on commit drop as",
-    "create temporary table seed_shelter_ids on commit drop as",
-    "create temporary table audit_log_user_trigger_states on commit drop as",
+    "create temporary table seed_user_ids as",
+    "create temporary table seed_shelter_ids as",
+    "create temporary table audit_log_user_trigger_states as",
     "alter table public.audit_log disable trigger %i",
     "delete from public.audit_log",
     "when 'o' then",
@@ -300,8 +312,22 @@ export function validateCleanupSeed(sql: string): string[] {
     errors.push("el orden de la limpieza no es seguro");
   }
 
+  // El SQL Editor de Supabase no conserva el `begin;` del fichero como una sola
+  // transaccion: `on commit drop` borraba las temporales a mitad (42P01).
+  if (normalizedSql.includes("on commit drop")) {
+    errors.push("las tablas temporales no pueden depender del COMMIT");
+  }
+  const dropsTempTables = containsEvery(normalizedSql, [
+    "drop table if exists seed_user_ids;",
+    "drop table if exists seed_shelter_ids;",
+    "drop table if exists audit_log_user_trigger_states;",
+  ]);
+  if (!dropsTempTables) {
+    errors.push("la limpieza no libera sus tablas temporales");
+  }
+
   const preservesAuditTriggerState = containsEvery(normalizedSql, [
-    "create temporary table audit_log_user_trigger_states on commit drop as",
+    "create temporary table audit_log_user_trigger_states as",
     "select tgname, tgenabled from",
     "where tgenabled <> 'd'",
     "when 'o' then",
