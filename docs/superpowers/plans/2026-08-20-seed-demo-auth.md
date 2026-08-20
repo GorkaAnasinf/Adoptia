@@ -198,7 +198,7 @@ Un bloque `DO` debe elevar excepciones si los recuentos no son exactamente 19 us
 
 Run: `npx vitest run bdseed/seed-sql-files.test.ts`
 
-Expected: 4 tests PASS.
+Expected: 2 pruebas locales PASS.
 
 ### Task 4: Documentación y verificación final
 
