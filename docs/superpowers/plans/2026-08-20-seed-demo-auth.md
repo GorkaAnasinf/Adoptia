@@ -101,6 +101,7 @@ git commit -m "test(seed): valida el contrato de los SQL de demo"
 **Files:**
 - Create: `bdseed/seed_todos_borrar.sql`
 - Create: `bdseed/seed-sql-files.test.ts` (local e ignorado junto con los seeds)
+- Create: `bdseed/vitest.config.ts` (configuración local para descubrir pruebas ignoradas)
 
 **Interfaces:**
 - Consumes: cuentas pertenecientes a los tres dominios permitidos.
@@ -117,7 +118,7 @@ it("el limpiador real cumple el contrato destructivo acotado", () => {
 
 - [ ] **Step 2: Ejecutar la prueba y verificar el rojo**
 
-Run: `npx vitest run bdseed/seed-sql-files.test.ts`
+Run: `npx vitest run --config bdseed/vitest.config.ts`
 
 Expected: FAIL con `ENOENT` porque el limpiador aún no existe.
 
@@ -135,7 +136,7 @@ Debe actualizar las referencias blandas, eliminar `audit_log` con sus triggers d
 
 - [ ] **Step 4: Ejecutar el validador y verificar el verde**
 
-Run: `npx vitest run bdseed/seed-sql-files.test.ts`
+Run: `npx vitest run --config bdseed/vitest.config.ts`
 
 Expected: 3 tests PASS.
 
