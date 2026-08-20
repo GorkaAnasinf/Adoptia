@@ -30,6 +30,54 @@ describe("contrato SQL de los seeds", () => {
     );
   });
 
+  it("rechaza una limpieza cuyo allowlist añade or 1=1", () => {
+    const sql = `
+      begin;
+      create temporary table seed_user_ids as
+      select id from auth.users
+      where lower(email) like '%@adoptiademo.com'
+        or lower(email) like '%@circuito.adoptia.es'
+        or lower(email) like '%@masivo.adoptia.es'
+        or 1 = 1;
+      delete from auth.users where id in (select id from seed_user_ids);
+      commit;
+    `;
+
+    expect(validateCleanupSeed(sql)).toContain(
+      "la limpieza no está limitada a los tres dominios de seed",
+    );
+  });
+
+  it("rechaza un borrado por id aunque los dominios solo estén en comentarios", () => {
+    const sql = `
+      begin;
+      -- @adoptiademo.com @circuito.adoptia.es @masivo.adoptia.es
+      delete from auth.users where id is not null;
+      commit;
+    `;
+
+    expect(validateCleanupSeed(sql)).toContain(
+      "la limpieza no está limitada a los tres dominios de seed",
+    );
+  });
+
+  it("rechaza dominios en mayúsculas en el allowlist", () => {
+    const sql = `
+      begin;
+      create temporary table seed_user_ids as
+      select id from auth.users
+      where lower(email) like '%@ADOPTIAdemo.com'
+        or lower(email) like '%@circuito.adoptia.es'
+        or lower(email) like '%@masivo.adoptia.es';
+      delete from auth.users where id in (select id from seed_user_ids);
+      commit;
+    `;
+
+    expect(validateCleanupSeed(sql)).toContain(
+      "la limpieza no está limitada a los tres dominios de seed",
+    );
+  });
+
   it("acepta un seed demo con todos los requisitos del contrato", () => {
     const sql = `
       begin;
@@ -45,10 +93,12 @@ describe("contrato SQL de los seeds", () => {
   it("acepta una limpieza limitada a los tres dominios de seed", () => {
     const sql = `
       begin;
-      delete from auth.users
-      where email like '%@adoptiademo.com'
-        or email like '%@circuito.adoptia.es'
-        or email like '%@masivo.adoptia.es';
+      create temporary table seed_user_ids as
+      select id from auth.users
+      where lower(email) like '%@adoptiademo.com'
+        or lower(email) like '%@circuito.adoptia.es'
+        or lower(email) like '%@masivo.adoptia.es';
+      delete from auth.users where id in (select id from seed_user_ids);
       commit;
     `;
 

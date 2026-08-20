@@ -1,4 +1,21 @@
 const DOMAINS = ["@adoptiademo.com", "@circuito.adoptia.es", "@masivo.adoptia.es"];
+const DOMAIN_ALLOWLIST = DOMAINS.map((domain) => `lower(email) like '%${domain}'`).join(" or ");
+const CREATE_SEED_USER_IDS =
+  `create temporary table seed_user_ids as select id from auth.users where ${DOMAIN_ALLOWLIST}`;
+const DELETE_SEED_USER_IDS = "delete from auth.users where id in (select id from seed_user_ids)";
+
+function stripSqlComments(sql: string): string {
+  return sql
+    .replace(/\/\*[\s\S]*?\*\//g, " ")
+    .replace(/--[^\r\n]*/g, " ");
+}
+
+function normalizeSql(sql: string): string {
+  return stripSqlComments(sql)
+    .replace(/\s+/g, " ")
+    .trim()
+    .toLowerCase();
+}
 
 export function validateDemoSeed(sql: string): string[] {
   const errors: string[] = [];
@@ -21,19 +38,30 @@ export function validateDemoSeed(sql: string): string[] {
 
 export function validateCleanupSeed(sql: string): string[] {
   const errors: string[] = [];
+  const commentFreeSql = stripSqlComments(sql);
+  const normalizedSql = normalizeSql(sql);
+  const statements = normalizedSql
+    .split(";")
+    .map((statement) => statement.trim())
+    .filter(Boolean);
 
-  if (!/^\s*begin;/im.test(sql) || !/commit;\s*$/im.test(sql)) {
+  if (!normalizedSql.startsWith("begin;") || !normalizedSql.endsWith("commit;")) {
     errors.push("falta una transacción explícita");
   }
 
-  const exactDomains = DOMAINS.every((domain) => sql.includes(domain));
-  const hasUnexpectedDomain = (sql.match(/@[a-z0-9][a-z0-9.-]*/gi) ?? []).some(
-    (domain) => !DOMAINS.includes(domain.toLowerCase()),
+  const seedUserIdStatements = statements.filter((statement) =>
+    statement.startsWith("create temporary table seed_user_ids"),
   );
+  const authUserDeleteStatements = statements.filter((statement) =>
+    /\bdelete\s+from\s+auth\.users\b/.test(statement),
+  );
+
   if (
-    !exactDomains ||
-    hasUnexpectedDomain ||
-    /delete\s+from\s+auth\.users\s+where\s+true/i.test(sql)
+    seedUserIdStatements.length !== 1 ||
+    seedUserIdStatements[0] !== CREATE_SEED_USER_IDS ||
+    authUserDeleteStatements.length !== 1 ||
+    authUserDeleteStatements[0] !== DELETE_SEED_USER_IDS ||
+    /@[a-z0-9.-]*[A-Z]/.test(commentFreeSql)
   ) {
     errors.push("la limpieza no está limitada a los tres dominios de seed");
   }
