@@ -16,4 +16,42 @@ describe("contrato SQL de los seeds", () => {
       "la limpieza no está limitada a los tres dominios de seed",
     );
   });
+
+  it("rechaza una limpieza que borra un dominio ajeno aunque mencione los permitidos", () => {
+    const sql = `
+      begin;
+      -- @adoptiademo.com @circuito.adoptia.es @masivo.adoptia.es
+      delete from auth.users where email like '%@otro-dominio.es';
+      commit;
+    `;
+
+    expect(validateCleanupSeed(sql)).toContain(
+      "la limpieza no está limitada a los tres dominios de seed",
+    );
+  });
+
+  it("acepta un seed demo con todos los requisitos del contrato", () => {
+    const sql = `
+      begin;
+      insert into auth.identities values (...);
+      insert into auth.users values (...) on conflict (id) do update set encrypted_password = excluded.encrypted_password;
+      select extensions.crypt('A.doptia!Demo', u.encrypted_password);
+      commit;
+    `;
+
+    expect(validateDemoSeed(sql)).toEqual([]);
+  });
+
+  it("acepta una limpieza limitada a los tres dominios de seed", () => {
+    const sql = `
+      begin;
+      delete from auth.users
+      where email like '%@adoptiademo.com'
+        or email like '%@circuito.adoptia.es'
+        or email like '%@masivo.adoptia.es';
+      commit;
+    `;
+
+    expect(validateCleanupSeed(sql)).toEqual([]);
+  });
 });

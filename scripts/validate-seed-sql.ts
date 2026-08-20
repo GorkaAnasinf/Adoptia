@@ -27,7 +27,14 @@ export function validateCleanupSeed(sql: string): string[] {
   }
 
   const exactDomains = DOMAINS.every((domain) => sql.includes(domain));
-  if (!exactDomains || /delete\s+from\s+auth\.users\s+where\s+true/i.test(sql)) {
+  const hasUnexpectedDomain = (sql.match(/@[a-z0-9][a-z0-9.-]*/gi) ?? []).some(
+    (domain) => !DOMAINS.includes(domain.toLowerCase()),
+  );
+  if (
+    !exactDomains ||
+    hasUnexpectedDomain ||
+    /delete\s+from\s+auth\.users\s+where\s+true/i.test(sql)
+  ) {
     errors.push("la limpieza no está limitada a los tres dominios de seed");
   }
 
