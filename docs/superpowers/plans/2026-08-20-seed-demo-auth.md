@@ -138,7 +138,7 @@ Debe actualizar las referencias blandas, eliminar `audit_log` con sus triggers d
 
 Run: `npx vitest run --config bdseed/vitest.config.ts`
 
-Expected: 3 tests PASS.
+Expected: 1 test PASS del fichero real.
 
 ### Task 3: Auth convergente en el seed comercial
 
