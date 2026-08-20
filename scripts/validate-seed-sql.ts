@@ -26,13 +26,13 @@ export function validateDemoSeed(sql: string): string[] {
   if (!/^\s*begin;/im.test(sql) || !/commit;\s*$/im.test(sql)) {
     errors.push("falta una transacción explícita");
   }
-  if (!/on conflict\s*\(id\)\s*do update/is.test(sql)) {
+  if (!/on conflict\s*\(id\)\s*do update/i.test(sql)) {
     errors.push("falta el upsert de credenciales");
   }
-  if (!/insert into auth\.identities/is.test(sql)) {
+  if (!/insert into auth\.identities/i.test(sql)) {
     errors.push("faltan identidades email");
   }
-  if (!/extensions\.crypt\('A\.doptia!Demo',\s*u\.encrypted_password\)/is.test(sql)) {
+  if (!/extensions\.crypt\('A\.doptia!Demo',\s*u\.encrypted_password\)/i.test(sql)) {
     errors.push("faltan aserciones de autenticación");
   }
 
