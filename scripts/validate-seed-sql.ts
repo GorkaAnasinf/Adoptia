@@ -203,7 +203,7 @@ export function validateDemoSeed(sql: string): string[] {
 
   const hasDisabledAdmin = containsEvery(normalizedSql, [
     "extensions.gen_random_bytes(32)",
-    "'infinity'::timestamptz",
+    "timestamptz '9999-12-31 00:00:00+00'",
     "v_admin_deshabilitado <> 1",
     "extensions.crypt(c.demo_password, u.encrypted_password) <> u.encrypted_password",
   ]);

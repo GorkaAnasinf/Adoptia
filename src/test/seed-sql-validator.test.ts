@@ -82,7 +82,7 @@ const COMPLETE_DEMO_SEED = `
       else extensions.crypt(encode(extensions.gen_random_bytes(32), 'hex'), extensions.gen_salt('bf'))
     end,
     '00000000-0000-0000-0000-000000000000', 'authenticated', 'authenticated', now(),
-    case when e.password_login_enabled then null else 'infinity'::timestamptz end,
+    case when e.password_login_enabled then null else timestamptz '9999-12-31 00:00:00+00' end,
     false, false, null
   from demo_expected_users e cross join demo_seed_config c
   on conflict (id) do update
@@ -138,7 +138,7 @@ const COMPLETE_DEMO_SEED = `
     cross join demo_seed_config c
     where not e.password_login_enabled
       and extensions.crypt(c.demo_password, u.encrypted_password) <> u.encrypted_password
-      and u.banned_until = 'infinity'::timestamptz;
+      and u.banned_until = timestamptz '9999-12-31 00:00:00+00';
     select count(*) into v_perfiles from public.profiles;
     select count(*) into v_identidades_total from auth.identities;
     select count(*) into v_identidades_canonicas from auth.identities;
