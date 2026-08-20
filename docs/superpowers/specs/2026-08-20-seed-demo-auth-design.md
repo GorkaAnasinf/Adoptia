@@ -6,84 +6,96 @@ Producción contiene 13 cuentas de `@circuito.adoptia.es` y 100 de
 `@masivo.adoptia.es`, pero ninguna de `@adoptiademo.com`. El login del seed
 comercial responde `invalid_credentials` porque esas cuentas no existen.
 
-El `seed_demo.sql` actual inserta directamente en `auth.users`, no crea la
-identidad de email asociada en `auth.identities` y resuelve conflictos por ID
-con `DO NOTHING`. Por tanto, una repetición puede conservar credenciales
-antiguas y el resumen final no demuestra que las cuentas sean autenticables.
+El `seed_demo.sql` anterior insertaba directamente en `auth.users`, no creaba
+la identidad de email asociada en `auth.identities` y resolvía conflictos por
+ID con `DO NOTHING`. Una repetición podía conservar credenciales antiguas y el
+resumen final no demostraba que las cuentas fueran autenticables.
 
-## Alcance
+## Alcance y secuencia soportada
 
-Se modificarán únicamente los artefactos manuales de `bdseed/`:
+Los artefactos manuales de `bdseed/` incorporan un limpiador único y un seed
+comercial verificable. También existe un validador rastreado que comprueba los
+patrones SQL mantenidos sin intentar interpretar SQL arbitrario.
 
-- un script nuevo que elimine los datos de los tres seeds conocidos;
-- `seed_demo.sql`, para crear un estado convergente y verificable;
-- la documentación de uso de `bdseed/`.
+La única secuencia soportada para converger es:
 
-La limpieza solo alcanzará cuentas cuyos emails terminen en:
+1. ejecutar `seed_todos_borrar.sql`;
+2. comprobar que los tres dominios quedan a cero;
+3. ejecutar `seed_demo.sql`;
+4. comprobar sus invariantes finales;
+5. probar login con una protectora y un adoptante.
+
+Ejecutar únicamente `seed_demo.sql` sobre restos comerciales no es una ruta de
+convergencia: el preflight aborta antes de la primera mutación persistente para
+evitar duplicar medios, estadísticas o datos dependientes.
+
+## Diseño de la limpieza
+
+La limpieza solo alcanza cuentas cuyos emails terminan en:
 
 - `@adoptiademo.com`;
 - `@circuito.adoptia.es`;
 - `@masivo.adoptia.es`.
 
-Nunca se borrarán cuentas o datos reales ajenos a esos dominios.
+El script abre una transacción y toma un lock `SHARE ROW EXCLUSIVE` sobre
+`auth.users` antes de capturar los IDs en una tabla temporal `ON COMMIT DROP`.
+Ese lock impide que inserciones, cambios de email o borrados invaliden el
+snapshot mientras se limpian sus dependencias.
 
-## Diseño de la limpieza
+Antes de borrar usuarios, el script:
 
-El script de reinicio ejecutará una transacción explícita. Antes de borrar
-usuarios, eliminará o desvinculará las referencias que impiden la cascada:
+1. pone a `NULL` `appointments.cancelled_by` y `reports.reviewed_by` cuando
+   apuntan a una cuenta capturada;
+2. guarda `pg_trigger.tgenabled` para cada trigger de usuario de `audit_log`;
+3. deshabilita los que estaban activos, borra las filas de auditoría vinculadas
+   y restaura exactamente cada estado `O`, `R`, `A` o `D`;
+4. borra de `auth.users` por ID y vuelve a validar el dominio en el propio
+   `DELETE`;
+5. vuelve a consultar usuarios de los dominios y perfiles, protectoras y
+   animales ligados a los IDs capturados.
 
-1. poner a `NULL` `appointments.cancelled_by` y `reports.reviewed_by` cuando
-   apunten a una cuenta sembrada;
-2. desactivar temporalmente solo los triggers de usuario de `audit_log`, borrar
-   sus filas vinculadas a administradores sembrados y reactivar los triggers;
-3. borrar de `auth.users` exclusivamente los tres dominios permitidos;
-4. comprobar que no quedan usuarios de seed ni contenido identificable de esos
-   conjuntos;
-5. abortar la transacción si cualquier comprobación devuelve restos.
-
-El script terminará en `COMMIT` únicamente después de superar las aserciones.
+Cualquier diferencia entre los IDs capturados y borrados, o cualquier resto,
+eleva una excepción y revierte la transacción.
 
 ## Diseño del seed comercial
 
-`seed_demo.sql` también será transaccional. Su bloque de autenticación:
+Antes de escribir datos persistentes, `seed_demo.sql` declara el mapeo exacto
+de 19 UUID/emails y comprueba colisiones por UUID, email e identidad canónica.
+También rechaza restos comerciales que harían insegura una ejecución aislada.
 
-- insertará los 19 usuarios esperados;
-- actualizará en conflicto los campos necesarios para login, incluida la
-  contraseña conocida, en vez de conservar silenciosamente valores antiguos;
-- mantendrá el rol de JWT como `authenticated` y el rol de negocio solamente
-  en `public.profiles`;
-- creará de forma idempotente la identidad `email` en `auth.identities` para
-  cada usuario;
-- conservará el trigger existente que crea `profiles`, promoviendo después el
-  perfil administrativo como ya hace el seed.
+El bloque Auth:
 
-No se usarán claves `service_role` ni secretos adicionales.
+- reinicia de forma explícita el estado completo de las 18 cuentas con login
+  (8 protectoras y 10 adoptantes), incluida la contraseña demo local;
+- mantiene el rol JWT como `authenticated` y el rol de negocio únicamente en
+  `public.profiles`;
+- conserva el perfil admin para moderación y auditoría, pero le asigna un hash
+  aleatorio no recuperable y `banned_until = 'infinity'`, por lo que no dispone
+  de credencial compartida ni puede iniciar sesión;
+- elimina las identidades previas de esos 19 IDs y crea exactamente una
+  identidad canónica de proveedor `email` por cuenta.
 
-## Validación y errores
+No se usan claves `service_role` ni secretos adicionales.
 
-Antes del `COMMIT`, el seed abortará si no se cumplen todos estos invariantes:
+## Validación final
 
-- 19 usuarios `@adoptiademo.com`;
-- 19 IDs y emails únicos;
-- 19 contraseñas que validan contra `A.doptia!Demo`;
-- 19 correos confirmados y filas Auth habilitadas para password login;
-- 19 identidades de proveedor `email`;
-- 19 perfiles, 8 protectoras y 40 animales del seed comercial.
+Antes del `COMMIT`, el seed aborta salvo que se cumplan todos estos invariantes:
 
-Además, una prueba estática automatizada vigilará que ambos scripts mantengan
-la transacción, los dominios permitidos, el upsert de credenciales, la creación
-de identidades y las aserciones finales. La prueba deberá fallar contra el seed
-actual antes de implementar la corrección.
+- el dominio demo contiene exactamente el mapeo de 19 UUID/emails esperado;
+- las 18 cuentas de protectora/adoptante validan la contraseña demo local y
+  tienen Auth confirmado, habilitado y normalizado;
+- el admin está bloqueado y su hash no valida la contraseña compartida;
+- hay exactamente 19 perfiles y 19 identidades totales, todas canónicas;
+- hay exactamente 8 protectoras y 40 animales ligados al mapeo esperado.
+
+Las pruebas estáticas vigilan la estructura de ambos scripts, el lock, la
+revalidación del allowlist, la restauración de triggers, el preflight y las
+aserciones finales. Estas pruebas no sustituyen una ejecución real contra
+PostgreSQL ni una prueba de login.
 
 ## Operación en producción
 
-El operador ejecutará manualmente, en este orden:
-
-1. el script unificado de borrado;
-2. su verificación final de ceros;
-3. el `seed_demo.sql` corregido;
-4. su resumen y aserciones finales;
-5. un login real con una cuenta de protectora y otro con una cuenta adoptante.
-
-La ejecución destructiva seguirá siendo manual en Supabase SQL Editor; el
-trabajo local no borrará ni modificará datos de producción.
+La ejecución destructiva sigue siendo manual en Supabase SQL Editor. El trabajo
+local no borra ni modifica datos de producción. Hasta ejecutar la secuencia en
+un PostgreSQL compatible y probar ambos logins, esas verificaciones permanecen
+pendientes en `BUG-012`.
