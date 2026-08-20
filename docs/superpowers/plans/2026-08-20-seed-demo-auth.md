@@ -6,6 +6,8 @@
 
 **Architecture:** Un validador estático probado por Vitest vigila el contrato de los SQL manuales. Un limpiador transaccional elimina solo los tres dominios de prueba; el seed comercial hace upsert convergente de usuarios e identidades y aborta antes del commit si sus invariantes no se cumplen.
 
+**Decisión de revisión:** El validador estático es una alarma de regresión sobre los scripts mantenidos por el proyecto, no una frontera de seguridad ni un parser de SQL hostil. La garantía destructiva se evalúa revisando directamente `seed_todos_borrar.sql` y sus predicados cerrados.
+
 **Tech Stack:** TypeScript, Vitest, PostgreSQL 17, Supabase Auth/GoTrue, SQL Editor.
 
 ## Global Constraints
