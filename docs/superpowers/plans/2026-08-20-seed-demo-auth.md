@@ -98,7 +98,7 @@ git commit -m "test(seed): valida el contrato de los SQL de demo"
 
 **Files:**
 - Create: `bdseed/seed_todos_borrar.sql`
-- Modify: `src/test/seed-sql-validator.test.ts`
+- Create: `bdseed/seed-sql-files.test.ts` (local e ignorado junto con los seeds)
 
 **Interfaces:**
 - Consumes: cuentas pertenecientes a los tres dominios permitidos.
@@ -115,7 +115,7 @@ it("el limpiador real cumple el contrato destructivo acotado", () => {
 
 - [ ] **Step 2: Ejecutar la prueba y verificar el rojo**
 
-Run: `npx vitest run src/test/seed-sql-validator.test.ts`
+Run: `npx vitest run bdseed/seed-sql-files.test.ts`
 
 Expected: FAIL con `ENOENT` porque el limpiador aún no existe.
 
@@ -133,7 +133,7 @@ Debe actualizar las referencias blandas, eliminar `audit_log` con sus triggers d
 
 - [ ] **Step 4: Ejecutar el validador y verificar el verde**
 
-Run: `npx vitest run src/test/seed-sql-validator.test.ts`
+Run: `npx vitest run bdseed/seed-sql-files.test.ts`
 
 Expected: 3 tests PASS.
 
@@ -141,7 +141,7 @@ Expected: 3 tests PASS.
 
 **Files:**
 - Modify: `bdseed/seed_demo.sql:1-1105`
-- Modify: `src/test/seed-sql-validator.test.ts`
+- Modify: `bdseed/seed-sql-files.test.ts` (local e ignorado junto con los seeds)
 
 **Interfaces:**
 - Consumes: esquema migrado de Adoptia y contraseña fija `A.doptia!Demo`.
@@ -158,7 +158,7 @@ it("el seed demo real cumple el contrato de autenticación", () => {
 
 - [ ] **Step 2: Ejecutar la prueba y verificar el rojo**
 
-Run: `npx vitest run src/test/seed-sql-validator.test.ts`
+Run: `npx vitest run bdseed/seed-sql-files.test.ts`
 
 Expected: FAIL informando transacción, upsert, identidades y aserciones ausentes.
 
@@ -193,7 +193,7 @@ Un bloque `DO` debe elevar excepciones si los recuentos no son exactamente 19 us
 
 - [ ] **Step 6: Ejecutar la prueba y verificar el verde**
 
-Run: `npx vitest run src/test/seed-sql-validator.test.ts`
+Run: `npx vitest run bdseed/seed-sql-files.test.ts`
 
 Expected: 4 tests PASS.
 
@@ -229,4 +229,3 @@ Dejar sin marcar únicamente los dos logins reales hasta que el usuario ejecute 
 - [ ] **Step 4: Entregar instrucciones de producción**
 
 No ejecutar comandos remotos. Entregar enlaces locales a los dos SQL y advertir que el primer paso elimina 113 cuentas de prueba y sus datos en cascada.
-
