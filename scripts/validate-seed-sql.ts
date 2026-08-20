@@ -12,6 +12,9 @@ function stripSqlComments(sql: string): string {
 
 function normalizeSql(sql: string): string {
   return stripSqlComments(sql)
+    .replace(/"auth"/gi, "auth")
+    .replace(/"users"/gi, "users")
+    .replace(/\s*\.\s*/g, ".")
     .replace(/\s+/g, " ")
     .trim()
     .toLowerCase();
@@ -55,12 +58,15 @@ export function validateCleanupSeed(sql: string): string[] {
   const authUserDeleteStatements = statements.filter((statement) =>
     /\bdelete\s+from\s+auth\.users\b/.test(statement),
   );
+  const authUserReferences = normalizedSql.match(/\bauth\.users\b/g) ?? [];
 
   if (
     seedUserIdStatements.length !== 1 ||
     seedUserIdStatements[0] !== CREATE_SEED_USER_IDS ||
     authUserDeleteStatements.length !== 1 ||
     authUserDeleteStatements[0] !== DELETE_SEED_USER_IDS ||
+    authUserReferences.length !== 2 ||
+    /\bexecute\b/.test(normalizedSql) ||
     /@[a-z0-9.-]*[A-Z]/.test(commentFreeSql)
   ) {
     errors.push("la limpieza no está limitada a los tres dominios de seed");

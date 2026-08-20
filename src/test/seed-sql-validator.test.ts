@@ -78,6 +78,60 @@ describe("contrato SQL de los seeds", () => {
     );
   });
 
+  it("rechaza un segundo delete con identificadores auth.users entre comillas", () => {
+    const sql = `
+      begin;
+      create temporary table seed_user_ids as
+      select id from auth.users
+      where lower(email) like '%@adoptiademo.com'
+        or lower(email) like '%@circuito.adoptia.es'
+        or lower(email) like '%@masivo.adoptia.es';
+      delete from auth.users where id in (select id from seed_user_ids);
+      delete from "auth"."users" where true;
+      commit;
+    `;
+
+    expect(validateCleanupSeed(sql)).toContain(
+      "la limpieza no está limitada a los tres dominios de seed",
+    );
+  });
+
+  it("rechaza un segundo delete con comentarios entre auth, punto y users", () => {
+    const sql = `
+      begin;
+      create temporary table seed_user_ids as
+      select id from auth.users
+      where lower(email) like '%@adoptiademo.com'
+        or lower(email) like '%@circuito.adoptia.es'
+        or lower(email) like '%@masivo.adoptia.es';
+      delete from auth.users where id in (select id from seed_user_ids);
+      delete from auth /* esquema */ . /* tabla */ users where true;
+      commit;
+    `;
+
+    expect(validateCleanupSeed(sql)).toContain(
+      "la limpieza no está limitada a los tres dominios de seed",
+    );
+  });
+
+  it("rechaza SQL dinámico que recompone otra referencia a auth.users", () => {
+    const sql = `
+      begin;
+      create temporary table seed_user_ids as
+      select id from auth.users
+      where lower(email) like '%@adoptiademo.com'
+        or lower(email) like '%@circuito.adoptia.es'
+        or lower(email) like '%@masivo.adoptia.es';
+      delete from auth.users where id in (select id from seed_user_ids);
+      execute 'delete from ' || 'auth' || '.' || 'users where true';
+      commit;
+    `;
+
+    expect(validateCleanupSeed(sql)).toContain(
+      "la limpieza no está limitada a los tres dominios de seed",
+    );
+  });
+
   it("acepta un seed demo con todos los requisitos del contrato", () => {
     const sql = `
       begin;
