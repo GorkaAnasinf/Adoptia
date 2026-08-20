@@ -158,4 +158,31 @@ describe("contrato SQL de los seeds", () => {
 
     expect(validateCleanupSeed(sql)).toEqual([]);
   });
+
+  it("acepta el borrado canónico dentro del bloque DO que comprueba sus filas", () => {
+    const sql = `
+      begin;
+      create temporary table seed_user_ids as
+      select id from auth.users
+      where lower(email) like '%@adoptiademo.com'
+        or lower(email) like '%@circuito.adoptia.es'
+        or lower(email) like '%@masivo.adoptia.es';
+      do $$
+      declare
+        expected_count integer;
+        deleted_count integer;
+      begin
+        select count(*) into expected_count from seed_user_ids;
+        delete from auth.users where id in (select id from seed_user_ids);
+        get diagnostics deleted_count = row_count;
+        if expected_count <> deleted_count then
+          raise exception 'La limpieza de usuarios seed no borró todas las filas';
+        end if;
+      end
+      $$;
+      commit;
+    `;
+
+    expect(validateCleanupSeed(sql)).toEqual([]);
+  });
 });
