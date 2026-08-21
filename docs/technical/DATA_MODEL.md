@@ -10,14 +10,31 @@ profiles ──< shelters ──< animals ──< animal_media
    │             │           ├──< adoption_requests >── profiles
    │             │           │           │
    │             │           │           └──< appointments
-   │             │           └──< sponsorships          (fase 3)
+   │             │           ├──< sponsorships
+   │             │           ├──< page_views
+   │             │           └──< adoption_stories >── profiles
    │             ├──< shelter_media
-   │             ├──< availability_slots                (fase 2)
-   │             └──< availability_overrides            (FEATURE-053)
-   ├──< favorites >── animals                           (fase 2)
-   ├──< saved_searches                                  (fase 2)
-   └──< lost_found_posts ──< lost_found_sightings       (fase 3)
+   │             ├──< availability_slots
+   │             ├──< availability_overrides
+   │             ├──< availability_templates
+   │             ├──< shelter_needs
+   │             ├──< foster_proposals >── foster_homes
+   │             └──< events ──< event_animals >── animals
+   │                     └──< event_attendees >── profiles
+   ├──< favorites >── animals
+   ├──< saved_searches
+   ├──< foster_homes
+   ├──< donation_offers
+   ├──< reports >── animals
+   ├──< audit_log            (admin; sin cascada, ver borrado de cuenta)
+   └──< lost_found_posts ──< lost_found_sightings
+                       └──< lost_found_media
+
+geocode_cache            (caché de Nominatim, sin relación)
 ```
+
+**28 tablas en total**, todas con RLS activada. La agrupación por fases del plan
+original ya no aplica: el inventario vigente es el del diagrama.
 
 ## Entidades núcleo (fase 1)
 
@@ -29,8 +46,18 @@ profiles ──< shelters ──< animals ──< animal_media
 | `animal_media` / `shelter_media` | Fotos/vídeos | `type photo/video/youtube`; `is_cover`; `sort_order` |
 | `adoption_requests` | Solicitud "Me interesa" | `questionnaire jsonb`; **unique(animal_id, adopter_id)**; estados `pending/approved/rejected/withdrawn/completed` |
 
-Fase 2: `availability_slots`, `appointments`, `favorites`, `saved_searches`, `notifications`.
-Fase 3: `sponsorships`, `lost_found_posts`, `lost_found_sightings`.
+El resto de tablas se documenta por bloque funcional en las secciones siguientes:
+agenda y citas (`availability_slots`, `availability_overrides`, `availability_templates`,
+`appointments`), seguimiento del adoptante (`favorites`, `saved_searches`), perdidos y
+encontrados (`lost_found_*`), acogida (`foster_homes`, `foster_proposals`), ayuda material
+(`shelter_needs`, `donation_offers`), historias felices (`adoption_stories`), jornadas
+(`events`, `event_animals`, `event_attendees`), métricas (`page_views`, `sponsorships`) y
+moderación (`reports`, `audit_log`).
+
+> **No hay tabla `notifications`.** Se descartó deliberadamente (FEATURE-010): para
+> «avisar una sola vez» bastan marcas de fecha en la propia fila (`favorites.notified_at`,
+> `saved_searches.last_sent_at`, `events.reminder_sent_at`…), que además hacen los crons
+> idempotentes sin una tabla genérica que mantener.
 
 ### Agenda de disponibilidad: patrón + excepciones (FEATURE-009 + FEATURE-053)
 

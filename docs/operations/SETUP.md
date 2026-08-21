@@ -62,7 +62,7 @@ mkdocs serve                        # docs en http://localhost:8000
 
 1. Importar el repo en Vercel; framework Next.js autodetectado.
 2. Añadir variables de entorno en Vercel (Production + Preview).
-3. `main` → producción; `develop` → preview automático.
+3. `main` → producción; cada rama `feature/*` o `fix/*` → preview automático (Decisión #58: las ramas salen de `main`, sin `develop` intermedio).
 4. En GitHub: secrets `NEXT_PUBLIC_SUPABASE_URL` y `NEXT_PUBLIC_SUPABASE_ANON_KEY` para CI y keepalive.
 
 ## Problemas comunes

@@ -5,7 +5,7 @@
 | Entorno | Rama | Hosting | Datos |
 |---------|------|---------|-------|
 | **Producción** | `main` | Vercel — <https://adoptia-eight.vercel.app> | Proyecto Supabase `mkzhzizcraelphhvceua` (eu-west-1) |
-| **Preview** | `develop` (y ramas feature) | Vercel Preview Deployments (URL por push) | Mismo proyecto Supabase* |
+| **Preview** | ramas `feature/*` y `fix/*` (creadas desde `main`) | Vercel Preview Deployments (URL por push) | Mismo proyecto Supabase* |
 | **Local** | — | `next dev` | Mismo proyecto Supabase o `supabase start` local |
 
 \* Un solo proyecto Supabase al principio (free = 2 proyectos máx.). Si el preview necesita datos aislados, crear segundo proyecto free como staging y variar las env en Vercel Preview.

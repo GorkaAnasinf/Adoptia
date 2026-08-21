@@ -3,6 +3,19 @@
 > Documento de referencia técnica del proyecto. Complementa a `01-analisis-funcional.md`.
 > Última actualización: 2026-07-03
 
+> ⚠️ **Documento histórico — dos puntos superados por decisiones posteriores.**
+> Este análisis se aprobó el **2026-07-03** y se conserva **tal cual** como registro de la
+> propuesta técnica de partida. Dos elecciones cambiaron durante el desarrollo y aquí
+> siguen apareciendo las originales:
+>
+> - **Email transaccional: Resend → Nodemailer + SMTP de Gmail** (Decisión #22, 2026-07-05).
+>   No hay dependencia de Resend ni carpeta `src/emails/` con react-email: las plantillas
+>   HTML propias viven en `src/lib/email/templates.ts`.
+> - **Ramas: `develop` → flujo main-based** (Decisión #58). Las ramas salen de `main` y
+>   vuelven a `main`; `develop` quedó en desuso.
+>
+> Estado vigente: [ARCHITECTURE](ARCHITECTURE.md) · [DECISIONS](DECISIONS.md).
+
 ---
 
 ## 1. Visión técnica general

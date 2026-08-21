@@ -34,7 +34,7 @@ Principio rector: **security by design** — la seguridad vive en la base de dat
 ## Gestión de vulnerabilidades
 
 - Reporte: ver [SECURITY.md raíz](../../SECURITY.md).
-- Clave filtrada → [RB-03](RUNBOOKS.md#rb-03--clave-filtrada-anonservice_roleresend).
+- Clave filtrada → [RB-03](RUNBOOKS.md#rb-03-clave-filtrada-anonservice_rolesmtp).
 - Registro de incidentes: sección al final de este fichero (fecha, alcance, acción, lección).
 
 ## Registro de incidentes

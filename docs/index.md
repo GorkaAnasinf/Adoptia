@@ -22,4 +22,4 @@ Mapa por proximidad, fichas de animales, solicitudes con cuestionario y citas �
 
 ## Stack
 
-Next.js 15 (App Router) + TypeScript · Tailwind + shadcn/ui · Supabase (PostgreSQL + PostGIS, Auth, Storage) · Leaflet + OpenStreetMap · Resend · Vercel — **coste 0 €** en free tiers.
+Next.js 15 (App Router) + TypeScript · Tailwind + shadcn/ui · Supabase (PostgreSQL + PostGIS, Auth, Storage) · Leaflet + OpenStreetMap · Nodemailer + SMTP de Gmail · Vercel — **coste 0 €** en free tiers.

@@ -15,6 +15,7 @@
 | [BUG-009](BUG-009.md) | Test de la agenda roto tras el rediseño de vistas (label y timeline) | bug | hecho | 0.5 |
 | [BUG-010](BUG-010.md) | FKs sin ON DELETE CASCADE bloquean el borrado de una cuenta (appointments/reports) | bug | hecho | 0.5 |
 | [BUG-011](BUG-011.md) | CI en rojo crónico — el job E2E falla en onboarding y citas (main lleva rojo varias features) | bug | hecho | 0.5 |
+| [BUG-012](BUG-012.md) | El seed comercial no crea cuentas autenticables | bug | desarrollo | 0.5 |
 | [FEATURE-000](FEATURE-000.md) | Inicialización y andamiaje del proyecto | feature | hecho | 0.1 |
 | [FEATURE-001](FEATURE-001.md) | Registro y login de adoptantes y protectoras | feature | hecho | 0.2 |
 | [FEATURE-002](FEATURE-002.md) | Onboarding de protectoras y verificación por admin | feature | hecho | 0.2 |
@@ -67,7 +68,7 @@
 | [FEATURE-049](FEATURE-049.md) | Efectos del área de usuario en el panel (Reveal, carrusel de fotos, hover) | feature | hecho | 0.5 |
 | [FEATURE-050](FEATURE-050.md) | Rediseño de "Solicitudes recibidas" (maestra/detalle) del panel | feature | hecho | 0.5 |
 | [FEATURE-051](FEATURE-051.md) | Rediseño de "Citas" de la protectora (wireframe Stitch) | feature | hecho | 0.5 |
-| [FEATURE-052](FEATURE-052.md) | Botón "Ver recursos" con el estilo primario relleno | mejora | hecho | 0.5 |
+| [FEATURE-052](FEATURE-052.md) | Botón "Ver recursos" con el estilo primario relleno | improvement | hecho | 0.5 |
 | [FEATURE-053](FEATURE-053.md) | Agenda de la protectora F1 — calendario mensual con excepciones por día | feature | hecho | 0.5 |
 | [FEATURE-054](FEATURE-054.md) | Agenda de la protectora F2a — pintar días y cerrar rangos (batch) | feature | hecho | 0.5 |
 | [FEATURE-055](FEATURE-055.md) | Agenda de la protectora F3 — vistas anual (heatmap) y diaria (timeline) | feature | hecho | 0.5 |
