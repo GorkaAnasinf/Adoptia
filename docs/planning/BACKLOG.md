@@ -22,5 +22,9 @@
 Los items `hecho`/`descartado` no aparecen aquí — su histórico vive en [CHANGELOG](CHANGELOG.md) y git.
 
 <!-- RENDER:START -->
-_No hay items abiertos._
+### 🔨 En desarrollo (1)
+
+| Item | Título | Prioridad | Hito |
+|------|--------|-----------|------|
+| [BUG-012](items/BUG-012.md) | El seed comercial no crea cuentas autenticables | alta | 0.5 |
 <!-- RENDER:END -->

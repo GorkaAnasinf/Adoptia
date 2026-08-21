@@ -39,16 +39,6 @@ Estado de cada capacidad en lenguaje de usuario. Se regenera con `python scripts
 <!-- RENDER:START -->
 #### ✅ Disponible
 
-- Tras confirmar el correo, la protectora no entra al onboarding; falta pantalla de "correo verificado ([BUG-001](../planning/items/BUG-001.md))
-- El mapa del alta se ve en gris (la CSP bloquea las tiles de OpenStreetMap) ([BUG-003](../planning/items/BUG-003.md))
-- Reservar cita" lleva a una página 404 ([BUG-004](../planning/items/BUG-004.md))
-- npm run test -- --coverage revienta al parsear globals.css y las guías .md ([BUG-005](../planning/items/BUG-005.md))
-- El listado sirve la URL de YouTube como imagen de portada cuando el animal no tiene foto de portada ([BUG-006](../planning/items/BUG-006.md))
-- CI no ejecuta ni un solo test de RLS — 122 tests se saltan en silencio en cada push ([BUG-007](../planning/items/BUG-007.md))
-- La suite E2E está podrida — 14 de 26 fallan al ejecutarla entera ([BUG-008](../planning/items/BUG-008.md))
-- Test de la agenda roto tras el rediseño de vistas (label y timeline) ([BUG-009](../planning/items/BUG-009.md))
-- FKs sin ON DELETE CASCADE bloquean el borrado de una cuenta (appointments/reports) ([BUG-010](../planning/items/BUG-010.md))
-- CI en rojo crónico — el job E2E falla en onboarding y citas (main lleva rojo varias features) ([BUG-011](../planning/items/BUG-011.md))
 - Inicialización y andamiaje del proyecto ([FEATURE-000](../planning/items/FEATURE-000.md))
 - Registro y login de adoptantes y protectoras ([FEATURE-001](../planning/items/FEATURE-001.md))
 - Onboarding de protectoras y verificación por admin ([FEATURE-002](../planning/items/FEATURE-002.md))
@@ -156,4 +146,8 @@ _Nada en desarrollo en este momento._
 #### 🗓️ Previsto
 
 _Backlog vacío._
+
+#### 🐛 Correcciones
+
+10 incidencias detectadas y corregidas — no son capacidades del producto, así que se listan en el [CHANGELOG](../planning/CHANGELOG.md) y en el [índice de items](../planning/items/INDEX.md).
 <!-- RENDER:END -->

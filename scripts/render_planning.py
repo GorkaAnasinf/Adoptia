@@ -28,6 +28,9 @@ INDEX = ITEMS_DIR / "INDEX.md"
 SKIP_FILES = {"_TEMPLATE.md", "INDEX.md"}
 ESTADOS = ["recibido", "analisis", "diseno", "listo", "desarrollo",
            "bloqueado", "hecho", "descartado"]
+TIPOS = ["feature", "improvement", "bug"]
+# Lo que el catálogo de producto anuncia como capacidad (un bug corregido no lo es).
+TIPOS_CAPACIDAD = {"feature", "improvement"}
 ABIERTOS = ["desarrollo", "bloqueado", "listo", "diseno", "analisis", "recibido"]
 ESTADO_LABEL = {
     "recibido": "📥 Recibido", "analisis": "🔍 En análisis", "diseno": "📐 En diseño",
@@ -124,12 +127,22 @@ def render_roadmap(items: list[dict]) -> None:
 
 
 def render_product(items: list[dict]) -> None:
-    lines = []
-    hechos = sorted([i for i in items if i.get("estado") == "hecho"], key=lambda i: i["id"])
-    en_curso = sorted([i for i in items if i.get("estado") == "desarrollo"], key=lambda i: i["id"])
-    previstos = sorted([i for i in items if i.get("estado") in
+    """Catálogo en lenguaje de usuario: qué SABE HACER el producto.
+
+    Solo entran features y mejoras: un bug corregido es trabajo hecho, pero no
+    una capacidad que anunciar ("Reservar cita lleva a un 404" no es algo
+    disponible). Las correcciones se resumen aparte, con enlace al changelog.
+    """
+    capacidades = [i for i in items if i.get("tipo") in TIPOS_CAPACIDAD]
+    hechos = sorted([i for i in capacidades if i.get("estado") == "hecho"], key=lambda i: i["id"])
+    en_curso = sorted([i for i in capacidades if i.get("estado") == "desarrollo"], key=lambda i: i["id"])
+    previstos = sorted([i for i in capacidades if i.get("estado") in
                         ("recibido", "analisis", "diseno", "listo", "bloqueado")],
                        key=lambda i: (i.get("hito") or "z", i["id"]))
+    bugs_resueltos = [i for i in items
+                      if i.get("tipo") == "bug" and i.get("estado") == "hecho"]
+
+    lines = []
     lines.append("\n#### ✅ Disponible\n")
     if hechos:
         lines += [f"- {it.get('titulo','')} ({item_link(it, 'product')})" for it in hechos]
@@ -146,6 +159,14 @@ def render_product(items: list[dict]) -> None:
                   f"({item_link(it, 'product')})" for it in previstos]
     else:
         lines.append("_Backlog vacío._")
+    lines.append("\n#### 🐛 Correcciones\n")
+    if bugs_resueltos:
+        lines.append(f"{len(bugs_resueltos)} incidencias detectadas y corregidas — "
+                     "no son capacidades del producto, así que se listan en el "
+                     "[CHANGELOG](../planning/CHANGELOG.md) y en el "
+                     "[índice de items](../planning/items/INDEX.md).")
+    else:
+        lines.append("_Sin incidencias registradas._")
     replace_zone(PRODUCT, "\n".join(lines))
 
 
@@ -173,6 +194,9 @@ def main() -> None:
     for it in items:
         if it.get("estado") not in ESTADOS:
             sys.exit(f"ERROR: {it['_file']} estado invalido: {it.get('estado')}")
+        if it.get("tipo") not in TIPOS:
+            sys.exit(f"ERROR: {it['_file']} tipo invalido: {it.get('tipo')} "
+                     f"(esperado uno de {TIPOS})")
     render_backlog(items)
     render_roadmap(items)
     render_product(items)

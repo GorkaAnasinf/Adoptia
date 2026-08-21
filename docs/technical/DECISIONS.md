@@ -2,6 +2,8 @@
 
 Formato ligero tipo ADR. Toda decisión con impacto estructural se registra aquí con fecha y motivo. Las decisiones marcadas 🔒 vienen fijadas por el análisis técnico aprobado (biblia) — no reabrirlas sin causa mayor.
 
+> **Sobre la numeración:** el 2026-07-05 se asignaron por error los números 17-19 dos veces. Los originales conservan su número (los citan varios items) y los del segundo bloque llevan sufijo `b` (**17b**, **18b**, **19b**). Una decisión superada no se borra: se tacha y se enlaza la que la sustituye.
+
 ## 2026-07-04 — Inicialización
 
 | # | Decisión | Motivo | Alternativa descartada |
@@ -12,7 +14,7 @@ Formato ligero tipo ADR. Toda decisión con impacto estructural se registra aqu�
 | 4 🔒 | **PostGIS** para proximidad | Búsqueda por distancia real (`ST_DWithin`) es feature núcleo | Haversine en JS (no escala, sin índice) |
 | 5 🔒 | **RLS como pilar de seguridad** | Políticas en BD, no en código; imposible saltárselas desde cliente | Autorización solo en aplicación |
 | 6 🔒 | **Leaflet + OpenStreetMap + Nominatim** | 100% gratis, sin API key ni tarjeta | Google Maps (exige tarjeta) |
-| 7 🔒 | **Resend** para email transaccional | Free 100/día suficiente para MVP; DX buena | SendGrid (free más restrictivo) |
+| 7 🔒 | ~~**Resend** para email transaccional~~ **(superada por #22)** | Free 100/día suficiente para MVP; DX buena | SendGrid (free más restrictivo) |
 | 8 🔒 | **Tailwind + shadcn/ui** | Encaja con salidas de Stitch; tokens de DESIGN.md | MUI/AntD (look corporativo, pesa) |
 | 9 | **Sin backend separado** — Route Handlers | Un solo deploy; Render queda como plan B si hiciera falta procesado pesado | NestJS/FastAPI aparte (coste operativo sin necesidad aún) |
 | 10 | **Sin Docker en local** | Deploy es Vercel+Supabase; desarrollo contra proyecto cloud + `next dev`. `supabase start` disponible si se quiere BD local | docker-compose propio |
@@ -30,9 +32,9 @@ Formato ligero tipo ADR. Toda decisión con impacto estructural se registra aqu�
 | 17 | **Tests de RLS contra stack local** (`supabase start` + CLI como devDependency, vars `SUPABASE_TEST_*`) | Verificar políticas reales en Postgres sin tocar el proyecto cloud; se saltan si no hay stack (suite unitaria rápida) | Mockear supabase-js (no prueba las políticas de verdad) |
 | 18 | **Grants explícitos a `anon/authenticated/service_role` en la migración** | Los default privileges del rol de migración no cubrían las tablas nuevas (`permission denied`); el control de acceso real lo gobierna RLS | Depender de default privileges implícitos |
 | 19 | **Rol verificado en middleware + RLS como red final** | Defensa en profundidad barata: middleware redirige por rol (`/panel`→shelter, `/admin`→admin) sin flash de contenido | Solo comprobación en página o solo RLS (UX pobre) |
-| 17 | **Manada SDD** (tema perros: Balto, Lassie, Snoopy, Bolt, Scooby, Hachiko) | Elección del propietario; coherente con el dominio | Panteón griego (default) |
-| 18 | **Gitflow sin PRs**: `develop` → `main`, ramas `feature/FEATURE-NNN-slug` | Equipo de 1; CI protege calidad | PRs obligatorias (fricción sin revisores) |
-| 19 | **Keepalive cron** (GitHub Actions 2×/semana) | Supabase free pausa tras 7 días de inactividad | Aceptar pausas (mala demo) |
+| 17b | **Manada SDD** (tema perros: Balto, Lassie, Snoopy, Bolt, Scooby, Hachiko) | Elección del propietario; coherente con el dominio | Panteón griego (default) |
+| 18b | **Gitflow sin PRs**: ~~`develop` → `main`~~, ramas `feature/FEATURE-NNN-slug` **(el paso por `develop` queda superado por #58: las ramas salen de `main`)** | Equipo de 1; CI protege calidad | PRs obligatorias (fricción sin revisores) |
+| 19b | **Keepalive cron** (GitHub Actions 2×/semana) | Supabase free pausa tras 7 días de inactividad | Aceptar pausas (mala demo) |
 
 ## 2026-07-05 — FEATURE-001 (registro y login)
 
@@ -137,6 +139,15 @@ Formato ligero tipo ADR. Toda decisión con impacto estructural se registra aqu�
 |---|----------|--------|------------------------|
 | 56 | **El resultado de una jornada (`adoptions_count`/`attended_count`) es un dato DECLARADO por la protectora al finalizar, no adopciones vinculadas** | No existe una entidad de "adopción cerrada por jornada"; vincular animales adoptados a un evento sería un modelo nuevo y frágil (una adopción no se cierra en el sitio). Un par de contadores agregados dan la métrica y el social proof sin esa complejidad | Vincular adopciones reales evento×animal (modelo nuevo, y el cierre de adopción no ocurre en la plataforma) |
 | 57 | **La "historia feliz de jornada" es un agregado público en el perfil de la protectora, no una entrada en `adoption_stories`** | `adoption_stories` es un **testimonio del adoptante sobre un animal concreto con consentimiento** (FEATURE-035/059); un recuento de jornada no es eso. Un banner "en nuestras jornadas, N animales encontraron familia" da el social proof reutilizando la lectura pública de eventos `finished`, sin PII ni moderación nueva | Insertar una fila sintética en `adoption_stories` (rompe su semántica: sin adoptante, sin animal, sin consentimiento) |
+
+## 2026-08-20 — Saneado de documentación
+
+| # | Decisión | Motivo | Alternativa descartada |
+|---|----------|--------|------------------------|
+| 58 | **Gitflow main-based: las ramas salen de `main` y vuelven a `main`; `develop` queda en desuso** (supera #18b) | `develop` se quedó ~83 commits por detrás y ramificar desde ahí producía merges sucios con conflictos que no existían en el trabajo real. Con un solo desarrollador, la rama intermedia no aportaba revisión y sí desincronización; CI + previews por rama cubren la calidad | Resincronizar `develop` con `main` y mantenerlo (misma ceremonia, mismo riesgo de volver a desfasarse) |
+| 59 | **El catálogo de producto solo anuncia features y mejoras; los bugs corregidos se resumen aparte** | `render_planning.py` metía todo item `hecho` bajo "✅ Disponible", así que el catálogo público listaba títulos como "Reservar cita lleva a una página 404" como si fueran capacidades del producto. Un bug corregido es trabajo hecho, no algo que anunciar | Mantener el listado único (engañoso de cara a quien lee el catálogo como descripción del producto) |
+
+Ambas se registran a posteriori: ya estaban en vigor en el código y en el flujo de trabajo, pero solo vivían como nota en el BACKLOG. Quedan aquí para que la documentación tenga una única fuente de verdad. La decisión #7 (Resend) quedó igualmente superada por la #22 (SMTP de Gmail) el 2026-07-08.
 
 ## Cómo añadir una decisión
 

@@ -25,14 +25,14 @@ Todo item de desarrollo sigue red → green → refactor. El plan de cada item (
 2. **Esquemas Zod**: casos válidos, inválidos y límite.
 3. **Handlers**: códigos de respuesta completos (2xx, 4xx de negocio, 422 validación).
 4. **Estados vacíos y de error** de cada pantalla.
-5. **Emails**: render de plantilla + disparo (Resend mockeado — nunca emails reales en tests).
+5. **Emails**: render de plantilla + disparo (el transporte de Nodemailer va mockeado — nunca emails reales en tests).
 
 ## Convenciones
 
 - Tests junto al código: `foo.test.ts` al lado de `foo.ts`; E2E en `e2e/`.
 - Nombres en español describiendo comportamiento: `it('rechaza solicitud duplicada con 409')`.
 - Datos de prueba con factories (`src/test/factories.ts`), no fixtures gigantes.
-- Mock de servicios externos (Resend, Nominatim) por defecto; integración real solo en tests marcados.
+- Mock de servicios externos (SMTP, Nominatim, Photon) por defecto; integración real solo en tests marcados.
 
 ## E2E: cómo correrlos sin volverse loco
 

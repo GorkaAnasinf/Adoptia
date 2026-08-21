@@ -1,7 +1,7 @@
 # Pasarela ChatGPT — instrucciones del Proyecto
 
 > Copia el bloque de abajo tal cual en el campo **Instructions** del Proyecto de ChatGPT
-> conectado al repositorio de Adoptia (con capacidad `get_file` / `create_file` sobre la rama `develop`).
+> conectado al repositorio de Adoptia (con capacidad `get_file` / `create_file` sobre la rama `main`).
 
 ---
 

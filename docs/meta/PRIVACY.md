@@ -19,7 +19,7 @@ Adoptia trata datos personales de **adoptantes** (identidad, contacto, cuestiona
 
 ## Derechos del interesado
 
-Canal: email de privacidad (definir buzón) o desde la cuenta. Plazo de respuesta: **<30 días**. Procedimiento operativo en [RB-07](../operations/RUNBOOKS.md#rb-07--solicitud-rgpd-supresiónacceso).
+Canal: email de privacidad (definir buzón) o desde la cuenta. Plazo de respuesta: **<30 días**. Procedimiento operativo en [RB-07](../operations/RUNBOOKS.md#rb-07-solicitud-rgpd-supresionacceso).
 
 | Derecho | Implementación |
 |---------|----------------|
@@ -34,7 +34,7 @@ Canal: email de privacidad (definir buzón) o desde la cuenta. Plazo de respuest
 |-----------|-------|-----------------|-----|
 | Supabase | BD, Auth, Storage | Región UE (elegir eu-west al crear) | DPA estándar disponible |
 | Vercel | Hosting/edge | Global (funciones en UE configurables) | DPA disponible |
-| Resend | Email | EE. UU. — SCCs | DPA disponible |
+| Google (SMTP de Gmail) | Envío de email transaccional | EE. UU. — SCCs | Condiciones de Google Workspace / DPA disponible |
 | Sentry | Errores (scrub de PII activado) | UE configurable | DPA disponible |
 | Umami | Analítica sin cookies ni PII | — | No trata datos personales |
 

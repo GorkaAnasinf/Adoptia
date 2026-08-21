@@ -1,6 +1,6 @@
 ---
 id: FEATURE-052
-tipo: mejora
+tipo: improvement
 titulo: Botón "Ver recursos" con el estilo primario relleno
 estado: hecho
 prioridad: baja
