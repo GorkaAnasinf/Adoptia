@@ -158,9 +158,25 @@ describe("UserMenu", () => {
       "href",
       "/panel",
     );
-    // No mezcla accesos de adoptante
+    // Accesos directos del panel
+    expect(screen.getByRole("menuitem", { name: messages.shell.navAnimals })).toHaveAttribute(
+      "href",
+      "/panel/animales",
+    );
+    expect(screen.getByRole("menuitem", { name: messages.shell.navRequests })).toHaveAttribute(
+      "href",
+      "/panel/solicitudes",
+    );
+    expect(screen.getByRole("menuitem", { name: messages.shell.navAppointments })).toHaveAttribute(
+      "href",
+      "/panel/citas",
+    );
+    // No mezcla accesos de adoptante ni el área "Mi cuenta"
     expect(
       screen.queryByRole("menuitem", { name: messages.shell.navFavorites }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("menuitem", { name: messages.shell.navAccount }),
     ).not.toBeInTheDocument();
   });
 
@@ -172,6 +188,10 @@ describe("UserMenu", () => {
     renderMenu("adopter");
     await abrirMenu();
 
+    expect(screen.getByRole("menuitem", { name: messages.shell.navAccount })).toHaveAttribute(
+      "href",
+      "/mi-cuenta",
+    );
     expect(screen.getByRole("menuitem", { name: messages.shell.navFavorites })).toHaveAttribute(
       "href",
       "/mi-cuenta/favoritos",
@@ -196,6 +216,20 @@ describe("UserMenu", () => {
     ).not.toBeInTheDocument();
   });
 
+  it("sin rol conocido cae a los accesos de adoptante", async () => {
+    getUserMock.mockResolvedValue({
+      data: { user: { id: "u1", email: "ana@example.com" } },
+      error: null,
+    });
+    renderMenu(null);
+    await abrirMenu();
+
+    expect(screen.getByRole("menuitem", { name: messages.shell.navAccount })).toHaveAttribute(
+      "href",
+      "/mi-cuenta",
+    );
+  });
+
   it("admin: el menú incluye acceso al panel de administración", async () => {
     getUserMock.mockResolvedValue({
       data: { user: { id: "u1", email: "admin@example.com" } },
@@ -208,5 +242,8 @@ describe("UserMenu", () => {
       "href",
       "/admin/protectoras",
     );
+    expect(
+      screen.queryByRole("menuitem", { name: messages.shell.navAccount }),
+    ).not.toBeInTheDocument();
   });
 });

@@ -3,13 +3,16 @@
 import type { User } from "@supabase/supabase-js";
 import {
   BarChart3,
+  CalendarDays,
   CalendarHeart,
   FileText,
   Gift,
   Heart,
   HeartHandshake,
+  LifeBuoy,
   LogOut,
   type LucideIcon,
+  PawPrint,
   Store,
   UserRound,
 } from "lucide-react";
@@ -29,9 +32,20 @@ type MenuItem = { key: string; href: string; icon: LucideIcon };
  * real a cada área sigue protegido por el middleware (`src/middleware.ts`).
  */
 const ACCESOS: Record<UserRole, MenuItem[]> = {
-  shelter: [{ key: "navShelterPanel", href: "/panel", icon: Store }],
-  admin: [{ key: "navAdminPanel", href: "/admin/protectoras", icon: BarChart3 }],
+  shelter: [
+    { key: "navShelterPanel", href: "/panel", icon: Store },
+    { key: "navAnimals", href: "/panel/animales", icon: PawPrint },
+    { key: "navRequests", href: "/panel/solicitudes", icon: FileText },
+    { key: "navAppointments", href: "/panel/citas", icon: CalendarDays },
+    { key: "navFosterHomes", href: "/panel/acogida", icon: LifeBuoy },
+  ],
+  admin: [
+    { key: "navAdminPanel", href: "/admin/protectoras", icon: BarChart3 },
+    { key: "navAdminReports", href: "/admin/reportes", icon: FileText },
+    { key: "navAdminAudit", href: "/admin/auditoria", icon: BarChart3 },
+  ],
   adopter: [
+    { key: "navAccount", href: "/mi-cuenta", icon: UserRound },
     { key: "navFavorites", href: "/mi-cuenta/favoritos", icon: Heart },
     { key: "navMyRequests", href: "/mi-cuenta/solicitudes", icon: FileText },
     { key: "navMyAppointments", href: "/mi-cuenta/citas", icon: CalendarHeart },
@@ -148,28 +162,18 @@ export function UserMenu({ role }: { role?: UserRole | null }) {
             )}
             <p className="truncate text-xs text-muted-foreground">{user.email}</p>
           </div>
-          <Link
-            href="/mi-cuenta"
-            role="menuitem"
-            onClick={() => setAbierto(false)}
-            className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-foreground hover:bg-accent"
-          >
-            <UserRound className="size-4" aria-hidden="true" />
-            {t("shell.navAccount")}
-          </Link>
-          {role &&
-            ACCESOS[role].map(({ key, href, icon: Icon }) => (
-              <Link
-                key={key}
-                href={href}
-                role="menuitem"
-                onClick={() => setAbierto(false)}
-                className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-foreground hover:bg-accent"
-              >
-                <Icon className="size-4" aria-hidden="true" />
-                {t(`shell.${key}`)}
-              </Link>
-            ))}
+          {ACCESOS[role ?? "adopter"].map(({ key, href, icon: Icon }) => (
+            <Link
+              key={key}
+              href={href}
+              role="menuitem"
+              onClick={() => setAbierto(false)}
+              className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-foreground hover:bg-accent"
+            >
+              <Icon className="size-4" aria-hidden="true" />
+              {t(`shell.${key}`)}
+            </Link>
+          ))}
           <div className="my-1 border-t border-border" aria-hidden="true" />
           <button
             type="button"
